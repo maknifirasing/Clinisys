@@ -1,0 +1,49 @@
+<!--
+  Generated template for the Liste page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="custom-color" class="ion-navbar">
+    <ion-title>
+      Liste
+    </ion-title>
+
+  </ion-navbar>
+  <ion-navbar class="ion-navbar">
+
+    <p>
+      <ion-searchbar color="white" (ionInput)="getItems($event)"></ion-searchbar>
+    </p>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+
+  <ion-list>
+
+    <ion-item-sliding *ngFor="let pas of patientliste ">
+
+      <ion-item>
+
+        <ion-avatar item-left>
+          <img src='/android_asset/www/assets/img/{{pas.getimg()}}'>
+        </ion-avatar>
+        <h4><strong>{{ pas.getnom() }}</strong></h4>
+        <p>Age : {{ pas.getage() }} ans CH: {{ pas.getchambre() }}</p>
+        <p>{{ pas.getmedecin() }}</p>
+
+      </ion-item>
+      <ion-item-options>
+        <button danger (click)="removeItem(pas)">
+          <ion-icon></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+
+  </ion-list>
+</ion-content>
