@@ -16,10 +16,6 @@ export class HomePage {
     this.user = new Users;
 
   }
-
-
-
-
   connecter(login, password) {
     this.err = "";
     try {
