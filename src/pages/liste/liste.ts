@@ -1,13 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import {Patient} from './Patient';
+import {Patient} from '../../models/Patient';
+import {DossierPage} from '../dossier/dossier';
 
-/*
- Generated class for the Liste page.
-
- See http://ionicframework.com/docs/v2/components/#navigation for more info on
- Ionic pages and navigation.
- */
 @Component({
   selector: 'page-liste',
   templateUrl: 'liste.html'
@@ -17,6 +12,7 @@ export class ListePage implements OnInit {
   xml: any;
   patient: Array<Patient> = [];
   patientliste: Array<Patient> = [];
+  DateF: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.patientliste = this.patient;
@@ -25,6 +21,42 @@ export class ListePage implements OnInit {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ListePage');
   }
+
+  DateFeuille() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/DossierSoinWSService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '  <ser:GetDateFeuille/>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+
+
+
+          this.DateF = this.xml.getElementsByTagName("return");
+          console.log(this.DateF[0].childNodes[0].nodeValue);
+          return this.DateF[0];
+
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+
+  goToDossierPage(a,b,c,d,e,f){
+
+ this.navCtrl.push(DossierPage,{identifiant: a, numeroDossier: b, image: c, nom: d, age: e, chambre: f});
+ }
 
   ngOnInit() {
     var xmlhttp = new XMLHttpRequest();
@@ -41,15 +73,7 @@ export class ListePage implements OnInit {
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
 
-    /*
-     var sr =
-     '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">'+
-     '<soapenv:Header/>'+
-     '<soapenv:Body>'+
-     '<ser:GetAllFamillePosologie/>'+
-     '</soapenv:Body>'+
-     '</soapenv:Envelope>';
-     */
+
     xmlhttp.onreadystatechange = () => {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
