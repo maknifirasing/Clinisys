@@ -10,11 +10,14 @@ export class HomePage {
   err: string;
   xml: any;
   user: Users;
-
+  tabBarElement: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.user = new Users;
+
   }
+
+
 
 
   connecter(login, password) {

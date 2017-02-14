@@ -2,12 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
 
-/*
- Generated class for the Liste page.
-
- See http://ionicframework.com/docs/v2/components/#navigation for more info on
- Ionic pages and navigation.
- */
 @Component({
   selector: 'page-liste',
   templateUrl: 'liste.html'
@@ -40,15 +34,6 @@ export class ListePage implements OnInit {
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
 
-    /*
-     var sr =
-     '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">'+
-     '<soapenv:Header/>'+
-     '<soapenv:Body>'+
-     '<ser:GetAllFamillePosologie/>'+
-     '</soapenv:Body>'+
-     '</soapenv:Envelope>';
-     */
     xmlhttp.onreadystatechange = () => {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
@@ -103,8 +88,7 @@ export class ListePage implements OnInit {
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
   }
-
-
+  
   initializeItems() {
     this.patientliste = this.patient;
   }
