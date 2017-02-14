@@ -27,8 +27,15 @@
 
     <ion-item-sliding *ngFor="let pas of patientliste ">
 
-      <ion-item>
+<ion-input type="hidden" #id name="id" value="{{ pas.getid() }}" readOnly ></ion-input>
+<ion-input type="hidden" #numDoss name="numDoss" value="{{ pas.getdossier() }}" readOnly ></ion-input>
+      <ion-input type="hidden" #img name="img" value="{{ pas.getimg() }}" readOnly ></ion-input>
+      <ion-input type="hidden" #nom name="nom" value="{{ pas.getnom() }}" readOnly ></ion-input>
+      <ion-input type="hidden" #age name="age" value="{{ pas.getage() }}" readOnly ></ion-input>
+      <ion-input type="hidden" #ch name="ch" value="{{ pas.getchambre() }}" readOnly ></ion-input>
 
+      <ion-item (click)="goToDossierPage(id.value,numDoss.value,img.value,nom.value,age.value,ch.value)">
+<!--<button (click)="DateFeuille()">aaaaaaaaaaaaaaaaa</button>-->
         <ion-avatar item-left>
           <img src='/android_asset/www/assets/img/{{pas.getimg()}}'>
         </ion-avatar>
