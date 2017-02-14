@@ -15,12 +15,12 @@
   <ion-list>
     <ion-item>
 
-      <ion-input type="text" #login name="login" placeholder="Nom d'utilisateur"></ion-input>
+      <ion-input type="text" #login name="login" placeholder="Nom d'utilisateur" required="true"></ion-input>
     </ion-item>
 
     <ion-item>
 
-      <ion-input type="text" #password name="password" placeholder="Mot de passe"></ion-input>
+      <ion-input type="password" #password name="password" placeholder="Mot de passe" required="true"></ion-input>
     </ion-item>
   </ion-list>
   <button ion-button class="center" (click)="connecter(login.value,password.value)">Connecter</button>

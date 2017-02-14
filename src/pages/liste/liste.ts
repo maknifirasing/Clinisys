@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import {Patient} from './Patient';
+import {Patient} from '../../models/Patient';
 
 /*
  Generated class for the Liste page.
@@ -13,7 +13,6 @@ import {Patient} from './Patient';
   templateUrl: 'liste.html'
 })
 export class ListePage implements OnInit {
-  json: any;
   xml: any;
   patient: Array<Patient> = [];
   patientliste: Array<Patient> = [];
