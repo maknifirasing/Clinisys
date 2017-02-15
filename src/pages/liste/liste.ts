@@ -1,7 +1,9 @@
+///<reference path="../tabs/tabs.ts"/>
 import {Component, OnInit} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
 import {DossierPage} from '../dossier/dossier';
+import {TabsPage} from '../tabs/tabs';
 
 @Component({
   selector: 'page-liste',
@@ -54,9 +56,11 @@ export class ListePage implements OnInit {
   goToDossierPage(a, b, c, d, e, f) {
 
     this.navCtrl.push(DossierPage, {identifiant: a, numeroDossier: b, image: c, nom: d, age: e, chambre: f});
+
   }
 
   ngOnInit() {
+
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/ReaWSService?wsdl', true);
     var sr =
