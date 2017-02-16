@@ -1,6 +1,9 @@
 page-dossier {
  .img{
    font-size: 50px;
-
  }
+  ion-scroll {
+    white-space: nowrap;
+    height: 100%;
+  }
 }

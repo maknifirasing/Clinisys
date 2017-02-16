@@ -2,10 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
 import {DossierPage} from '../dossier/dossier';
+import {Variables} from "../../providers/variables";
 
 @Component({
   selector: 'page-liste',
-  templateUrl: 'liste.html'
+  templateUrl: 'liste.html',
+  providers:[Variables]
 })
 export class ListePage implements OnInit {
   json: any;
@@ -16,7 +18,7 @@ export class ListePage implements OnInit {
   datefeuille : string="";
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private Url:Variables) {
     this.patientliste = this.patient;
   }
 
@@ -26,7 +28,7 @@ export class ListePage implements OnInit {
 
   DateFeuille() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url+'DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -39,14 +41,9 @@ export class ListePage implements OnInit {
         if (xmlhttp.status == 200) {
           this.xml = xmlhttp.responseXML;
           this.DateF = this.xml.getElementsByTagName("return");
-<<<<<<< HEAD
           this.datefeuille=this.datefeuille+this.DateF[0].childNodes[0].nodeValue;
           //console.log(this.datefeuille);
           return this.datefeuille;
-=======
-          console.log(this.DateF[0].childNodes[0].nodeValue);
-          return this.DateF[0];
->>>>>>> 863f4f76f4b4e456361b474f1d79e453181ed7d0
         }
       }
     }
@@ -55,7 +52,6 @@ export class ListePage implements OnInit {
     xmlhttp.send(sr);
   }
 
-<<<<<<< HEAD
   goToDossierPage(a, b, c, d, e, f,j) {
 
   console.log("hahahahah",this.datefeuille);
@@ -64,15 +60,9 @@ export class ListePage implements OnInit {
 
   ngOnInit() {
     this.DateFeuille();
-=======
-  goToDossierPage(a, b, c, d, e, f) {
-    this.navCtrl.push(DossierPage, {identifiant: a, numeroDossier: b, image: c, nom: d, age: e, chambre: f});
-  }
 
-  ngOnInit() {
->>>>>>> 863f4f76f4b4e456361b474f1d79e453181ed7d0
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/ReaWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url+'ReaWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
