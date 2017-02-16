@@ -1,26 +1,11 @@
 <ion-header>
 
   <ion-navbar color="custom-color" class="ion-navbar">
-    <ion-avatar item-left>
-
-    </ion-avatar>
-
-  </ion-navbar>
-  <ion-navbar class="ion-navbar">
-
-    <p>
-
-    </p>
-  </ion-navbar>
-</ion-header>
-<ion-header>
-
-  <ion-navbar color="custom-color" class="ion-navbar">
     <table border="0">
       <tr>
-        <td>
+        <td rowspan="2">
           <ion-icon class="img">
-            <img src='/android_asset/www/assets/img/{{img}}'>
+            <img src='../../assets/img/{{img}}' width="60" height="50">
 
           </ion-icon>
         </td>
@@ -29,7 +14,7 @@
         </td>
       </tr>
       <tr>
-        <td></td>
+
         <td>
           <strong>Age: </strong>{{age}}<strong>CH: </strong>{{ch}}
         </td>
@@ -40,63 +25,27 @@
   </ion-navbar>
   <ion-navbar class="ion-navbar">
 
-    <p>
-
-    </p>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
-<<<<<<< HEAD
   <p style="color: #0c60ee"><strong>  Motifs de L'hospitalisation :</strong>  </p>
 
   <div *ngIf="test===true">
-        <!--<button (click)="DateFeuille()">aaaaaaaaaaaaaaaaa</button>-->
-        <p><strong>Conclustion :</strong>{{ m.getconclusion()}}</p>
-        <p><strong>Date RDV:</strong>{{ m.getdateRdv()}}</p>
-  <p><strong>Date Sortie:</strong>
-          {{ m.getdateSortie()}}</p>
-  <p><strong>Heure RDV:</strong>
-          {{ m.getheureRdv()}}</p>
-  <p><strong>Heure Sortie</strong>
-          {{ m.getheureSortie()}}</p>
-  <p><strong>Groupe Sang:</strong>
-          {{ m.getgroupeSang()}}</p>
-  <p><strong>Histoire Maladie:</strong>
-          {{ m.gethistoiremaladie()}}</p>
-  <p><strong>Motif hospitalisation:</strong>
-          {{ m.getmotifhospitalisation()}}</p>
-  <p><strong>Numero Dossier</strong>
-          {{ m.getnumdoss()}}</p>
-  <p><strong>Poid:</strong>
-          {{ m.getpoid()}}</p>
-  <p><strong>Taille:</strong>
-          {{ m.gettaille()}}</p>
-  <p><strong>Traitement Habituelle:</strong>
-          {{ m.gettraitementHabituelle()}}</p>
-  <p><strong>Utilistateur Motif:</strong>
-          {{ m.getutilisateurMotif()}}</p>
-  <p><strong>Observation Se jour:</strong>
-          {{ m.getobservationSejour()}}</p>
-  <p><strong>Traitement Se jour:</strong>
-          {{ m.gettraitementSejour()}}</p>
-  <p><strong>Traitement Sortie:</strong>
-          {{ m.gettraitementSortie()}}</p>
+      {{ m.getmotifhospitalisation()}}
 
   </div>
 
   <div *ngIf="AntecedentAllergieTest===true">
   <p style="color: #0c60ee"><strong>  Allergies:</strong>  </p>
-
-
-
       <p >
              {{stringAlerg}}
       </p>
   <p style="color: #0c60ee"> <strong>Antécédents : </strong>
-  {{stringAntec}}
+
   </p>
+    <p>{{stringAntec}}</p>
   </div>
 
   <div *ngIf="AlerteSigneCliniqueTest===true">
@@ -106,35 +55,8 @@
     <strong>{{pas.getdesignation()}}</strong> {{pas.getquantite()}} {{pas.getdate()}}
   </p>
   </div>
-=======
-  <p>Motifs de L'hospitalisation : </p>
-
-  <ion-list>
 
 
-    <ion-item>
-      <!--<button (click)="DateFeuille()">aaaaaaaaaaaaaaaaa</button>-->
-      <p><strong>Conclustion : </strong>{{ m.getconclusion()}}</p>
-      <p><strong>Date RDV: </strong>{{ m.getdateRdv()}}</p>
-      <p><strong>Date Sortie: </strong>{{ m.getdateSortie()}}</p>
-      <p><strong>Heure RDV: </strong>{{ m.getheureRdv()}}</p>
-      <p><strong>Heure Sortie </strong>{{ m.getheureSortie()}}</p>
-      <p><strong>Groupe Sang: </strong>{{ m.getgroupeSang()}}</p>
-      <p><strong>Histoire Maladie: </strong>{{ m.gethistoiremaladie()}}</p>
-      <p><strong>Motif hospitalisation: </strong>{{ m.getmotifhospitalisation()}}</p>
-      <p><strong>Numero Dossier </strong>{{ m.getnumdoss()}}</p>
-      <p><strong>Observation Se jour: </strong>{{ m.getobservationSejour()}}</p>
-      <p><strong>Poid: </strong>{{ m.getpoid()}}</p>
-      <p><strong>Taille: </strong>{{ m.gettaille()}}</p>
-      <p><strong>Traitement Habituelle: </strong>{{ m.gettraitementHabituelle()}}</p>
-      <p><strong>Traitement Se jour: </strong>{{ m.gettraitementSejour()}}</p>
-      <p><strong>Traitement Sortie: </strong>{{ m.gettraitementSortie()}}</p>
-      <p><strong>Utilistateur Motif: </strong>{{ m.getutilisateurMotif()}}</p>
-
-    </ion-item>
-
-  </ion-list>
-  
   <div *ngIf="AlerteS===true">
     <p style="color: #0c60ee "><strong> Signes Vitaux</strong></p>
     <p *ngFor="let sig of signec ">
@@ -143,28 +65,28 @@
   </div>
 
   <div *ngIf="trait===true">
-    <h4>Traitement Encours</h4>
+    <p style="color: #0c60ee "><strong>Traitement Encours</strong></p>
     <p *ngFor="let tra of traitement ">
       <strong>{{ tra.getdesignation() }}</strong>{{ tra.getposologie() }} ({{ tra.getjour() }}) jours.
     </p>
   </div>
 
   <div *ngIf="Evo===true">
-    <h4>Evolution</h4>
+    <p style="color: #0c60ee "><strong>Evolution</strong></p>
     <p *ngFor="let evo of Evolution ">
       {{ evo.getdetail() }}
     </p>
   </div>
 
   <div *ngIf="His===true">
-    <h4>Histoire de la maladie</h4>
+    <p style="color: #0c60ee "><strong>Histoire de la maladie</strong></p>
     <p *ngFor="let his of Histoiremaladie ">
       {{ his.getdetail() }}
     </p>
   </div>
 
   <div *ngIf="Exa===true">
-    <h4>Examen clinique</h4>
+    <p style="color: #0c60ee "><strong>Examen clinique</strong></p>
     <p *ngFor="let exa of Examenclinique ">
       [{{ exa.getdate() }}-{{exa.getuserCreat()}}]<br/>
       {{ exa.getdetail() }}
@@ -172,7 +94,7 @@
   </div>
 
   <div *ngIf="Con===true">
-    <h4>Conclusion</h4>
+    <p style="color: #0c60ee "><strong>Conclusion</strong></p>
     <p *ngFor="let con of Conclusion ">
       [{{ con.getdate() }}-{{con.getuserCreat()}}]<br/>
       {{ con.getdetail() }}
@@ -180,10 +102,8 @@
   </div>
 
   <div *ngIf="Ri===true">
-    <h4>Rigime</h4>
+    <p style="color: #0c60ee "><strong>Rigime</strong></p>
     <p>{{ rigime.getdesignation() }}</p>
   </div>
-
->>>>>>> 863f4f76f4b4e456361b474f1d79e453181ed7d0
 
 </ion-content>

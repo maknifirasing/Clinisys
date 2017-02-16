@@ -39,14 +39,9 @@ export class ListePage implements OnInit {
         if (xmlhttp.status == 200) {
           this.xml = xmlhttp.responseXML;
           this.DateF = this.xml.getElementsByTagName("return");
-<<<<<<< HEAD
           this.datefeuille=this.datefeuille+this.DateF[0].childNodes[0].nodeValue;
           //console.log(this.datefeuille);
           return this.datefeuille;
-=======
-          console.log(this.DateF[0].childNodes[0].nodeValue);
-          return this.DateF[0];
->>>>>>> 863f4f76f4b4e456361b474f1d79e453181ed7d0
         }
       }
     }
@@ -55,7 +50,6 @@ export class ListePage implements OnInit {
     xmlhttp.send(sr);
   }
 
-<<<<<<< HEAD
   goToDossierPage(a, b, c, d, e, f,j) {
 
   console.log("hahahahah",this.datefeuille);
@@ -64,13 +58,7 @@ export class ListePage implements OnInit {
 
   ngOnInit() {
     this.DateFeuille();
-=======
-  goToDossierPage(a, b, c, d, e, f) {
-    this.navCtrl.push(DossierPage, {identifiant: a, numeroDossier: b, image: c, nom: d, age: e, chambre: f});
-  }
 
-  ngOnInit() {
->>>>>>> 863f4f76f4b4e456361b474f1d79e453181ed7d0
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/ReaWSService?wsdl', true);
     var sr =
