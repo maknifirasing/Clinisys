@@ -1,7 +1,4 @@
-import {DateTime} from "ionic-angular";
-
 export class MotifHospitalisation {
-
   private _conclusion: string;
   private _dateRdv: string;
   private _dateSortie: string;
@@ -19,9 +16,8 @@ export class MotifHospitalisation {
   private _traitementSortie: string;
   private _utilisateurMotif: string;
 
-   constructor() {
-    }
-
+  constructor() {
+  }
 
   getconclusion(): string {
     return this._conclusion;

@@ -62,11 +62,9 @@ export class HomePage {
   xml: any;
   user: Users;
 
-
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.user = new Users;
   }
-
 
   connecter(login, password) {
     this.err = "";

@@ -95,7 +95,11 @@ export class Patient {
   setetat(value: boolean) {
     this._etat = value;
   }
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 863f4f76f4b4e456361b474f1d79e453181ed7d0
   getage(): number {
     return this._age;
   }

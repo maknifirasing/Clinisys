@@ -1,9 +1,3 @@
-<!--
-  Generated template for the Dossier page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar color="custom-color" class="ion-navbar">
@@ -22,27 +16,25 @@
 <ion-header>
 
   <ion-navbar color="custom-color" class="ion-navbar">
-<table border="0">
-  <tr>
-    <td>
-  <ion-icon class="img">
-    <img src='/android_asset/www/assets/img/{{img}}'>
+    <table border="0">
+      <tr>
+        <td>
+          <ion-icon class="img">
+            <img src='/android_asset/www/assets/img/{{img}}'>
 
-  </ion-icon>
-    </td>
-    <td>
-    {{nom}}
-    </td>
-  </tr>
-  <tr>
-    <td></td>
-      <td>
-    <strong>Age: </strong>{{age}}<strong>CH: </strong>{{ch}}
-  </td>
-  </tr>
-</table>
-
-
+          </ion-icon>
+        </td>
+        <td>
+          {{nom}}
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <strong>Age: </strong>{{age}}<strong>CH: </strong>{{ch}}
+        </td>
+      </tr>
+    </table>
 
 
   </ion-navbar>
@@ -56,6 +48,7 @@
 
 
 <ion-content padding>
+<<<<<<< HEAD
   <p style="color: #0c60ee"><strong>  Motifs de L'hospitalisation :</strong>  </p>
 
   <div *ngIf="test===true">
@@ -113,5 +106,84 @@
     <strong>{{pas.getdesignation()}}</strong> {{pas.getquantite()}} {{pas.getdate()}}
   </p>
   </div>
+=======
+  <p>Motifs de L'hospitalisation : </p>
+
+  <ion-list>
+
+
+    <ion-item>
+      <!--<button (click)="DateFeuille()">aaaaaaaaaaaaaaaaa</button>-->
+      <p><strong>Conclustion : </strong>{{ m.getconclusion()}}</p>
+      <p><strong>Date RDV: </strong>{{ m.getdateRdv()}}</p>
+      <p><strong>Date Sortie: </strong>{{ m.getdateSortie()}}</p>
+      <p><strong>Heure RDV: </strong>{{ m.getheureRdv()}}</p>
+      <p><strong>Heure Sortie </strong>{{ m.getheureSortie()}}</p>
+      <p><strong>Groupe Sang: </strong>{{ m.getgroupeSang()}}</p>
+      <p><strong>Histoire Maladie: </strong>{{ m.gethistoiremaladie()}}</p>
+      <p><strong>Motif hospitalisation: </strong>{{ m.getmotifhospitalisation()}}</p>
+      <p><strong>Numero Dossier </strong>{{ m.getnumdoss()}}</p>
+      <p><strong>Observation Se jour: </strong>{{ m.getobservationSejour()}}</p>
+      <p><strong>Poid: </strong>{{ m.getpoid()}}</p>
+      <p><strong>Taille: </strong>{{ m.gettaille()}}</p>
+      <p><strong>Traitement Habituelle: </strong>{{ m.gettraitementHabituelle()}}</p>
+      <p><strong>Traitement Se jour: </strong>{{ m.gettraitementSejour()}}</p>
+      <p><strong>Traitement Sortie: </strong>{{ m.gettraitementSortie()}}</p>
+      <p><strong>Utilistateur Motif: </strong>{{ m.getutilisateurMotif()}}</p>
+
+    </ion-item>
+
+  </ion-list>
+  
+  <div *ngIf="AlerteS===true">
+    <p style="color: #0c60ee "><strong> Signes Vitaux</strong></p>
+    <p *ngFor="let sig of signec ">
+      <strong>{{sig.getdesignation()}}</strong> {{sig.getquantite()}} {{sig.getdate()}}
+    </p>
+  </div>
+
+  <div *ngIf="trait===true">
+    <h4>Traitement Encours</h4>
+    <p *ngFor="let tra of traitement ">
+      <strong>{{ tra.getdesignation() }}</strong>{{ tra.getposologie() }} ({{ tra.getjour() }}) jours.
+    </p>
+  </div>
+
+  <div *ngIf="Evo===true">
+    <h4>Evolution</h4>
+    <p *ngFor="let evo of Evolution ">
+      {{ evo.getdetail() }}
+    </p>
+  </div>
+
+  <div *ngIf="His===true">
+    <h4>Histoire de la maladie</h4>
+    <p *ngFor="let his of Histoiremaladie ">
+      {{ his.getdetail() }}
+    </p>
+  </div>
+
+  <div *ngIf="Exa===true">
+    <h4>Examen clinique</h4>
+    <p *ngFor="let exa of Examenclinique ">
+      [{{ exa.getdate() }}-{{exa.getuserCreat()}}]<br/>
+      {{ exa.getdetail() }}
+    </p>
+  </div>
+
+  <div *ngIf="Con===true">
+    <h4>Conclusion</h4>
+    <p *ngFor="let con of Conclusion ">
+      [{{ con.getdate() }}-{{con.getuserCreat()}}]<br/>
+      {{ con.getdetail() }}
+    </p>
+  </div>
+
+  <div *ngIf="Ri===true">
+    <h4>Rigime</h4>
+    <p>{{ rigime.getdesignation() }}</p>
+  </div>
+
+>>>>>>> 863f4f76f4b4e456361b474f1d79e453181ed7d0
 
 </ion-content>
