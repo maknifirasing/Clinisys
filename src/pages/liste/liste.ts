@@ -1,9 +1,7 @@
-///<reference path="../tabs/tabs.ts"/>
 import {Component, OnInit} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
 import {DossierPage} from '../dossier/dossier';
-import {TabsPage} from '../tabs/tabs';
 
 @Component({
   selector: 'page-liste',
@@ -34,17 +32,13 @@ export class ListePage implements OnInit {
       '  <ser:GetDateFeuille/>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
-
     xmlhttp.onreadystatechange = () => {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
           this.xml = xmlhttp.responseXML;
-
-
           this.DateF = this.xml.getElementsByTagName("return");
           console.log(this.DateF[0].childNodes[0].nodeValue);
           return this.DateF[0];
-
         }
       }
     }
@@ -54,13 +48,10 @@ export class ListePage implements OnInit {
   }
 
   goToDossierPage(a, b, c, d, e, f) {
-
     this.navCtrl.push(DossierPage, {identifiant: a, numeroDossier: b, image: c, nom: d, age: e, chambre: f});
-
   }
 
   ngOnInit() {
-
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -94,6 +85,12 @@ export class ListePage implements OnInit {
             p.setmedecin(x[i].children[5].textContent);
             p.setspec(x[i].children[6].textContent);
             p.setetat(x[i].children[10].textContent);
+            if (x[i].children[9].textContent === "Etage") {
+              p.setnature("sur");
+            }
+            else {
+              p.setnature(x[i].children[9].textContent);
+            }
             d = new Date(x[i].children[4].textContent);
             p.setage(tempsEnMs - d.getFullYear());
             if (p.getetat() == "true") {
@@ -119,7 +116,6 @@ export class ListePage implements OnInit {
               }
             }
             this.patient.push(p);
-
           }
         }
       }
@@ -134,11 +130,8 @@ export class ListePage implements OnInit {
   }
 
   getItems(searchbar) {
-
     this.initializeItems();
-
     var q = searchbar.srcElement.value;
-
     if (!q) {
       return;
     }

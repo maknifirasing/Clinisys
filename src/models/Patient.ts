@@ -14,8 +14,17 @@ export class Patient {
   private _etat: boolean;
   private _age: number;
   private _img: string;
+  private _nature: string;
 
   constructor() {
+  }
+
+  getnature(): string {
+    return this._nature;
+  }
+
+  setnature(value: string) {
+    this._nature = value;
   }
 
   getid(): string {
@@ -89,8 +98,7 @@ export class Patient {
   setetat(value: boolean) {
     this._etat = value;
   }
-
-
+  
   getage(): number {
     return this._age;
   }
