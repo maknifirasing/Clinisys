@@ -33,12 +33,13 @@
       <ion-input type="hidden" #nom name="nom" value="{{ pas.getnom() }}" readOnly ></ion-input>
       <ion-input type="hidden" #age name="age" value="{{ pas.getage() }}" readOnly ></ion-input>
       <ion-input type="hidden" #ch name="ch" value="{{ pas.getchambre() }}" readOnly ></ion-input>
-
-      <ion-item (click)="goToDossierPage(id.value,numDoss.value,img.value,nom.value,age.value,ch.value)">
+      <ion-input type="hidden" #nature name="nature" value="{{ pas.getnature() }}" readOnly ></ion-input>
+      <ion-item (click)="goToDossierPage(id.value,numDoss.value,img.value,nom.value,age.value,ch.value, nature.value)">
 <!--<button (click)="DateFeuille()">aaaaaaaaaaaaaaaaa</button>-->
         <ion-avatar item-left>
           <img src='/android_asset/www/assets/img/{{pas.getimg()}}'>
         </ion-avatar>
+        <h4><strong>{{ pas.getid() }}</strong></h4>
         <h4><strong>{{ pas.getnom() }}</strong></h4>
         <p>Age : {{ pas.getage() }} ans CH: {{ pas.getchambre() }}</p>
         <p>{{ pas.getmedecin() }}</p>
