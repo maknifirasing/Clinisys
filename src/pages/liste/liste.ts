@@ -23,7 +23,6 @@ export class ListePage implements OnInit {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ListePage');
   }
 
   DateFeuille() {
@@ -53,8 +52,6 @@ export class ListePage implements OnInit {
   }
 
   goToDossierPage(a, b, c, d, e, f,j) {
-
-  console.log("hahahahah",this.datefeuille);
    this.navCtrl.push(DossierPage, {identifiant: a, numeroDossier: b, image: c, nom: d, age: e, chambre: f, nature: j, dateFeuille: this.datefeuille});
   }
 

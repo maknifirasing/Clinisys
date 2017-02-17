@@ -23,8 +23,10 @@
 
 
   </ion-navbar>
-  <ion-navbar class="ion-navbar">
 
+  <ion-navbar class="ion-navbar">
+    <img src='/android_asset/www/assets/img/green.png'>
+    <p>En Ligne: Derniére mise a jour le {{dat}}</p>
   </ion-navbar>
 </ion-header>
 
@@ -57,11 +59,26 @@
   </p>
   </div>
 
+    <div *ngIf="Ent===true">
+      <p style="color: #0c60ee "><strong> Entrées</strong></p>
+      <p *ngFor="let en of Entrees ">
+        <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong>  {{en.getdate()}}
+      </p>
+    </div>
+
+    <div *ngIf="Sor===true">
+      <p style="color: #0c60ee "><strong> Sorties</strong></p>
+      <p *ngFor="let so of Sorties ">
+        <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> {{so.getdate()}}
+      </p>
+    </div>
+
+
 
   <div *ngIf="AlerteS===true">
     <p style="color: #0c60ee "><strong> Signes Vitaux</strong></p>
     <p *ngFor="let sig of signec ">
-      <strong>{{sig.getdesignation()}}</strong> {{sig.getquantite()}} {{sig.getdate()}}
+      <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong> {{sig.getdate()}}
     </p>
   </div>
 
