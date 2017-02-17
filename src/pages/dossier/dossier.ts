@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams, DateTime} from 'ionic-angular';
 import {MotifHospitalisation} from '../../models/motifHospitalisation';
 import {Antec} from '../../models/Antec';
 import {SigneClinique} from '../../models/SigneClinique';
@@ -13,7 +13,7 @@ import {ExamenRadioPage} from "../examen-radio/examen-radio";
 @Component({
   selector: 'page-dossier',
   templateUrl: 'dossier.html',
-  providers:[Variables]
+  providers: [Variables]
 })
 
 export class DossierPage implements OnInit {
@@ -43,6 +43,8 @@ export class DossierPage implements OnInit {
   Examenclinique: Array<Evenement> = [];
   Conclusion: Array<Evenement> = [];
   signec: Array<SigneClinique> = [];
+  Entrees: Array<SigneClinique> = [];
+  Sorties: Array<SigneClinique> = [];
   rigime: Rigime;
   trait: boolean;
   His: boolean;
@@ -51,9 +53,11 @@ export class DossierPage implements OnInit {
   Con: boolean;
   Ri: boolean;
   AlerteS: boolean;
+  Sor: boolean;
+  Ent: boolean;
   dat: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private Url:Variables) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.id = navParams.get("identifiant");
     this.numDoss = navParams.get("numeroDossier");
     this.img = navParams.get("image");
@@ -65,12 +69,11 @@ export class DossierPage implements OnInit {
   }
 
   ionViewDidLoad() {
-    console.log(this.Url.url);
   }
 
   ngOnInit() {
-    var d=new Date();
-    this.dat=d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+    var d = new Date();
+    this.dat = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
     this.GetAllMotifHospitalisationByNumDoss(this.numDoss);
     this.getAntecedentAllergieByIdentifiant(this.id);
     this.GetAlerteSigneClinique(this.numDoss, this.dateFeuille, this.nature);
@@ -89,7 +92,7 @@ export class DossierPage implements OnInit {
 
   GetAlerteSigneClinique(numDoss, dateFeuille, nature) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url+'DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -135,7 +138,7 @@ export class DossierPage implements OnInit {
 
   getAntecedentAllergieByIdentifiant(id) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url+'WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -224,7 +227,7 @@ export class DossierPage implements OnInit {
     this.test = false;
 
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url+'WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -299,7 +302,7 @@ export class DossierPage implements OnInit {
   GetTraitements(numdoss, datefeuille) {
     this.trait = false;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url+'ReaWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'ReaWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -343,9 +346,16 @@ export class DossierPage implements OnInit {
                t.setvoie(x[i].children[18].textContent);
                t.setvolume(x[i].children[19].textContent);
                */
-              t.setdesignation(x[i].children[4].textContent);
-              t.setposologie(x[i].children[13].textContent);
-              t.setjour(x[i].children[8].textContent);
+              if (x[i].childElementCount === 20) {
+                t.setdesignation(x[i].children[4].textContent);
+                t.setposologie(x[i].children[13].textContent);
+                t.setjour(x[i].children[8].textContent);
+              }
+              else if (x[i].childElementCount === 19) {
+                t.setdesignation(x[i].children[3].textContent);
+                t.setposologie(x[i].children[12].textContent);
+                t.setjour(x[i].children[7].textContent);
+              }
               this.traitement.push(t);
             }
             if (this.traitement.length === 0) {
@@ -373,7 +383,7 @@ export class DossierPage implements OnInit {
     this.Con = false;
     this.Evo = false;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url+'WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -457,7 +467,7 @@ export class DossierPage implements OnInit {
   GetListRegime(numdoss, datefeuille, nature) {
     var xmlhttp = new XMLHttpRequest();
     this.Ri = false;
-    xmlhttp.open('POST', this.Url.url+'DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -496,7 +506,7 @@ export class DossierPage implements OnInit {
   GetSigneClinique(numdoss, dateFeuille, nature, codeType) {
     var xmlhttp = new XMLHttpRequest();
     this.Ri = false;
-    xmlhttp.open('POST', this.Url.url+'DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -513,24 +523,41 @@ export class DossierPage implements OnInit {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
           try {
-            this.AlerteS = true;
+
             var xml = xmlhttp.responseXML;
-            var x, i;
+            var x, i, s;
             x = xml.getElementsByTagName("return");
-            var s;
+            var listEntrees = 'G4LEF';
+            var listSorties = '7I9A3HJ';
             for (i = 0; i < x.length; i++) {
               s = new SigneClinique();
               s.setcodeType(x[i].children[0].textContent);
               s.setdate(x[i].children[1].textContent);
               s.setdesignation(x[i].children[2].textContent);
               s.setquantite(x[i].children[3].textContent);
-              this.signec.push(s);
+              console.log("entree   " + listEntrees.search(s.getcodeType()));
+              if (listEntrees.search(s.getcodeType()) >= 0) {
+                this.Entrees.push(s);
+                this.Ent = true;
+              }
+              if (listSorties.search(s.getcodeType()) >= 0) {
+                this.Sorties.push(s);
+                this.Sor = true;
+              }
+              if (listEntrees.search(s.getcodeType()) === -1 && listSorties.search(s.getcodeType()) === -1) {
+                this.signec.push(s);
+                this.AlerteS = true;
+              }
             }
             if (this.signec.length === 0) {
               this.AlerteS = false;
+              this.Sor = false;
+              this.Ent = false;
             }
           } catch (Error) {
             this.AlerteS = false;
+            this.Sor = false;
+            this.Ent = false;
           }
         }
       }
