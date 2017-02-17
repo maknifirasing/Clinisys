@@ -7,6 +7,8 @@ import {Traitement} from "../../models/Traitement";
 import {Evenement} from "../../models/Evenement";
 import {Rigime} from "../../models/Rigime";
 import {Variables} from "../../providers/variables";
+import {DetailPerPagePage} from "../detail-per-page/detail-per-page";
+import {ExamenRadioPage} from "../examen-radio/examen-radio";
 @Component({
   selector: 'page-dossier',
   templateUrl: 'dossier.html',
@@ -48,6 +50,7 @@ export class DossierPage implements OnInit {
   Con: boolean;
   Ri: boolean;
   AlerteS: boolean;
+  dat: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,private Url:Variables) {
     this.id = navParams.get("identifiant");
@@ -65,6 +68,8 @@ export class DossierPage implements OnInit {
   }
 
   ngOnInit() {
+    var d=new Date();
+    this.dat=d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
     this.GetAllMotifHospitalisationByNumDoss(this.numDoss);
     this.getAntecedentAllergieByIdentifiant(this.id);
     this.GetAlerteSigneClinique(this.numDoss, this.dateFeuille, this.nature);
@@ -532,6 +537,15 @@ export class DossierPage implements OnInit {
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
+  }
+
+  goToDetailPage(){
+    this.navCtrl.push(DetailPerPagePage, {nom:this.nom,age:this.age,numDoss:this.numDoss});
+
+  }
+
+  goToExamenRadio(){
+    this.navCtrl.push(ExamenRadioPage);
   }
 }
 
