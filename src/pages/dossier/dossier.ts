@@ -7,6 +7,8 @@ import {Traitement} from "../../models/Traitement";
 import {Evenement} from "../../models/Evenement";
 import {Rigime} from "../../models/Rigime";
 import {Variables} from "../../providers/variables";
+import {DetailPerPagePage} from "../detail-per-page/detail-per-page";
+import {ExamenRadioPage} from "../examen-radio/examen-radio";
 
 @Component({
   selector: 'page-dossier',
@@ -562,6 +564,15 @@ export class DossierPage implements OnInit {
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
+  }
+
+  goToDetailPage(){
+    this.navCtrl.push(DetailPerPagePage, {nom:this.nom,age:this.age,numDoss:this.numDoss});
+
+  }
+
+  goToExamenRadio(){
+    this.navCtrl.push(ExamenRadioPage);
   }
 }
 

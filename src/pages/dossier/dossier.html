@@ -1,68 +1,79 @@
 <ion-header>
-
   <ion-navbar color="custom-color" class="ion-navbar">
     <table border="0">
-      <tr>
-        <td>
-          <ion-icon class="img">
-            <img src='/android_asset/www/assets/img/{{img}}'>
 
-          </ion-icon>
+      <tr>
+        <td rowspan="2">
+          <img src='/android_asset/www/assets/img/{{img}}' width="60" height="50">
         </td>
         <td>
           {{nom}}
         </td>
+        <td>     &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+        </td>
+        <td rowspan="2">
+          <img src='/android_asset/www/assets/img/i.jpg' class="roundedImage" (click)="goToDetailPage()">
+        </td>
       </tr>
+
       <tr>
-        <td></td>
-        <td>
-          <strong>Age: </strong>{{age}}<strong>CH: </strong>{{ch}}
+        <td><strong>age: </strong>{{age}}<strong>CH: </strong>{{ch}}</td>
+        <td>  &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
         </td>
       </tr>
     </table>
-
-
   </ion-navbar>
-
-  <ion-navbar class="ion-navbar">
-    <img src='/android_asset/www/assets/img/green.png'>
-    <p>En Ligne: Derniére mise a jour le {{dat}}</p>
+  <ion-navbar color="custom-color">
+    <table border="0">
+      <tr>
+        <td><img src='/android_asset/www/assets/img/green.png' width="30" height="20"></td>
+        <td>En Ligne: Derniére mise a jour le {{dat}}</td>
+      </tr>
+    </table>
   </ion-navbar>
 </ion-header>
 
-
 <ion-content>
   <ion-scroll scrollY="true">
-  <p style="color: #0c60ee"><strong>  Motifs de L'hospitalisation :</strong>  </p>
+    <p style="color: #0c60ee"><strong> Motifs de L'hospitalisation :</strong></p>
+    <div *ngIf="test===true">
+      <p class="p"> {{ m.getmotifhospitalisation()}}</p>
+    </div>
+    <div *ngIf="AntecedentAllergieTest===true">
+      <p style="color: #0c60ee"><strong>Antécédents : </strong>
 
-  <div *ngIf="test===true">
-      {{ m.getmotifhospitalisation()}}
-
-  </div>
-
-  <div *ngIf="AntecedentAllergieTest===true">
-  <p style="color: #0c60ee"><strong>  Allergies:</strong>  </p>
-      <p >
-             {{stringAlerg}}
       </p>
-  <p style="color: #0c60ee"> <strong>Antécédents : </strong>
+      <p>{{stringAntec}}</p>
+      <p style="color: #0c60ee"><strong> Allergies:</strong></p>
+      <p>
+        {{stringAlerg}}
+      </p>
+    </div>
 
-  </p>
-    <p>{{stringAntec}}</p>
-  </div>
-
-  <div *ngIf="AlerteSigneCliniqueTest===true">
-  <p style="color: #0c60ee"><strong>  Alerts:</strong>  </p>
-
-  <p *ngFor="let pas of signe ">
-    <strong>{{pas.getdesignation()}}</strong> {{pas.getquantite()}} {{pas.getdate()}}
-  </p>
-  </div>
+    <div *ngIf="AlerteS===true">
+      <p style="color: #0c60ee "><strong> Signes Vitaux</strong></p>
+      <p *ngFor="let sig of signec ">
+        <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong> {{sig.getdate()}}
+      </p>
+    </div>
 
     <div *ngIf="Ent===true">
       <p style="color: #0c60ee "><strong> Entrées</strong></p>
       <p *ngFor="let en of Entrees ">
-        <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong>  {{en.getdate()}}
+        <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong> {{en.getdate()}}
+      </p>
+    </div>
+
+    <div *ngIf="trait===true">
+      <p style="color: #0c60ee "><strong>Traitement Encours</strong></p>
+      <p *ngFor="let tra of traitement " class="p">
+        <strong>{{ tra.getdesignation() }}</strong>{{ tra.getposologie() }} ({{ tra.getjour() }}) jours.
       </p>
     </div>
 
@@ -73,55 +84,49 @@
       </p>
     </div>
 
+    <div *ngIf="AlerteSigneCliniqueTest===true">
+      <p style="color: #0c60ee"><strong> Alerts:</strong></p>
 
+      <p *ngFor="let pas of signe " class="p">
+        <strong>{{pas.getdesignation()}}</strong> {{pas.getquantite()}} {{pas.getdate()}}
+      </p>
+    </div>
 
-  <div *ngIf="AlerteS===true">
-    <p style="color: #0c60ee "><strong> Signes Vitaux</strong></p>
-    <p *ngFor="let sig of signec ">
-      <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong> {{sig.getdate()}}
-    </p>
-  </div>
+    <div *ngIf="His===true">
+      <p style="color: #0c60ee "><strong>Histoire de la maladie</strong></p>
+      <p *ngFor="let his of Histoiremaladie " class="p">
+        {{ his.getdetail() }}
+      </p>
+    </div>
 
-  <div *ngIf="trait===true">
-    <p style="color: #0c60ee "><strong>Traitement Encours</strong></p>
-    <p *ngFor="let tra of traitement ">
-      <strong>{{ tra.getdesignation() }}</strong>{{ tra.getposologie() }} ({{ tra.getjour() }}) jours.
-    </p>
-  </div>
+    <div *ngIf="Exa===true">
+      <p style="color: #0c60ee "><strong>Examen clinique</strong></p>
+      <p *ngFor="let exa of Examenclinique " class="p">
+        [{{ exa.getdate() }}-{{exa.getuserCreat()}}]<br/>
+        {{ exa.getdetail() }}
+      </p>
+    </div>
 
-  <div *ngIf="Evo===true">
-    <p style="color: #0c60ee "><strong>Evolution</strong></p>
-    <p *ngFor="let evo of Evolution ">
-      {{ evo.getdetail() }}
-    </p>
-  </div>
+    <div *ngIf="Evo===true">
+      <p style="color: #0c60ee "><strong>Evolution</strong></p>
+      <p *ngFor="let evo of Evolution " class="p">
+        {{ evo.getdetail() }}
+      </p>
+    </div>
 
-  <div *ngIf="His===true">
-    <p style="color: #0c60ee "><strong>Histoire de la maladie</strong></p>
-    <p *ngFor="let his of Histoiremaladie ">
-      {{ his.getdetail() }}
-    </p>
-  </div>
+    <div *ngIf="Ri===true">
+      <p style="color: #0c60ee "><strong>Rigime</strong></p>
+      <p class="p">{{ rigime.getdesignation() }}</p>
+    </div>
 
-  <div *ngIf="Exa===true">
-    <p style="color: #0c60ee "><strong>Examen clinique</strong></p>
-    <p *ngFor="let exa of Examenclinique ">
-      [{{ exa.getdate() }}-{{exa.getuserCreat()}}]<br/>
-      {{ exa.getdetail() }}
-    </p>
-  </div>
+    <div *ngIf="Con===true">
+      <p style="color: #0c60ee "><strong>Conclusion</strong></p>
+      <p *ngFor="let con of Conclusion " class="p">
+        [{{ con.getdate() }}-{{con.getuserCreat()}}]<br/>
+        {{ con.getdetail() }}
+      </p>
+    </div>
 
-  <div *ngIf="Con===true">
-    <p style="color: #0c60ee "><strong>Conclusion</strong></p>
-    <p *ngFor="let con of Conclusion ">
-      [{{ con.getdate() }}-{{con.getuserCreat()}}]<br/>
-      {{ con.getdetail() }}
-    </p>
-  </div>
-
-  <div *ngIf="Ri===true">
-    <p style="color: #0c60ee "><strong>Rigime</strong></p>
-    <p>{{ rigime.getdesignation() }}</p>
-  </div>
+    <button (click)="goToExamenRadio()">Examen Radio</button>
   </ion-scroll>
 </ion-content>

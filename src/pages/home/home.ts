@@ -1,4 +1,4 @@
-import { Component, trigger, state, style, transition, animate, keyframes } from '@angular/core';
+import {Component, trigger, state, style, transition, animate, keyframes} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Users} from '../../models/Users';
 import {ListePage} from "../liste/liste";
@@ -61,12 +61,15 @@ export class HomePage {
   err: string;
   xml: any;
   user: Users;
+  mess: string = "";
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.user = new Users;
+
   }
 
   connecter(login, password) {
+    this.mess="It will take few seconds !! Please be patient";
     this.err = "";
     try {
       var xmlhttp = new XMLHttpRequest();

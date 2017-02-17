@@ -23,6 +23,7 @@ export class ListePage implements OnInit {
   }
 
   ionViewDidLoad() {
+    var d=new Date();
   }
 
   DateFeuille() {
