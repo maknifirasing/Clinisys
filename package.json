@@ -21,6 +21,8 @@
     "@angular/platform-browser-dynamic": "2.2.1",
     "@angular/platform-server": "2.2.1",
     "@ionic/storage": "1.1.7",
+    "angular2-localstorage": "^0.4.0",
+    "convert-rich-text": "^2.0.3",
     "ionic-angular": "2.0.0",
     "ionic-native": "2.4.1",
     "ionic2-alpha-scroll": "^1.1.1",

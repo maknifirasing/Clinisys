@@ -2,10 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
 import {DossierPage} from '../dossier/dossier';
+import {Variables} from "../../providers/variables";
 
 @Component({
   selector: 'page-liste',
-  templateUrl: 'liste.html'
+  templateUrl: 'liste.html',
+  providers:[Variables]
 })
 export class ListePage implements OnInit {
   json: any;
@@ -16,17 +18,18 @@ export class ListePage implements OnInit {
   datefeuille : string="";
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private Url:Variables) {
     this.patientliste = this.patient;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ListePage');
+    var d=new Date();
+    console.log(d)
   }
 
   DateFeuille() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url+'DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -51,8 +54,6 @@ export class ListePage implements OnInit {
   }
 
   goToDossierPage(a, b, c, d, e, f,j) {
-
-  console.log("hahahahah",this.datefeuille);
    this.navCtrl.push(DossierPage, {identifiant: a, numeroDossier: b, image: c, nom: d, age: e, chambre: f, nature: j, dateFeuille: this.datefeuille});
   }
 
@@ -60,7 +61,7 @@ export class ListePage implements OnInit {
     this.DateFeuille();
 
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/ReaWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url+'ReaWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +

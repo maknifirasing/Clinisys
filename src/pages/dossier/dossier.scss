@@ -1,6 +1,26 @@
 page-dossier {
  .img{
    font-size: 50px;
-
  }
+  ion-scroll {
+    white-space: nowrap;
+    height: 100%;
+  }
+  .new-background {
+    background-color: red;
+  }
+  .p{
+    padding-left: 2%;
+  }
+  p{
+    padding-left: 1%;
+  }
+  .roundedImage{
+    overflow:hidden;
+    -webkit-border-radius:50px;
+    -moz-border-radius:50px;
+    border-radius:50px;
+    width:35px;
+    height:35px;
+  }
 }

@@ -6,10 +6,14 @@ import {SigneClinique} from '../../models/SigneClinique';
 import {Traitement} from "../../models/Traitement";
 import {Evenement} from "../../models/Evenement";
 import {Rigime} from "../../models/Rigime";
+import {Variables} from "../../providers/variables";
+import {DetailPerPagePage} from "../detail-per-page/detail-per-page";
+import {ExamenRadioPage} from "../examen-radio/examen-radio";
 
 @Component({
   selector: 'page-dossier',
-  templateUrl: 'dossier.html'
+  templateUrl: 'dossier.html',
+  providers:[Variables]
 })
 
 export class DossierPage implements OnInit {
@@ -47,8 +51,9 @@ export class DossierPage implements OnInit {
   Con: boolean;
   Ri: boolean;
   AlerteS: boolean;
+  dat: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private Url:Variables) {
     this.id = navParams.get("identifiant");
     this.numDoss = navParams.get("numeroDossier");
     this.img = navParams.get("image");
@@ -60,10 +65,12 @@ export class DossierPage implements OnInit {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DossierPage');
+    console.log(this.Url.url);
   }
 
   ngOnInit() {
+    var d=new Date();
+    this.dat=d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
     this.GetAllMotifHospitalisationByNumDoss(this.numDoss);
     this.getAntecedentAllergieByIdentifiant(this.id);
     this.GetAlerteSigneClinique(this.numDoss, this.dateFeuille, this.nature);
@@ -82,7 +89,7 @@ export class DossierPage implements OnInit {
 
   GetAlerteSigneClinique(numDoss, dateFeuille, nature) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url+'DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -128,7 +135,7 @@ export class DossierPage implements OnInit {
 
   getAntecedentAllergieByIdentifiant(id) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url+'WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -149,9 +156,7 @@ export class DossierPage implements OnInit {
             var x, i;
             x = xml.getElementsByTagName("return");
             var a;
-            console.log("ll  " + x.length);
             for (i = 0; i < x.length; i++) {
-              console.log(x[i].children[0].children[0].textContent);
               a = new Antec();
               a.setcodeAntecedent(x[i].children[0].children[0].textContent);
               a.setcodeFamille(x[i].children[0].children[1].textContent);
@@ -219,7 +224,7 @@ export class DossierPage implements OnInit {
     this.test = false;
 
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url+'WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -294,7 +299,7 @@ export class DossierPage implements OnInit {
   GetTraitements(numdoss, datefeuille) {
     this.trait = false;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/ReaWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url+'ReaWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -357,13 +362,18 @@ export class DossierPage implements OnInit {
     xmlhttp.send(sr);
   }
 
+  convertHTMLtoRTF(rtf) {
+    rtf = rtf.replace(/\\par[d]?/g, "");
+    return rtf.replace(/\{\*?\\[^{}]+}|[{}]|\\\n?[A-Za-z]+\n?(?:-?\d+)?[ ]?/g, "").trim();
+  }
+
   GetEvenementByDossier(numdoss) {
     this.His = false;
     this.Exa = false;
     this.Con = false;
     this.Evo = false;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url+'WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -401,7 +411,7 @@ export class DossierPage implements OnInit {
               minu = drdv.getMinutes();
               hour = drdv.getHours();
               e.setdate(day + "/" + month + "/" + year + " - " + hour + ":" + minu);
-              e.setdetail(x[i].children[3].textContent);
+              e.setdetail(this.convertHTMLtoRTF(x[i].children[3].textContent));
               e.setIDEvenement(x[i].children[4].textContent);
               e.setnumdoss(x[i].children[5].textContent);
               e.setuserCreat(x[i].children[6].textContent);
@@ -447,7 +457,7 @@ export class DossierPage implements OnInit {
   GetListRegime(numdoss, datefeuille, nature) {
     var xmlhttp = new XMLHttpRequest();
     this.Ri = false;
-    xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url+'DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -486,7 +496,7 @@ export class DossierPage implements OnInit {
   GetSigneClinique(numdoss, dateFeuille, nature, codeType) {
     var xmlhttp = new XMLHttpRequest();
     this.Ri = false;
-    xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url+'DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -528,6 +538,15 @@ export class DossierPage implements OnInit {
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
+  }
+
+  goToDetailPage(){
+    this.navCtrl.push(DetailPerPagePage, {nom:this.nom,age:this.age,numDoss:this.numDoss});
+
+  }
+
+  goToExamenRadio(){
+    this.navCtrl.push(ExamenRadioPage);
   }
 }
 

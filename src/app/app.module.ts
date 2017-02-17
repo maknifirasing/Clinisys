@@ -4,10 +4,11 @@ import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
-
 import { TabsPage } from '../pages/tabs/tabs';
 import { ListePage } from '../pages/liste/liste';
 import { DossierPage } from '../pages/dossier/dossier';
+import { DetailPerPagePage } from '../pages/detail-per-page/detail-per-page';
+import {ExamenRadioPage} from "../pages/examen-radio/examen-radio";
 @NgModule({
   declarations: [
     MyApp,
@@ -16,7 +17,9 @@ import { DossierPage } from '../pages/dossier/dossier';
     HomePage,
     TabsPage,
     ListePage,
-    DossierPage
+    DossierPage,
+    DetailPerPagePage,
+    ExamenRadioPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -29,7 +32,9 @@ import { DossierPage } from '../pages/dossier/dossier';
     HomePage,
     TabsPage,
     ListePage,
-    DossierPage
+    DossierPage,
+    DetailPerPagePage,
+    ExamenRadioPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
