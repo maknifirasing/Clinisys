@@ -39,35 +39,42 @@
   </ion-navbar>
 </ion-header>
 
+
 <ion-content padding>
-
 <ion-list>
-  <table border="0">
-  <ion-item-sliding *ngFor="let ExRad of examenR ">
-  <ion-item>
+  <ion-item-sliding *ngFor="let LP of ListeP ">
+    <ion-item>
+      <table border="0">
+<tr>
+  <td> <img src='/android_asset/www/assets/img/valid.png' width="20" height="20"></td>
 
-  <tr>
- <td rowspan="2">  <ion-avatar item-left>
-      <img src='/android_asset/www/assets/img/word.png'>
-    </ion-avatar>
- </td>
-   <td>
-     <strong style="color: #0c60ee;">Date demande:</strong>
-    </td><td>{{ExRad.getdateExamen()}}
-   </td>
-  </tr>
-    <tr>
-      <td>
-    <strong>Examen:</strong>
-      </td>
-      <td>
-        {{ExRad.getdesignationExamen()}}
-      </td>
-  </tr>
+    <td> <strong style="color: #0c60ee">Acte: </strong> {{LP.getacte()}}</td>
+</tr>
 
-  </ion-item>
+      <tr>
+       <td></td>
+      <td><strong style="color: #0c60ee"> Chirurgien:</strong> {{LP.getchirurgien()}}</td>
+      </tr>
+      <tr>
+       <td></td>
+        <td><strong style="color: #0c60ee"> Date Acte: </strong>{{LP.getdateacte()}}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><strong style="color: #0c60ee"> Heure Debut:</strong> {{LP.getheureDebut()}}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><strong style="color: #0c60ee"> Heure Fin:</strong> {{LP.getheureFin()}}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><strong style="color: #0c60ee"> KC:</strong> {{LP.getkc()}}</td>
+      </tr>
+      </table>
+    </ion-item>
+
   </ion-item-sliding>
-  </table>
-</ion-list>
 
+</ion-list>
 </ion-content>

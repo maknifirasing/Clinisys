@@ -9,6 +9,8 @@ import { ListePage } from '../pages/liste/liste';
 import { DossierPage } from '../pages/dossier/dossier';
 import { DetailPerPagePage } from '../pages/detail-per-page/detail-per-page';
 import {ExamenRadioPage} from "../pages/examen-radio/examen-radio";
+import {ListPreanesthesiePage} from "../pages/list-preanesthesie/list-preanesthesie";
+
 @NgModule({
   declarations: [
     MyApp,
@@ -19,7 +21,8 @@ import {ExamenRadioPage} from "../pages/examen-radio/examen-radio";
     ListePage,
     DossierPage,
     DetailPerPagePage,
-    ExamenRadioPage
+    ExamenRadioPage,
+    ListPreanesthesiePage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -34,7 +37,8 @@ import {ExamenRadioPage} from "../pages/examen-radio/examen-radio";
     ListePage,
     DossierPage,
     DetailPerPagePage,
-    ExamenRadioPage
+    ExamenRadioPage,
+    ListPreanesthesiePage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
