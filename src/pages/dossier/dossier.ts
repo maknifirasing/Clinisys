@@ -9,6 +9,7 @@ import {Rigime} from "../../models/Rigime";
 import {Variables} from "../../providers/variables";
 import {DetailPerPagePage} from "../detail-per-page/detail-per-page";
 import {ExamenRadioPage} from "../examen-radio/examen-radio";
+import {ExamenLaboPage} from "../examen-labo/examen-labo";
 
 @Component({
   selector: 'page-dossier',
@@ -535,7 +536,6 @@ export class DossierPage implements OnInit {
               s.setdate(x[i].children[1].textContent);
               s.setdesignation(x[i].children[2].textContent);
               s.setquantite(x[i].children[3].textContent);
-              console.log("entree   " + listEntrees.search(s.getcodeType()));
               if (listEntrees.search(s.getcodeType()) >= 0) {
                 this.Entrees.push(s);
                 this.Ent = true;
@@ -574,6 +574,9 @@ export class DossierPage implements OnInit {
 
   goToExamenRadio(){
     this.navCtrl.push(ExamenRadioPage);
+  }
+  goToLaboPage() {
+    this.navCtrl.push(ExamenLaboPage, {numDoss:this.numDoss});
   }
 }
 

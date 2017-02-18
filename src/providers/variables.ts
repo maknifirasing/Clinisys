@@ -12,7 +12,7 @@ import 'rxjs/add/operator/map';
 export class Variables {
   url: string;
   constructor(public http: Http) {
-    this.url="http://192.168.0.65:8084/dmi-core/";
+    this.url="http://192.168.0.140:8084/dmi-core/";
   }
 
 }

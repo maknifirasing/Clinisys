@@ -2,7 +2,8 @@ import {Component, trigger, state, style, transition, animate, keyframes} from '
 import {NavController, NavParams} from 'ionic-angular';
 import {Users} from '../../models/Users';
 import {ListePage} from "../liste/liste";
-import {TabsPage} from "../tabs/tabs";
+import {Variables} from "../../providers/variables";
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
@@ -55,7 +56,8 @@ import {TabsPage} from "../tabs/tabs";
         animate('1000ms 2000ms ease-in')
       ])
     ])
-  ]
+  ],
+  providers:[Variables]
 })
 export class HomePage {
   err: string;
@@ -63,7 +65,7 @@ export class HomePage {
   user: Users;
   mess: string = "";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private Url:Variables) {
     this.user = new Users;
 
   }
@@ -73,7 +75,7 @@ export class HomePage {
     this.err = "";
     try {
       var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('POST', 'http://192.168.0.65:8084/dmi-core/DossierSoinWSService?wsdl', true);
+      xmlhttp.open('POST', this.Url.url+'DossierSoinWSService?wsdl', true);
       var sr =
         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
         '<soapenv:Header/>' +
