@@ -28,7 +28,7 @@ export class ListePage implements OnInit {
 
   DateFeuille() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url+'DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url+'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -60,7 +60,7 @@ export class ListePage implements OnInit {
     this.DateFeuille();
 
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url+'ReaWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url+'dmi-core/ReaWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +

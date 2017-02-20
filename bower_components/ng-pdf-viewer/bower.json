@@ -1,0 +1,22 @@
+{
+  "name": "ng-pdf-viewer",
+  "version": "0.1.2",
+  "description": "A minimal pdf viewing directive for Angular.",
+  "license": "MIT",
+  "homepage": "https://github.com/parrisvarney/ng-pdf-viewer",
+  "main": "./src/ng-pdf-viewer.js",
+  "authors": [
+    "Parris Varney <pvarney@copatient.com>"
+  ],
+  "dependencies": {
+    "angular": "^1.x",
+    "pdfjs-dist": ">=1.1.377"
+  },
+  "ignore": [
+    "bower_components",
+    "node_modules",
+    ".gitignore",
+    "Gruntfile.js",
+    "package.json"
+  ]
+}

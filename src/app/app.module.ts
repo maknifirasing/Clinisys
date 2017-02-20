@@ -9,6 +9,11 @@ import { ListePage } from '../pages/liste/liste';
 import { DossierPage } from '../pages/dossier/dossier';
 import { DetailPerPagePage } from '../pages/detail-per-page/detail-per-page';
 import {ExamenRadioPage} from "../pages/examen-radio/examen-radio";
+import {ExamenLaboPage} from "../pages/examen-labo/examen-labo";
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
+import { PdfViewPage } from '../pages/pdf-view/pdf-view';
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -19,7 +24,10 @@ import {ExamenRadioPage} from "../pages/examen-radio/examen-radio";
     ListePage,
     DossierPage,
     DetailPerPagePage,
-    ExamenRadioPage
+    ExamenRadioPage,
+    ExamenLaboPage,
+    PdfViewPage,
+    PdfViewerComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -34,7 +42,9 @@ import {ExamenRadioPage} from "../pages/examen-radio/examen-radio";
     ListePage,
     DossierPage,
     DetailPerPagePage,
-    ExamenRadioPage
+    ExamenRadioPage,
+    ExamenLaboPage,
+    PdfViewPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
