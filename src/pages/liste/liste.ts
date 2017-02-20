@@ -3,6 +3,7 @@ import {NavController, NavParams} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
 import {DossierPage} from '../dossier/dossier';
 import {Variables} from "../../providers/variables";
+import {TabsPage} from "../tabs/tabs";
 
 @Component({
   selector: 'page-liste',
@@ -53,7 +54,7 @@ export class ListePage implements OnInit {
   }
 
   goToDossierPage(a, b, c, d, e, f,j) {
-   this.navCtrl.push(DossierPage, {identifiant: a, numeroDossier: b, image: c, nom: d, age: e, chambre: f, nature: j, dateFeuille: this.datefeuille});
+    this.navCtrl.push(TabsPage, {identifiant: a, numeroDossier: b, image: c, nom: d, age: e, chambre: f, nature: j, dateFeuille: this.datefeuille});
   }
 
   ngOnInit() {

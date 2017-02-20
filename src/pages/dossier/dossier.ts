@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, NavParams, DateTime} from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import {MotifHospitalisation} from '../../models/motifHospitalisation';
 import {Antec} from '../../models/Antec';
 import {SigneClinique} from '../../models/SigneClinique';
@@ -59,14 +59,15 @@ export class DossierPage implements OnInit {
   dat: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-    this.id = navParams.get("identifiant");
-    this.numDoss = navParams.get("numeroDossier");
-    this.img = navParams.get("image");
-    this.nom = navParams.get("nom");
-    this.age = navParams.get("age");
-    this.ch = navParams.get("chambre");
-    this.nature = navParams.get("nature");
-    this.dateFeuille = navParams.get("dateFeuille");
+    this.id = navParams.data.id;
+    this.numDoss = navParams.data.numDoss;
+    this.img = navParams.data.img;
+    this.nom = navParams.data.nom;
+    this.age = navParams.data.age;
+    this.ch = navParams.data.ch;
+    this.nature = navParams.data.nature;
+    this.dateFeuille = navParams.data.dateFeuille;
+    console.log("Passed params", navParams.data.nom);
   }
 
   ionViewDidLoad() {
@@ -255,13 +256,13 @@ export class DossierPage implements OnInit {
             x = xml.getElementsByTagName("return");
             this.m.setconclusion(x[0].children[0].textContent);
             drdv = new Date(x[0].children[1].textContent);
-            day = drdv.getDay();
-            month = drdv.getMonth();
+            day = drdv.getDate();
+            month = drdv.getMonth()+1;
             year = drdv.getFullYear();
             this.m.setdateRdv(day + "/" + month + "/" + year);
             dsortie = new Date(x[0].children[2].textContent);
-            day = dsortie.getDay();
-            month = dsortie.getMonth();
+            day = dsortie.getDate();
+            month = dsortie.getMonth()+1;
             year = dsortie.getFullYear();
             this.m.setdateSortie(day + "/" + month + "/" + year);
             this.m.setgroupeSang(x[0].children[3].textContent);
@@ -567,13 +568,13 @@ export class DossierPage implements OnInit {
     xmlhttp.send(sr);
   }
 
-  goToDetailPage(){
-    this.navCtrl.push(DetailPerPagePage, {nom:this.nom,age:this.age,numDoss:this.numDoss});
+  goToDetailPage() {
+    this.navCtrl.push(DetailPerPagePage, {nom: this.nom, age: this.age, numDoss: this.numDoss});
 
   }
 
-  goToExamenRadio(){
-    this.navCtrl.push(ExamenRadioPage);
+  goToExamenRadio() {
+    this.navCtrl.push(ExamenRadioPage, {numDoss: this.numDoss});
   }
   goToLaboPage() {
     this.navCtrl.push(ExamenLaboPage, {numDoss:this.numDoss});

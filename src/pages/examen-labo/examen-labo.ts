@@ -15,7 +15,7 @@ export class ExamenLaboPage {
   pdf: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-    this.numDoss = navParams.get("numDoss");
+    this.numDoss = navParams.data.numDoss;
   }
 
   ionViewDidLoad() {

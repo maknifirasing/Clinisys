@@ -1,5 +1,6 @@
 <ion-tabs color="custom-color">
-  <ion-tab [root]="tab1Root" tabTitle="About" tabIcon="information-circle"></ion-tab>
-  <ion-tab [root]="tab2Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>
-  <ion-tab [root]="tab3Root" tabTitle="Liste" tabIcon="liste"></ion-tab>
+  <ion-tab [root]="tab1Root" tabTitle="Home" [rootParams]="chatParams"></ion-tab>
+  <ion-tab [root]="tab2Root" tabTitle="ExamenRadio" [rootParams]="chatParams"></ion-tab>
+  <ion-tab [root]="tab3Root" tabTitle="ListPreanesthesie" [rootParams]="chatParams"></ion-tab>
+  <ion-tab [root]="tab4Root" tabTitle="Labo" [rootParams]="chatParams"></ion-tab>
 </ion-tabs>

@@ -1,27 +1,27 @@
 <ion-content>
-  <div padding [@flyInBottomFast]="cloudState" id="cloud-layer">
+  <div padding id="cloud-layer">
     {{err}}
     <ion-row>
-      <ion-col>
-        <img [@flyInBottomSlow]="logoState" src="/android_asset/www/assets/img/clinisys.png"/>
+      <ion-col class="animated fadeInUp">
+        <img src="/android_asset/www/assets/img/clinisys.png"/>
       </ion-col>
     </ion-row>
     <p>{{mess}}</p>
     <ion-row>
       <ion-col>
-        <ion-list inset [@bounceInBottom]="formState">
-          <ion-item>
+        <ion-list inset >
+          <ion-item  class="animated fadeInUp">
             <ion-input type="text" #login placeholder="Nom d'utilisateur" required="true"></ion-input>
           </ion-item>
-          <ion-item>
+          <ion-item  class="animated fadeInUp">
             <ion-input type="password" #password placeholder="Mot de passe" required="true"></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>
-        <button ion-button class="login-button" (click)="connecter(login.value,password.value)" [@fadeIn]="loginState">
+      <ion-col  class="animated fadeInUp">
+        <button ion-button class="login-button" (click)="connecter(login.value,password.value)">
           Login
         </button>
       </ion-col>

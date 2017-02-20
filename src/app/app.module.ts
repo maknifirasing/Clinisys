@@ -12,7 +12,7 @@ import {ExamenRadioPage} from "../pages/examen-radio/examen-radio";
 import {ExamenLaboPage} from "../pages/examen-labo/examen-labo";
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
 import { PdfViewPage } from '../pages/pdf-view/pdf-view';
-
+import {ListPreanesthesiePage} from "../pages/list-preanesthesie/list-preanesthesie";
 
 @NgModule({
   declarations: [
@@ -27,7 +27,8 @@ import { PdfViewPage } from '../pages/pdf-view/pdf-view';
     ExamenRadioPage,
     ExamenLaboPage,
     PdfViewPage,
-    PdfViewerComponent
+    PdfViewerComponent,
+    ListPreanesthesiePage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -44,7 +45,8 @@ import { PdfViewPage } from '../pages/pdf-view/pdf-view';
     DetailPerPagePage,
     ExamenRadioPage,
     ExamenLaboPage,
-    PdfViewPage
+    PdfViewPage,
+    ListPreanesthesiePage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
