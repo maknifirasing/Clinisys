@@ -24,7 +24,7 @@ export class ExamenLaboPage {
 
   findAllLaboByNumDossier(numdoss) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -34,7 +34,6 @@ export class ExamenLaboPage {
       '</ser:findAllLaboByNumDossier>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
-
     xmlhttp.onreadystatechange = () => {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
@@ -73,7 +72,6 @@ export class ExamenLaboPage {
               l.setuserName(x[i].children[13].textContent);
               l.setvalidation(x[i].children[14].textContent);
               this.Labos.push(l);
-              console.log(l.getnumAdmission());
             }
           } catch (Error) {
           }
@@ -85,8 +83,36 @@ export class ExamenLaboPage {
     xmlhttp.send(sr);
   }
 
-  openURL(url) {
-    this.pdf = "/android_asset/www/assets/img/sujet_pfe_2017.pdf";
-    this.navCtrl.push(PdfViewPage, {pdf: this.pdf});
+  openURL(numAdmission) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:creationPDF>' +
+      '<numDemande>' + numAdmission + '</numDemande>' +
+      '</ser:creationPDF>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          try {
+            var xml = xmlhttp.responseXML;
+            var x;
+            x = xml.getElementsByTagName("return");
+            this.pdf =this.Url.url +"dmi-web/LaboPDF/"+ x[0].childNodes[0].nodeValue.split("1.")[0]+".pdf";
+            console.log("p   "+x[0].childNodes[0].nodeValue);
+            console.log("pdf   "+this.pdf);
+            this.navCtrl.push(PdfViewPage, {pdf: this.pdf});
+          } catch (Error) {
+          }
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
   }
 }

@@ -93,7 +93,7 @@ export class DossierPage implements OnInit {
 
   GetAlerteSigneClinique(numDoss, dateFeuille, nature) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -139,7 +139,7 @@ export class DossierPage implements OnInit {
 
   getAntecedentAllergieByIdentifiant(id) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -228,7 +228,7 @@ export class DossierPage implements OnInit {
     this.test = false;
 
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -303,7 +303,7 @@ export class DossierPage implements OnInit {
   GetTraitements(numdoss, datefeuille) {
     this.trait = false;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'ReaWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -384,7 +384,7 @@ export class DossierPage implements OnInit {
     this.Con = false;
     this.Evo = false;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -468,7 +468,7 @@ export class DossierPage implements OnInit {
   GetListRegime(numdoss, datefeuille, nature) {
     var xmlhttp = new XMLHttpRequest();
     this.Ri = false;
-    xmlhttp.open('POST', this.Url.url + 'DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -507,7 +507,7 @@ export class DossierPage implements OnInit {
   GetSigneClinique(numdoss, dateFeuille, nature, codeType) {
     var xmlhttp = new XMLHttpRequest();
     this.Ri = false;
-    xmlhttp.open('POST', this.Url.url + 'DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
