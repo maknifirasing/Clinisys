@@ -40,11 +40,12 @@
 </ion-header>
 
 <ion-content padding>
-
 <ion-list>
   <table border="0">
   <ion-item-sliding *ngFor="let ExRad of examenR ">
-  <ion-item>
+    <input type="hidden" #observ value="{{ExRad.getobserv()}}">
+
+    <ion-item (click)="getdocumentById(observ.value)">
 
   <tr>
  <td rowspan="2">  <ion-avatar item-left>
@@ -52,8 +53,10 @@
     </ion-avatar>
  </td>
    <td>
-     <strong style="color: #0c60ee;">Date demande:</strong>
-    </td><td>{{ExRad.getdateExamen()}}
+
+     <!--<a href="{{url}}"> <strong style="color: #0c60ee;">Date demande:</a href>  </a>-->
+    </td>
+    <td>{{ExRad.getdateExamen()}}
    </td>
   </tr>
     <tr>
@@ -66,6 +69,7 @@
   </tr>
 
   </ion-item>
+
   </ion-item-sliding>
   </table>
 </ion-list>

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {ExamenRadio} from "../../models/ExamenRadio";
-
+import {Document} from "../../models/Document";
 @Component({
   selector: 'page-examen-radio',
   templateUrl: 'examen-radio.html',
@@ -11,12 +11,15 @@ import {ExamenRadio} from "../../models/ExamenRadio";
 export class ExamenRadioPage implements OnInit {
   GetExamenRadioByNumDossResponseTest: boolean = false;
   examenR: Array<ExamenRadio> = [];
+  document: Array<Document> = [];
   numDoss: string;
   img: string;
   nom: string;
   age: string;
   ch: string;
   dat: string;
+  url:string;
+  getdocumentByIdTest: boolean = false
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.numDoss = navParams.data.numDoss;
@@ -30,6 +33,7 @@ export class ExamenRadioPage implements OnInit {
   ngOnInit() {
     console.log(this.numDoss);
     this.GetExamenRadioByNumDossResponse(this.numDoss);
+
   }
 
 
@@ -37,6 +41,12 @@ export class ExamenRadioPage implements OnInit {
     console.log('ionViewDidLoad ExamenRadioPage');
 
   }
+
+  getdocumentById(observ) {
+    this.url ="http://192.168.0.140:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc="+observ;
+
+  }
+
 
   GetExamenRadioByNumDossResponse(numDoss) {
     var xmlhttp = new XMLHttpRequest();
@@ -46,7 +56,7 @@ export class ExamenRadioPage implements OnInit {
       '<soapenv:Header/>' +
       '<soapenv:Body>' +
       '<ser:GetExamenRadioByNumDoss>' +
-      '<numDoss>'+numDoss+'</numDoss>' +
+      '<numDoss>' + numDoss + '</numDoss>' +
       '</ser:GetExamenRadioByNumDoss>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
@@ -57,7 +67,7 @@ export class ExamenRadioPage implements OnInit {
           try {
             this.GetExamenRadioByNumDossResponseTest = true;
             var xml = xmlhttp.responseXML;
-            var x, i,dE,dP,drdv,hP;
+            var x, i, dE, dP, drdv, hP;
             x = xml.getElementsByTagName("return");
             var ex;
             var day = "";
@@ -66,7 +76,6 @@ export class ExamenRadioPage implements OnInit {
             var minu = "";
             var second = "";
             var hour = "";
-            console.log(xml);
             for (i = 0; i < x.length; i++) {
               ex = new ExamenRadio();
               ex.setcodeExamen(x[i].children[0].textContent);
@@ -74,19 +83,19 @@ export class ExamenRadioPage implements OnInit {
 
               dE = new Date(x[i].children[2].textContent);
               day = dE.getDate();
-              month = dE.getMonth()+1;
+              month = dE.getMonth() + 1;
               year = dE.getFullYear();
               ex.setdateExamen(day + "/" + month + "/" + year);
 
               dP = new Date(x[i].children[3].textContent);
               day = dP.getDate();
-              month = dP.getMonth()+1;
+              month = dP.getMonth() + 1;
               year = dP.getFullYear();
               ex.setdatePrevu(day + "/" + month + "/" + year);
 
               drdv = new Date(x[i].children[4].textContent);
               day = drdv.getDate();
-              month = drdv.getMonth()+1;
+              month = drdv.getMonth() + 1;
               year = drdv.getFullYear();
               ex.setdate_RDV(day + "/" + month + "/" + year);
 

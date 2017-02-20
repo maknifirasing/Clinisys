@@ -14,6 +14,7 @@ export class TabsPage {
   tab1Root: any = DossierPage;
   tab2Root: any = ExamenRadioPage;
   tab3Root: any = ListPreanesthesiePage;
+  tab4Root: any ;
   id: string;
   numDoss: string;
   img: string;
