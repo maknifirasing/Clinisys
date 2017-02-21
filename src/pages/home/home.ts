@@ -1,4 +1,4 @@
-import {Component, trigger, state, style, transition, animate, keyframes} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Users} from '../../models/Users';
 import {ListePage} from "../liste/liste";

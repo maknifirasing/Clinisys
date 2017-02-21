@@ -16,25 +16,14 @@ import {ListPreanesthesie} from "../../models/ListPreanesthesie";
 })
 export class ListPreanesthesiePage {
   ListPreanesthesieByNumeroDossierTest: boolean = false;
-  numDoss: string;
-  img: string;
-  nom: string;
-  age: string;
-  ch: string;
-  dat: string;
   ListeP: Array<ListPreanesthesie> = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-    this.numDoss = navParams.data.numDoss;
-    this.img = navParams.data.img;
-    this.nom = navParams.data.nom;
-    this.age = navParams.data.age;
-    this.ch = navParams.data.ch;
-    this.dat = navParams.data.dat;
+
   }
 
   ionViewDidLoad() {
-    this.findListPreanesthesieByNumeroDossierResponse(this.numDoss);
+    this.findListPreanesthesieByNumeroDossierResponse(this.navParams.data.pass.getdossier());
   }
 
   findListPreanesthesieByNumeroDossierResponse(numDoss) {

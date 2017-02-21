@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {ExamenRadio} from "../../models/ExamenRadio";
@@ -8,42 +8,26 @@ import {Document} from "../../models/Document";
   templateUrl: 'examen-radio.html',
   providers: [Variables]
 })
-export class ExamenRadioPage implements OnInit {
+export class ExamenRadioPage {
   GetExamenRadioByNumDossResponseTest: boolean = false;
-  examenR: Array<ExamenRadio> = [];
+  examenRT: Array<ExamenRadio> = [];
+  examenRF: Array<ExamenRadio> = [];
   document: Array<Document> = [];
-  numDoss: string;
-  img: string;
-  nom: string;
-  age: string;
-  ch: string;
-  dat: string;
-  url:string;
-  getdocumentByIdTest: boolean = false
+  url: string;
+  getdocumentByIdTest: boolean = false;
+  coountexamenRT: number;
+  coountexamenR: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-    this.numDoss = navParams.data.numDoss;
-    this.img = navParams.data.img;
-    this.nom = navParams.data.nom;
-    this.age = navParams.data.age;
-    this.ch = navParams.data.ch;
-    this.dat = navParams.data.dat;
+    this.coountexamenR = 0;
   }
-
-  ngOnInit() {
-    console.log(this.numDoss);
-    this.GetExamenRadioByNumDossResponse(this.numDoss);
-
-  }
-
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ExamenRadioPage');
-
+    this.GetExamenRadioByNumDossResponse(this.navParams.data.pass.getdossier());
   }
 
   getdocumentById(observ) {
-    this.url ="http://192.168.0.140:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc="+observ;
+    this.url = this.Url.url + "dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
 
   }
 
@@ -76,48 +60,58 @@ export class ExamenRadioPage implements OnInit {
             var minu = "";
             var second = "";
             var hour = "";
+            this.coountexamenR = x.length;
             for (i = 0; i < x.length; i++) {
               ex = new ExamenRadio();
               ex.setcodeExamen(x[i].children[0].textContent);
               ex.setcompterendu(x[i].children[1].textContent);
-
               dE = new Date(x[i].children[2].textContent);
               day = dE.getDate();
               month = dE.getMonth() + 1;
               year = dE.getFullYear();
               ex.setdateExamen(day + "/" + month + "/" + year);
-
               dP = new Date(x[i].children[3].textContent);
               day = dP.getDate();
               month = dP.getMonth() + 1;
               year = dP.getFullYear();
               ex.setdatePrevu(day + "/" + month + "/" + year);
-
               drdv = new Date(x[i].children[4].textContent);
               day = drdv.getDate();
               month = drdv.getMonth() + 1;
               year = drdv.getFullYear();
               ex.setdate_RDV(day + "/" + month + "/" + year);
-
               ex.setdesignationExamen(x[i].children[5].textContent);
-
               hP = new Date(x[i].children[6].textContent);
               minu = hP.getMinutes();
               hour = hP.getHours();
               second = hP.getSeconds();
               ex.setheurePrevu(hour + " : " + minu + " : " + second);
-
               ex.setidres(x[i].children[7].textContent);
-              ex.setmedecin(x[i].children[8].textContent);
-              ex.setnature(x[i].children[9].textContent);
-              ex.setnumeroDossier(x[i].children[10].textContent);
-              ex.setnumeroExamen(x[i].children[11].textContent);
-              ex.setobserv(x[i].children[12].textContent);
-              ex.setresultat(x[i].children[13].textContent);
-              this.examenR.push(ex);
-
+              if (x[i].childElementCount === 14) {
+                ex.setmedecin(x[i].children[8].textContent);
+                ex.setnature(x[i].children[9].textContent);
+                ex.setnumeroDossier(x[i].children[10].textContent);
+                ex.setnumeroExamen(x[i].children[11].textContent);
+                ex.setobserv(x[i].children[12].textContent);
+                ex.setresultat(x[i].children[13].textContent);
+              }
+              else if (x[i].childElementCount === 13) {
+                ex.setmedecin(null);
+                ex.setnature(x[i].children[8].textContent);
+                ex.setnumeroDossier(x[i].children[9].textContent);
+                ex.setnumeroExamen(x[i].children[10].textContent);
+                ex.setobserv(x[i].children[11].textContent);
+                ex.setresultat(x[i].children[12].textContent);
+              }
+ if (ex.getcompterendu() === "true") {
+                this.examenRT.push(ex);
+                this.coountexamenRT++;
+              }
+              else if (ex.getcompterendu() === "false") {
+                this.examenRF.push(ex);
+              }
             }
-            if (this.examenR.length === 0) {
+            if (this.examenRT.length === 0 && this.examenRF.length === 0) {
               this.GetExamenRadioByNumDossResponseTest = false;
             }
           } catch (Error) {

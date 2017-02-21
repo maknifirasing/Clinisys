@@ -1,75 +1,44 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
-import {DossierPage} from '../dossier/dossier';
 import {Variables} from "../../providers/variables";
 import {TabsPage} from "../tabs/tabs";
 
 @Component({
   selector: 'page-liste',
   templateUrl: 'liste.html',
-  providers:[Variables]
+  providers: [Variables]
 })
-export class ListePage implements OnInit {
+export class ListePage {
   json: any;
   xml: any;
   patient: Array<Patient> = [];
   patientliste: Array<Patient> = [];
   DateF: any;
-  datefeuille : string="";
+  datefeuille: string = "";
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private Url:Variables) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.patientliste = this.patient;
   }
 
   ionViewDidLoad() {
-    var d=new Date();
-  }
-
-  DateFeuille() {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url+'dmi-core/DossierSoinWSService?wsdl', true);
-    var sr =
-      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
-      '<soapenv:Header/>' +
-      '<soapenv:Body>' +
-      '  <ser:GetDateFeuille/>' +
-      '</soapenv:Body>' +
-      '</soapenv:Envelope>';
-    xmlhttp.onreadystatechange = () => {
-      if (xmlhttp.readyState == 4) {
-        if (xmlhttp.status == 200) {
-          this.xml = xmlhttp.responseXML;
-          this.DateF = this.xml.getElementsByTagName("return");
-          this.datefeuille=this.datefeuille+this.DateF[0].childNodes[0].nodeValue;
-          //console.log(this.datefeuille);
-          return this.datefeuille;
-        }
-      }
-    }
-    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
-    xmlhttp.responseType = "document";
-    xmlhttp.send(sr);
-  }
-
-  goToDossierPage(a, b, c, d, e, f,j) {
-    this.navCtrl.push(TabsPage, {identifiant: a, numeroDossier: b, image: c, nom: d, age: e, chambre: f, nature: j, dateFeuille: this.datefeuille});
-  }
-
-  ngOnInit() {
+    this.liste("admin","","all");
     this.DateFeuille();
 
+  }
+
+  liste(user,searchText,etage) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url+'dmi-core/ReaWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
       '<soapenv:Body>' +
       '<ser:GetListClientForTablette>' +
-      '<user>admin</user>' +
-      '<searchText></searchText>' +
-      '<etage>all</etage>' +
+      '<user>'+user+'</user>' +
+      '<searchText>'+searchText+'</searchText>' +
+      '<etage>'+etage+'</etage>' +
       '</ser:GetListClientForTablette>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
@@ -128,9 +97,43 @@ export class ListePage implements OnInit {
         }
       }
     }
+
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
+  }
+
+  DateFeuille() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '  <ser:GetDateFeuille/>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          this.DateF = this.xml.getElementsByTagName("return");
+          this.datefeuille = this.datefeuille + this.DateF[0].childNodes[0].nodeValue;
+          //console.log(this.datefeuille);
+          return this.datefeuille;
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+  goToDossierPage(patient) {
+    this.navCtrl.push(TabsPage, {
+      mypatient: patient,
+      dateFeuille: this.datefeuille
+    });
   }
 
   initializeItems() {
