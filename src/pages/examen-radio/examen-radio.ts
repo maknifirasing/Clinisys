@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {ExamenRadio} from "../../models/ExamenRadio";
@@ -8,7 +8,7 @@ import {Document} from "../../models/Document";
   templateUrl: 'examen-radio.html',
   providers: [Variables]
 })
-export class ExamenRadioPage implements OnInit {
+export class ExamenRadioPage{
   GetExamenRadioByNumDossResponseTest: boolean = false;
   examenR: Array<ExamenRadio> = [];
   document: Array<Document> = [];
@@ -30,16 +30,9 @@ export class ExamenRadioPage implements OnInit {
     this.dat = navParams.data.dat;
   }
 
-  ngOnInit() {
+  ionViewDidLoad() {
     console.log(this.numDoss);
     this.GetExamenRadioByNumDossResponse(this.numDoss);
-
-  }
-
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ExamenRadioPage');
-
   }
 
   getdocumentById(observ) {

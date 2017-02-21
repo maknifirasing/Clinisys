@@ -14,7 +14,7 @@
           {{nom}}
         </td>
         <td>     &nbsp;
-
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td rowspan="2">
           <img src='/android_asset/www/assets/img/i.jpg' class="roundedImage" (click)="goToDetailPage()">
@@ -43,90 +43,182 @@
 
 <ion-content>
   <ion-scroll scrollY="true">
-    <p style="color: #0c60ee"><strong> Motifs de L'hospitalisation :</strong></p>
+    <div padding></div>
+    <div padding></div>
+    <p style="color: #0c60ee;font-size: 100%"><strong>Motifs de L'hospitalisation :</strong></p>
     <div *ngIf="test===true">
-      <p class="p"> {{ m.getmotifhospitalisation()}}</p>
+      <table border="0">
+        <tr>
+          <td style="font-size: 100%; padding-left: 3%">
+     {{ m.getmotifhospitalisation()}}
+          </td>
+        </tr>
+      </table>
     </div>
     <div *ngIf="AntecedentAllergieTest===true">
-      <p style="color: #0c60ee"><strong>Antécédents : </strong>
+      <p style="color: #0c60ee;font-size: 100%"><strong>Antécédents :
 
-      </p>
-      <p>{{stringAntec}}</p>
-      <p style="color: #0c60ee"><strong> Allergies:</strong></p>
-      <p>
+      </strong></p>
+      <table border="0">
+        <tr>
+          <td style="font-size: 100%; padding-left: 3%">
+      {{stringAntec}}
+          </td>
+        </tr>
+      </table>
+      <p style="color: #0c60ee;font-size: 100%"><strong> Allergies:</strong></p>
+      <table border="0">
+        <tr>
+          <td style="font-size: 100%; padding-left: 3%">
         {{stringAlerg}}
-      </p>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div *ngIf="AlerteS===true">
-      <p style="color: #0c60ee "><strong> Signes Vitaux</strong></p>
-      <p *ngFor="let sig of signec ">
+      <p style="color: #0c60ee;font-size: 100%"><strong> Signes Vitaux</strong></p>
+      <div *ngFor="let sig of signec ">
+        <table border="0">
+          <tr>
+            <td style="font-size: 100%; padding-left: 3%">
         <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong> {{sig.getdate()}}
-      </p>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
 
     <div *ngIf="Ent===true">
-      <p style="color: #0c60ee "><strong> Entrées</strong></p>
-      <p *ngFor="let en of Entrees ">
+      <p style="color: #0c60ee;font-size: 100%"><strong>Entrées</strong></p>
+      <div *ngFor="let en of Entrees ">
+      <table border="0">
+        <tr>
+          <td style="font-size: 100%; padding-left: 3%">
         <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong> {{en.getdate()}}
-      </p>
+          </td>
+        </tr>
+    </table>
+      </div>
     </div>
 
     <div *ngIf="trait===true">
-      <p style="color: #0c60ee "><strong>Traitement Encours</strong></p>
-      <p *ngFor="let tra of traitement " class="p">
-        <strong>{{ tra.getdesignation() }}</strong>{{ tra.getposologie() }} ({{ tra.getjour() }}) jours.
-      </p>
-    </div>
 
+
+    <table>
+
+
+<p style="color: #0c60ee;font-size: 100%"><strong>Traitement</strong></p>
+
+<div *ngFor="let tra of traitement ">
+
+
+    <tr>
+      <td border="2" class="size">
+        <strong>{{ tra.getdesignation() }}</strong>
+      </td>
+    </tr>
+  <tr>
+      <td class="size">{{ tra.getposologie() }} ({{ tra.getjour() }}) jours.
+      </td>
+
+    </tr>
+
+
+
+</div>
+    </table>
+    </div>
     <div *ngIf="Sor===true">
-      <p style="color: #0c60ee "><strong> Sorties</strong></p>
-      <p *ngFor="let so of Sorties ">
-        <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> {{so.getdate()}}
-      </p>
+      <p style="color: #0c60ee;font-size: 100%"><strong> Sorties</strong></p>
+      <div *ngFor="let so of Sorties ">
+        <table border="0">
+          <tr>
+            <td style="font-size: 100%; padding-left: 3%">
+        <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> </td><td> {{so.getdate()}}
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
 
     <div *ngIf="AlerteSigneCliniqueTest===true">
-      <p style="color: #0c60ee"><strong> Alerts:</strong></p>
+      <p style="color: #0c60ee;font-size: 100%"><strong> Alerts:</strong></p>
 
-      <p *ngFor="let pas of signe " class="p">
+      <div *ngFor="let pas of signe ">
+        <table border="0">
+          <tr>
+            <td style="font-size: 100%; padding-left: 3%">
         <strong>{{pas.getdesignation()}}</strong> {{pas.getquantite()}} {{pas.getdate()}}
-      </p>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
 
     <div *ngIf="His===true">
-      <p style="color: #0c60ee "><strong>Histoire de la maladie</strong></p>
-      <p *ngFor="let his of Histoiremaladie " class="p">
+      <p style="color: #0c60ee;font-size: 100%"><strong>Histoire de la maladie</strong></p>
+      <div *ngFor="let his of Histoiremaladie ">
+        <table border="0">
+          <tr>
+            <td class="size">
         {{ his.getdetail() }}
-      </p>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
 
     <div *ngIf="Exa===true">
-      <p style="color: #0c60ee "><strong>Examen clinique</strong></p>
-      <p *ngFor="let exa of Examenclinique " class="p">
+      <p style="color: #0c60ee;font-size: 100%"><strong>Examen clinique</strong></p>
+      <div *ngFor="let exa of Examenclinique ">
+        <table border="0">
+          <tr>
+            <td class="size">
         [{{ exa.getdate() }}-{{exa.getuserCreat()}}]<br/>
-        {{ exa.getdetail() }}
-      </p>
+            </td><td>   {{ exa.getdetail() }}
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
 
     <div *ngIf="Evo===true">
-      <p style="color: #0c60ee "><strong>Evolution</strong></p>
-      <p *ngFor="let evo of Evolution " class="p">
+      <p style="color: #0c60ee;font-size: 100%"><strong>Evolution</strong></p>
+      <div *ngFor="let evo of Evolution ">
+        <table border="0">
+          <tr>
+            <td class="size">
         {{ evo.getdetail() }}
-      </p>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
 
     <div *ngIf="Ri===true">
-      <p style="color: #0c60ee "><strong>Rigime</strong></p>
-      <p class="p">{{ rigime.getdesignation() }}</p>
+      <p style="color: #0c60ee;font-size: 100%"><strong>Rigim</strong></p>
+      <table border="0">
+        <tr>
+          <td class="size">
+      {{ rigime.getdesignation() }}
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div *ngIf="Con===true">
-      <p style="color: #0c60ee "><strong>Conclusion</strong></p>
-      <p *ngFor="let con of Conclusion " class="p">
+      <p style="color: #0c60ee;font-size: 100%"><strong>Conclusion</strong></p>
+      <div *ngFor="let con of Conclusion ">
+        <table border="0">
+          <tr>
+            <td class="size">
         [{{ con.getdate() }}-{{con.getuserCreat()}}]<br/>
-        {{ con.getdetail() }}
-      </p>
+            </td><td>  {{ con.getdetail() }}
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
   </ion-scroll>
 </ion-content>

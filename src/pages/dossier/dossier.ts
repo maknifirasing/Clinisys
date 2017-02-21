@@ -17,15 +17,9 @@ import {ExamenLaboPage} from "../examen-labo/examen-labo";
   providers: [Variables]
 })
 
-export class DossierPage implements OnInit {
+export class DossierPage {
   m = new MotifHospitalisation();
-  id: string;
-  numDoss: string;
-  img: string;
-  nom: string;
-  age: string;
-  ch: string;
-  nature: string;
+ pass:Patient;
   antec: Array<Antec> = [];
   signe: Array<SigneClinique> = [];
   disig: string;
@@ -71,9 +65,6 @@ export class DossierPage implements OnInit {
   }
 
   ionViewDidLoad() {
-  }
-
-  ngOnInit() {
     var d = new Date();
     this.dat = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
     this.GetAllMotifHospitalisationByNumDoss(this.numDoss);
@@ -90,7 +81,6 @@ export class DossierPage implements OnInit {
     }
     this.GetSigneClinique(this.numDoss, this.dateFeuille, this.nature, this.codeType);
   }
-
 
   GetAlerteSigneClinique(numDoss, dateFeuille, nature) {
     var xmlhttp = new XMLHttpRequest();
@@ -571,13 +561,6 @@ export class DossierPage implements OnInit {
   goToDetailPage() {
     this.navCtrl.push(DetailPerPagePage, {nom: this.nom, age: this.age, numDoss: this.numDoss});
 
-  }
-
-  goToExamenRadio() {
-    this.navCtrl.push(ExamenRadioPage, {numDoss: this.numDoss});
-  }
-  goToLaboPage() {
-    this.navCtrl.push(ExamenLaboPage, {numDoss:this.numDoss});
   }
 }
 
