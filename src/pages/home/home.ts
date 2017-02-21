@@ -58,7 +58,7 @@ export class HomePage {
               this.user.setuserName(x[0].children[12].textContent);
               this.user.setvalidCptRend(x[0].children[13].textContent);
               this.user.setvalidPHNuit(x[0].children[14].textContent);
-              this.navCtrl.push(ListePage);
+              this.navCtrl.setRoot(ListePage);
             } catch (Error) {
               this.err = "verifier votre login ou password!"
             }

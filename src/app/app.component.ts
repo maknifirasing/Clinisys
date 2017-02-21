@@ -1,16 +1,27 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import {Platform, NavController, NavParams} from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 import { HomePage } from '../pages/home/home';
 import {ListePage} from "../pages/liste/liste";
+<<<<<<< HEAD
+=======
+import {ExamenLaboPage} from "../pages/examen-labo/examen-labo";
+import {Variables} from "../providers/variables";
+>>>>>>> basma
 
 @Component({
   templateUrl: 'app.html'
 })
 
 export class MyApp {
+<<<<<<< HEAD
   rootPage = HomePage;
 //  rootPage = ListePage;
+=======
+ rootPage = HomePage;
+  //rootPage = ListePage;
+
+>>>>>>> basma
 
   constructor(platform: Platform) {
     platform.ready().then(() => {

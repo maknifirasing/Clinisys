@@ -8,7 +8,11 @@ import {Document} from "../../models/Document";
   templateUrl: 'examen-radio.html',
   providers: [Variables]
 })
+<<<<<<< HEAD
 export class ExamenRadioPage {
+=======
+export class ExamenRadioPage{
+>>>>>>> basma
   GetExamenRadioByNumDossResponseTest: boolean = false;
   examenRT: Array<ExamenRadio> = [];
   examenRF: Array<ExamenRadio> = [];
@@ -23,7 +27,12 @@ export class ExamenRadioPage {
   }
 
   ionViewDidLoad() {
+<<<<<<< HEAD
     this.GetExamenRadioByNumDossResponse(this.navParams.data.pass.getdossier());
+=======
+    console.log(this.numDoss);
+    this.GetExamenRadioByNumDossResponse(this.numDoss);
+>>>>>>> basma
   }
 
   getdocumentById(observ) {
