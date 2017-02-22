@@ -31,67 +31,57 @@
     <table border="0">
       <tr>
         <td><img src='/android_asset/www/assets/img/green.png' width="30" height="20"></td>
-        <td>En Ligne: Derniére mise a jour le {{dat}}</td>
+        <td>En Ligne: Derniére mise a jour le {{navParams.data.dat}}</td>
       </tr>
     </table>
   </ion-navbar>
 </ion-header>
 <ion-content>
-<ion-list>
-  <table border="0">
-  <ion-item-sliding *ngFor="let ExRad of examenRT ">
-    <input type="hidden" #observ value="{{ExRad.getobserv()}}">
+  <ion-navbar>
+    <table border="0" *ngFor="let ExRad of examenRT ">
+      <input type="hidden" #observ value="{{ExRad.getobserv()}}">
+      <tr (click)="getdocumentById(observ.value)">
+        <td rowspan="2">
+          <img src='/android_asset/www/assets/img/word.png' class="roundedImage">
+        </td>
+        <td class="size">
+          <a href="{{url}}"> <strong>&nbsp;&nbsp;&nbsp;&nbsp;Date demande:</strong> </a>{{ExRad.getdateExamen()}}
+        </td>
+      </tr>
+      <tr>
+        <td class="size">
+          <strong>&nbsp;&nbsp;&nbsp;&nbsp;Examen:</strong>{{ExRad.getdesignationExamen()}}
+        </td>
+      </tr>
+      <tr>
+        <td>
 
-    <ion-item (click)="getdocumentById(observ.value)">
+        </td>
+      </tr>
+    </table>
+  </ion-navbar>
 
-  <tr>
- <td rowspan="2">  <ion-avatar item-left>
-      <img src='/android_asset/www/assets/img/word.png'>
-    </ion-avatar>
- </td>
-   <td>
-     <a href="{{url}}"> <strong style="color: #0c60ee;">Date demande:</strong></a>{{ExRad.getdateExamen()}}
-    </td>
-  </tr>
-    <tr>
-      <td>
-    <strong>Examen: </strong> {{ExRad.getdesignationExamen()}}
-      </td>
-  </tr>
+  <ion-navbar>
+    <table border="0" *ngFor="let ExRadF of examenRF ">
+      <input type="hidden" #observF value="{{ExRadF.getobserv()}}">
+      <tr (click)="getdocumentById(observF.value)">
+        <td rowspan="2">
+          <img src='/android_asset/www/assets/img/wordoff.png'  class="roundedImage">
+        </td>
+        <td class="size">
+          <a href="{{url}}"> <strong>Date demande:</strong> </a>{{ExRadF.getdateExamen()}}
+        </td>
+      </tr>
+      <tr>
+        <td class="size">
+          <strong>Examen:</strong>{{ExRadF.getdesignationExamen()}}
+        </td>
+      </tr>
+      <tr>
+        <td>
 
-  </ion-item>
-
-  </ion-item-sliding>
-
-    <ion-item-sliding *ngFor="let ExRadF of examenRF ">
-      <input type="hidden" #observ value="{{ExRadF.getobserv()}}">
-
-      <ion-item (click)="getdocumentById(observ.value)">
-
-        <tr>
-          <td rowspan="2">  <ion-avatar item-left>
-            <img src='/android_asset/www/assets/img/wordoff.png'>
-          </ion-avatar>
-          </td>
-          <td>
-            <a href="{{url}}"> <strong style="color: #0c60ee;">Date demande:</strong> </a>
-          </td>
-          <td>{{ExRadF.getdateExamen()}}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <strong>Examen:</strong>
-          </td>
-          <td>
-            {{ExRadF.getdesignationExamen()}}
-          </td>
-        </tr>
-
-      </ion-item>
-
-    </ion-item-sliding>
-  </table>
-</ion-list>
-
+        </td>
+      </tr>
+    </table>
+  </ion-navbar>
 </ion-content>

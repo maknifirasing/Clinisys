@@ -17,9 +17,12 @@ import {Variables} from "../../providers/variables";
 export class DossierPage {
   m = new MotifHospitalisation();
 <<<<<<< HEAD
+<<<<<<< HEAD
  pass:Patient;
 =======
 >>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
+=======
+>>>>>>> b38b774492a3df3058b3fa755fe8150945041014
   antec: Array<Antec> = [];
   signe: Array<SigneClinique> = [];
   disig: string;
@@ -53,6 +56,7 @@ export class DossierPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   ionViewDidLoad() {
     var d = new Date();
     this.dat = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
@@ -64,6 +68,8 @@ export class DossierPage {
     this.GetListRegime(this.numDoss, this.dateFeuille, this.nature);
     if (this.nature === "REA") {
 =======
+=======
+>>>>>>> b38b774492a3df3058b3fa755fe8150945041014
   }
 
   ionViewDidLoad() {
@@ -74,7 +80,10 @@ export class DossierPage {
     this.GetEvenementByDossier(this.navParams.data.pass.getdossier());
     this.GetListRegime(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
     if (this.navParams.data.pass.getnature()=== "REA") {
+<<<<<<< HEAD
 >>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
+=======
+>>>>>>> b38b774492a3df3058b3fa755fe8150945041014
       this.codeType = "'1','G','L','E','7','I','9','A','3'";
     }
     else if (this.navParams.data.pass.getnature()=== "sur") {
@@ -82,6 +91,7 @@ export class DossierPage {
     }
     this.GetSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeType);
   }
+
 
   GetAlerteSigneClinique(numDoss, dateFeuille, nature) {
     var xmlhttp = new XMLHttpRequest();
@@ -561,10 +571,13 @@ export class DossierPage {
 
   goToDetailPage() {
 <<<<<<< HEAD
+<<<<<<< HEAD
     this.navCtrl.push(DetailPerPagePage, {nom: this.nom, age: this.age, numDoss: this.numDoss});
 
 =======
 >>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
+=======
+>>>>>>> b38b774492a3df3058b3fa755fe8150945041014
   }
 }
 

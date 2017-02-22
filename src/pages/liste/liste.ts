@@ -2,9 +2,12 @@ import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
 <<<<<<< HEAD
+<<<<<<< HEAD
 //import {DossierPage} from '../dossier/dossier';
 =======
 >>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
+=======
+>>>>>>> b38b774492a3df3058b3fa755fe8150945041014
 import {Variables} from "../../providers/variables";
 import {TabsPage} from "../tabs/tabs";
 
@@ -14,10 +17,14 @@ import {TabsPage} from "../tabs/tabs";
   providers: [Variables]
 })
 <<<<<<< HEAD
+<<<<<<< HEAD
 export class ListePage{
 =======
 export class ListePage {
 >>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
+=======
+export class ListePage {
+>>>>>>> b38b774492a3df3058b3fa755fe8150945041014
   json: any;
   xml: any;
   patient: Array<Patient> = [];
@@ -32,17 +39,23 @@ export class ListePage {
 
   ionViewDidLoad() {
 <<<<<<< HEAD
+<<<<<<< HEAD
     var d=new Date();
     this.DateFeuille();
 
 =======
+=======
+>>>>>>> b38b774492a3df3058b3fa755fe8150945041014
     this.liste("admin","","all");
     this.DateFeuille();
 
   }
 
   liste(user,searchText,etage) {
+<<<<<<< HEAD
 >>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
+=======
+>>>>>>> b38b774492a3df3058b3fa755fe8150945041014
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -144,6 +157,7 @@ export class ListePage {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   DateFeuille() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url+'dmi-core/DossierSoinWSService?wsdl', true);
@@ -172,6 +186,8 @@ export class ListePage {
 
 =======
 >>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
+=======
+>>>>>>> b38b774492a3df3058b3fa755fe8150945041014
   goToDossierPage(patient) {
     this.navCtrl.push(TabsPage, {
       mypatient: patient,

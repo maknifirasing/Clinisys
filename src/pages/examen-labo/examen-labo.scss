@@ -3,4 +3,16 @@ page-examen-labo {
     white-space: nowrap;
     height: 100%;
   }
+  .roundedImage{
+    overflow:hidden;
+    -webkit-border-radius:50px;
+    -moz-border-radius:50px;
+    border-radius:50px;
+    width:35px;
+    height:35px;
+  }
+
+  .size{
+    font-size: 80%;
+  }
 }
