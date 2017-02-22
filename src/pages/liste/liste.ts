@@ -1,10 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
-<<<<<<< HEAD
-=======
-//import {DossierPage} from '../dossier/dossier';
->>>>>>> basma
 import {Variables} from "../../providers/variables";
 import {TabsPage} from "../tabs/tabs";
 
@@ -13,11 +9,7 @@ import {TabsPage} from "../tabs/tabs";
   templateUrl: 'liste.html',
   providers: [Variables]
 })
-<<<<<<< HEAD
 export class ListePage {
-=======
-export class ListePage{
->>>>>>> basma
   json: any;
   xml: any;
   patient: Array<Patient> = [];
@@ -31,18 +23,12 @@ export class ListePage{
   }
 
   ionViewDidLoad() {
-<<<<<<< HEAD
     this.liste("admin","","all");
     this.DateFeuille();
 
   }
 
   liste(user,searchText,etage) {
-=======
-    var d=new Date();
-    this.DateFeuille();
-
->>>>>>> basma
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -143,35 +129,6 @@ export class ListePage{
     xmlhttp.send(sr);
   }
 
-<<<<<<< HEAD
-=======
-  DateFeuille() {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url+'dmi-core/DossierSoinWSService?wsdl', true);
-    var sr =
-      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
-      '<soapenv:Header/>' +
-      '<soapenv:Body>' +
-      '  <ser:GetDateFeuille/>' +
-      '</soapenv:Body>' +
-      '</soapenv:Envelope>';
-    xmlhttp.onreadystatechange = () => {
-      if (xmlhttp.readyState == 4) {
-        if (xmlhttp.status == 200) {
-          this.xml = xmlhttp.responseXML;
-          this.DateF = this.xml.getElementsByTagName("return");
-          this.datefeuille=this.datefeuille+this.DateF[0].childNodes[0].nodeValue;
-          //console.log(this.datefeuille);
-          return this.datefeuille;
-        }
-      }
-    }
-    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
-    xmlhttp.responseType = "document";
-    xmlhttp.send(sr);
-  }
-
->>>>>>> basma
   goToDossierPage(patient) {
     this.navCtrl.push(TabsPage, {
       mypatient: patient,

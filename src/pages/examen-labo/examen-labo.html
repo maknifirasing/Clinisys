@@ -31,32 +31,37 @@
     <table border="0">
       <tr>
         <td><img src='/android_asset/www/assets/img/green.png' width="30" height="20"></td>
-        <td>En Ligne: Derniére mise a jour le {{dat}}</td>
+        <td>En Ligne: Derniére mise a jour le {{navParams.data.dat}}</td>
       </tr>
     </table>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-list>
-    <ion-item-sliding *ngFor="let labt of LabosT ">
-      <ion-item (click)="openURL(labt.getnumAdmission())">
-        <ion-avatar item-left>
-          <img src='/android_asset/www/assets/img/pdf.png'>
-        </ion-avatar>
-        <p><strong>Medecin:</strong>{{ labt.getmedecinTraitant() }} </p>
-        <p style="color: #0c60ee"><strong>Examen :</strong> {{ labt.getcodeDemande() }}</p>
-        <p style="color: #0c60ee"><strong>Date Demande </strong>{{ labt.getdateDemande() }}</p>
-      </ion-item>
-    </ion-item-sliding>
-    <ion-item-sliding *ngFor="let labf of LabosF ">
-      <ion-item (click)="openURL(labf.getnumAdmission())">
-        <ion-avatar item-left>
-          <img src='/android_asset/www/assets/img/pdfoff.png'>
-        </ion-avatar>
-        <p><strong>Medecin:</strong>{{ labf.getmedecinTraitant() }} </p>
-        <p style="color: #0c60ee"><strong>Examen :</strong> {{ labf.getcodeDemande() }}</p>
-        <p style="color: #0c60ee"><strong>Date Demande </strong>{{ labf.getdateDemande() }}</p>
-      </ion-item>
-    </ion-item-sliding>
-  </ion-list>
+  <ion-navbar>
+    <table border="0" *ngFor="let labt of LabosT ">
+      <tr (click)="openURL(labt.getnumAdmission())">
+        <td rowspan="3">
+          <img src='/android_asset/www/assets/img/pdf.png' class="roundedImage">
+        </td>
+        <td class="size">
+          <strong>Medecin:</strong>{{ labt.getmedecinTraitant() }}
+        </td>
+      </tr>
+      <tr>
+        <td class="size">
+          <strong>Examen :</strong> {{ labt.getcodeDemande() }}
+        </td>
+      </tr>
+      <tr>
+        <td class="size">
+          <strong>Date Demande </strong>{{ labt.getdateDemande() }}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          &nbsp;
+        </td>
+      </tr>
+    </table>
+  </ion-navbar>
 </ion-content>
