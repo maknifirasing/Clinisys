@@ -1,28 +1,24 @@
-<ion-header>
-  <ion-navbar color="custom-color" class="ion-navbar">
-  </ion-navbar>
-</ion-header>
-<ion-header>
+<ion-header  class="ii">
   <ion-navbar color="custom-color" class="ion-navbar">
     <table border="0">
 
       <tr>
         <td rowspan="2">
-          <img src='/android_asset/www/assets/img/{{img}}' width="60" height="50">
+          <img src='/android_asset/www/assets/img/{{navParams.data.pass.getimg()}}' width="60" height="50">
         </td>
         <td>
-          {{nom}}
+          {{navParams.data.pass.getnom()}}
         </td>
         <td>     &nbsp;
          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td rowspan="2">
-          <img src='/android_asset/www/assets/img/i.jpg' class="roundedImage" (click)="goToDetailPage()">
+          <img src='/android_asset/www/assets/img/i.jpg' class="roundedImage">
         </td>
       </tr>
 
       <tr>
-        <td><strong>age: </strong>{{age}}<strong>CH: </strong>{{ch}}</td>
+        <td><strong>age: </strong>{{navParams.data.pass.getage()}}<strong>CH: </strong>{{navParams.data.pass.getchambre()}}</td>
         <td>  &nbsp;
           &nbsp;
           &nbsp;
@@ -40,8 +36,8 @@
     </table>
   </ion-navbar>
 </ion-header>
-
 <ion-content>
+
   <ion-scroll scrollY="true">
     <div padding></div>
     <div padding></div>

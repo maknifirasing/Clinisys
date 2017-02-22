@@ -42,10 +42,8 @@ export class DetailPerPagePage {
           try {
             this.GetClientByNumDossTest = true;
             var xml = xmlhttp.responseXML;
-            var x, i;
+            var x;
             x = xml.getElementsByTagName("return");
-            var s;
-
           } catch (Error) {
             this.GetClientByNumDossTest = false;
           }

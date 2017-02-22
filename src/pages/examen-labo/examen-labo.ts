@@ -10,16 +10,22 @@ import {PdfViewPage} from "../pdf-view/pdf-view";
   providers: [Variables]
 })
 export class ExamenLaboPage {
-  numDoss: string;
-  Labos: Array<Labo> = [];
+  LabosT: Array<Labo> = [];
+  LabosF: Array<Labo> = [];
   pdf: string;
+  countPdfT: number;
+  countPdf: number;
+  chLabo: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-    this.numDoss = navParams.data.numDoss;
+    this.countPdfT = 0;
+    this.countPdf = 0;
+    this.chLabo = " (" + this.countPdfT + "/" + this.countPdf + ")";
+    this.findAllLaboByNumDossier(navParams.data.pass.getdossier());
+    console.log("cccc",this.chLabo);
   }
 
   ionViewDidLoad() {
-    this.findAllLaboByNumDossier(this.numDoss);
   }
 
   findAllLaboByNumDossier(numdoss) {
@@ -44,8 +50,7 @@ export class ExamenLaboPage {
             var day = "";
             var month = "";
             var year = "";
-            var minu = "";
-            var hour = "";
+            this.countPdf = x.length;
             for (i = 0; i < x.length; i++) {
               l = new Labo();
               l.setcodeDemande(x[i].children[0].textContent);
@@ -71,12 +76,21 @@ export class ExamenLaboPage {
               l.setstate(x[i].children[12].textContent);
               l.setuserName(x[i].children[13].textContent);
               l.setvalidation(x[i].children[14].textContent);
-              this.Labos.push(l);
+              if (l.getcontenuePDF() === "true") {
+                this.LabosT.push(l);
+                this.countPdfT++;
+              }
+              else if (l.getcontenuePDF() === "false") {
+                this.LabosF.push(l);
+              }
             }
+            this.chLabo = " (" + this.countPdfT + "/" + this.countPdf + ")";
+            console.log("find "+this.chLabo);
           } catch (Error) {
           }
         }
       }
+      console.log("findgfd "+this.chLabo);
     }
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
@@ -102,9 +116,9 @@ export class ExamenLaboPage {
             var xml = xmlhttp.responseXML;
             var x;
             x = xml.getElementsByTagName("return");
-            this.pdf =this.Url.url +"dmi-web/LaboPDF/"+ x[0].childNodes[0].nodeValue.split("1.")[0]+".pdf";
-            console.log("p   "+x[0].childNodes[0].nodeValue);
-            console.log("pdf   "+this.pdf);
+            this.pdf = this.Url.url + "dmi-web/LaboPDF/" + x[0].childNodes[0].nodeValue.split("1.")[0] + ".pdf";
+            console.log("p   " + x[0].childNodes[0].nodeValue);
+            console.log("pdf   " + this.pdf);
             this.navCtrl.push(PdfViewPage, {pdf: this.pdf});
           } catch (Error) {
           }

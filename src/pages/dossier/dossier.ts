@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {MotifHospitalisation} from '../../models/motifHospitalisation';
 import {Antec} from '../../models/Antec';
@@ -7,9 +7,6 @@ import {Traitement} from "../../models/Traitement";
 import {Evenement} from "../../models/Evenement";
 import {Rigime} from "../../models/Rigime";
 import {Variables} from "../../providers/variables";
-import {DetailPerPagePage} from "../detail-per-page/detail-per-page";
-import {ExamenRadioPage} from "../examen-radio/examen-radio";
-import {ExamenLaboPage} from "../examen-labo/examen-labo";
 
 @Component({
   selector: 'page-dossier',
@@ -19,11 +16,13 @@ import {ExamenLaboPage} from "../examen-labo/examen-labo";
 
 export class DossierPage {
   m = new MotifHospitalisation();
+<<<<<<< HEAD
  pass:Patient;
+=======
+>>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
   antec: Array<Antec> = [];
   signe: Array<SigneClinique> = [];
   disig: string;
-  dateFeuille: string;
   test: boolean;
   AlerteSigneCliniqueTest: boolean = false;
   AntecedentAllergieTest: boolean = false;
@@ -50,20 +49,10 @@ export class DossierPage {
   AlerteS: boolean;
   Sor: boolean;
   Ent: boolean;
-  dat: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-    this.id = navParams.data.id;
-    this.numDoss = navParams.data.numDoss;
-    this.img = navParams.data.img;
-    this.nom = navParams.data.nom;
-    this.age = navParams.data.age;
-    this.ch = navParams.data.ch;
-    this.nature = navParams.data.nature;
-    this.dateFeuille = navParams.data.dateFeuille;
-    console.log("Passed params", navParams.data.nom);
-  }
 
+<<<<<<< HEAD
   ionViewDidLoad() {
     var d = new Date();
     this.dat = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
@@ -74,12 +63,24 @@ export class DossierPage {
     this.GetEvenementByDossier(this.numDoss);
     this.GetListRegime(this.numDoss, this.dateFeuille, this.nature);
     if (this.nature === "REA") {
+=======
+  }
+
+  ionViewDidLoad() {
+    this.GetAllMotifHospitalisationByNumDoss(this.navParams.data.pass.getdossier());
+    this.getAntecedentAllergieByIdentifiant(this.navParams.data.pass.getid());
+    this.GetAlerteSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
+    this.GetTraitements(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille);
+    this.GetEvenementByDossier(this.navParams.data.pass.getdossier());
+    this.GetListRegime(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
+    if (this.navParams.data.pass.getnature()=== "REA") {
+>>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
       this.codeType = "'1','G','L','E','7','I','9','A','3'";
     }
-    else if (this.nature === "sur") {
+    else if (this.navParams.data.pass.getnature()=== "sur") {
       this.codeType = "'1','3','4'";
     }
-    this.GetSigneClinique(this.numDoss, this.dateFeuille, this.nature, this.codeType);
+    this.GetSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeType);
   }
 
   GetAlerteSigneClinique(numDoss, dateFeuille, nature) {
@@ -224,7 +225,7 @@ export class DossierPage {
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
       '<soapenv:Body>' +
-      '  <ser:GetAllMotifHospitalisationByNumDoss>' +
+      '<ser:GetAllMotifHospitalisationByNumDoss>' +
       '<numDoss>' + numDoss + '</numDoss>' +
       '</ser:GetAllMotifHospitalisationByNumDoss>' +
       '</soapenv:Body>' +
@@ -236,7 +237,7 @@ export class DossierPage {
           try {
             this.test = true;
             var xml = xmlhttp.responseXML;
-            var x, i, m, drdv, dsortie, hrdv, hsortie;
+            var x, drdv, dsortie, hrdv, hsortie;
             var day = "";
             var month = "";
             var year = "";
@@ -559,8 +560,11 @@ export class DossierPage {
   }
 
   goToDetailPage() {
+<<<<<<< HEAD
     this.navCtrl.push(DetailPerPagePage, {nom: this.nom, age: this.age, numDoss: this.numDoss});
 
+=======
+>>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
   }
 }
 

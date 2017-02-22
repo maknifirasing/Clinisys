@@ -1,42 +1,58 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
+<<<<<<< HEAD
 //import {DossierPage} from '../dossier/dossier';
+=======
+>>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
 import {Variables} from "../../providers/variables";
 import {TabsPage} from "../tabs/tabs";
 
 @Component({
   selector: 'page-liste',
   templateUrl: 'liste.html',
-  providers:[Variables]
+  providers: [Variables]
 })
+<<<<<<< HEAD
 export class ListePage{
+=======
+export class ListePage {
+>>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
   json: any;
   xml: any;
   patient: Array<Patient> = [];
   patientliste: Array<Patient> = [];
   DateF: any;
-  datefeuille : string="";
+  datefeuille: string = "";
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private Url:Variables) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.patientliste = this.patient;
   }
 
   ionViewDidLoad() {
+<<<<<<< HEAD
     var d=new Date();
     this.DateFeuille();
 
+=======
+    this.liste("admin","","all");
+    this.DateFeuille();
+
+  }
+
+  liste(user,searchText,etage) {
+>>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url+'dmi-core/ReaWSService?wsdl', true);
+    xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
       '<soapenv:Body>' +
       '<ser:GetListClientForTablette>' +
-      '<user>admin</user>' +
-      '<searchText></searchText>' +
-      '<etage>all</etage>' +
+      '<user>'+user+'</user>' +
+      '<searchText>'+searchText+'</searchText>' +
+      '<etage>'+etage+'</etage>' +
       '</ser:GetListClientForTablette>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
@@ -95,11 +111,39 @@ export class ListePage{
         }
       }
     }
+
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
   }
 
+  DateFeuille() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '  <ser:GetDateFeuille/>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          this.DateF = this.xml.getElementsByTagName("return");
+          this.datefeuille = this.datefeuille + this.DateF[0].childNodes[0].nodeValue;
+          //console.log(this.datefeuille);
+          return this.datefeuille;
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+<<<<<<< HEAD
   DateFeuille() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url+'dmi-core/DossierSoinWSService?wsdl', true);
@@ -126,6 +170,8 @@ export class ListePage{
     xmlhttp.send(sr);
   }
 
+=======
+>>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
   goToDossierPage(patient) {
     this.navCtrl.push(TabsPage, {
       mypatient: patient,

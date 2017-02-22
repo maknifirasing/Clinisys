@@ -1,7 +1,3 @@
-import {DateTime} from "ionic-angular";
-/**
- * Created by makni on 15/02/2017.
- */
 export class Evenement{
   private _access: number;
   private _code: string;
