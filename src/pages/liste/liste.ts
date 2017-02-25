@@ -3,6 +3,9 @@ import {NavController, NavParams} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
 import {Variables} from "../../providers/variables";
 import {TabsPage} from "../tabs/tabs";
+import {PatientService} from "../../services/PatientService";
+import {DateFeuille} from "../../models/DateFeuille";
+import {DateFeuilleService} from "../../services/DateFeuilleService";
 
 @Component({
   selector: 'page-liste',
@@ -10,25 +13,33 @@ import {TabsPage} from "../tabs/tabs";
   providers: [Variables]
 })
 export class ListePage {
-  json: any;
-  xml: any;
   patient: Array<Patient> = [];
   patientliste: Array<Patient> = [];
   DateF: any;
+  dtFeuille: any;
   datefeuille: string = "";
-
+  patienserv: any;
+  connection: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+    if (Variables.checconnection() === "No network connection") {
+      this.connection = false;
+      this.listeOff(this.patient, "admin", "", "all");
+      this.DateFeuilleOff();
+    }
+    else {
+      this.connection = true;
+      this.liste("admin", "", "all");
+      this.DateFeuille();
+    }
     this.patientliste = this.patient;
   }
 
   ionViewDidLoad() {
-    this.liste("admin","","all");
-    this.DateFeuille();
-
+    alert("connection " + this.connection);
   }
 
-  liste(user,searchText,etage) {
+  liste(user, searchText, etage) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -36,18 +47,18 @@ export class ListePage {
       '<soapenv:Header/>' +
       '<soapenv:Body>' +
       '<ser:GetListClientForTablette>' +
-      '<user>'+user+'</user>' +
-      '<searchText>'+searchText+'</searchText>' +
-      '<etage>'+etage+'</etage>' +
+      '<user>' + user + '</user>' +
+      '<searchText>' + searchText + '</searchText>' +
+      '<etage>' + etage + '</etage>' +
       '</ser:GetListClientForTablette>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
     xmlhttp.onreadystatechange = () => {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
-          this.xml = xmlhttp.responseXML;
+          var xml = xmlhttp.responseXML;
           var x, i;
-          x = this.xml.getElementsByTagName("return");
+          x = xml.getElementsByTagName("return");
           var p;
           var tempsEnMs = new Date().getFullYear();
           var d;
@@ -94,13 +105,26 @@ export class ListePage {
             }
             this.patient.push(p);
           }
+          if (searchText === "")
+            searchText = "vide";
+          this.patienserv = new PatientService();
+          if (this.patienserv.verifPatient(this.patient, user, searchText, etage) === false) {
+            this.patienserv.getPatients(this.patient, user, searchText, etage);
+          }
         }
       }
     }
-
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
+  }
+
+  listeOff(patient, user, searchText, etage) {
+    if (searchText === "")
+      searchText = "vide";
+    this.patienserv = new PatientService();
+    this.patient = this.patienserv.getPatients(patient, user, searchText, etage);
+    this.patientliste = this.patient;
   }
 
   DateFeuille() {
@@ -110,16 +134,21 @@ export class ListePage {
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
       '<soapenv:Body>' +
-      '  <ser:GetDateFeuille/>' +
+      '<ser:GetDateFeuille/>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
     xmlhttp.onreadystatechange = () => {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
-          this.xml = xmlhttp.responseXML;
-          this.DateF = this.xml.getElementsByTagName("return");
-          this.datefeuille = this.datefeuille + this.DateF[0].childNodes[0].nodeValue;
-          //console.log(this.datefeuille);
+          var xml = xmlhttp.responseXML;
+          this.DateF = xml.getElementsByTagName("return");
+          this.datefeuille = this.DateF[0].childNodes[0].nodeValue;
+          var d = new DateFeuille();
+          d.setdatefeuille(this.datefeuille);
+          var datefe = new DateFeuilleService();
+          if (datefe.verifDateFeuille() === false) {
+            datefe.getDateFeuille(d);
+          }
           return this.datefeuille;
         }
       }
@@ -127,6 +156,11 @@ export class ListePage {
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
+  }
+
+  DateFeuilleOff() {
+    var datefe = new DateFeuilleService();
+    this.datefeuille = datefe.getDateFeuille(this.dtFeuille).getdatefeuille();
   }
 
   goToDossierPage(patient) {

@@ -1,13 +1,16 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams, Platform} from 'ionic-angular';
 import {Users} from '../../models/Users';
 import {ListePage} from "../liste/liste";
 import {Variables} from "../../providers/variables";
 
+declare var navigator: any;
+declare var Connection: any;
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
-  providers:[Variables]
+  providers: [Variables]
 })
 export class HomePage {
   err: string;
@@ -15,17 +18,16 @@ export class HomePage {
   user: Users;
   mess: string = "";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private Url:Variables) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private platform: Platform) {
     this.user = new Users;
-
   }
 
   connecter(login, password) {
-    this.mess="It will take few seconds !! Please be patient";
+    this.mess = "It will take few seconds !! Please be patient";
     this.err = "";
     try {
       var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('POST', this.Url.url+'dmi-core/DossierSoinWSService?wsdl', true);
+      xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
       var sr =
         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
         '<soapenv:Header/>' +
@@ -73,4 +75,10 @@ export class HomePage {
       this.err = "verifier votre connextion!"
     }
   }
+
+  checkNetwork() {
+    alert("zz " + Variables.checconnection());
+  }
+
+
 }
