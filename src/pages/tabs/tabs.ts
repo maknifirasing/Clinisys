@@ -4,15 +4,7 @@ import {NavParams, NavController} from 'ionic-angular';
 import {ExamenRadioPage} from "../examen-radio/examen-radio";
 import {ListPreanesthesiePage} from "../list-preanesthesie/list-preanesthesie";
 import {ExamenLaboPage} from "../examen-labo/examen-labo";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import {MyApp} from "../../app/app.component";
-=======
 import {Variables} from "../../providers/variables";
->>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
-=======
-import {Variables} from "../../providers/variables";
->>>>>>> b38b774492a3df3058b3fa755fe8150945041014
 import {Patient} from "../../models/Patient";
 import {Labo} from "../../models/Labo";
 import {ExamenRadio} from "../../models/ExamenRadio";
@@ -28,82 +20,74 @@ export class TabsPage {
   tab2Root: any = ExamenRadioPage;
   tab3Root: any = ListPreanesthesiePage;
   tab4Root: any = ExamenLaboPage;
-<<<<<<< HEAD
-<<<<<<< HEAD
-  pas:Patient;
-  dateFeuille: string;
-  chatParams: any;
-  dat: string;
-  app: MyApp;
-  nbr:number;
-
-  constructor(public navParams: NavParams,) {
-    this.pas = navParams.get("mypatient");
-=======
-=======
->>>>>>> b38b774492a3df3058b3fa755fe8150945041014
   pass: Patient;
   dateFeuille: string;
-  chatParams: any;
+  tabLangue: any;
   dat: string;
-  nbr: number;
-<<<<<<< HEAD
-  public navCtrl: NavController;
-
-  constructor(public navParams: NavParams, private Url: Variables) {
-    this.pass = navParams.get("mypatient");
->>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
-=======
   countPdfT: number;
   countPdf: number;
-  chLabo: string;
   public navCtrl: NavController;
   LabosT: Array<Labo> = [];
   LabosF: Array<Labo> = [];
-  a:any;
+  a: any;
   GetExamenRadioByNumDossResponseTest: boolean = false;
   examenRT: Array<ExamenRadio> = [];
   examenRF: Array<ExamenRadio> = [];
   coountexamenRT: number;
   coountexamenR: number;
   tab: any;
+  tab1:string;
+  tab2:string;
+  tab3:string;
+  tab4:string;
+  titreSortie:string;
+  titreAlert:string;
+  titreMaladie:string;
+  titreClini:string;
+  titreEvo:string;
+  titreConclu:string;
+  titreRegime:string;
+  titreDemande:string;
+  titreExamen:string;
+  titreAct:string;
+  titreChi:string;
+  titreDateAct:string;
+  titreHeureDeb:string;
+  titreHeureF:string;
+  titleMed:string;
 
   constructor(public navParams: NavParams, private Url: Variables) {
+    this.pass = navParams.get("mypatient");
+    console.log("patient "+this.pass.getimg());
     this.coountexamenR = 0;
     this.coountexamenRT = 0;
     this.countPdfT = 0;
     this.countPdf = 0;
-    this.pass = navParams.get("mypatient");
->>>>>>> b38b774492a3df3058b3fa755fe8150945041014
-    this.dateFeuille = navParams.get("dateFeuille");
     var d = new Date();
     this.dat = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-    this.chatParams = {
-<<<<<<< HEAD
-<<<<<<< HEAD
-      pas: this.pas,
-=======
-      pass: this.pass,
->>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
-=======
-      pass: this.pass,
->>>>>>> b38b774492a3df3058b3fa755fe8150945041014
-      dateFeuille: this.dateFeuille,
-      dat: this.dat,
-      Labost:this.LabosT,
-      Labosf:this.LabosF,
-      examenRT:this.examenRT,
-      examenRF:this.examenRF
-    };
 
-  //  console.log("hhhaaasdfshh", this.countPdfT);
+
+    this.tabLangue = {
+      pass: navParams.get("mypatient"),
+      dateFeuille: navParams.get("dateFeuille"),
+      dat: d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(),
+      Labost: this.LabosT,
+      Labosf: this.LabosF,
+      examenRT: this.examenRT,
+      examenRF: this.examenRF,
+      langue:navParams.get("langue"),
+      tabLangue:navParams.data.tabLangue.tabLangue
+
+  };
   }
 
   ionViewDidLoad() {
     this.findAllLaboByNumDossier(this.pass.getdossier());
-    this.GetExamenRadioByNumDossResponse(this.pass.getdossier()) ;
+   this.GetExamenRadioByNumDossResponse(this.pass.getdossier());
+    console.log("getDoss ",this.pass.getdossier());
 
   }
+
   GetExamenRadioByNumDossResponse(numDoss) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
@@ -199,6 +183,7 @@ export class TabsPage {
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
   }
+
   findAllLaboByNumDossier(numDoss) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
@@ -207,7 +192,7 @@ export class TabsPage {
       '<soapenv:Header/>' +
       '<soapenv:Body>' +
       '<ser:findAllLaboByNumDossier>' +
-      '<numDoss>' +  numDoss + '</numDoss>' +
+      '<numDoss>' + numDoss + '</numDoss>' +
       '</ser:findAllLaboByNumDossier>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
@@ -249,16 +234,17 @@ export class TabsPage {
               l.setvalidation(x[i].children[14].textContent);
               if (l.getcontenuePDF() === "true") {
                 this.LabosT.push(l);
-                   this.countPdfT++;
+                this.countPdfT++;
               }
               else if (l.getcontenuePDF() === "false") {
                 this.LabosF.push(l);
               }
             }
+
           } catch (Error) {
           }
 
-       }
+        }
       }
     }
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');

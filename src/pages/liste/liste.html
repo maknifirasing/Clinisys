@@ -1,21 +1,33 @@
-<!--
-  Generated template for the Liste page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
--->
+<input type="text" value="{{this.navParams.get('langue')}}" #lang/>
 <ion-header>
 
-  <ion-navbar color="custom-color" class="ion-navbar" class="animated fadeInRight">
+  <ion-navbar color="custom-color" class="ion-navbar" class="animated fadeInRight" *ngIf="(lang.value)==='arabe'"
+              dir="rtl">
     <ion-title>
-      Liste
+      {{navParams.data.tabLangue.tabLangue.liste}}
     </ion-title>
 
   </ion-navbar>
-  <ion-navbar class="ion-navbar">
+
+  <ion-navbar color="custom-color" class="ion-navbar" class="animated fadeInRight"
+              *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+    <ion-title>
+      {{navParams.data.tabLangue.tabLangue.liste}}
+    </ion-title>
+
+  </ion-navbar>
+  <ion-navbar class="ion-navbar" *ngIf="(lang.value)==='arabe'" dir="rtl">
 
     <p>
-      <ion-searchbar color="white" (ionInput)="getItems($event)"></ion-searchbar>
+      <ion-searchbar color="white" placeholder=" {{navParams.data.tabLangue.tabLangue.rech}}"
+                     (ionInput)="getItems($event)"></ion-searchbar>
+    </p>
+  </ion-navbar>
+  <ion-navbar class="ion-navbar" *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+
+    <p>
+      <ion-searchbar color="white" placeholder="{{navParams.data.tabLangue.tabLangue.rech}}"
+                     (ionInput)="getItems($event)"></ion-searchbar>
     </p>
   </ion-navbar>
 </ion-header>
@@ -23,26 +35,35 @@
 
 <ion-content>
   <ion-scroll scrollY="true">
-  <ion-list>
+    <ion-list>
 
-    <ion-item-sliding *ngFor="let pas of patientliste ">
-      <ion-item (click)="goToDossierPage(pas)">
-        <ion-avatar item-left>
-          <img src='/android_asset/www/assets/img/{{pas.getimg()}}'>
-        </ion-avatar>
-        <h4><strong>{{ pas.getnom() }}</strong></h4>
-        <p>Age : {{ pas.getage() }} ans CH: {{ pas.getchambre() }}</p>
-        <p>{{ pas.getmedecin() }}</p>
+      <ion-item-sliding *ngFor="let pas of patientliste ">
+        <ion-item (click)="goToDossierPage(pas)" *ngIf="(lang.value)==='arabe'"
+                  dir="rtl">
 
-      </ion-item>
-      <ion-item-options>
-        <button danger (click)="removeItem(pas)">
-          <ion-icon></ion-icon>
-          Delete
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
+          <ion-avatar item-left>
+            <img src='/android_asset/www/assets/img/{{pas.getimg()}}'>
+          </ion-avatar>
+          <h4 style="text-align: right"><strong>{{ pas.getnom() }}</strong></h4>
+          <p style="text-align: right">{{navParams.data.tabLangue.tabLangue.age}} : {{ pas.getage() }}
+            {{navParams.data.tabLangue.tabLangue.ch}}: {{ pas.getchambre() }}</p>
+          <p style="text-align: right">{{ pas.getmedecin() }}</p>
 
-  </ion-list>
+        </ion-item>
+        <ion-item (click)="goToDossierPage(pas)" *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+
+          <ion-avatar item-left>
+            <img src='/android_asset/www/assets/img/{{pas.getimg()}}'>
+          </ion-avatar>
+          <h4><strong>{{ pas.getnom() }}</strong></h4>
+          <p>{{navParams.data.tabLangue.tabLangue.age}} : {{ pas.getage() }} {{navParams.data.tabLangue.tabLangue.ch}}:
+            {{ pas.getchambre() }}</p>
+          <p>{{ pas.getmedecin() }}</p>
+
+        </ion-item>
+
+      </ion-item-sliding>
+
+    </ion-list>
   </ion-scroll>
 </ion-content>

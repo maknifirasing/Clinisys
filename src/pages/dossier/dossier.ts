@@ -16,13 +16,6 @@ import {Variables} from "../../providers/variables";
 
 export class DossierPage {
   m = new MotifHospitalisation();
-<<<<<<< HEAD
-<<<<<<< HEAD
- pass:Patient;
-=======
->>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
-=======
->>>>>>> b38b774492a3df3058b3fa755fe8150945041014
   antec: Array<Antec> = [];
   signe: Array<SigneClinique> = [];
   disig: string;
@@ -52,24 +45,9 @@ export class DossierPage {
   AlerteS: boolean;
   Sor: boolean;
   Ent: boolean;
-
+  titreEnligne:string;
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-  ionViewDidLoad() {
-    var d = new Date();
-    this.dat = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-    this.GetAllMotifHospitalisationByNumDoss(this.numDoss);
-    this.getAntecedentAllergieByIdentifiant(this.id);
-    this.GetAlerteSigneClinique(this.numDoss, this.dateFeuille, this.nature);
-    this.GetTraitements(this.numDoss, this.dateFeuille);
-    this.GetEvenementByDossier(this.numDoss);
-    this.GetListRegime(this.numDoss, this.dateFeuille, this.nature);
-    if (this.nature === "REA") {
-=======
-=======
->>>>>>> b38b774492a3df3058b3fa755fe8150945041014
+console.log("dossier "+this.navParams.get('langue'));
   }
 
   ionViewDidLoad() {
@@ -80,10 +58,6 @@ export class DossierPage {
     this.GetEvenementByDossier(this.navParams.data.pass.getdossier());
     this.GetListRegime(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
     if (this.navParams.data.pass.getnature()=== "REA") {
-<<<<<<< HEAD
->>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
-=======
->>>>>>> b38b774492a3df3058b3fa755fe8150945041014
       this.codeType = "'1','G','L','E','7','I','9','A','3'";
     }
     else if (this.navParams.data.pass.getnature()=== "sur") {
@@ -570,14 +544,6 @@ export class DossierPage {
   }
 
   goToDetailPage() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    this.navCtrl.push(DetailPerPagePage, {nom: this.nom, age: this.age, numDoss: this.numDoss});
-
-=======
->>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
-=======
->>>>>>> b38b774492a3df3058b3fa755fe8150945041014
   }
 }
 

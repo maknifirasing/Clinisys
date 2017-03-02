@@ -1,208 +1,466 @@
-<ion-header  class="ii">
+<input type="text" value="{{this.navParams.get('langue')}}" #lang/>
+<ion-header  class="ion-navbar">
   <ion-navbar color="custom-color" class="ion-navbar">
-    <table border="0">
+<ion-list color="custom-color" *ngIf="(lang.value)==='arabe'"
+          dir="rtl">
+      <ion-item color="custom-color">
+        <ion-avatar item-left>
+          <img src='/android_asset/www/assets/img/{{navParams.data.pass.getimg()}}'>
+        </ion-avatar>
+        <ion-avatar item-right>
+          <img src='/android_asset/www/assets/img/i.jpg'>
+        </ion-avatar>
+       <p style="text-align: right">{{navParams.data.pass.getnom()}}</p>
+        <p style="text-align: right"><strong>{{navParams.data.tabLangue.age}}: </strong>{{navParams.data.pass.getage()}}<strong>{{navParams.data.tabLangue.ch}}: </strong>{{navParams.data.pass.getchambre()}}</p>
+      </ion-item>
+      <ion-item color="custom-color">
+        <p item-right>
+          <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
+        </p>
+        <p style="text-align: right">{{navParams.data.tabLangue.titreEnligne}}<br/> {{navParams.data.dat}}</p>
+      </ion-item>
+  </ion-list>
 
-      <tr>
-        <td rowspan="2">
-          <img src='/android_asset/www/assets/img/{{navParams.data.pass.getimg()}}' width="60" height="50">
-        </td>
-        <td>
-          {{navParams.data.pass.getnom()}}
-        </td>
-        <td>     &nbsp;
-
-        </td>
-        <td rowspan="2">
-          <img src='/android_asset/www/assets/img/i.jpg' class="roundedImage">
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>age: </strong>{{navParams.data.pass.getage()}}<strong>CH: </strong>{{navParams.data.pass.getchambre()}}</td>
-        <td>  &nbsp;
-          &nbsp;
-          &nbsp;
-          &nbsp;
-        </td>
-      </tr>
-    </table>
-  </ion-navbar>
-
-  <ion-navbar color="custom-color">
-    <table border="0">
-      <tr>
-        <td><img src='/android_asset/www/assets/img/green.png' width="30" height="20"></td>
-        <td>En Ligne: Derniére mise a jour le {{navParams.data.dat}}</td>
-      </tr>
-    </table>
+    <ion-list color="custom-color" *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+      <ion-item color="custom-color">
+        <ion-avatar item-left>
+          <img src='/android_asset/www/assets/img/{{navParams.data.pass.getimg()}}'>
+        </ion-avatar>
+        <ion-avatar item-right>
+          <img src='/android_asset/www/assets/img/i.jpg'>
+        </ion-avatar>
+        <p>{{navParams.data.pass.getnom()}}</p>
+        <p><strong>{{navParams.data.tabLangue.age}}: </strong>{{navParams.data.pass.getage()}}<strong>{{navParams.data.tabLangue.ch}}: </strong>{{navParams.data.pass.getchambre()}}</p>
+      </ion-item>
+      <ion-item color="custom-color">
+        <p item-left>
+          <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
+        </p>
+        <p>{{navParams.data.tabLangue.titreEnligne}}<br/> {{navParams.data.dat}}</p>
+      </ion-item>
+    </ion-list>
   </ion-navbar>
 </ion-header>
 <ion-content>
 
   <ion-scroll scrollY="true">
-    <ion-navbar>
+    <ion-navbar *ngIf="(lang.value)==='arabe'"
+                dir="rtl">
       <table border="0" *ngIf="test===true">
         <tr>
           <th class="strong">
-            Motifs de L'hospitalisation :
+          {{navParams.data.tabLangue.titreMotif}}
           </th>
         </tr>
-        <tr>
-          <th> &nbsp;</th>
-        </tr>
+
         <tr>
           <td class="size">
             {{ m.getmotifhospitalisation()}}
           </td>
         </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
       </table>
-    </ion-navbar>
-<ion-navbar>
-  <table border="0" *ngIf="AntecedentAllergieTest===true">
- <strong class="strong">
-   Antécédents
- </strong>
-    <p></p>
-    <tr>
-      <td class="size">
-        {{stringAntec}}
-      </td>
-    </tr>
-  </table>
-</ion-navbar>
 
-    <ion-navbar>
       <table border="0" *ngIf="AntecedentAllergieTest===true">
         <strong class="strong">
-          Allergies
+          {{navParams.data.tabLangue.titreAnt}}
         </strong>
-      <p></p>
+
+        <tr>
+          <td class="size">
+            {{stringAntec}}
+          </td>
+        </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
+      </table>
+
+      <table border="0" *ngIf="AntecedentAllergieTest===true">
+        <strong class="strong">
+          {{navParams.data.tabLangue.titreAll}}
+        </strong>
         <tr>
           <td class="size">
             {{stringAlerg}}
           </td>
         </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
       </table>
-    </ion-navbar>
-
-    <ion-navbar>
       <table border="0" *ngIf="AlerteS===true">
         <strong class="strong">
-          Signes Vitaux
+          {{navParams.data.tabLangue.titreSigneV}}
         </strong>
-        <p></p>
         <tr *ngFor="let sig of signec ">
           <td class="size">
             <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong> {{sig.getdate()}}
           </td>
         </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
       </table>
-    </ion-navbar>
 
-    <ion-navbar>
+
+
       <table border="0" *ngIf="Ent===true">
         <strong class="strong">
-          Entrées
+          {{navParams.data.tabLangue.titreEnt}}
         </strong>
-        <p></p>
         <tr *ngFor="let en of Entrees ">
           <td class="size">
             <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong> {{en.getdate()}}
           </td>
         </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
       </table>
-    </ion-navbar>
 
-    <ion-navbar>
+
+
       <table border="0" *ngIf="trait===true">
         <strong class="strong">
-          Traitement Encours
+{{navParams.data.tabLangue.titreTrait}}
         </strong>
-        <p></p>
         <tr *ngFor="let tra of traitement ">
           <td class="size">
             <strong>{{ tra.getdesignation() }}</strong><br/>
             {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.
           </td>
         </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
       </table>
-    </ion-navbar>
 
-    <ion-navbar>
+
+
       <table border="0" *ngIf="Sor===true">
         <strong class="strong">
-          Sorties
+          {{navParams.data.tabLangue.titreSortie}}
         </strong>
-        <p></p>
         <tr *ngFor="let so of Sorties ">
           <td class="size">
             <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> {{so.getdate()}}
           </td>
         </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
       </table>
-    </ion-navbar>
 
-    <ion-navbar>
       <table border="0" *ngIf="AlerteSigneCliniqueTest===true">
         <strong class="strong">
-          Alerts
+          {{navParams.data.tabLangue.titreAlert}}
         </strong>
-        <p></p>
         <tr *ngFor="let pas of signe ">
           <td class="size">
             <strong>{{pas.getdesignation()}}</strong> {{pas.getquantite()}} {{pas.getdate()}}
           </td>
         </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
       </table>
-    </ion-navbar>
+       <table border="0" *ngIf="His===true">
+         <strong class="strong">
+           {{navParams.data.tabLangue.titreMaladie}}
+         </strong>
+         <tr *ngFor="let his of Histoiremaladie ">
+           <td>
+             {{ his.getdetail().substr(0,45,50) }}
+            <br/> {{ his.getdetail().substr(50,45,100) }}
+            <br/> {{ his.getdetail().substr(100,45,150) }}
+            <br/> {{ his.getdetail().substr(150,45,200) }}
+            <br/> {{ his.getdetail().substr(200,45,250) }}
+            <br/> {{ his.getdetail().substr(250,45,300) }}
+            <br/> {{ his.getdetail().substr(300,45,350) }}
+            <br/> {{ his.getdetail().substr(350,45,400) }}
+            <br/> {{ his.getdetail().substr(400,45,450) }}
+            <br/> {{ his.getdetail().substr(450,45,500) }}
+            <br/> {{ his.getdetail().substr(500,45,550) }}
 
-   <!-- <ion-navbar>
+
+           </td>
+         </tr>
+       </table>
+       <table border="0" *ngIf="Exa===true">
+         <strong class="strong">
+           {{navParams.data.tabLangue.titreClini}}
+         </strong>
+         <p></p>
+         <tr *ngFor="let exa of Examenclinique ">
+           <td>
+             [{{ exa.getdate() }}-{{exa.getuserCreat()}}]<br/>
+             {{ exa.getdetail().substr(0,45,50) }}
+             <br/> {{ exa.getdetail().substr(50,45,100) }}
+             <br/> {{ exa.getdetail().substr(100,45,150) }}
+             <br/> {{ exa.getdetail().substr(150,45,200) }}
+             <br/> {{ exa.getdetail().substr(200,45,250) }}
+             <br/> {{ exa.getdetail().substr(250,45,300) }}
+             <br/> {{ exa.getdetail().substr(300,45,350) }}
+             <br/> {{ exa.getdetail().substr(350,45,400) }}
+             <br/> {{ exa.getdetail().substr(400,45,450) }}
+             <br/> {{ exa.getdetail().substr(450,45,500) }}
+             <br/> {{ exa.getdetail().substr(500,45,550) }}
+           </td>
+         </tr>
+       </table>
+
+       <table border="0" *ngIf="Evo===true">
+         <strong class="strong">
+           {{navParams.data.tabLangue.titreEvo}}
+         </strong>
+         <p></p>
+         <tr *ngFor="let evo of Evolution ">
+           <td>
+             {{ evo.getdetail().substr(0,45,50) }}
+             <br/> {{ evo.getdetail().substr(50,45,100) }}
+             <br/> {{ evo.getdetail().substr(100,45,150) }}
+             <br/> {{ evo.getdetail().substr(150,45,200) }}
+             <br/> {{ evo.getdetail().substr(200,45,250) }}
+             <br/> {{ evo.getdetail().substr(250,45,300) }}
+             <br/> {{ evo.getdetail().substr(300,45,350) }}
+             <br/> {{ evo.getdetail().substr(350,45,400) }}
+             <br/> {{ evo.getdetail().substr(400,45,450) }}
+             <br/> {{ evo.getdetail().substr(450,45,500) }}
+             <br/> {{ evo.getdetail().substr(500,45,550) }}
+           </td>
+         </tr>
+       </table>
+
+       <table border="0" *ngIf="Ri===true">
+         <strong class="strong">
+           {{navParams.data.tabLangue.titreRegime}}
+         </strong>
+         <p></p>
+         <tr>
+           <td>
+             {{ rigime.getdesignation() }}
+           </td>
+         </tr>
+       </table>
+
+       <table border="0" *ngIf="Con===true">
+         <strong class="strong">
+           {{navParams.data.tabLangue.titreConclu}}
+         </strong>
+         <p></p>
+         <tr *ngFor="let con of Conclusion ">
+           <td>
+             [{{ con.getdate() }}-{{con.getuserCreat()}}]<br/>
+             {{ con.getdetail().substr(0,45,50) }}
+             <br/> {{ con.getdetail().substr(50,45,100) }}
+             <br/> {{ con.getdetail().substr(100,45,150) }}
+             <br/> {{ con.getdetail().substr(150,45,200) }}
+             <br/> {{ con.getdetail().substr(200,45,250) }}
+             <br/> {{ con.getdetail().substr(250,45,300) }}
+             <br/> {{ con.getdetail().substr(300,45,350) }}
+             <br/> {{ con.getdetail().substr(350,45,400) }}
+             <br/> {{ con.getdetail().substr(400,45,450) }}
+             <br/> {{ con.getdetail().substr(450,45,500) }}
+             <br/> {{ con.getdetail().substr(500,45,550) }}
+           </td>
+         </tr>
+       </table>
+     </ion-navbar>
+    <ion-navbar *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+      <table border="0" *ngIf="test===true">
+        <tr>
+          <th class="strong">
+            {{navParams.data.tabLangue.titreMotif}}
+          </th>
+        </tr>
+
+        <tr>
+          <td class="size">
+            {{ m.getmotifhospitalisation()}}
+          </td>
+        </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
+      </table>
+
+      <table border="0" *ngIf="AntecedentAllergieTest===true">
+        <strong class="strong">
+          {{navParams.data.tabLangue.titreAnt}}
+        </strong>
+
+        <tr>
+          <td class="size">
+            {{stringAntec}}
+          </td>
+        </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
+      </table>
+
+      <table border="0" *ngIf="AntecedentAllergieTest===true">
+        <strong class="strong">
+          {{navParams.data.tabLangue.titreAll}}
+        </strong>
+        <tr>
+          <td class="size">
+            {{stringAlerg}}
+          </td>
+        </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
+      </table>
+      <table border="0" *ngIf="AlerteS===true">
+        <strong class="strong">
+          {{navParams.data.tabLangue.titreSigneV}}
+        </strong>
+        <tr *ngFor="let sig of signec ">
+          <td class="size">
+            <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong> {{sig.getdate()}}
+          </td>
+        </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
+      </table>
+
+
+
+      <table border="0" *ngIf="Ent===true">
+        <strong class="strong">
+          {{navParams.data.tabLangue.titreEnt}}
+        </strong>
+        <tr *ngFor="let en of Entrees ">
+          <td class="size">
+            <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong> {{en.getdate()}}
+          </td>
+        </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
+      </table>
+
+
+
+      <table border="0" *ngIf="trait===true">
+        <strong class="strong">
+          {{navParams.data.tabLangue.titreTrait}}
+        </strong>
+        <tr *ngFor="let tra of traitement ">
+          <td class="size">
+            <strong>{{ tra.getdesignation() }}</strong><br/>
+            {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.
+          </td>
+        </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
+      </table>
+
+
+
+      <table border="0" *ngIf="Sor===true">
+        <strong class="strong">
+          {{navParams.data.tabLangue.titreSortie}}
+        </strong>
+        <tr *ngFor="let so of Sorties ">
+          <td class="size">
+            <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> {{so.getdate()}}
+          </td>
+        </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
+      </table>
+
+      <table border="0" *ngIf="AlerteSigneCliniqueTest===true">
+        <strong class="strong">
+          {{navParams.data.tabLangue.titreAlert}}
+        </strong>
+        <tr *ngFor="let pas of signe ">
+          <td class="size">
+            <strong>{{pas.getdesignation()}}</strong> {{pas.getquantite()}} {{pas.getdate()}}
+          </td>
+        </tr>
+        <tr>
+          <th> &nbsp;</th>
+        </tr>
+      </table>
       <table border="0" *ngIf="His===true">
         <strong class="strong">
-          Histoire de la maladie
+          {{navParams.data.tabLangue.titreMaladie}}
         </strong>
-        <p></p>
         <tr *ngFor="let his of Histoiremaladie ">
           <td>
-            {{ his.getdetail() }}
+            {{ his.getdetail().substr(0,45,50) }}
+            <br/> {{ his.getdetail().substr(50,45,100) }}
+            <br/> {{ his.getdetail().substr(100,45,150) }}
+            <br/> {{ his.getdetail().substr(150,45,200) }}
+            <br/> {{ his.getdetail().substr(200,45,250) }}
+            <br/> {{ his.getdetail().substr(250,45,300) }}
+            <br/> {{ his.getdetail().substr(300,45,350) }}
+            <br/> {{ his.getdetail().substr(350,45,400) }}
+            <br/> {{ his.getdetail().substr(400,45,450) }}
+            <br/> {{ his.getdetail().substr(450,45,500) }}
+            <br/> {{ his.getdetail().substr(500,45,550) }}
+
+
           </td>
         </tr>
       </table>
-    </ion-navbar>
-
-    <ion-navbar>
       <table border="0" *ngIf="Exa===true">
         <strong class="strong">
-          Examen clinique
+          {{navParams.data.tabLangue.titreClini}}
         </strong>
         <p></p>
         <tr *ngFor="let exa of Examenclinique ">
           <td>
             [{{ exa.getdate() }}-{{exa.getuserCreat()}}]<br/>
-            {{ exa.getdetail() }}
+            {{ exa.getdetail().substr(0,45,50) }}
+            <br/> {{ exa.getdetail().substr(50,45,100) }}
+            <br/> {{ exa.getdetail().substr(100,45,150) }}
+            <br/> {{ exa.getdetail().substr(150,45,200) }}
+            <br/> {{ exa.getdetail().substr(200,45,250) }}
+            <br/> {{ exa.getdetail().substr(250,45,300) }}
+            <br/> {{ exa.getdetail().substr(300,45,350) }}
+            <br/> {{ exa.getdetail().substr(350,45,400) }}
+            <br/> {{ exa.getdetail().substr(400,45,450) }}
+            <br/> {{ exa.getdetail().substr(450,45,500) }}
+            <br/> {{ exa.getdetail().substr(500,45,550) }}
           </td>
         </tr>
       </table>
-    </ion-navbar>
 
-    <ion-navbar>
       <table border="0" *ngIf="Evo===true">
         <strong class="strong">
-          Evolution
+          {{navParams.data.tabLangue.titreEvo}}
         </strong>
         <p></p>
         <tr *ngFor="let evo of Evolution ">
           <td>
-            {{ evo.getdetail() }}
+            {{ evo.getdetail().substr(0,45,50) }}
+            <br/> {{ evo.getdetail().substr(50,45,100) }}
+            <br/> {{ evo.getdetail().substr(100,45,150) }}
+            <br/> {{ evo.getdetail().substr(150,45,200) }}
+            <br/> {{ evo.getdetail().substr(200,45,250) }}
+            <br/> {{ evo.getdetail().substr(250,45,300) }}
+            <br/> {{ evo.getdetail().substr(300,45,350) }}
+            <br/> {{ evo.getdetail().substr(350,45,400) }}
+            <br/> {{ evo.getdetail().substr(400,45,450) }}
+            <br/> {{ evo.getdetail().substr(450,45,500) }}
+            <br/> {{ evo.getdetail().substr(500,45,550) }}
           </td>
         </tr>
       </table>
-    </ion-navbar>
 
-    <ion-navbar>
       <table border="0" *ngIf="Ri===true">
         <strong class="strong">
-          Rigime
+          {{navParams.data.tabLangue.titreRegime}}
         </strong>
         <p></p>
         <tr>
@@ -211,21 +469,29 @@
           </td>
         </tr>
       </table>
-    </ion-navbar>
 
-    <ion-navbar>
       <table border="0" *ngIf="Con===true">
         <strong class="strong">
-          Conclusion
+          {{navParams.data.tabLangue.titreConclu}}
         </strong>
         <p></p>
         <tr *ngFor="let con of Conclusion ">
           <td>
             [{{ con.getdate() }}-{{con.getuserCreat()}}]<br/>
-            {{ con.getdetail() }}
+            {{ con.getdetail().substr(0,45,50) }}
+            <br/> {{ con.getdetail().substr(50,45,100) }}
+            <br/> {{ con.getdetail().substr(100,45,150) }}
+            <br/> {{ con.getdetail().substr(150,45,200) }}
+            <br/> {{ con.getdetail().substr(200,45,250) }}
+            <br/> {{ con.getdetail().substr(250,45,300) }}
+            <br/> {{ con.getdetail().substr(300,45,350) }}
+            <br/> {{ con.getdetail().substr(350,45,400) }}
+            <br/> {{ con.getdetail().substr(400,45,450) }}
+            <br/> {{ con.getdetail().substr(450,45,500) }}
+            <br/> {{ con.getdetail().substr(500,45,550) }}
           </td>
         </tr>
       </table>
-    </ion-navbar>-->
+    </ion-navbar>
   </ion-scroll>
 </ion-content>

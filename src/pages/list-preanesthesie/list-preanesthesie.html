@@ -1,76 +1,141 @@
-<ion-header  class="ii">
+<input type="text" value="{{this.navParams.get('langue')}}" #lang/>
+<ion-header  class="ion-navbar">
   <ion-navbar color="custom-color" class="ion-navbar">
-    <table border="0">
+    <ion-list color="custom-color" *ngIf="(lang.value)==='arabe'"
+              dir="rtl">
+      <ion-item color="custom-color">
+        <ion-avatar item-left>
+          <img src='/android_asset/www/assets/img/{{navParams.data.pass.getimg()}}'>
+        </ion-avatar>
+        <ion-avatar item-right>
+          <img src='/android_asset/www/assets/img/i.jpg'>
+        </ion-avatar>
+        <p style="text-align: right">{{navParams.data.pass.getnom()}}</p>
+        <p style="text-align: right"><strong>{{navParams.data.tabLangue.age}}: </strong>{{navParams.data.pass.getage()}}<strong>{{navParams.data.tabLangue.ch}}: </strong>{{navParams.data.pass.getchambre()}}</p>
+      </ion-item>
+      <ion-item color="custom-color">
+        <p item-right>
+          <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
+        </p>
+        <p style="text-align: right">{{navParams.data.tabLangue.titreEnligne}}<br/> {{navParams.data.dat}}</p>
+      </ion-item>
+    </ion-list>
 
-      <tr>
-        <td rowspan="2">
-          <img src='/android_asset/www/assets/img/{{navParams.data.pass.getimg()}}' width="60" height="50">
-        </td>
-        <td>
-          {{navParams.data.pass.getnom()}}
-        </td>
-        <td>     &nbsp;
-
-        </td>
-        <td rowspan="2">
-          <img src='/android_asset/www/assets/img/i.jpg' class="roundedImage">
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>age: </strong>{{navParams.data.pass.getage()}}<strong>CH: </strong>{{navParams.data.pass.getchambre()}}</td>
-        <td>  &nbsp;
-          &nbsp;
-          &nbsp;
-          &nbsp;
-        </td>
-      </tr>
-    </table>
-  </ion-navbar>
-  <ion-navbar color="custom-color">
-    <table border="0">
-      <tr>
-        <td><img src='/android_asset/www/assets/img/green.png' width="30" height="20"></td>
-        <td>En Ligne: Derniére mise a jour le {{navParams.data.dat}}</td>
-      </tr>
-    </table>
+    <ion-list color="custom-color" *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+      <ion-item color="custom-color">
+        <ion-avatar item-left>
+          <img src='/android_asset/www/assets/img/{{navParams.data.pass.getimg()}}'>
+        </ion-avatar>
+        <ion-avatar item-right>
+          <img src='/android_asset/www/assets/img/i.jpg'>
+        </ion-avatar>
+        <p>{{navParams.data.pass.getnom()}}</p>
+        <p><strong>{{navParams.data.tabLangue.age}}: </strong>{{navParams.data.pass.getage()}}<strong>{{navParams.data.tabLangue.ch}}: </strong>{{navParams.data.pass.getchambre()}}</p>
+      </ion-item>
+      <ion-item color="custom-color">
+        <p item-left>
+          <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
+        </p>
+        <p>{{navParams.data.tabLangue.titreEnligne}}<br/> {{navParams.data.dat}}</p>
+      </ion-item>
+    </ion-list>
   </ion-navbar>
 </ion-header>
 <ion-content>
-<ion-list>
-  <ion-item-sliding *ngFor="let LP of ListeP ">
-    <ion-item>
-      <table border="0">
-<tr>
-  <td> <img src='/android_asset/www/assets/img/valid.png' width="25" height="20"></td>
-
-    <td class="size"> <strong>Acte: </strong> {{LP.getacte()}}</td>
-</tr>
-
-      <tr>
-       <td></td>
-      <td class="size"><strong> Chirurgien:</strong> {{LP.getchirurgien()}}</td>
-      </tr>
-      <tr>
-       <td></td>
-        <td class="size"><strong> Date Acte: </strong>{{LP.getdateacte()}}</td>
+  <ion-navbar *ngIf="(lang.value)==='arabe'"
+  dir="rtl">
+    <table border="0" *ngFor="let LP of ListeP ">
+      <tr (click)="openURL(labt.getnumAdmission())">
+        <td>
+          <img src='/android_asset/www/assets/img/valid.png' class="roundedImage">
+        </td>
+        <td class="size">
+          <strong>{{navParams.data.tabLangue.titreAct}}: </strong> {{LP.getacte()}}
+        </td>
       </tr>
       <tr>
         <td></td>
-        <td class="size"><strong> Heure Debut:</strong> {{LP.getheureDebut()}}</td>
+        <td class="size">
+          <strong> {{navParams.data.tabLangue.titreChi}}:</strong> {{LP.getchirurgien()}}
+        </td>
       </tr>
       <tr>
         <td></td>
-        <td class="size"><strong> Heure Fin:</strong> {{LP.getheureFin()}}</td>
+        <td class="size">
+          <strong> {{navParams.data.tabLangue.titreDateAct}}: </strong>{{LP.getdateacte()}}
+        </td>
       </tr>
       <tr>
         <td></td>
-        <td class="size"><strong> KC:</strong> {{LP.getkc()}}</td>
+        <td class="size">
+          <strong> {{navParams.data.tabLangue.titreHeureDeb}}:</strong> {{LP.getheureDebut()}}
+        </td>
       </tr>
-      </table>
-    </ion-item>
+      <tr>
+        <td></td>
+        <td class="size">
+          <strong> {{navParams.data.tabLangue.titreHeureF}}:</strong> {{LP.getheureFin()}}
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="size">
+          <strong> KC:</strong> {{LP.getkc()}}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          &nbsp;
+        </td>
+      </tr>
+    </table>
+  </ion-navbar>
 
-  </ion-item-sliding>
-
-</ion-list>
+  <ion-navbar *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+    <table border="0" *ngFor="let LP of ListeP ">
+      <tr (click)="openURL(labt.getnumAdmission())">
+        <td>
+          <img src='/android_asset/www/assets/img/valid.png' class="roundedImage">
+        </td>
+        <td class="size">
+          <strong>{{navParams.data.tabLangue.titreAct}}: </strong> {{LP.getacte()}}
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="size">
+          <strong> {{navParams.data.tabLangue.titreChi}}:</strong> {{LP.getchirurgien()}}
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="size">
+          <strong> {{navParams.data.tabLangue.titreDateAct}}: </strong>{{LP.getdateacte()}}
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="size">
+          <strong> {{navParams.data.tabLangue.titreHeureDeb}}:</strong> {{LP.getheureDebut()}}
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="size">
+          <strong> {{navParams.data.tabLangue.titreHeureF}}:</strong> {{LP.getheureFin()}}
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="size">
+          <strong> KC:</strong> {{LP.getkc()}}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          &nbsp;
+        </td>
+      </tr>
+    </table>
+  </ion-navbar>
 </ion-content>

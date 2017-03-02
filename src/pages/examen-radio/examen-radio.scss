@@ -2,6 +2,7 @@ page-examen-radio {
   .size{
     font-size: 80%;
   }
+
   .roundedImage{
     overflow:hidden;
     -webkit-border-radius:50px;
@@ -9,6 +10,9 @@ page-examen-radio {
     border-radius:50px;
     width:35px;
     height:35px;
+  }
+  .ion-navbar{
+    height: 120px !important;
   }
   /*hr {
     display: block;

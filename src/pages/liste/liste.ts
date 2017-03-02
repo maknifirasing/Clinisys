@@ -1,13 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
-<<<<<<< HEAD
-<<<<<<< HEAD
-//import {DossierPage} from '../dossier/dossier';
-=======
->>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
-=======
->>>>>>> b38b774492a3df3058b3fa755fe8150945041014
 import {Variables} from "../../providers/variables";
 import {TabsPage} from "../tabs/tabs";
 
@@ -16,46 +9,24 @@ import {TabsPage} from "../tabs/tabs";
   templateUrl: 'liste.html',
   providers: [Variables]
 })
-<<<<<<< HEAD
-<<<<<<< HEAD
-export class ListePage{
-=======
 export class ListePage {
->>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
-=======
-export class ListePage {
->>>>>>> b38b774492a3df3058b3fa755fe8150945041014
-  json: any;
   xml: any;
   patient: Array<Patient> = [];
   patientliste: Array<Patient> = [];
   DateF: any;
   datefeuille: string = "";
-
-
+  tabLangue:any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.patientliste = this.patient;
+    console.log("eee "+this.navParams.data.tabLangue.tabLangue.titreEnligne);
   }
 
   ionViewDidLoad() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    var d=new Date();
+    this.liste("admin", "", "all");
     this.DateFeuille();
-
-=======
-=======
->>>>>>> b38b774492a3df3058b3fa755fe8150945041014
-    this.liste("admin","","all");
-    this.DateFeuille();
-
   }
 
-  liste(user,searchText,etage) {
-<<<<<<< HEAD
->>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
-=======
->>>>>>> b38b774492a3df3058b3fa755fe8150945041014
+  liste(user, searchText, etage) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -63,9 +34,9 @@ export class ListePage {
       '<soapenv:Header/>' +
       '<soapenv:Body>' +
       '<ser:GetListClientForTablette>' +
-      '<user>'+user+'</user>' +
-      '<searchText>'+searchText+'</searchText>' +
-      '<etage>'+etage+'</etage>' +
+      '<user>' + user + '</user>' +
+      '<searchText>' + searchText + '</searchText>' +
+      '<etage>' + etage + '</etage>' +
       '</ser:GetListClientForTablette>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
@@ -146,7 +117,6 @@ export class ListePage {
           this.xml = xmlhttp.responseXML;
           this.DateF = this.xml.getElementsByTagName("return");
           this.datefeuille = this.datefeuille + this.DateF[0].childNodes[0].nodeValue;
-          //console.log(this.datefeuille);
           return this.datefeuille;
         }
       }
@@ -156,43 +126,13 @@ export class ListePage {
     xmlhttp.send(sr);
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  DateFeuille() {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url+'dmi-core/DossierSoinWSService?wsdl', true);
-    var sr =
-      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
-      '<soapenv:Header/>' +
-      '<soapenv:Body>' +
-      '  <ser:GetDateFeuille/>' +
-      '</soapenv:Body>' +
-      '</soapenv:Envelope>';
-    xmlhttp.onreadystatechange = () => {
-      if (xmlhttp.readyState == 4) {
-        if (xmlhttp.status == 200) {
-          this.xml = xmlhttp.responseXML;
-          this.DateF = this.xml.getElementsByTagName("return");
-          this.datefeuille=this.datefeuille+this.DateF[0].childNodes[0].nodeValue;
-          //console.log(this.datefeuille);
-          return this.datefeuille;
-        }
-      }
-    }
-    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
-    xmlhttp.responseType = "document";
-    xmlhttp.send(sr);
-  }
-
-=======
->>>>>>> 7b0e36a43bd86a82dd9b92f7098ceefdb82ff7ef
-=======
->>>>>>> b38b774492a3df3058b3fa755fe8150945041014
   goToDossierPage(patient) {
-    this.navCtrl.push(TabsPage, {
-      mypatient: patient,
-      dateFeuille: this.datefeuille
-    });
+    this.tabLangue = {
+      tabLangue: this.navParams.data.tabLangue.tabLangue,
+
+    };
+    this.navCtrl.push(TabsPage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue"), mypatient:patient,
+      dateFeuille: this.datefeuille});
   }
 
   initializeItems() {

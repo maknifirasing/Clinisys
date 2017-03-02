@@ -3,7 +3,6 @@ import {NavController, NavParams} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {Labo} from "../../models/Labo";
 import {PdfViewPage} from "../pdf-view/pdf-view";
-import {TabsPage} from "../tabs/tabs";
 
 @Component({
   selector: 'page-examen-labo',
@@ -16,20 +15,19 @@ export class ExamenLaboPage {
   pdf: string;
   countPdfT: number;
   countPdf: number;
-  tab: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
 
     this.countPdfT = 0;
     this.countPdf = 0;
-    this.LabosT=this.navParams.data.Labost;
-    this.LabosF=this.navParams.data.Labosf;
+    this.LabosT = this.navParams.data.Labost;
+    this.LabosF = this.navParams.data.Labosf;
+
   }
 
   ionViewDidLoad() {
-    this.tab=new TabsPage(this.navParams,this.Url);
-    this.tab.findAllLaboByNumDossier(this.navParams.data.pass.getdossier());
-    }
+
+  }
 
 
   openURL(numAdmission) {

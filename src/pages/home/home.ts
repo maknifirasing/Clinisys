@@ -7,25 +7,24 @@ import {Variables} from "../../providers/variables";
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
-  providers:[Variables]
+  providers: [Variables]
+
 })
 export class HomePage {
   err: string;
   xml: any;
   user: Users;
-  mess: string = "";
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,private Url:Variables) {
+  errConn: string;
+  tabLangue: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.user = new Users;
 
   }
 
   connecter(login, password) {
-    this.mess="It will take few seconds !! Please be patient";
-    this.err = "";
     try {
       var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('POST', this.Url.url+'dmi-core/DossierSoinWSService?wsdl', true);
+      xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
       var sr =
         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
         '<soapenv:Header/>' +
@@ -40,6 +39,7 @@ export class HomePage {
         if (xmlhttp.readyState == 4) {
           if (xmlhttp.status == 200) {
             try {
+
               this.xml = xmlhttp.responseXML;
               var x;
               x = this.xml.getElementsByTagName("return");
@@ -58,9 +58,13 @@ export class HomePage {
               this.user.setuserName(x[0].children[12].textContent);
               this.user.setvalidCptRend(x[0].children[13].textContent);
               this.user.setvalidPHNuit(x[0].children[14].textContent);
-              this.navCtrl.push(ListePage);
+              this.tabLangue = {
+                tabLangue: this.navParams.data.tabLangue
+
+              };
+              this.navCtrl.push(ListePage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue")});
             } catch (Error) {
-              this.err = "verifier votre login ou password!"
+              this.err = this.navParams.data.tabLangue.err;
             }
           }
         }
@@ -70,7 +74,7 @@ export class HomePage {
       xmlhttp.responseType = "document";
       xmlhttp.send(sr);
     } catch (Error) {
-      this.err = "verifier votre connextion!"
+      this.errConn = this.navParams.data.tabLangue.errConn;
     }
   }
 }
