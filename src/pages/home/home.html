@@ -1,6 +1,5 @@
 <input type="hidden" value="{{this.navParams.get('langue')}}" #lang/>
 <ion-content>
-  <a href="" ping="http://localhost:8102/">aaaaaaa</a>
   <div padding id="cloud-layer" *ngIf="(lang.value)==='arabe'" dir="rtl">
 
     <ion-row>
@@ -8,7 +7,6 @@
         <img src="/android_asset/www/assets/img/clinisys.png"/>
       </ion-col>
     </ion-row>
-    <p>{{mess}}</p>
     <p>{{err}}</p>
     <p>{{errConn}}</p>
     <ion-row>
