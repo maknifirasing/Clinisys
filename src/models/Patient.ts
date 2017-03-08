@@ -1,14 +1,13 @@
-import {DateTime} from "ionic-angular";
 export class Patient {
   private _id: string;
   private _dossier: string;
   private _chambre: string;
   private _nom: string;
   private _prenom: string;
-  private _dateNaiss: DateTime;
+  private _dateNaiss: string;
   private _medecin: string;
   private _spec: string;
-  private _etat: boolean;
+  private _etat: string;
   private _age: number;
   private _img: string;
   private _nature: string;
@@ -64,11 +63,11 @@ export class Patient {
     this._prenom = value;
   }
 
-  getdateNaiss(): DateTime {
+  getdateNaiss(): string {
     return this._dateNaiss;
   }
 
-  setdateNaiss(value: DateTime) {
+  setdateNaiss(value: string) {
     this._dateNaiss = value;
   }
 
@@ -88,11 +87,11 @@ export class Patient {
     this._spec = value;
   }
 
-  getetat(): boolean {
+  getetat(): string {
     return this._etat;
   }
 
-  setetat(value: boolean) {
+  setetat(value: string) {
     this._etat = value;
   }
 

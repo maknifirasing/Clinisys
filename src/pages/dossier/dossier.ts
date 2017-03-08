@@ -7,6 +7,7 @@ import {Traitement} from "../../models/Traitement";
 import {Evenement} from "../../models/Evenement";
 import {Rigime} from "../../models/Rigime";
 import {Variables} from "../../providers/variables";
+import {SigneCliniqueService} from "../../services/SigneCliniqueService";
 
 @Component({
   selector: 'page-dossier',
@@ -46,24 +47,37 @@ export class DossierPage {
   Sor: boolean;
   Ent: boolean;
   titreEnligne:string;
+  connection: boolean;
+  signeCliniqueS: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
 console.log("dossier "+this.navParams.get('langue'));
+
+    if (Variables.checconnection() === "No network connection") {
+      this.connection = false;
+
+      this.GetAlerteSigneCliniqueOff(this.signe, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
+    }
+    else {
+      this.connection = true;
+      this.GetAllMotifHospitalisationByNumDoss(this.navParams.data.pass.getdossier());
+      this.getAntecedentAllergieByIdentifiant(this.navParams.data.pass.getid());
+      this.GetAlerteSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
+      this.GetTraitements(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille);
+      this.GetEvenementByDossier(this.navParams.data.pass.getdossier());
+      this.GetListRegime(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
+      if (this.navParams.data.pass.getnature() === "REA") {
+        this.codeType = "'1','G','L','E','7','I','9','A','3'";
+      }
+      else if (this.navParams.data.pass.getnature() === "sur") {
+        this.codeType = "'1','3','4'";
+      }
+      this.GetSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeType);
+
+    }
   }
 
   ionViewDidLoad() {
-    this.GetAllMotifHospitalisationByNumDoss(this.navParams.data.pass.getdossier());
-    this.getAntecedentAllergieByIdentifiant(this.navParams.data.pass.getid());
-    this.GetAlerteSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
-    this.GetTraitements(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille);
-    this.GetEvenementByDossier(this.navParams.data.pass.getdossier());
-    this.GetListRegime(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
-    if (this.navParams.data.pass.getnature()=== "REA") {
-      this.codeType = "'1','G','L','E','7','I','9','A','3'";
-    }
-    else if (this.navParams.data.pass.getnature()=== "sur") {
-      this.codeType = "'1','3','4'";
-    }
-    this.GetSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeType);
+
   }
 
 
@@ -105,12 +119,26 @@ console.log("dossier "+this.navParams.get('langue'));
           } catch (Error) {
             this.AlerteSigneCliniqueTest = false;
           }
+          this.signeCliniqueS = new SigneCliniqueService();
+          if (this.signeCliniqueS.verifSigneClinique(this.signe, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature())) {
+            this.signeCliniqueS.getSigneCliniques(this.signe, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
+          }
         }
       }
     }
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
+  }
+
+  GetAlerteSigneCliniqueOff(signe, numDoss, dateFeuille, nature) {
+    this.signeCliniqueS = new SigneCliniqueService();
+    this.signe = this.signeCliniqueS.getSigneCliniques(signe, numDoss, dateFeuille, nature);
+    if (this.signe.length === 0) {
+      this.AlerteSigneCliniqueTest = false;
+    } else if (this.signe.length != 0) {
+      this.AlerteSigneCliniqueTest = true;
+    }
   }
 
   getAntecedentAllergieByIdentifiant(id) {
@@ -232,12 +260,12 @@ console.log("dossier "+this.navParams.get('langue'));
             this.m.setconclusion(x[0].children[0].textContent);
             drdv = new Date(x[0].children[1].textContent);
             day = drdv.getDate();
-            month = drdv.getMonth()+1;
+            month = drdv.getMonth() + 1;
             year = drdv.getFullYear();
             this.m.setdateRdv(day + "/" + month + "/" + year);
             dsortie = new Date(x[0].children[2].textContent);
             day = dsortie.getDate();
-            month = dsortie.getMonth()+1;
+            month = dsortie.getMonth() + 1;
             year = dsortie.getFullYear();
             this.m.setdateSortie(day + "/" + month + "/" + year);
             this.m.setgroupeSang(x[0].children[3].textContent);

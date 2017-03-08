@@ -1,14 +1,18 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams, Platform } from 'ionic-angular';
 import {Users} from '../../models/Users';
 import {ListePage} from "../liste/liste";
 import {Variables} from "../../providers/variables";
+import {UserService} from "../../services/UserService";
+
+
+declare var navigator: any;
+declare var Connection: any;
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
   providers: [Variables]
-
 })
 export class HomePage {
   err: string;
@@ -16,12 +20,18 @@ export class HomePage {
   user: Users;
   errConn: string;
   tabLangue: any;
+  mess: string = "";
+  userserv: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.user = new Users;
-
+  //  this.verifuser();
   }
 
+
   connecter(login, password) {
+   console.log(login + "  " + password);
+    this.mess = "It will take few seconds !! Please be patient";
+    this.err = "";
     try {
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
@@ -62,7 +72,13 @@ export class HomePage {
                 tabLangue: this.navParams.data.tabLangue
 
               };
-              this.navCtrl.push(ListePage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue")});
+
+
+              this.userserv = new UserService();
+              //      if (this.userserv.verifUser() === false) {
+              this.userserv.getUser(this.user);
+              //    }
+                     this.navCtrl.push(ListePage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue")});
             } catch (Error) {
               this.err = this.navParams.data.tabLangue.err;
             }
@@ -77,4 +93,19 @@ export class HomePage {
       this.errConn = this.navParams.data.tabLangue.errConn;
     }
   }
+
+  verifuser() {
+    this.userserv = new UserService();
+  alert("ee4 "+this.userserv.verifUser())  ;
+  }
+
+
+  checkNetwork() {
+    alert("connexion " + Variables.checconnection());
+  }
+
+  doesConnectionExist() {
+    alert("service " +   Variables.checservice(this.Url.url));
+    }
+
 }
