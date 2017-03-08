@@ -1,6 +1,3 @@
-/**
- * Created by makni on 20/02/2017.
- */
 export class Consigne{
   private _type: string;
   private _datetache: string;

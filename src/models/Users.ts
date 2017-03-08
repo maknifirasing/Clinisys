@@ -10,8 +10,8 @@ export class Users {
   private _chStat: number;
   private _codeMedecinInfirmier: any;
   private _codePin: number;
-  private _dateModPwd: DateTime;
-  private _dernierDateCnx: DateTime;
+  private _dateModPwd: string;
+  private _dernierDateCnx: string;
   private _description: string;
   private _grp: string;
   private _matricule: any;
@@ -19,8 +19,8 @@ export class Users {
   private _oldGrp: any;
   private _passWord: string;
   private _userName: string;
-  private _validCptRend: boolean;
-  private _validPHNuit: boolean;
+  private _validCptRend: string;
+  private _validPHNuit: string;
 
   constructor() {
   }
@@ -57,19 +57,19 @@ export class Users {
     this._codePin = value;
   }
 
-  getdateModPwd(): DateTime {
+  getdateModPwd(): string {
     return this._dateModPwd;
   }
 
-  setdateModPwd(value: DateTime) {
+  setdateModPwd(value: string) {
     this._dateModPwd = value;
   }
 
-  getdernierDateCnx(): DateTime {
+  getdernierDateCnx(): string {
     return this._dernierDateCnx;
   }
 
-  setdernierDateCnx(value: DateTime) {
+  setdernierDateCnx(value: string) {
     this._dernierDateCnx = value;
   }
 
@@ -129,19 +129,19 @@ export class Users {
     this._userName = value;
   }
 
-  getvalidCptRend(): boolean {
+  getvalidCptRend(): string {
     return this._validCptRend;
   }
 
-  setvalidCptRend(value: boolean) {
+  setvalidCptRend(value: string) {
     this._validCptRend = value;
   }
 
-  getvalidPHNuit(): boolean {
+  getvalidPHNuit(): string {
     return this._validPHNuit;
   }
 
-  setvalidPHNuit(value: boolean) {
+  setvalidPHNuit(value: string) {
     this._validPHNuit = value;
   }
 }

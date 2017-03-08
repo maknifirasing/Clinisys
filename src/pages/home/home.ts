@@ -1,8 +1,10 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, Platform} from 'ionic-angular';
+import {NavController, NavParams, Platform } from 'ionic-angular';
 import {Users} from '../../models/Users';
 import {ListePage} from "../liste/liste";
 import {Variables} from "../../providers/variables";
+import {UserService} from "../../services/UserService";
+
 
 declare var navigator: any;
 declare var Connection: any;
@@ -17,12 +19,19 @@ export class HomePage {
   xml: any;
   user: Users;
   mess: string = "";
+  userserv: any;
 
+a:any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private platform: Platform) {
     this.user = new Users;
+
+  //  this.verifuser();
+
   }
 
+
   connecter(login, password) {
+   console.log(login + "  " + password);
     this.mess = "It will take few seconds !! Please be patient";
     this.err = "";
     try {
@@ -60,7 +69,14 @@ export class HomePage {
               this.user.setuserName(x[0].children[12].textContent);
               this.user.setvalidCptRend(x[0].children[13].textContent);
               this.user.setvalidPHNuit(x[0].children[14].textContent);
-              this.navCtrl.push(ListePage);
+
+              this.userserv = new UserService();
+              //      if (this.userserv.verifUser() === false) {
+              this.userserv.getUser(this.user);
+              //    }
+
+              //       this.navCtrl.push(ListePage);
+
             } catch (Error) {
               this.err = "verifier votre login ou password!"
             }
@@ -76,9 +92,18 @@ export class HomePage {
     }
   }
 
-  checkNetwork() {
-    alert("zz " + Variables.checconnection());
+  verifuser() {
+    this.userserv = new UserService();
+  alert("ee4 "+this.userserv.verifUser())  ;
   }
 
+
+  checkNetwork() {
+    alert("connexion " + Variables.checconnection());
+  }
+
+  doesConnectionExist() {
+    alert("service " +   Variables.checservice(this.Url.url));
+    }
 
 }

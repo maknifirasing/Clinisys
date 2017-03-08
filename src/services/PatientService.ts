@@ -37,7 +37,6 @@ export class PatientService {
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      //where user like '"+user +"' and searchText like '"+searchText+"' and etage like '"+ etage +"'
       db.executeSql("select * from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'", [])
         .then(result => {
           if (result.rows.length === 0) {

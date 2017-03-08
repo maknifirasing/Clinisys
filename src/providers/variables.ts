@@ -1,6 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
-import 'rxjs/add/operator/map';
 import {Platform} from "ionic-angular";
 
 declare var navigator: any;
@@ -9,8 +7,10 @@ declare var Connection: any;
 export class Variables {
   url: string;
 
-  constructor(public http: Http, platform: Platform) {
-    this.url = "http://192.168.0.140:8084/";
+
+  constructor(platform: Platform) {
+    this.url = "http://192.168.0.138:8084/";
+
   }
 
   public static checconnection() {
@@ -25,5 +25,28 @@ export class Variables {
     states[Connection.CELL] = 'Cell generic connection';
     states[Connection.NONE] = 'No network connection';
     return states[networkState];
+
   }
+
+  public static  checservice(url) {
+    var xhr = new XMLHttpRequest();
+    var file = url;
+
+    xhr.timeout = 200;
+    xhr.open('HEAD', file, true);
+    xhr.send();
+    xhr.addEventListener("readystatechange", processRequest, false);
+
+    function processRequest(e) {
+      if (xhr.readyState == 4) {
+        if (xhr.status >= 200 && xhr.status < 304) {
+          alert("connection exists!");
+        } else {
+          alert("connection doesn't exist!");
+        }
+      }
+    }
+
+  }
+
 }
