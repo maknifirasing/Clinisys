@@ -129,7 +129,7 @@ static arabe= {
    url: string= "";
 
   constructor(public http: Http,public navCtrl:NavController) {
-    this.url="http://192.168.0.140:8084/";
+    this.url="http://192.168.0.138:8084/";
 
   }
 
