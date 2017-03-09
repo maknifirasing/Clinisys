@@ -8,8 +8,8 @@ import {ListePage} from "../pages/liste/liste";
 })
 
 export class MyApp {
-//  rootPage = LanguesPage;
-  rootPage = ListePage;
+  rootPage = LanguesPage;
+//  rootPage = ListePage;
 
   constructor(platform: Platform) {
     platform.ready().then(() => {

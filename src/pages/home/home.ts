@@ -21,6 +21,7 @@ export class HomePage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.user = new Users;
   //  this.verifuser();
+    alert(this.Url.url);
   }
 
   connecter(login, password) {
