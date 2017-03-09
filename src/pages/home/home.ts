@@ -1,39 +1,30 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, Platform } from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import {Users} from '../../models/Users';
 import {ListePage} from "../liste/liste";
 import {Variables} from "../../providers/variables";
 import {UserService} from "../../services/UserService";
 
-
-declare var navigator: any;
-declare var Connection: any;
-
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
   providers: [Variables]
+
 })
 export class HomePage {
   err: string;
   xml: any;
   user: Users;
-  mess: string = "";
+  errConn: string;
+  tabLangue: any;
   userserv: any;
-
-a:any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.user = new Users;
-
-  //  this.verifuser();
-
+    //  this.verifuser();
+    alert(this.Url.url);
   }
 
-
   connecter(login, password) {
-   console.log(login + "  " + password);
-    this.mess = "It will take few seconds !! Please be patient";
-    this.err = "";
     try {
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
@@ -51,6 +42,7 @@ a:any;
         if (xmlhttp.readyState == 4) {
           if (xmlhttp.status == 200) {
             try {
+
               this.xml = xmlhttp.responseXML;
               var x;
               x = this.xml.getElementsByTagName("return");
@@ -69,16 +61,21 @@ a:any;
               this.user.setuserName(x[0].children[12].textContent);
               this.user.setvalidCptRend(x[0].children[13].textContent);
               this.user.setvalidPHNuit(x[0].children[14].textContent);
+              this.tabLangue = {
+                tabLangue: this.navParams.data.tabLangue
 
-              this.userserv = new UserService();
-              //      if (this.userserv.verifUser() === false) {
-              this.userserv.getUser(this.user);
-              //    }
+              };
 
-                     this.navCtrl.push(ListePage);
+              /*
+               this.userserv = new UserService();
+               //      if (this.userserv.verifUser() === false) {
+               this.userserv.getUser(this.user);
+               //    }
+               */
 
+              this.navCtrl.push(ListePage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue")});
             } catch (Error) {
-              this.err = "verifier votre login ou password!"
+              this.err = this.navParams.data.tabLangue.err;
             }
           }
         }
@@ -88,13 +85,16 @@ a:any;
       xmlhttp.responseType = "document";
       xmlhttp.send(sr);
     } catch (Error) {
-      this.err = "verifier votre connextion!"
+      this.errConn = this.navParams.data.tabLangue.errConn;
     }
   }
 
+
+
+
   verifuser() {
     this.userserv = new UserService();
-  alert("ee4 "+this.userserv.verifUser())  ;
+    alert("ee4 "+this.userserv.verifUser())  ;
   }
 
 
@@ -104,6 +104,5 @@ a:any;
 
   doesConnectionExist() {
     alert("service " +   Variables.checservice(this.Url.url));
-    }
-
+  }
 }

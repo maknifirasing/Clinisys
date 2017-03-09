@@ -8,22 +8,22 @@ import {Document} from "../../models/Document";
   templateUrl: 'examen-radio.html',
   providers: [Variables]
 })
-export class ExamenRadioPage {
+
+export class ExamenRadioPage{
   GetExamenRadioByNumDossResponseTest: boolean = false;
   examenRT: Array<ExamenRadio> = [];
   examenRF: Array<ExamenRadio> = [];
   document: Array<Document> = [];
   url: string;
-  getdocumentByIdTest: boolean = false;
-  coountexamenRT: number;
-  coountexamenR: number;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-    this.coountexamenR = 0;
+    this.examenRF=this.navParams.data.examenRF;
+    this.examenRT=this.navParams.data.examenRT;
   }
 
   ionViewDidLoad() {
-    this.GetExamenRadioByNumDossResponse(this.navParams.data.pass.getdossier());
+
   }
 
   getdocumentById(observ) {
@@ -32,97 +32,6 @@ export class ExamenRadioPage {
   }
 
 
-  GetExamenRadioByNumDossResponse(numDoss) {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
-    var sr =
-      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
-      '<soapenv:Header/>' +
-      '<soapenv:Body>' +
-      '<ser:GetExamenRadioByNumDoss>' +
-      '<numDoss>' + numDoss + '</numDoss>' +
-      '</ser:GetExamenRadioByNumDoss>' +
-      '</soapenv:Body>' +
-      '</soapenv:Envelope>';
 
-    xmlhttp.onreadystatechange = () => {
-      if (xmlhttp.readyState == 4) {
-        if (xmlhttp.status == 200) {
-          try {
-            this.GetExamenRadioByNumDossResponseTest = true;
-            var xml = xmlhttp.responseXML;
-            var x, i, dE, dP, drdv, hP;
-            x = xml.getElementsByTagName("return");
-            var ex;
-            var day = "";
-            var month = "";
-            var year = "";
-            var minu = "";
-            var second = "";
-            var hour = "";
-            this.coountexamenR = x.length;
-            for (i = 0; i < x.length; i++) {
-              ex = new ExamenRadio();
-              ex.setcodeExamen(x[i].children[0].textContent);
-              ex.setcompterendu(x[i].children[1].textContent);
-              dE = new Date(x[i].children[2].textContent);
-              day = dE.getDate();
-              month = dE.getMonth() + 1;
-              year = dE.getFullYear();
-              ex.setdateExamen(day + "/" + month + "/" + year);
-              dP = new Date(x[i].children[3].textContent);
-              day = dP.getDate();
-              month = dP.getMonth() + 1;
-              year = dP.getFullYear();
-              ex.setdatePrevu(day + "/" + month + "/" + year);
-              drdv = new Date(x[i].children[4].textContent);
-              day = drdv.getDate();
-              month = drdv.getMonth() + 1;
-              year = drdv.getFullYear();
-              ex.setdate_RDV(day + "/" + month + "/" + year);
-              ex.setdesignationExamen(x[i].children[5].textContent);
-              hP = new Date(x[i].children[6].textContent);
-              minu = hP.getMinutes();
-              hour = hP.getHours();
-              second = hP.getSeconds();
-              ex.setheurePrevu(hour + " : " + minu + " : " + second);
-              ex.setidres(x[i].children[7].textContent);
-              if (x[i].childElementCount === 14) {
-                ex.setmedecin(x[i].children[8].textContent);
-                ex.setnature(x[i].children[9].textContent);
-                ex.setnumeroDossier(x[i].children[10].textContent);
-                ex.setnumeroExamen(x[i].children[11].textContent);
-                ex.setobserv(x[i].children[12].textContent);
-                ex.setresultat(x[i].children[13].textContent);
-              }
-              else if (x[i].childElementCount === 13) {
-                ex.setmedecin(null);
-                ex.setnature(x[i].children[8].textContent);
-                ex.setnumeroDossier(x[i].children[9].textContent);
-                ex.setnumeroExamen(x[i].children[10].textContent);
-                ex.setobserv(x[i].children[11].textContent);
-                ex.setresultat(x[i].children[12].textContent);
-              }
- if (ex.getcompterendu() === "true") {
-                this.examenRT.push(ex);
-                this.coountexamenRT++;
-              }
-              else if (ex.getcompterendu() === "false") {
-                this.examenRF.push(ex);
-              }
-            }
-            if (this.examenRT.length === 0 && this.examenRF.length === 0) {
-              this.GetExamenRadioByNumDossResponseTest = false;
-            }
-          } catch (Error) {
-            this.GetExamenRadioByNumDossResponseTest = false;
-          }
-        }
-      }
-    }
-    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
-    xmlhttp.responseType = "document";
-    xmlhttp.send(sr);
-  }
 
 }

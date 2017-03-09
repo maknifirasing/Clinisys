@@ -1,7 +1,11 @@
 <ion-tabs color="custom-color">
-  <ion-tab [root]="tab1Root" tabTitle="Home" tabBadge="{{nbr}}" [rootParams]="chatParams"></ion-tab>
-  <ion-tab [root]="tab2Root" tabTitle="ExamenRadio" [rootParams]="chatParams"></ion-tab>
-  <ion-tab [root]="tab3Root" tabTitle="ListPreanesthesie" [rootParams]="chatParams"></ion-tab>
-  <ion-tab [root]="tab4Root" tabTitle="Labo" [rootParams]="chatParams"></ion-tab>
+  <ion-tab [root]="tab1Root" tabTitle="{{navParams.data.tabLangue.tabLangue.tab1}}" tabIcon="home"
+           [rootParams]="tabLangue"></ion-tab>
+  <ion-tab [root]="tab2Root" tabTitle="{{navParams.data.tabLangue.tabLangue.tab2}}" tabIcon="medkit"
+           tabBadge="{{coountexamenRT}}/{{coountexamenR}}" [rootParams]="tabLangue"></ion-tab>
+  <ion-tab [root]="tab3Root" tabTitle="{{navParams.data.tabLangue.tabLangue.tab3}}" tabIcon="paper"
+           [rootParams]="tabLangue"></ion-tab>
+  <ion-tab [root]="tab4Root" tabTitle="{{navParams.data.tabLangue.tabLangue.tab4}}"
+           tabBadge="{{countPdfT}}/{{countPdf}}" tabIcon="folder-open" [rootParams]="tabLangue"></ion-tab>
 </ion-tabs>
 

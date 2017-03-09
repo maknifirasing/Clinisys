@@ -1,7 +1,7 @@
 page-dossier {
- .img{
-   font-size: 50px;
- }
+  .img{
+    font-size: 50px;
+  }
   ion-scroll {
     white-space: nowrap;
     height: 100%;
@@ -9,11 +9,13 @@ page-dossier {
   .new-background {
     background-color: red;
   }
-  .p{
-    padding-left: 2%;
+
+  .ion-navbar{
+    height: 120px !important;
   }
-  p{
-    padding-left: 1%;
+
+  .td{
+    padding-left: 2%;
   }
   .roundedImage{
     overflow:hidden;
@@ -24,4 +26,11 @@ page-dossier {
     height:35px;
   }
 
+  .strong{
+    color: #0c60ee;
+  }
+  .size{
+    font-size: 80%;
+    padding-left: 2%;
+  }
 }

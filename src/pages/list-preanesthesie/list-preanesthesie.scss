@@ -4,7 +4,13 @@ page-list-preanesthesie {
     -webkit-border-radius:50px;
     -moz-border-radius:50px;
     border-radius:50px;
-    width:35px;
-    height:35px;
+    width:30px;
+    height:30px;
+  }
+  .size{
+    font-size: 80%;
+  }
+  .ion-navbar{
+    height: 120px !important;
   }
 }

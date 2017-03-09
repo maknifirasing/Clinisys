@@ -46,10 +46,11 @@ export class DossierPage {
   AlerteS: boolean;
   Sor: boolean;
   Ent: boolean;
+  titreEnligne:string;
   connection: boolean;
   signeCliniqueS: any;
-
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+console.log("dossier "+this.navParams.get('langue'));
 
     if (Variables.checconnection() === "No network connection") {
       this.connection = false;
