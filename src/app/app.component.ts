@@ -10,12 +10,12 @@ import {ListePage} from "../pages/liste/liste";
 })
 
 export class MyApp {
-  rootPage = HomePage;
-//  rootPage = ListePage;
+ // rootPage = HomePage;
+  rootPage = ListePage;
 
   constructor(platform: Platform) {
     platform.ready().then(() => {
-
+/*
       SQLite.openDatabase({
         name: 'clinisys.db',
         location: 'default'
@@ -39,7 +39,7 @@ export class MyApp {
           console.error('Error opening database', error);
           alert('Error opening database  ' + error);
         });
-
+*/
 
       StatusBar.styleDefault();
       Splashscreen.hide();

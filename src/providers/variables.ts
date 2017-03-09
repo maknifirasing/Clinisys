@@ -25,7 +25,6 @@ export class Variables {
     states[Connection.CELL] = 'Cell generic connection';
     states[Connection.NONE] = 'No network connection';
     return states[networkState];
-
   }
 
   public static  checservice(url) {

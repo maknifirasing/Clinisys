@@ -22,16 +22,19 @@ export class ListePage {
   connection: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-    if (Variables.checconnection() === "No network connection") {
+  /*  if (Variables.checconnection() === "No network connection") {
       this.connection = false;
-      this.listeOff(this.patient, "admin", "", "all");
-      this.DateFeuilleOff();
+    //  this.listeOff(this.patient, "admin", "", "all");
+     // this.DateFeuilleOff();
     }
     else {
       this.connection = true;
-      this.liste("admin", "", "all");
-      this.DateFeuille();
+    //  this.liste("admin", "", "all");
+   //   this.DateFeuille();
     }
+*/
+  console.log("connection "+Variables.checconnection() );
+    this.liste("admin", "", "all");
     this.patientliste = this.patient;
   }
 
@@ -105,12 +108,12 @@ export class ListePage {
             }
             this.patient.push(p);
           }
-          if (searchText === "")
+       /*   if (searchText === "")
             searchText = "vide";
           this.patienserv = new PatientService();
           if (this.patienserv.verifPatient(this.patient, user, searchText, etage) === false) {
             this.patienserv.getPatients(this.patient, user, searchText, etage);
-          }
+          }*/
         }
       }
     }
