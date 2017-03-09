@@ -1,5 +1,6 @@
 <input type="hidden" value="{{this.navParams.get('langue')}}" #lang/>
 <ion-content>
+  <a href="" ping="http://localhost:8102/">aaaaaaa</a>
   <div padding id="cloud-layer" *ngIf="(lang.value)==='arabe'" dir="rtl">
 
     <ion-row>
@@ -7,6 +8,7 @@
         <img src="/android_asset/www/assets/img/clinisys.png"/>
       </ion-col>
     </ion-row>
+    <p>{{mess}}</p>
     <p>{{err}}</p>
     <p>{{errConn}}</p>
     <ion-row>
@@ -50,7 +52,6 @@
           <ion-item class="animated fadeInUp">
             <ion-input type="password" #password placeholder="{{navParams.data.tabLangue.mo2pass}}"
                        required="true"></ion-input>
-
           </ion-item>
         </ion-list>
       </ion-col>
@@ -60,15 +61,10 @@
         <button ion-button class="login-button" (click)="connecter(login.value,password.value)">
           {{navParams.data.tabLangue.login}}
         </button>
-        <button (click)="verifuser()">Verif Users</button>
         <button (click)="checkNetwork()">Check Network</button>
-      <div></div>
+        <div></div>
         <button (click)="doesConnectionExist()">Try it</button>
       </ion-col>
     </ion-row>
   </div>
-  <div>
-
-  </div>
 </ion-content>
-

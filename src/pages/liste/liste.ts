@@ -13,13 +13,11 @@ import {DateFeuilleService} from "../../services/DateFeuilleService";
   providers: [Variables]
 })
 export class ListePage {
-  xml: any;
   patient: Array<Patient> = [];
   patientliste: Array<Patient> = [];
   DateF: any;
   dtFeuille: any;
   datefeuille: string = "";
-  tabLangue:any;
   patienserv: any;
   connection: boolean;
 
@@ -27,20 +25,17 @@ export class ListePage {
     if (Variables.checconnection() === "No network connection") {
       this.connection = false;
       this.listeOff(this.patient, "admin", "", "all");
-      this.DateFeuilleOff();
+  //    this.DateFeuilleOff();
     }
     else {
       this.connection = true;
       this.liste("admin", "", "all");
-      this.DateFeuille();
+    //  this.DateFeuille();
     }
     this.patientliste = this.patient;
-    console.log("eee "+this.navParams.data.tabLangue.tabLangue.titreEnligne);
   }
 
   ionViewDidLoad() {
-    this.liste("admin", "", "all");
-    this.DateFeuille();
     alert("connection " + this.connection);
   }
 
@@ -169,12 +164,10 @@ export class ListePage {
   }
 
   goToDossierPage(patient) {
-    this.tabLangue = {
-      tabLangue: this.navParams.data.tabLangue.tabLangue,
-
-    };
-    this.navCtrl.push(TabsPage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue"), mypatient:patient,
-      dateFeuille: this.datefeuille});
+    this.navCtrl.push(TabsPage, {
+      mypatient: patient,
+      dateFeuille: this.datefeuille
+    });
   }
 
   initializeItems() {

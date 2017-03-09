@@ -36,8 +36,6 @@ langue:string;
      }
      console.log("fra "+langue);
     this.navCtrl.push(HomePage,{tabLangue:this.tabLangue,langue:langue});
-
-
   }
 
 }

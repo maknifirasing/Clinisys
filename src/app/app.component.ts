@@ -2,13 +2,14 @@ import {Component} from '@angular/core';
 import {Platform} from 'ionic-angular';
 import {LanguesPage} from '../pages/langues/langues';
 import {StatusBar, Splashscreen, SQLite} from 'ionic-native';
-
+import {ListePage} from "../pages/liste/liste";
 @Component({
   templateUrl: 'app.html'
 })
 
 export class MyApp {
-  rootPage = LanguesPage;
+//  rootPage = LanguesPage;
+  rootPage = ListePage;
 
   constructor(platform: Platform) {
     platform.ready().then(() => {
