@@ -3,10 +3,10 @@ export class Evenement{
   private _code: string;
   private _evenements: string;
   private _orderEvenement: number;
-  private _visible: boolean;
+  private _visible: string;
   private _date: string;
   private _detail: string;
-  private _IDEvenement: number
+  private _IDEvenement: number;
   private _numdoss: string;
   private _userCreat: string;
 
@@ -45,11 +45,11 @@ export class Evenement{
     this._orderEvenement = value;
   }
 
-  getvisible(): boolean {
+  getvisible(): string {
     return this._visible;
   }
 
-  setvisible(value: boolean) {
+  setvisible(value: string) {
     this._visible = value;
   }
 

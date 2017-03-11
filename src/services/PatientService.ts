@@ -31,7 +31,6 @@ export class PatientService {
   }
 
   public getPatients(patients: any, user, searchText, etage) {
-
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -101,8 +100,29 @@ export class PatientService {
       }
     }).catch(error => {
       console.error('Error opening database', error);
-      alert('Error 2  ' + error);
+      alert('Error 2 Patient ' + error);
     });
     db.close();
+  }
+
+
+  public deletePatients(user, searchText, etage) {
+
+    let db = new SQLite();
+    db.openDatabase({
+      name: 'clinisys.db',
+      location: 'default' // the location field is required
+    }).then(() => {
+      db.executeSql("delete from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'", [])
+        .then(() => {
+          alert("Suppression de table Patient est terminé avec succes");
+        })
+        .catch(error => {
+          console.error('Error opening database', error);
+          alert('Error 1 Patient  ' + error);
+        })
+    });
+    db.close();
+    return this.patient;
   }
 }

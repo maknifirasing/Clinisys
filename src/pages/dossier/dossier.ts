@@ -7,7 +7,23 @@ import {Traitement} from "../../models/Traitement";
 import {Evenement} from "../../models/Evenement";
 import {Rigime} from "../../models/Rigime";
 import {Variables} from "../../providers/variables";
+import {SigneCliniqueAlertService} from "../../services/SigneCliniqueAlertService";
+import {TraitementService} from "../../services/TraitementService";
+import {EvenementConService} from "../../services/EvenementConService";
+import {EvenementEvoService} from "../../services/EvenementEvoService";
+import {EvenementExaService} from "../../services/EvenementExaService";
+import {EvenementHisService} from "../../services/EvenementHisService";
+import {motifHospitalisationService} from "../../services/motifHospitalisationService";
+import {AntecService} from "../../services/AntecService";
+import {RigimeService} from "../../services/RigimeService";
 import {SigneCliniqueService} from "../../services/SigneCliniqueService";
+import {SigneCliniqueEntService} from "../../services/SigneCliniqueEntService";
+import {SigneCliniqueSorService} from "../../services/SigneCliniqueSorService";
+import {SigneCliniqueSigService} from "../../services/SigneCliniqueSigService";
+import {AlegService} from "../../services/AlegService";
+import {AntecCh} from "../../models/AntecCh";
+import {AlegchService} from "../../services/AlegchService";
+import {AntechService} from "../../services/AntechService";
 
 @Component({
   selector: 'page-dossier',
@@ -17,7 +33,13 @@ import {SigneCliniqueService} from "../../services/SigneCliniqueService";
 
 export class DossierPage {
   m = new MotifHospitalisation();
+  mserv: any;
   antec: Array<Antec> = [];
+  aleg: Array<Antec> = [];
+  alechl: Array<AntecCh> = [];
+  antechl: Array<AntecCh> = [];
+  antecserv: any;
+  alegserv: any;
   signe: Array<SigneClinique> = [];
   disig: string;
   test: boolean;
@@ -28,7 +50,9 @@ export class DossierPage {
   Alerg: boolean = false;
   Ante: boolean = false;
   codeType: string;
+  codeTypeOf: string;
   traitement: Array<Traitement> = [];
+  traitementServ: any;
   Histoiremaladie: Array<Evenement> = [];
   Evolution: Array<Evenement> = [];
   Examenclinique: Array<Evenement> = [];
@@ -36,7 +60,8 @@ export class DossierPage {
   signec: Array<SigneClinique> = [];
   Entrees: Array<SigneClinique> = [];
   Sorties: Array<SigneClinique> = [];
-  rigime: Rigime;
+  rigime = new Rigime();
+  rigimeserv: any;
   trait: boolean;
   His: boolean;
   Evo: boolean;
@@ -46,16 +71,39 @@ export class DossierPage {
   AlerteS: boolean;
   Sor: boolean;
   Ent: boolean;
-  titreEnligne:string;
+  titreEnligne: string;
   connection: boolean;
-  signeCliniqueS: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-console.log("dossier "+this.navParams.get('langue'));
+  signeCliniqueEntS: any;
+  signeCliniqueSorS: any;
+  signeCliniqueSigS: any;
+  signeCliniqueAlertS: any;
+  EvenementConS: any;
+  EvenementEvoS: any;
+  EvenementExaS: any;
+  EvenementHisS: any;
 
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+
+    if (this.navParams.data.pass.getnature() === "REA") {
+      this.codeType = "'1','G','L','E','7','I','9','A','3'";
+      this.codeTypeOf = "1GLE7I9A3";
+    }
+    else if (this.navParams.data.pass.getnature() === "sur") {
+      this.codeType = "'1','3','4'";
+      this.codeTypeOf = "134";
+    }
     if (Variables.checconnection() === "No network connection") {
       this.connection = false;
-
+   //   alert("dossier " + this.navParams.data.pass.getdossier() + " date" + this.navParams.data.dateFeuille + " nature " + this.navParams.data.pass.getnature());
+      this.GetAllMotifHospitalisationByNumDossOff(this.m, this.navParams.data.pass.getdossier());
+      this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.navParams.data.pass.getid());
       this.GetAlerteSigneCliniqueOff(this.signe, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
+      this.GetTraitementsOff(this.traitement, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille);
+      this.GetEvenementByDossierOff(this.navParams.data.pass.getdossier());
+      this.GetListRegimeOff(this.rigime, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
+      this.GetSigneCliniqueOff(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeTypeOf);
+
     }
     else {
       this.connection = true;
@@ -65,19 +113,9 @@ console.log("dossier "+this.navParams.get('langue'));
       this.GetTraitements(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille);
       this.GetEvenementByDossier(this.navParams.data.pass.getdossier());
       this.GetListRegime(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
-      if (this.navParams.data.pass.getnature() === "REA") {
-        this.codeType = "'1','G','L','E','7','I','9','A','3'";
-      }
-      else if (this.navParams.data.pass.getnature() === "sur") {
-        this.codeType = "'1','3','4'";
-      }
-      this.GetSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeType);
+      this.GetSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeType, this.codeTypeOf);
 
     }
-  }
-
-  ionViewDidLoad() {
-
   }
 
 
@@ -119,10 +157,10 @@ console.log("dossier "+this.navParams.get('langue'));
           } catch (Error) {
             this.AlerteSigneCliniqueTest = false;
           }
-          this.signeCliniqueS = new SigneCliniqueService();
-          if (this.signeCliniqueS.verifSigneClinique(this.signe, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature())) {
-            this.signeCliniqueS.getSigneCliniques(this.signe, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
-          }
+          this.signeCliniqueAlertS = new SigneCliniqueAlertService();
+          //    if (this.signeCliniqueS.verifSigneCliniqueAlert(this.signe, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature())===false) {
+          this.signeCliniqueAlertS.getSigneCliniquesAlert(this.signe, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
+          //    }
         }
       }
     }
@@ -132,24 +170,24 @@ console.log("dossier "+this.navParams.get('langue'));
   }
 
   GetAlerteSigneCliniqueOff(signe, numDoss, dateFeuille, nature) {
-    this.signeCliniqueS = new SigneCliniqueService();
-    this.signe = this.signeCliniqueS.getSigneCliniques(signe, numDoss, dateFeuille, nature);
-    if (this.signe.length === 0) {
-      this.AlerteSigneCliniqueTest = false;
-    } else if (this.signe.length != 0) {
-      this.AlerteSigneCliniqueTest = true;
-    }
+    this.signeCliniqueAlertS = new SigneCliniqueAlertService();
+    this.signe = this.signeCliniqueAlertS.getSigneCliniquesAlert(signe, numDoss, dateFeuille, nature);
+    //  if (this.signe.length === 0) {
+    //     this.AlerteSigneCliniqueTest = false;
+    // } else if (this.signe.length != 0) {
+    this.AlerteSigneCliniqueTest = true;
+    // }
   }
 
-  getAntecedentAllergieByIdentifiant(id) {
+  getAntecedentAllergieByIdentifiant(idpass) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
       '<soapenv:Body>' +
-      '  <ser:getAntecedentAllergieByIdentifiant>' +
-      '<identifiant>' + id + '</identifiant>' +
+      '<ser:getAntecedentAllergieByIdentifiant>' +
+      '<identifiant>' + idpass + '</identifiant>' +
       '</ser:getAntecedentAllergieByIdentifiant>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
@@ -195,7 +233,7 @@ console.log("dossier "+this.navParams.get('langue'));
                     this.stringAlerg += a.getdesignation() + ", ";
                     this.Alerg = true;
                   }
-
+                  this.aleg.push(a);
                 }
                 else // Antécédent
                 {
@@ -208,15 +246,39 @@ console.log("dossier "+this.navParams.get('langue'));
                     this.Ante = true;
                   }
                 }
-
+                this.antec.push(a);
               }
 
-              this.antec.push(a);
+
             }
             if (this.antec.length === 0) {
               this.AntecedentAllergieTest = false;
             }
-            //  console.log("get    "+a.getcodeAntecedent());
+
+
+            var antech = new AntecCh();
+
+            antech.setidpass(idpass);
+            antech.setch(this.stringAntec);
+
+            this.antechl.push(antech);
+
+            this.antecserv = new AntechService();
+            this.antecserv.getAntecs(this.antechl, idpass);
+
+
+
+
+            var alech = new AntecCh();
+
+            alech.setidpass(idpass);
+            alech.setch(this.stringAlerg);
+
+            this.alechl.push(alech);
+
+            this.alegserv = new AlegchService();
+            this.alegserv.getAlegs(this.alechl, idpass);
+
           } catch (Error) {
             this.AntecedentAllergieTest = false;
           }
@@ -228,9 +290,21 @@ console.log("dossier "+this.navParams.get('langue'));
     xmlhttp.send(sr);
   }
 
+  getAntecedentAllergieByIdentifiantOff(antec, aleg, idpass) {
+    this.AntecedentAllergieTest = true;
+
+    this.antecserv = new AntechService();
+    this.antechl=this.antecserv.getAntecs(antec, idpass);
+    this.Ante = true;
+
+    this.alegserv = new AlegchService();
+    this.alechl=this.alegserv.getAlegs(aleg, idpass);
+    this.Alerg = true;
+  }
+
   GetAllMotifHospitalisationByNumDoss(numDoss) {
     this.test = false;
-
+    ;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
@@ -292,7 +366,9 @@ console.log("dossier "+this.navParams.get('langue'));
             if (this.m === null) {
               this.test = false;
             }
-            return this.m;
+            //  return this.m;
+            this.mserv = new motifHospitalisationService();
+            this.mserv.getmotifHospitalisations(this.m, numDoss);
           } catch (Error) {
             this.test = false;
           }
@@ -302,6 +378,12 @@ console.log("dossier "+this.navParams.get('langue'));
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
+  }
+
+  GetAllMotifHospitalisationByNumDossOff(motif, numdoss) {
+    this.mserv = new motifHospitalisationService();
+    this.m = this.mserv.getmotifHospitalisations(motif, numdoss);
+    this.test = true;
   }
 
   GetTraitements(numdoss, datefeuille) {
@@ -329,43 +411,62 @@ console.log("dossier "+this.navParams.get('langue'));
             x = xml.getElementsByTagName("return");
             for (i = 0; i < x.length; i++) {
               t = new Traitement();
-              /*
-               t.setcodePosologie(x[i].children[0].textContent);
-               t.setdate(x[i].children[1].textContent);
-               t.setdateFinTrait(x[i].children[2].textContent);
-               t.setdci(x[i].children[3].textContent);
-               t.setdesignation(x[i].children[4].textContent);
-               t.setdureEnJour(x[i].children[5].textContent);
-               t.setheure(x[i].children[6].textContent);
-               t.setheureDebut(x[i].children[7].textContent);
-               t.setjour(x[i].children[8].textContent);
-               t.setnbFois(x[i].children[9].textContent);
-               t.setnumDoss(x[i].children[10].textContent);
-               t.setnumTraitement(x[i].children[11].textContent);
-               t.setnumbon(x[i].children[12].textContent);
-               t.setposologie(x[i].children[13].textContent);
-               t.setprescripteur(x[i].children[14].textContent);
-               t.setquantite(x[i].children[15].textContent);
-               t.setunite(x[i].children[16].textContent);
-               t.setvitesse(x[i].children[17].textContent);
-               t.setvoie(x[i].children[18].textContent);
-               t.setvolume(x[i].children[19].textContent);
-               */
               if (x[i].childElementCount === 20) {
+                t.setcodePosologie(x[i].children[0].textContent);
+                t.setdate(x[i].children[1].textContent);
+                t.setdateFinTrait(x[i].children[2].textContent);
+                t.setdci(x[i].children[3].textContent);
                 t.setdesignation(x[i].children[4].textContent);
-                t.setposologie(x[i].children[13].textContent);
+                t.setdureEnJour(x[i].children[5].textContent);
+                t.setheure(x[i].children[6].textContent);
+                t.setheureDebut(x[i].children[7].textContent);
                 t.setjour(x[i].children[8].textContent);
+                t.setnbFois(x[i].children[9].textContent);
+                t.setnumDoss(x[i].children[10].textContent);
+                t.setnumTraitement(x[i].children[11].textContent);
+                t.setnumbon(x[i].children[12].textContent);
+                t.setposologie(x[i].children[13].textContent);
+                t.setprescripteur(x[i].children[14].textContent);
+                t.setquantite(x[i].children[15].textContent);
+                t.setunite(x[i].children[16].textContent);
+                t.setvitesse(x[i].children[17].textContent);
+                t.setvoie(x[i].children[18].textContent);
+                t.setvolume(x[i].children[19].textContent);
               }
               else if (x[i].childElementCount === 19) {
+                t.setcodePosologie(x[i].children[0].textContent);
+                t.setdate(x[i].children[1].textContent);
+                t.setdateFinTrait(x[i].children[2].textContent);
+                t.setdci("");
                 t.setdesignation(x[i].children[3].textContent);
-                t.setposologie(x[i].children[12].textContent);
+                t.setdureEnJour(x[i].children[4].textContent);
+                t.setheure(x[i].children[5].textContent);
+                t.setheureDebut(x[i].children[6].textContent);
                 t.setjour(x[i].children[7].textContent);
+                t.setnbFois(x[i].children[8].textContent);
+                t.setnumDoss(x[i].children[9].textContent);
+                t.setnumTraitement(x[i].children[10].textContent);
+                t.setnumbon(x[i].children[11].textContent);
+                t.setposologie(x[i].children[12].textContent);
+                t.setprescripteur(x[i].children[13].textContent);
+                t.setquantite(x[i].children[14].textContent);
+                t.setunite(x[i].children[15].textContent);
+                t.setvitesse(x[i].children[16].textContent);
+                t.setvoie(x[i].children[17].textContent);
+                t.setvolume(x[i].children[18].textContent);
+
               }
               this.traitement.push(t);
             }
             if (this.traitement.length === 0) {
               this.trait = false;
             }
+
+
+            this.traitementServ = new TraitementService();
+            //    if (this.traitementServ.verifTraitement(this.traitement, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille))===false) {
+            this.traitementServ.getTraitements(this.traitement, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille);
+            //    }
           } catch (Error) {
             this.trait = false;
           }
@@ -375,6 +476,12 @@ console.log("dossier "+this.navParams.get('langue'));
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
+  }
+
+  GetTraitementsOff(traitement, numdoss, datefeuille) {
+    this.trait = true;
+    this.traitementServ = new TraitementService();
+    this.traitement = this.traitementServ.getTraitements(this.traitement, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille);
   }
 
   convertHTMLtoRTF(rtf) {
@@ -449,15 +556,28 @@ console.log("dossier "+this.navParams.get('langue'));
             }
             if (this.Conclusion.length === 0) {
               this.Con = false;
+            } else {
+              this.EvenementConS = new EvenementConService();
+              this.EvenementConS.getEvenements(this.Conclusion, this.navParams.data.pass.getdossier());
             }
             if (this.Examenclinique.length === 0) {
               this.Exa = false;
+            } else {
+              this.EvenementExaS = new EvenementExaService();
+              this.EvenementExaS.getEvenements(this.Examenclinique, this.navParams.data.pass.getdossier());
             }
             if (this.Histoiremaladie.length === 0) {
               this.His = false;
+            } else {
+              this.EvenementHisS = new EvenementHisService();
+              this.EvenementHisS.getEvenements(this.Histoiremaladie, this.navParams.data.pass.getdossier());
             }
             if (this.Evolution.length === 0) {
               this.Evo = false;
+            }
+            else {
+              this.EvenementEvoS = new EvenementEvoService();
+              this.EvenementEvoS.getEvenements(this.Evolution, this.navParams.data.pass.getdossier());
             }
           } catch (Error) {
           }
@@ -467,6 +587,41 @@ console.log("dossier "+this.navParams.get('langue'));
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
+  }
+
+  GetEvenementByDossierOff(numdoss) {
+    this.EvenementConS = new EvenementConService();
+    this.Conclusion = this.EvenementConS.getEvenements(this.Conclusion, this.navParams.data.pass.getdossier());
+
+    this.EvenementEvoS = new EvenementEvoService();
+    this.Evolution = this.EvenementEvoS.getEvenements(this.Evolution, this.navParams.data.pass.getdossier());
+
+    this.EvenementExaS = new EvenementExaService();
+    this.Examenclinique = this.EvenementExaS.getEvenements(this.Examenclinique, this.navParams.data.pass.getdossier());
+
+    this.EvenementHisS = new EvenementHisService();
+    this.Histoiremaladie = this.EvenementHisS.getEvenements(this.Histoiremaladie, this.navParams.data.pass.getdossier());
+
+    this.Con = true;
+    this.Exa = true;
+    this.His = true;
+    this.Evo = true;
+
+    /*
+     if (this.Conclusion.length === 0) {
+     this.Con = false;
+     }
+     if (this.Examenclinique.length === 0) {
+     this.Exa = false;
+     }
+     if (this.Histoiremaladie.length === 0) {
+     this.His = false;
+     }
+     if (this.Evolution.length === 0) {
+     this.Evo = false;
+     }
+
+     */
   }
 
   GetListRegime(numdoss, datefeuille, nature) {
@@ -497,6 +652,8 @@ console.log("dossier "+this.navParams.get('langue'));
             r.setdesignation(x[0].children[1].textContent);
             this.rigime = r;
             this.Ri = true;
+            this.rigimeserv = new RigimeService();
+            this.rigimeserv.getRigimes(this.rigime, numdoss, datefeuille, nature);
           } catch (Error) {
             this.Ri = false;
           }
@@ -508,7 +665,13 @@ console.log("dossier "+this.navParams.get('langue'));
     xmlhttp.send(sr);
   }
 
-  GetSigneClinique(numdoss, dateFeuille, nature, codeType) {
+  GetListRegimeOff(rigime, numdoss, datefeuille, nature) {
+    this.Ri = true;
+    this.rigimeserv = new RigimeService();
+    this.rigime = this.rigimeserv.getRigimes(rigime, numdoss, datefeuille, nature);
+  }
+
+  GetSigneClinique(numdoss, dateFeuille, nature, codeType, codeTypeOf) {
     var xmlhttp = new XMLHttpRequest();
     this.Ri = false;
     xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
@@ -558,6 +721,15 @@ console.log("dossier "+this.navParams.get('langue'));
               this.Sor = false;
               this.Ent = false;
             }
+
+            this.signeCliniqueEntS = new SigneCliniqueEntService();
+            this.signeCliniqueEntS.getSigneCliniques(this.Entrees, numdoss, dateFeuille, nature, codeTypeOf);
+
+            this.signeCliniqueSorS = new SigneCliniqueSorService();
+            this.signeCliniqueSorS.getSigneCliniques(this.Sorties, numdoss, dateFeuille, nature, codeTypeOf);
+
+            this.signeCliniqueSigS = new SigneCliniqueSigService();
+            this.signeCliniqueSigS.getSigneCliniques(this.signec, numdoss, dateFeuille, nature, codeTypeOf);
           } catch (Error) {
             this.AlerteS = false;
             this.Sor = false;
@@ -571,7 +743,36 @@ console.log("dossier "+this.navParams.get('langue'));
     xmlhttp.send(sr);
   }
 
-  goToDetailPage() {
+  GetSigneCliniqueOff(numdoss, dateFeuille, nature, codeTypeOf) {
+    this.signeCliniqueEntS = new SigneCliniqueEntService();
+    this.Entrees = this.signeCliniqueEntS.getSigneCliniques(this.Entrees, numdoss, dateFeuille, nature, codeTypeOf);
+
+    this.signeCliniqueSorS = new SigneCliniqueSorService();
+    this.Sorties = this.signeCliniqueSorS.getSigneCliniques(this.Sorties, numdoss, dateFeuille, nature, codeTypeOf);
+
+    this.signeCliniqueSigS = new SigneCliniqueSigService();
+    this.signec = this.signeCliniqueSigS.getSigneCliniques(this.signec, numdoss, dateFeuille, nature, codeTypeOf);
+
+
+    this.AlerteS = true;
+    this.Sor = true;
+    this.Ent = true;
+
+
+    //  if (this.signe.length === 0) {
+    //     this.AlerteSigneCliniqueTest = false;
+    // } else if (this.signe.length != 0) {
+    this.Ent = true;
+    // }
+
   }
+
+  goToDetailPage() {
+
+    this.traitementServ = new TraitementService();
+    this.traitementServ.deleteTraitements(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille);
+  }
+
+
 }
 

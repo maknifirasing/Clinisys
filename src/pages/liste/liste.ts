@@ -13,28 +13,31 @@ import {DateFeuille} from "../../models/DateFeuille";
   providers: [Variables]
 })
 export class ListePage {
-  xml:any;
+  xml: any;
   patient: Array<Patient> = [];
   patientliste: Array<Patient> = [];
   DateF: any;
   dtFeuille: any;
-  datefeuille: string = "";
-  tabLangue:any;
+  dtFeuilleserv: any;
+  datefeuille: Array<DateFeuille> = [];
+  tabLangue: any;
   patienserv: any;
   connection: boolean;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+    this.dtFeuille = new DateFeuille();
     if (Variables.checconnection() === "No network connection") {
       this.connection = false;
       this.listeOff(this.patient, "admin", "", "all");
-      //    this.DateFeuilleOff();
+      this.DateFeuilleOff(this.datefeuille);
     }
     else {
       this.connection = true;
       this.liste("admin", "", "all");
-      //  this.DateFeuille();
+      this.DateFeuille();
     }
     this.patientliste = this.patient;
-    console.log("eee "+this.navParams.data.tabLangue.tabLangue.titreEnligne);
+    console.log("eee " + this.navParams.data.tabLangue.tabLangue.titreEnligne);
   }
 
 
@@ -107,9 +110,9 @@ export class ListePage {
           if (searchText === "")
             searchText = "vide";
           this.patienserv = new PatientService();
-          if (this.patienserv.verifPatient(this.patient, user, searchText, etage) === false) {
+     //     if (this.patienserv.verifPatient(this.patient, user, searchText, etage) === false) {
             this.patienserv.getPatients(this.patient, user, searchText, etage);
-          }
+     //     }
         }
       }
     }
@@ -126,6 +129,7 @@ export class ListePage {
     this.patient = this.patienserv.getPatients(patient, user, searchText, etage);
     this.patientliste = this.patient;
   }
+
   DateFeuille() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
@@ -140,15 +144,19 @@ export class ListePage {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
           this.xml = xmlhttp.responseXML;
-          this.DateF = this.xml.getElementsByTagName("return");
-          this.datefeuille = this.datefeuille + this.DateF[0].childNodes[0].nodeValue;
-          var d = new DateFeuille();
-          d.setdatefeuille(this.datefeuille);
-          var datefe = new DateFeuilleService();
-          if (datefe.verifDateFeuille() === false) {
-            datefe.getDateFeuille(d);
+        var  x,i,d;
+          x = this.xml.getElementsByTagName("return");
+      //    this.datefeuille = this.datefeuille + this.DateF[0].childNodes[0].nodeValue;
+          for (i = 0; i < x.length; i++) {
+            d = new DateFeuille();
+            d.setdatefeuille(x[i].childNodes[0].nodeValue);
+            this.datefeuille.push(d);
           }
-          return this.datefeuille;
+          this.dtFeuilleserv = new DateFeuilleService();
+      //    if (this.dtFeuilleserv.verifDateFeuille() === false) {
+            this.dtFeuilleserv.getDateFeuille(this.datefeuille);
+    //      }
+      //    return this.datefeuille;
         }
       }
     }
@@ -157,9 +165,9 @@ export class ListePage {
     xmlhttp.send(sr);
   }
 
-  DateFeuilleOff() {
-    var datefe = new DateFeuilleService();
-    this.datefeuille = datefe.getDateFeuille(this.dtFeuille).getdatefeuille();
+  DateFeuilleOff(datefeuille) {
+    this.dtFeuilleserv = new DateFeuilleService();
+    this.datefeuille = this.dtFeuilleserv.getDateFeuille(this.datefeuille);
   }
 
   goToDossierPage(patient) {
@@ -167,8 +175,10 @@ export class ListePage {
       tabLangue: this.navParams.data.tabLangue.tabLangue,
 
     };
-    this.navCtrl.push(TabsPage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue"), mypatient:patient,
-      dateFeuille: this.datefeuille});
+    this.navCtrl.push(TabsPage, {
+      tabLangue: this.tabLangue, langue: this.navParams.get("langue"), mypatient: patient,
+      dateFeuille: this.datefeuille[0].getdatefeuille()
+    });
   }
 
   initializeItems() {

@@ -29,6 +29,10 @@
         <button ion-button class="login-button" (click)="connecter(login.value,password.value)">
           {{navParams.data.tabLangue.login}}
         </button>
+        <button (click)="conn()">Connecter</button>
+        <button (click)="checkNetwork()">Check Network</button>
+        <div></div>
+        <button (click)="doesConnectionExist()">Try it</button>
       </ion-col>
     </ion-row>
   </div>
@@ -60,6 +64,7 @@
         <button ion-button class="login-button" (click)="connecter(login.value,password.value)">
           {{navParams.data.tabLangue.login}}
         </button>
+        <button (click)="conn()">Connecter</button>
         <button (click)="checkNetwork()">Check Network</button>
         <div></div>
         <button (click)="doesConnectionExist()">Try it</button>

@@ -115,4 +115,26 @@ export class UserService {
     });
     db.close();
   }
+
+
+
+   public deleteUsers() {
+
+    let db = new SQLite();
+    db.openDatabase({
+      name: 'clinisys.db',
+      location: 'default' // the location field is required
+    }).then(() => {
+      db.executeSql("delete from User", [])
+        .then(() => {
+          alert("Suppression de table User est terminé avec succes");
+        })
+        .catch(error => {
+          console.error('Error opening database', error);
+          alert('Error 1 User  ' + error);
+        })
+    });
+    db.close();
+    return this.user;
+  }
 }

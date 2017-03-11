@@ -29,6 +29,7 @@
       <ion-searchbar color="white" placeholder="{{navParams.data.tabLangue.tabLangue.rech}}"
                      (ionInput)="getItems($event)"></ion-searchbar>
     </p>
+    <p></p>
   </ion-navbar>
 </ion-header>
 
@@ -38,6 +39,7 @@
     <ion-list>
 
       <ion-item-sliding *ngFor="let pas of patientliste ">
+
         <ion-item (click)="goToDossierPage(pas)" *ngIf="(lang.value)==='arabe'"
                   dir="rtl">
 

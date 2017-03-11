@@ -3,7 +3,7 @@
  */
 export class Labo {
   private _codeDemande: string;
-  private _contenuePDF: boolean;
+  private _contenuePDF: string;
   private _dateDemande: string;
   private _dateRealisation: string;
   private _designation: string;
@@ -29,11 +29,11 @@ export class Labo {
     this._codeDemande = value;
   }
 
-  getcontenuePDF(): boolean {
+  getcontenuePDF(): string {
     return this._contenuePDF;
   }
 
-  setcontenuePDF(value: boolean) {
+  setcontenuePDF(value: string) {
     this._contenuePDF = value;
   }
 

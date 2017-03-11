@@ -1,45 +1,45 @@
 import {SQLite} from 'ionic-native';
 import {SigneClinique} from "../models/SigneClinique";
 
-export class SigneCliniqueService {
+export class SigneCliniqueEntService {
   public signeClinique: Array<SigneClinique> = [];
 
   constructor() {
   }
 
-  public verifSigneClinique(signeCliniques: any, numDoss, dateFeuille, nature) {
+  public verifSigneClinique(signeCliniques: any, numDoss, dateFeuille, nature, codeType) {
     var verif: boolean;
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from SigneClinique where numDoss like '"+ numDoss +"' and dateFeuille like '"+ dateFeuille
-        +"' and nature like '"+ nature+"'", [])
+      db.executeSql("select * from SigneCliniqueEnt where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
+        +"' and nature like '" + nature + "' and codetypeof like '" + codeType + "'", [])
         .then(result => {
           verif = (result.rows.length === signeCliniques.length);
         })
         .catch(error => {
           console.error('Error opening database', error);
-          alert('Error 0 SigneClinique  ' + error);
+          alert('Error 0 SigneCliniqueEnt  ' + error);
         })
     });
     db.close();
     return verif;
   }
 
-  public getSigneCliniques(signeCliniques: any, numDoss, dateFeuille, nature) {
+  public getSigneCliniques(signeCliniques: any, numDoss, dateFeuille, nature, codeType) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from SigneClinique where numDoss like '"+ numDoss +"' and dateFeuille like '"+ dateFeuille
-        +"' and nature like '"+ nature+"'", [])
+      db.executeSql("select * from SigneCliniqueEnt where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
+        +"' and nature like '" + nature + "' and codetypeof like '" + codeType + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertSigneCliniques(signeCliniques, numDoss, dateFeuille, nature)
+            this._insertSigneCliniques(signeCliniques, numDoss, dateFeuille, nature,codeType)
           } else {
             var s;
             for (var i = 0; i < result.rows.length; i++) {
@@ -54,14 +54,14 @@ export class SigneCliniqueService {
         })
         .catch(error => {
           console.error('Error opening database', error);
-          alert('Error 1 SigneClinique  ' + error);
+          alert('Error 1 SigneCliniqueEnt  ' + error);
         })
     });
     db.close();
     return this.signeClinique;
   }
 
-  private _insertSigneCliniques(signeCliniques: Array<SigneClinique>, numDoss, dateFeuille, nature): void {
+  private _insertSigneCliniques(signeCliniques: Array<SigneClinique>, numDoss, dateFeuille, nature,codeType): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -72,20 +72,41 @@ export class SigneCliniqueService {
           continue;
         }
         let s = signeCliniques[key];
-        db.executeSql('insert into SigneClinique (codeType ,date ,designation ,quantite, numDoss, dateFeuille, nature) values (?,?,?,?,?,?,?)', [
+        db.executeSql('insert into SigneCliniqueEnt (codeType ,date ,designation ,quantite ,numDoss ,dateFeuille, nature ,codetypeof) values (?,?,?,?,?,?,?,?)', [
           s.getcodeType(),
           s.getdate(),
           s.getdesignation(),
           s.getquantite(),
           numDoss,
           dateFeuille,
-          nature
+          nature,
+          codeType
         ]);
       }
     }).catch(error => {
       console.error('Error opening database', error);
-      alert('Error 2 SigneClinique ' + error);
+      alert('Error 2 SigneCliniqueEnt ' + error);
     });
     db.close();
+  }
+
+  public deleteSigneCliniques(numDoss, dateFeuille, nature) {
+
+    let db = new SQLite();
+    db.openDatabase({
+      name: 'clinisys.db',
+      location: 'default' // the location field is required
+    }).then(() => {
+      db.executeSql("delete from SigneCliniqueEnt where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "'", [])
+        .then(() => {
+          alert("Suppression de table SigneCliniqueEnt est terminé avec succes");
+        })
+        .catch(error => {
+          console.error('Error opening database', error);
+          alert('Error 3 SigneCliniqueEnt  ' + error);
+        })
+    });
+    db.close();
+    return this.signeClinique;
   }
 }

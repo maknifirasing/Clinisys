@@ -21,7 +21,6 @@ export class HomePage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.user = new Users;
     //  this.verifuser();
-    alert(this.Url.url);
   }
 
   connecter(login, password) {
@@ -104,5 +103,13 @@ export class HomePage {
 
   doesConnectionExist() {
     alert("service " +   Variables.checservice(this.Url.url));
+  }
+
+  conn()
+  {
+    this.tabLangue = {
+      tabLangue: this.navParams.data.tabLangue
+    };
+    this.navCtrl.push(ListePage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue")});
   }
 }
