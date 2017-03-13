@@ -1,21 +1,27 @@
 <input type="text" value="{{this.navParams.get('langue')}}" #lang/>
 <ion-header>
-
-  <ion-navbar color="custom-color" class="ion-navbar" class="animated fadeInRight" *ngIf="(lang.value)==='arabe'"
-              dir="rtl">
+<ion-list  *ngIf="(lang.value)==='arabe'"
+           dir="rtl">
+  <ion-item color="custom-color" class="ion-navbar" class="animated fadeInRight">
     <ion-title>
       {{navParams.data.tabLangue.tabLangue.liste}}
     </ion-title>
 
-  </ion-navbar>
-
-  <ion-navbar color="custom-color" class="ion-navbar" class="animated fadeInRight"
+  </ion-item>
+  <ion-item color="custom-color">
+    <p item-left>
+      <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
+    </p>
+    <p>{{navParams.data.tabLangue.titreEnligne}}<br/> {{navParams.data.dat}}</p>
+  </ion-item>
+</ion-list>
+  <ion-item color="custom-color" class="ion-navbar" class="animated fadeInRight"
               *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
     <ion-title>
       {{navParams.data.tabLangue.tabLangue.liste}}
     </ion-title>
 
-  </ion-navbar>
+  </ion-item>
   <ion-navbar class="ion-navbar" *ngIf="(lang.value)==='arabe'" dir="rtl">
 
     <p>

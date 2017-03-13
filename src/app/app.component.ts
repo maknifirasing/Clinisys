@@ -1,17 +1,23 @@
-import {Component} from '@angular/core';
-import {Platform} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {Platform, Nav} from 'ionic-angular';
 import {LanguesPage} from '../pages/langues/langues';
 import {StatusBar, Splashscreen, SQLite} from 'ionic-native';
-import {ListePage} from "../pages/liste/liste";
 @Component({
   templateUrl: 'app.html'
 })
 
 export class MyApp {
-  rootPage = LanguesPage;
 //  rootPage = ListePage;
+  @ViewChild(Nav) nav: Nav;
+
+  rootPage: any =  LanguesPage;
+
+  pages: Array<{title: string, component: any}>;
 
   constructor(platform: Platform) {
+    this.pages = [
+      { title: 'Langues', component: LanguesPage }
+    ];
     platform.ready().then(() => {
       SQLite.openDatabase({
         name: 'clinisys.db',
@@ -101,5 +107,10 @@ export class MyApp {
       Splashscreen.hide();
     });
 
+  }
+  openPage(page) {
+    // Reset the content nav to have just this page
+    // we wouldn't want the back button to show in this scenario
+    this.nav.setRoot(page.component);
   }
 }

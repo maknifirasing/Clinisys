@@ -12,6 +12,7 @@ import {PdfViewerComponent} from 'ng2-pdf-viewer';
 import {PdfViewPage} from '../pages/pdf-view/pdf-view';
 import {ListPreanesthesiePage} from "../pages/list-preanesthesie/list-preanesthesie";
 import {LanguesPage} from "../pages/langues/langues";
+import {ListeCliniquePage} from "../pages/liste-clinique/liste-clinique";
 @NgModule({
   declarations: [
     MyApp,
@@ -25,7 +26,8 @@ import {LanguesPage} from "../pages/langues/langues";
     PdfViewPage,
     PdfViewerComponent,
     ListPreanesthesiePage,
-    LanguesPage
+    LanguesPage,
+    ListeCliniquePage
 
   ],
   imports: [
@@ -43,7 +45,8 @@ import {LanguesPage} from "../pages/langues/langues";
     ExamenLaboPage,
     PdfViewPage,
     ListPreanesthesiePage,
-    LanguesPage
+    LanguesPage,
+    ListeCliniquePage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
