@@ -129,7 +129,7 @@ export class TraitementService {
     }).then(() => {
       db.executeSql("delete from Traitement where  numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'", [])
         .then(() => {
-          alert("Suppression de table Traitement est terminé avec succes");
+       //   alert("Suppression de table Traitement est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);

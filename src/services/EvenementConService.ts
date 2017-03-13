@@ -108,11 +108,11 @@ export class EvenementConService {
     }).then(() => {
       db.executeSql("delete from EvenementCon where  numdoss like '" + numdoss + "'", [])
         .then(() => {
-          alert("Suppression de table EvenementCon est terminé avec succes");
+ //         alert("Suppression de table EvenementCon est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
-          alert('Error 1 EvenementCons  ' + error);
+          alert('Error 3 EvenementCons  ' + error);
         })
     });
     db.close();

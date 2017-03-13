@@ -90,16 +90,16 @@ export class SigneCliniqueEntService {
     db.close();
   }
 
-  public deleteSigneCliniques(numDoss, dateFeuille, nature) {
+  public deleteSigneCliniques(numDoss, dateFeuille, nature,codeType) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from SigneCliniqueEnt where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "'", [])
+      db.executeSql("delete from SigneCliniqueEnt where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'", [])
         .then(() => {
-          alert("Suppression de table SigneCliniqueEnt est terminé avec succes");
+    //      alert("Suppression de table SigneCliniqueEnt est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);

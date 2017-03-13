@@ -91,7 +91,7 @@ export class AlegchService {
     }).then(() => {
       db.executeSql("delete from Alegc where  idpass like '" + idpass + "'", [])
         .then(() => {
-          alert("Suppression de table Aleg est terminé avec succes");
+      //    alert("Suppression de table Aleg est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
