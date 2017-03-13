@@ -115,11 +115,11 @@ export class PatientService {
     }).then(() => {
       db.executeSql("delete from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'", [])
         .then(() => {
-          alert("Suppression de table Patient est terminé avec succes");
+        //  alert("Suppression de table Patient est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
-          alert('Error 1 Patient  ' + error);
+          alert('Error 3 Patient  ' + error);
         })
     });
     db.close();

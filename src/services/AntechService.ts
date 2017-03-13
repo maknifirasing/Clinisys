@@ -91,7 +91,7 @@ export class AntechService {
     }).then(() => {
       db.executeSql("delete from Antech where  idpass like '" + idpass + "'", [])
         .then(() => {
-          alert("Suppression de table Antech est terminé avec succes");
+   //       alert("Suppression de table Antech est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);

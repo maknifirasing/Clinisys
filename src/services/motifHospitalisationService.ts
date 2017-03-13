@@ -110,7 +110,7 @@ export class motifHospitalisationService {
     }).then(() => {
       db.executeSql("delete from Motifhospitalisation where numdoss like '" + numdoss + "'", [])
         .then(() => {
-          alert("Suppression de table Motifhospitalisation est terminé avec succes");
+    //      alert("Suppression de table Motifhospitalisation est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);

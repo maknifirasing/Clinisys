@@ -86,7 +86,7 @@ export class RigimeService {
     }).then(() => {
       db.executeSql("delete from Rigime where numdoss like '" + numdoss + "' and datefeuille like '" + datefeuille + "' and nature like '" + nature + "'", [])
         .then(() => {
-          alert("Suppression de table Rigime est terminé avec succes");
+    //      alert("Suppression de table Rigime est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);

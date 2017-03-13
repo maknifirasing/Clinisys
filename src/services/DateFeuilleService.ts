@@ -85,7 +85,7 @@ export class DateFeuilleService {
     }).then(() => {
       db.executeSql("delete from DateFeuille", [])
         .then(() => {
-          alert("Suppression de table DateFeuille est terminé avec succes");
+      //    alert("Suppression de table DateFeuille est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);

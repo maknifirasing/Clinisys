@@ -37,11 +37,12 @@ export class ListePage {
       this.DateFeuille();
     }
     this.patientliste = this.patient;
-    console.log("eee " + this.navParams.data.tabLangue.tabLangue.titreEnligne);
   }
 
 
   liste(user, searchText, etage) {
+    this.patient = [];
+    this.patient.length = 0;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -110,9 +111,9 @@ export class ListePage {
           if (searchText === "")
             searchText = "vide";
           this.patienserv = new PatientService();
-     //     if (this.patienserv.verifPatient(this.patient, user, searchText, etage) === false) {
-            this.patienserv.getPatients(this.patient, user, searchText, etage);
-     //     }
+          //     if (this.patienserv.verifPatient(this.patient, user, searchText, etage) === false) {
+          this.patienserv.getPatients(this.patient, user, searchText, etage);
+          //     }
         }
       }
     }
@@ -131,6 +132,8 @@ export class ListePage {
   }
 
   DateFeuille() {
+    this.datefeuille = [];
+    this.datefeuille.length = 0;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
@@ -144,19 +147,19 @@ export class ListePage {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
           this.xml = xmlhttp.responseXML;
-        var  x,i,d;
+          var x, i, d;
           x = this.xml.getElementsByTagName("return");
-      //    this.datefeuille = this.datefeuille + this.DateF[0].childNodes[0].nodeValue;
+          //    this.datefeuille = this.datefeuille + this.DateF[0].childNodes[0].nodeValue;
           for (i = 0; i < x.length; i++) {
             d = new DateFeuille();
             d.setdatefeuille(x[i].childNodes[0].nodeValue);
             this.datefeuille.push(d);
           }
           this.dtFeuilleserv = new DateFeuilleService();
-      //    if (this.dtFeuilleserv.verifDateFeuille() === false) {
-            this.dtFeuilleserv.getDateFeuille(this.datefeuille);
-    //      }
-      //    return this.datefeuille;
+          //    if (this.dtFeuilleserv.verifDateFeuille() === false) {
+          this.dtFeuilleserv.getDateFeuille(this.datefeuille);
+          //      }
+          //    return this.datefeuille;
         }
       }
     }
@@ -209,4 +212,27 @@ export class ListePage {
       }
     });
   }
+
+
+  deleteListe(user, searchText, etage) {
+    this.patienserv = new PatientService();
+    this.patienserv.deletePatients(user, searchText, etage);
+  }
+
+  deleteDateFeuille() {
+    this.dtFeuilleserv = new DateFeuilleService();
+    this.dtFeuilleserv.deleteDateFeuille();
+  }
+
+  doRefresh(refresher) {
+    this.deleteListe("admin", "", "all");
+    this.liste("admin", "", "all");
+    this.deleteDateFeuille();
+    this.DateFeuille();
+    setTimeout(() => {
+      //   alert('Async operation has ended');
+      refresher.complete();
+    }, 2000);
+  }
+
 }

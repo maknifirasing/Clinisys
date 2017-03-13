@@ -44,7 +44,15 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-
+  <!--  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="connection===true">
+      <ion-refresher-content
+        pullingIcon="arrow-dropdown"
+        pullingText="Pull to refresh"
+        refreshingSpinner="circles"
+        refreshingText="Refreshing...">
+      </ion-refresher-content>
+    </ion-refresher>
+    -->
   <ion-scroll scrollY="true">
     <ion-navbar *ngIf="(lang.value)==='arabe'"
                 dir="rtl">
@@ -70,11 +78,11 @@
           {{navParams.data.tabLangue.titreAnt}}
         </strong>
 
-   <!--     <tr>
-          <td class="size">
-            {{stringAntec}}
-          </td>
-        </tr>-->
+        <!--     <tr>
+               <td class="size">
+                 {{stringAntec}}
+               </td>
+             </tr>-->
         <tr *ngFor="let an of antechl ">
           <td class="size">
             {{an.getch()}}
@@ -89,11 +97,11 @@
         <strong class="strong">
           {{navParams.data.tabLangue.titreAll}}
         </strong>
-   <!--     <tr>
-          <td class="size">
-            {{stringAlerg}}
-          </td>
-        </tr>-->
+        <!--     <tr>
+               <td class="size">
+                 {{stringAlerg}}
+               </td>
+             </tr>-->
         <tr *ngFor="let al of alechl ">
           <td class="size">
             {{al.getch()}}
@@ -512,7 +520,6 @@
           </td>
         </tr>
       </table>
-      <button (click)="goToDetailPage()">Check Network</button>
     </ion-navbar>
   </ion-scroll>
 

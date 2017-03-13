@@ -1,4 +1,3 @@
-
 import {SQLite} from 'ionic-native';
 import {Labo} from "../models/Labo";
 
@@ -8,7 +7,8 @@ export class LaboService {
 
   constructor() {
   }
-  public verifLabo(labos: any,numAdmission) {
+
+  public verifLabo(labos: any, numAdmission) {
     this.verif = false;
     let db = new SQLite();
     db.openDatabase({
@@ -30,15 +30,15 @@ export class LaboService {
     return this.verif;
   }
 
-  public getLabos(labos: any,numAdmission) {
+  public getLabos(labos: any, numAdmission) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
- db.executeSql("select * from Labo where numAdmission like '" + numAdmission + "'", [])
-         .then(result => {
+      db.executeSql("select * from Labo where numAdmission like '" + numAdmission + "'", [])
+        .then(result => {
           if (result.rows.length === 0) {
             this._insertLabos(labos);
           } else {
@@ -47,31 +47,19 @@ export class LaboService {
               l = new Labo();
               l.setcodeDemande(result.rows.item(i).codeDemande);
               l.setcontenuePDF(result.rows.item(i).contenuePDF);
-
-                l.setdateDemande(result.rows.item(i).dateDemande);
-              l.setdateRealisation(result.rows.item(i).dateRealisation);
-
-                l.setdesignation(result.rows.item(i).designation);
+              l.setdateDemande(result.rows.item(i).dateDemande);
+              l.setdateRealisation(result.rows.item(i).dateRealisation)
+              l.setdesignation(result.rows.item(i).designation);
               l.setetatExamen(result.rows.item(i).etatExamen);
-
-
-                   l.setid(result.rows.item(i).id);
+              l.setid(result.rows.item(i).id);
               l.setmedecinTraitant(result.rows.item(i).medecinTraitant);
-
-                l.setnomLabo(result.rows.item(i).nomLabo);
+              l.setnomLabo(result.rows.item(i).nomLabo);
               l.setnumAdmission(result.rows.item(i).numAdmission);
-
-                l.setnumDossier(result.rows.item(i).numDossier);
+              l.setnumDossier(result.rows.item(i).numDossier);
               l.setpatient(result.rows.item(i).patient);
-
-               l.setstate(result.rows.item(i).state);
+              l.setstate(result.rows.item(i).state);
               l.setuserName(result.rows.item(i).userName);
-
               l.setvalidation(result.rows.item(i).validation);
-
-
-             
-
               this.labo.push(l);
             }
           }
@@ -84,6 +72,7 @@ export class LaboService {
     db.close();
     return this.labo;
   }
+
   private _insertLabos(labos: Array<Labo>): void {
     let db = new SQLite();
     db.openDatabase({
@@ -96,30 +85,22 @@ export class LaboService {
         }
         let labo = labos[key];
         db.executeSql('insert into Labo (codeDemande,contenuePDF ,dateDemande ' +
-            'dateRealisation, designation,etatExamen,id,medecinTraitant,nomLabo,numAdmission,numDossier,patient,state,userName,validation) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
-        labo.getcodeDemande(),
-              labo.getcontenuePDF(),
-
-                labo.getdateDemande(),
-              labo.getdateRealisation(),
-
-                labo.getdesignation(),
-              labo.getetatExamen(),
-
-
-                   labo.getid(),
-              labo.getmedecinTraitant(),
-
-                labo.getnomLabo(),
-              labo.getnumAdmission(),
-
-                labo.getnumDossier(),
-              labo.getpatient(),
-
-               labo.getstate(),
-              labo.getuserName(),
-
-              labo.getvalidation()
+          'dateRealisation, designation,etatExamen,id,medecinTraitant,nomLabo,numAdmission,numDossier,patient,state,userName,validation) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+          labo.getcodeDemande(),
+          labo.getcontenuePDF(),
+          labo.getdateDemande(),
+          labo.getdateRealisation(),
+          labo.getdesignation(),
+          labo.getetatExamen(),
+          labo.getid(),
+          labo.getmedecinTraitant(),
+          labo.getnomLabo(),
+          labo.getnumAdmission(),
+          labo.getnumDossier(),
+          labo.getpatient(),
+          labo.getstate(),
+          labo.getuserName(),
+          labo.getvalidation()
 
         ]);
       }
@@ -130,7 +111,7 @@ export class LaboService {
     db.close();
   }
 
-   public deleteLabos(numAdmission) {
+  public deleteLabos(numAdmission) {
 
     let db = new SQLite();
     db.openDatabase({
