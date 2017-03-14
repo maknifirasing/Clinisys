@@ -31,6 +31,7 @@ export class HistPatientService {
   }
 
   public getHistPatients(histPatients: any, user, searchText, etage, codeClinique) {
+    this.histPatient.push(histPatients[0]);
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -39,7 +40,42 @@ export class HistPatientService {
       db.executeSql("select * from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertHistPatients(histPatients)
+            this._insertHistPatients(histPatients);
+          } else {
+            this.histPatient.pop();
+            this.histPatient=[];
+            this.histPatient.length=0;
+            var p;
+            for (var i = 0; i < result.rows.length; i++) {
+              p = new HistPatient();
+              p.setuser(result.rows.item(i).user);
+              p.setsearchText(result.rows.item(i).searchText);
+              p.setetage(result.rows.item(i).etage);
+              p.setdate(result.rows.item(i).date);
+              p.setcodeClinique(result.rows.item(i).codeClinique);
+              this.histPatient.push(p);
+            }
+          }
+        })
+        .catch(error => {
+          console.error('Error opening database', error);
+          alert('Error 1 HistPatient  ' + error);
+        })
+    });
+    db.close();
+    return this.histPatient;
+  }
+
+  public getHistPatientsOff(histPatients: any, user, searchText, etage, codeClinique) {
+    let db = new SQLite();
+    db.openDatabase({
+      name: 'clinisys.db',
+      location: 'default' // the location field is required
+    }).then(() => {
+      db.executeSql("select * from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
+        .then(result => {
+          if (result.rows.length === 0) {
+            this._insertHistPatients(histPatients);
           } else {
             var p;
             for (var i = 0; i < result.rows.length; i++) {
@@ -61,6 +97,7 @@ export class HistPatientService {
     db.close();
     return this.histPatient;
   }
+
 
   private _insertHistPatients(histPatients: Array<HistPatient>): void {
     let db = new SQLite();
@@ -90,7 +127,6 @@ export class HistPatientService {
 
 
   public deleteHistPatients(user, searchText, etage,codeClinique) {
-
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',

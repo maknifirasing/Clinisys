@@ -117,6 +117,7 @@ export class DossierPage {
   }
 
   GetAlerteSigneClinique(numDoss, dateFeuille, nature) {
+    this.signe.pop();
     this.signe = [];
     this.signe.length = 0;
     var xmlhttp = new XMLHttpRequest();
@@ -187,12 +188,16 @@ export class DossierPage {
   getAntecedentAllergieByIdentifiant(idpass) {
     this.stringAlerg = "";
     this.stringAntec = "";
+    this.aleg.pop();
     this.aleg = [];
     this.aleg.length = 0;
+    this.alechl.pop();
     this.alechl = [];
     this.alechl.length = 0;
+    this.antec.pop();
     this.antec = [];
     this.antec.length = 0;
+    this.antechl.pop();
     this.antechl = [];
     this.antechl.length = 0;
     var xmlhttp = new XMLHttpRequest();
@@ -414,6 +419,7 @@ export class DossierPage {
   }
 
   GetTraitements(numdoss, datefeuille) {
+    this.traitement.pop();
     this.traitement = [];
     this.traitement.length = 0;
     this.trait = false;
@@ -525,12 +531,16 @@ export class DossierPage {
   }
 
   GetEvenementByDossier(numdoss) {
+    this.Evolution.pop();
     this.Evolution = [];
     this.Evolution.length = 0;
+    this.Histoiremaladie.pop();
     this.Histoiremaladie = [];
     this.Histoiremaladie.length = 0;
+    this.Examenclinique.pop();
     this.Examenclinique = [];
     this.Examenclinique.length = 0;
+    this.Conclusion.pop();
     this.Conclusion = [];
     this.Conclusion.length = 0;
     this.His = false;
@@ -735,10 +745,13 @@ export class DossierPage {
   }
 
   GetSigneClinique(numdoss, dateFeuille, nature, codeType, codeTypeOf) {
+    this.Entrees.pop();
     this.Entrees = [];
     this.Entrees.length = 0;
+    this.Sorties.pop();
     this.Sorties = [];
     this.Sorties.length = 0;
+    this.Sorties.pop();
     this.Sorties = [];
     this.Sorties.length = 0;
     var xmlhttp = new XMLHttpRequest();

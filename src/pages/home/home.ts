@@ -110,6 +110,6 @@ export class HomePage {
     this.tabLangue = {
       tabLangue: this.navParams.data.tabLangue
     };
-    this.navCtrl.push(ListePage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue")});
+    this.navCtrl.push(ListePage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue"),codeClinique:this.navParams.get("codeClinique")});
   }
 }

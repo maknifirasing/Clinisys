@@ -25,13 +25,12 @@ export class ListePage {
   patienserv: any;
   connection: boolean;
   histserv: any;
-  hist: Array<HistPatient>;
+  hist: Array<HistPatient>= [];
   codeClinique: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.dtFeuille = new DateFeuille();
     this.codeClinique = navParams.get("codeClinique");
-    alert(this.codeClinique);
     if (Variables.checconnection() === "No network connection") {
       this.connection = false;
       this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
@@ -50,6 +49,7 @@ export class ListePage {
 
 
   liste(user, searchText, etage) {
+    this.patient.pop();
     this.patient = [];
     this.patient.length = 0;
     var xmlhttp = new XMLHttpRequest();
@@ -141,6 +141,7 @@ export class ListePage {
   }
 
   DateFeuille() {
+    this.datefeuille.pop();
     this.datefeuille = [];
     this.datefeuille.length = 0;
     var xmlhttp = new XMLHttpRequest();
@@ -234,6 +235,7 @@ export class ListePage {
   }
 
   doRefresh(refresher) {
+    this.historique("admin", "", "all", this.codeClinique);
     this.deleteListe("admin", "", "all");
     this.liste("admin", "", "all");
     this.deleteDateFeuille();
@@ -246,7 +248,6 @@ export class ListePage {
 
   historique(user, searchText, etage, codeClinique) {
     this.histserv = new HistPatientService();
-    this.histserv.deleteHistPatients(user, searchText, etage, codeClinique);
     var h = new HistPatient();
     var d = new Date();
     h.setuser(user);
@@ -255,11 +256,19 @@ export class ListePage {
     h.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
     h.setcodeClinique(codeClinique);
     this.hist.push(h);
-    this.hist = this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique);
+    try {
+      this.histserv.deleteHistPatients(user, searchText, etage, codeClinique);
+      this.hist = this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique);
+    }
+    catch (Error)
+    {
+      this.hist = this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique);
+    }
+
   }
 
-  historiqueOff(history, user, searchText, etage, codeClinique) {
+  historiqueOff(hist, user, searchText, etage, codeClinique) {
     this.histserv = new HistPatientService();
-    this.hist = this.histserv.getHistPatients(history, user, searchText, etage, codeClinique);
+    this.hist = this.histserv.getHistPatientsOff(hist, user, searchText, etage, codeClinique);
   }
 }

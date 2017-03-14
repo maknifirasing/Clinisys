@@ -54,7 +54,6 @@ export class ListeCliniquePage {
     xmlhttp.send(sr);
   }
   goToHomePage(codeC){
-    console.log("code "+codeC);
     this.navCtrl.push(HomePage,{tabLangue: this.navParams.data.tabLangue,langue:this.navParams.get("langue"),codeClinique:codeC});
   }
 }

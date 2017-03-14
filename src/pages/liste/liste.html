@@ -1,28 +1,27 @@
-<input type="text" value="{{this.navParams.get('langue')}}" #lang/>
+<input type="hidden" value="{{this.navParams.get('langue')}}" #lang/>
 <ion-header>
 
-
   <ion-item color="custom-color" *ngIf="(lang.value)==='arabe'"
-            dir="rtl">
-    <p item-right *ngIf="(connection)==='true'">
+            dir="rtl" class="ion-navbar">
+    <p item-right *ngIf="connection===true">
       <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
     </p>
-    <p item-right *ngIf="(connection)==='false'">
+    <p item-right *ngIf="connection===false">
       <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
     </p>
-    <p style="text-align: right" *ngFor="let h of hist ">{{navParams.data.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
+    <p style="text-align: right" *ngFor="let h of hist ">{{navParams.data.tabLangue.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
   </ion-item>
 
 
   <ion-item color="custom-color" class="ion-navbar" class="animated fadeInRight"
-            *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'"  >
-    <p item-right *ngIf="(connection)==='true'">
+            *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'"  class="ion-navbar">
+    <p *ngIf="connection===true">
       <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
     </p>
-    <p item-right *ngIf="(connection)==='false'">
+    <p  *ngIf="connection===false">
       <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
     </p>
-    <p style="text-align: right"  *ngFor="let h of hist ">{{navParams.data.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
+    <p *ngFor="let h of hist ">{{navParams.data.tabLangue.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
   </ion-item>
 
   <ion-navbar class="ion-navbar" *ngIf="(lang.value)==='arabe'" dir="rtl">
@@ -44,7 +43,14 @@
 
 
 <ion-content>
-
+  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="connection===true">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="{{navParams.data.tabLangue.tabLangue.pullingText}}"
+      refreshingSpinner="circles"
+      refreshingText="{{navParams.data.tabLangue.tabLangue.refreshingText}}">
+    </ion-refresher-content>
+  </ion-refresher>
   <ion-scroll scrollY="true">
 
     <ion-list>
