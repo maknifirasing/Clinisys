@@ -1,21 +1,30 @@
 <input type="text" value="{{this.navParams.get('langue')}}" #lang/>
 <ion-header>
 
-  <ion-navbar color="custom-color" class="ion-navbar" class="animated fadeInRight" *ngIf="(lang.value)==='arabe'"
-              dir="rtl">
-    <ion-title>
-      {{navParams.data.tabLangue.tabLangue.liste}}
-    </ion-title>
 
-  </ion-navbar>
+  <ion-item color="custom-color" *ngIf="(lang.value)==='arabe'"
+            dir="rtl">
+    <p item-right *ngIf="(connection)==='true'">
+      <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
+    </p>
+    <p item-right *ngIf="(connection)==='false'">
+      <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
+    </p>
+    <p style="text-align: right" *ngFor="let h of hist ">{{navParams.data.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
+  </ion-item>
 
-  <ion-navbar color="custom-color" class="ion-navbar" class="animated fadeInRight"
-              *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
-    <ion-title>
-      {{navParams.data.tabLangue.tabLangue.liste}}
-    </ion-title>
 
-  </ion-navbar>
+  <ion-item color="custom-color" class="ion-navbar" class="animated fadeInRight"
+            *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'"  >
+    <p item-right *ngIf="(connection)==='true'">
+      <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
+    </p>
+    <p item-right *ngIf="(connection)==='false'">
+      <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
+    </p>
+    <p style="text-align: right"  *ngFor="let h of hist ">{{navParams.data.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
+  </ion-item>
+
   <ion-navbar class="ion-navbar" *ngIf="(lang.value)==='arabe'" dir="rtl">
 
     <p>
@@ -35,14 +44,7 @@
 
 
 <ion-content>
-  <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="connection===true">
-    <ion-refresher-content
-      pullingIcon="arrow-dropdown"
-      pullingText="Pull to refresh"
-      refreshingSpinner="circles"
-      refreshingText="Refreshing...">
-    </ion-refresher-content>
-  </ion-refresher>
+
   <ion-scroll scrollY="true">
 
     <ion-list>

@@ -10,6 +10,9 @@ declare var Connection: any;
 export class Variables {
 
 static arabe= {
+  refreshingText:"تحديث ...",
+  pullingText:"سحب للتحديث",
+  listeClinique:"قائمة العيادات",
   mess: "الرجاء الانتظار بضع ثواني",
   err: "الرجاء التثبت من اسم المستخدم او كلمة المرور",
   errConn: "الرجاء التثبت من اتصالك بالانترنت",
@@ -49,6 +52,9 @@ static arabe= {
 }
 
   static francais: any = {
+    refreshingText:"Rafraîchissant...",
+    pullingText:"Tirer pour rafraîchir",
+    listeClinique:"Liste des Cliniques",
     langue:"francais",
     mess: "S'il vous plais , Vous devez etre Patient",
     err: "verifier votre Nom d'utilisateur ou Mot de passe!",
@@ -89,6 +95,9 @@ static arabe= {
   }
 
   static anglais: any = {
+    refreshingText:"Refreshing...",
+    pullingText:"Pull to refresh",
+    listeClinique:"List of Clinics",
     langue:"anglais",
     mess: "It will takes few seconds, Please be Patient",
     err: "Please check your login or your password!",
