@@ -3,12 +3,7 @@ import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {Clinique} from "../../models/Clinique";
 import {HomePage} from "../home/home";
-/*
- Generated class for the ListeClinique page.
 
- See http://ionicframework.com/docs/v2/components/#navigation for more info on
- Ionic pages and navigation.
- */
 @Component({
   selector: 'page-liste-clinique',
   templateUrl: 'liste-clinique.html',
@@ -16,6 +11,7 @@ import {HomePage} from "../home/home";
 })
 export class ListeCliniquePage {
   clinique: Array<Clinique> = [];
+  c:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,private viewCtrl: ViewController) {
   }
@@ -39,15 +35,15 @@ export class ListeCliniquePage {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
           var xml = xmlhttp.responseXML;
-          var x, i,c;
+          var x, i;
           x = xml.getElementsByTagName("return");
           for (i = 0; i < x.length; i++) {
-            c = new Clinique();
-            c.setcode(x[i].children[0].textContent);
-            c.setid(x[i].children[1].textContent);
-            c.setnom(x[i].children[2].textContent);
-            c.seturl(x[i].children[3].textContent);
-            this.clinique.push(c);
+            this.c = new Clinique();
+            this.c.setcode(x[i].children[0].textContent);
+            this.c.setid(x[i].children[1].textContent);
+            this.c.setnom(x[i].children[2].textContent);
+            this.c.seturl(x[i].children[3].textContent);
+            this.clinique.push(this.c);
           }
         }
       }
@@ -57,7 +53,8 @@ export class ListeCliniquePage {
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
   }
-  goToHomePage(){
-    this.navCtrl.push(HomePage,{tabLangue: this.navParams.data.tabLangue,langue:this.navParams.get("langue")});
+  goToHomePage(codeC){
+    console.log("code "+codeC);
+    this.navCtrl.push(HomePage,{tabLangue: this.navParams.data.tabLangue,langue:this.navParams.get("langue"),codeClinique:codeC});
   }
 }

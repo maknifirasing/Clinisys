@@ -25,7 +25,8 @@
 
 
     <ul *ngFor="let clini of clinique ">
-      <li (click)="goToHomePage()">
+      <input type="hidden" #codeC value="{{clini.getcode()}}">
+      <li (click)="goToHomePage(codeC.value)">
         {{clini.getnom()}}
       </li>
     </ul>

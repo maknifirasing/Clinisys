@@ -1,17 +1,9 @@
 <input type="hidden" value="{{this.navParams.get('langue')}}" #lang/>
 <ion-content>
-  <div padding>
-    <button ion-button menuToggle>
-      <ion-icon name="menu" width="100px"></ion-icon>
-    </button>
-  </div>
-
-
   <div padding id="cloud-layer" *ngIf="(lang.value)==='arabe'" dir="rtl">
 
     <ion-row>
       <ion-col class="animated fadeInUp">
-
         <img src="/android_asset/www/assets/img/clinisys.png"/>
       </ion-col>
     </ion-row>
