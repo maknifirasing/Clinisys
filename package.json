@@ -33,11 +33,11 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "1.0.0",
-    "typescript": "2.0.9"
+    "typescript": "2.2.1"
   },
   "cordovaPlugins": [
     "cordova-plugin-whitelist",
-    "cordova-plugin-console",
+    "cordova-plugin-consol-e",
     "cordova-plugin-statusbar",
     "cordova-plugin-device",
     "cordova-plugin-splashscreen",

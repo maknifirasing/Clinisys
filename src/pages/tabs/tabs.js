@@ -1,102 +1,48 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var core_1 = require('@angular/core');
-var dossier_1 = require("../dossier/dossier");
-var examen_radio_1 = require("../examen-radio/examen-radio");
-var list_preanesthesie_1 = require("../list-preanesthesie/list-preanesthesie");
-var examen_labo_1 = require("../examen-labo/examen-labo");
-var variables_1 = require("../../providers/variables");
-var Labo_1 = require("../../models/Labo");
-var ExamenRadio_1 = require("../../models/ExamenRadio");
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+import { Component, Injectable } from '@angular/core';
+import { DossierPage } from "../dossier/dossier";
+import { NavParams } from 'ionic-angular';
+import { ExamenRadioPage } from "../examen-radio/examen-radio";
+import { ListPreanesthesiePage } from "../list-preanesthesie/list-preanesthesie";
+import { ExamenLaboPage } from "../examen-labo/examen-labo";
+import { Variables } from "../../providers/variables";
+import { Labo } from "../../models/Labo";
+import { ExamenRadio } from "../../models/ExamenRadio";
+import { LaboFService } from "../../services/LaboFService";
+import { LaboTService } from "../../services/LaboTService";
+import { tabBadgeLaboService } from "../../services/tabBadgeLaboService";
+import { tabBadge } from "../../models/tabBadge";
 var TabsPage = (function () {
     function TabsPage(navParams, Url) {
         this.navParams = navParams;
         this.Url = Url;
-        this.tab1Root = dossier_1.DossierPage;
-        this.tab2Root = examen_radio_1.ExamenRadioPage;
-        this.tab3Root = list_preanesthesie_1.ListPreanesthesiePage;
-        this.tab4Root = examen_labo_1.ExamenLaboPage;
+        this.tab1Root = DossierPage;
+        this.tab2Root = ExamenRadioPage;
+        this.tab3Root = ListPreanesthesiePage;
+        this.tab4Root = ExamenLaboPage;
         this.LabosT = [];
         this.LabosF = [];
         this.GetExamenRadioByNumDossResponseTest = false;
         this.examenRT = [];
         this.examenRF = [];
+        this.codeClinique = navParams.get("codeClinique");
         this.pass = navParams.get("mypatient");
+        console.log("patient " + this.pass.getimg());
         this.coountexamenR = 0;
         this.coountexamenRT = 0;
         this.countPdfT = 0;
         this.countPdf = 0;
         var d = new Date();
         this.dat = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        if (navParams.data.lang.langue === "arabe") {
-            this.tab1 = "الصفحة الرئيسية";
-            this.tab2 = "مراجعة الراديو";
-            this.tab3 = "قائمة ما قبل التخدير";
-            this.tab4 = "مراجعة المختبر";
-            this.titreSortie = "المخرجات";
-            this.titreAlert = "التنبيهات";
-            this.titreMaladie = "تاريخ المرض";
-            this.titreClini = "الفحص السريري";
-            this.titreEvo = "تطور";
-            this.titreConclu = "استنتاج";
-            this.titreRegime = "حمية";
-            this.titreDemande = "تاريخ تقديم الطلب";
-            this.titreExamen = "مراجعة";
-            this.titreAct = "حدث";
-            this.titreChi = "الجراح";
-            this.titreDateAct = "تاريخ الحدث";
-            this.titreHeureDeb = "وقت البدء";
-            this.titreHeureF = "نهاية الوقت";
-            this.titleMed = "الطبيب";
-        }
-        else if (navParams.data.lang.langue === "francais") {
-            this.tab1 = "Page principale";
-            this.tab2 = "Revue de Radio";
-            this.tab3 = "La liste des pré-anesthésie";
-            this.tab4 = "Examen du laboratoire";
-            this.titreSortie = "Sorties";
-            this.titreAlert = "Alertes";
-            this.titreMaladie = "Histoire de Maladie";
-            this.titreClini = "Examen Clinique";
-            this.titreEvo = "Évolution";
-            this.titreConclu = "Conclusion";
-            this.titreRegime = "Régime";
-            this.titreDemande = "Date demande";
-            this.titreExamen = "Examen";
-            this.titreAct = "Acte";
-            this.titreChi = "Chirurgien";
-            this.titreDateAct = "Date Acte";
-            this.titreHeureDeb = "Heure Début";
-            this.titreHeureF = "Heure Fin";
-            this.titleMed = "Medecin";
-        }
-        else if (navParams.data.lang.langue === "anglais") {
-            this.tab1 = "Main page";
-            this.tab2 = "Review of Radio";
-            this.tab3 = "The list of pre-anesthesia";
-            this.tab4 = "Laboratory Review";
-            this.titreSortie = "Outputs";
-            this.titreAlert = "Alerts";
-            this.titreMaladie = "History of Disease";
-            this.titreClini = "Clinic Review";
-            this.titreEvo = "Evolution";
-            this.titreConclu = "Conclusion";
-            this.titreRegime = "Diet";
-            this.titreDemande = "The date of application";
-            this.titreExamen = "Review";
-            this.titreAct = "Act";
-            this.titreChi = "Surgeon";
-            this.titreDateAct = "Act date";
-            this.titreHeureDeb = "Start Time";
-            this.titreHeureF = "Time End";
-            this.titleMed = "Doctor";
-        }
-        this.chatParams = {
+        this.tabLangue = {
             pass: navParams.get("mypatient"),
             dateFeuille: navParams.get("dateFeuille"),
             dat: d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(),
@@ -104,38 +50,16 @@ var TabsPage = (function () {
             Labosf: this.LabosF,
             examenRT: this.examenRT,
             examenRF: this.examenRF,
-            age: navParams.data.lang.age,
-            ch: navParams.data.lang.ch,
-            titreEnligne: navParams.data.lang.titreEnligne,
-            titreMotif: this.navParams.data.lang.titreMotif,
-            titreAnt: this.navParams.data.lang.titreAnt,
-            titreAll: this.navParams.data.lang.titreAll,
-            titreSigneV: this.navParams.data.lang.titreSigneV,
-            titreEnt: this.navParams.data.lang.titreEnt,
-            titreTrait: this.navParams.data.lang.titreTrait,
-            titreSortie: this.titreSortie,
-            titreAlert: this.titreAlert,
-            titreMaladie: this.titreMaladie,
-            titreClini: this.titreClini,
-            titreEvo: this.titreEvo,
-            titreConclu: this.titreConclu,
-            titreRegime: this.titreRegime,
-            titreDemande: this.titreDemande,
-            titreExamen: this.titreExamen,
-            titreAct: this.titreAct,
-            titreChi: this.titreChi,
-            titreDateAct: this.titreDateAct,
-            titreHeureDeb: this.titreHeureDeb,
-            titreHeureF: this.titreHeureF,
-            titleMed: this.titleMed
+            langue: navParams.get("langue"),
+            tabLangue: navParams.data.tabLangue.tabLangue, codeClinique: this.codeClinique
         };
     }
     TabsPage.prototype.ionViewDidLoad = function () {
-        this.findAllLaboByNumDossier(this.pass.getdossier());
-        this.GetExamenRadioByNumDossResponse(this.pass.getdossier());
-        console.log("getDoss ", this.pass.getdossier());
+        this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
+        this.GetExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
+        ;
     };
-    TabsPage.prototype.GetExamenRadioByNumDossResponse = function (numDoss) {
+    TabsPage.prototype.GetExamenRadioByNumDossResponse = function (numDoss, codeClinique) {
         var _this = this;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
@@ -164,7 +88,7 @@ var TabsPage = (function () {
                         var hour = "";
                         _this.coountexamenR = x.length;
                         for (i = 0; i < x.length; i++) {
-                            ex = new ExamenRadio_1.ExamenRadio();
+                            ex = new ExamenRadio();
                             ex.setcodeExamen(x[i].children[0].textContent);
                             ex.setcompterendu(x[i].children[1].textContent);
                             dE = new Date(x[i].children[2].textContent);
@@ -216,7 +140,6 @@ var TabsPage = (function () {
                         if (_this.examenRT.length === 0 && _this.examenRF.length === 0) {
                             _this.GetExamenRadioByNumDossResponseTest = false;
                         }
-                        console.log("emchi", _this.coountexamenRT);
                     }
                     catch (Error) {
                         _this.GetExamenRadioByNumDossResponseTest = false;
@@ -228,7 +151,7 @@ var TabsPage = (function () {
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };
-    TabsPage.prototype.findAllLaboByNumDossier = function (numDoss) {
+    TabsPage.prototype.findAllLaboByNumDossier = function (numDoss, codeClinique) {
         var _this = this;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
@@ -252,7 +175,7 @@ var TabsPage = (function () {
                         var year = "";
                         _this.countPdf = x.length;
                         for (i = 0; i < x.length; i++) {
-                            l = new Labo_1.Labo();
+                            l = new Labo();
                             l.setcodeDemande(x[i].children[0].textContent);
                             l.setcontenuePDF(x[i].children[1].textContent);
                             drdv = new Date(x[i].children[2].textContent);
@@ -276,6 +199,7 @@ var TabsPage = (function () {
                             l.setstate(x[i].children[12].textContent);
                             l.setuserName(x[i].children[13].textContent);
                             l.setvalidation(x[i].children[14].textContent);
+                            l.setpdf(_this.Url.url + "dmi-web/LaboPDF/" + l.getnumAdmission() + "0.pdf");
                             if (l.getcontenuePDF() === "true") {
                                 _this.LabosT.push(l);
                                 _this.countPdfT++;
@@ -284,6 +208,17 @@ var TabsPage = (function () {
                                 _this.LabosF.push(l);
                             }
                         }
+                        var tabgLabo = new tabBadge();
+                        tabgLabo.setnumDoss(numDoss);
+                        tabgLabo.setFichier(_this.countPdf);
+                        tabgLabo.setFichierT(_this.countPdfT);
+                        tabgLabo.setcodeClinique(codeClinique);
+                        _this.LabosFs = new LaboFService();
+                        _this.LabosFs.getLabos(_this.LabosF, numDoss, codeClinique);
+                        _this.LabosTs = new LaboTService();
+                        _this.LabosTs.getLabos(_this.LabosT, numDoss, codeClinique);
+                        _this.countPdfs = new tabBadgeLaboService();
+                        //      this.countPdfs.getTabBadgeLabo(, numDoss, this.countPdfT, this.countPdf, codeClinique);
                     }
                     catch (Error) {
                     }
@@ -294,14 +229,16 @@ var TabsPage = (function () {
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };
-    TabsPage = __decorate([
-        core_1.Component({
-            selector: 'page-tabs',
-            templateUrl: 'tabs.html',
-            providers: [variables_1.Variables]
-        }),
-        core_1.Injectable()
-    ], TabsPage);
     return TabsPage;
 }());
-exports.TabsPage = TabsPage;
+TabsPage = __decorate([
+    Component({
+        selector: 'page-tabs',
+        templateUrl: 'tabs.html',
+        providers: [Variables]
+    }),
+    Injectable(),
+    __metadata("design:paramtypes", [NavParams, Variables])
+], TabsPage);
+export { TabsPage };
+//# sourceMappingURL=tabs.js.map

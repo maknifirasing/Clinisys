@@ -8,7 +8,7 @@ export class TraitementService {
   constructor() {
   }
 
-  public verifTraitement(traitements: any, numDoss, datefeuille) {
+  public verifTraitement(traitements: any, numDoss, datefeuille,codeClinique) {
     this.verif = false;
     let db = new SQLite();
     db.openDatabase({
@@ -16,7 +16,7 @@ export class TraitementService {
       location: 'default' // the location field is required
     }).then(() => {
       alert("g "+traitements[0].getnumDoss());
-      db.executeSql("select * from Traitement where numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'", [])
+      db.executeSql("select * from Traitement where numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === traitements.length) {
             this.verif = true;
@@ -31,16 +31,16 @@ export class TraitementService {
     return this.verif;
   }
 
-  public getTraitements(traitements: any, numDoss, datefeuille) {
+  public getTraitements(traitements: any, numDoss, datefeuille,codeClinique) {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Traitement where numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'", [])
+      db.executeSql("select * from Traitement where numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertTraitements(traitements, datefeuille)
+            this._insertTraitements(traitements, datefeuille,codeClinique)
           } else {
             var t;
             for (var i = 0; i < result.rows.length; i++) {
@@ -78,7 +78,7 @@ export class TraitementService {
     return this.traitement;
   }
 
-  private _insertTraitements(traitements: Array<Traitement>, datefeuille): void {
+  private _insertTraitements(traitements: Array<Traitement>, datefeuille,codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -89,7 +89,7 @@ export class TraitementService {
           continue;
         }
         let traitement = traitements[key];
-        db.executeSql('insert into Traitement (codePosologie ,date ,dateFinTrait ,dci ,designation ,dureEnJour ,heure ,heureDebut ,jour ,nbFois ,numDoss ,numTraitement ,numbon ,posologie ,prescripteur ,quantite ,unite ,vitesse ,voie ,volume ,datefeuille) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+        db.executeSql('insert into Traitement (codePosologie ,date ,dateFinTrait ,dci ,designation ,dureEnJour ,heure ,heureDebut ,jour ,nbFois ,numDoss ,numTraitement ,numbon ,posologie ,prescripteur ,quantite ,unite ,vitesse ,voie ,volume ,datefeuille,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
           traitement.getcodePosologie(),
           traitement.getdate(),
           traitement.getdateFinTrait(),
@@ -110,7 +110,8 @@ export class TraitementService {
           traitement.getvitesse(),
           traitement.getvoie(),
           traitement.getvolume(),
-          datefeuille
+          datefeuille,
+          codeClinique
         ]);
       }
     }).catch(error => {
@@ -120,14 +121,14 @@ export class TraitementService {
     db.close();
   }
 
-  public deleteTraitements(numDoss,datefeuille) {
+  public deleteTraitements(numDoss,datefeuille,codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from Traitement where  numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'", [])
+      db.executeSql("delete from Traitement where  numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
        //   alert("Suppression de table Traitement est terminé avec succes");
         })

@@ -1,4 +1,3 @@
-"use strict";
 var SigneClinique = (function () {
     function SigneClinique() {
     }
@@ -28,4 +27,5 @@ var SigneClinique = (function () {
     };
     return SigneClinique;
 }());
-exports.SigneClinique = SigneClinique;
+export { SigneClinique };
+//# sourceMappingURL=SigneClinique.js.map

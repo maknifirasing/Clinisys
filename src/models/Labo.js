@@ -1,4 +1,3 @@
-"use strict";
 /**
  * Created by makni on 17/02/2017.
  */
@@ -95,6 +94,13 @@ var Labo = (function () {
     Labo.prototype.setvalidation = function (value) {
         this._validation = value;
     };
+    Labo.prototype.getpdf = function () {
+        return this._pdf;
+    };
+    Labo.prototype.setpdf = function (value) {
+        this._pdf = value;
+    };
     return Labo;
 }());
-exports.Labo = Labo;
+export { Labo };
+//# sourceMappingURL=Labo.js.map

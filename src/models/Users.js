@@ -1,4 +1,3 @@
-"use strict";
 /**
  * Created by makni on 09/02/2017.
  */
@@ -97,4 +96,5 @@ var Users = (function () {
     };
     return Users;
 }());
-exports.Users = Users;
+export { Users };
+//# sourceMappingURL=Users.js.map

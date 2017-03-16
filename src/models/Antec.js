@@ -1,4 +1,3 @@
-"use strict";
 var Antec = (function () {
     function Antec() {
     }
@@ -70,4 +69,5 @@ var Antec = (function () {
     };
     return Antec;
 }());
-exports.Antec = Antec;
+export { Antec };
+//# sourceMappingURL=Antec.js.map

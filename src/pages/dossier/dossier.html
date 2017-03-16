@@ -14,11 +14,17 @@
         <p style="text-align: right"><strong>{{navParams.data.tabLangue.age}}: </strong>{{navParams.data.pass.getage()}}<strong>{{navParams.data.tabLangue.ch}}: </strong>{{navParams.data.pass.getchambre()}}
         </p>
       </ion-item>
-      <ion-item color="custom-color">
+      <ion-item color="custom-color"  *ngIf="connection===true">
         <p item-right>
           <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
         </p>
-        <p style="text-align: right">{{navParams.data.tabLangue.titreEnligne}}<br/> {{navParams.data.dat}}</p>
+        <p style="text-align: right" *ngFor="let h of histD">{{navParams.data.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
+      </ion-item>
+      <ion-item color="custom-color"  *ngIf="connection===false">
+        <p item-right>
+          <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
+        </p>
+        <p style="text-align: right" *ngFor="let h of histD">{{navParams.data.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
       </ion-item>
     </ion-list>
 
@@ -34,11 +40,17 @@
         <p><strong>{{navParams.data.tabLangue.age}}: </strong>{{navParams.data.pass.getage()}}<strong>{{navParams.data.tabLangue.ch}}: </strong>{{navParams.data.pass.getchambre()}}
         </p>
       </ion-item>
-      <ion-item color="custom-color">
+      <ion-item color="custom-color" *ngIf="connection===true">
         <p item-left>
           <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
         </p>
-        <p>{{navParams.data.tabLangue.titreEnligne}}<br/> {{navParams.data.dat}}</p>
+        <p *ngFor="let h of histD">{{navParams.data.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
+      </ion-item>
+      <ion-item color="custom-color" *ngIf="connection===false">
+        <p item-left>
+          <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
+        </p>
+        <p *ngFor="let h of histD">{{navParams.data.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
       </ion-item>
     </ion-list>
   </ion-navbar>
@@ -54,7 +66,7 @@
           </th>
         </tr>
 
-        <tr>
+        <tr *ngFor="let m of motifh ">
           <td class="size">
             {{ m.getmotifhospitalisation()}}
           </td>
@@ -247,9 +259,9 @@
           {{navParams.data.tabLangue.titreRegime}}
         </strong>
         <p></p>
-        <tr>
+        <tr *ngFor="let r of rigime ">
           <td>
-            {{ rigime.getdesignation() }}
+            {{ r.getdesignation() }}
           </td>
         </tr>
       </table>
@@ -285,7 +297,7 @@
           </th>
         </tr>
 
-        <tr>
+        <tr *ngFor="let m of motifh ">
           <td class="size">
             {{ m.getmotifhospitalisation()}}
           </td>
@@ -482,9 +494,9 @@
           {{navParams.data.tabLangue.titreRegime}}
         </strong>
         <p></p>
-        <tr>
+        <tr *ngFor="let r of rigime ">
           <td>
-            {{ rigime.getdesignation() }}
+            {{ r.getdesignation() }}
           </td>
         </tr>
       </table>

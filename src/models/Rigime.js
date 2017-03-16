@@ -1,4 +1,3 @@
-"use strict";
 /**
  * Created by makni on 16/02/2017.
  */
@@ -19,4 +18,5 @@ var Rigime = (function () {
     };
     return Rigime;
 }());
-exports.Rigime = Rigime;
+export { Rigime };
+//# sourceMappingURL=Rigime.js.map

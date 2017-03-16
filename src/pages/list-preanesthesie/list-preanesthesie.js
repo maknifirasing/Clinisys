@@ -1,13 +1,16 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var core_1 = require('@angular/core');
-var variables_1 = require("../../providers/variables");
-var ListPreanesthesie_1 = require("../../models/ListPreanesthesie");
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
+import { Variables } from "../../providers/variables";
+import { ListPreanesthesie } from "../../models/ListPreanesthesie";
 /*
  Generated class for the ListPreanesthesie page.
 
@@ -50,7 +53,7 @@ var ListPreanesthesiePage = (function () {
                         var second = "";
                         var hour = "";
                         for (i = 0; i < x.length; i++) {
-                            LP = new ListPreanesthesie_1.ListPreanesthesie();
+                            LP = new ListPreanesthesie();
                             LP.setacte(x[i].children[0].textContent);
                             LP.setchirurgien(x[i].children[1].textContent);
                             LP.setcodeActe(x[i].children[2].textContent);
@@ -98,13 +101,15 @@ var ListPreanesthesiePage = (function () {
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };
-    ListPreanesthesiePage = __decorate([
-        core_1.Component({
-            selector: 'page-list-preanesthesie',
-            templateUrl: 'list-preanesthesie.html',
-            providers: [variables_1.Variables]
-        })
-    ], ListPreanesthesiePage);
     return ListPreanesthesiePage;
 }());
-exports.ListPreanesthesiePage = ListPreanesthesiePage;
+ListPreanesthesiePage = __decorate([
+    Component({
+        selector: 'page-list-preanesthesie',
+        templateUrl: 'list-preanesthesie.html',
+        providers: [Variables]
+    }),
+    __metadata("design:paramtypes", [NavController, NavParams, Variables])
+], ListPreanesthesiePage);
+export { ListPreanesthesiePage };
+//# sourceMappingURL=list-preanesthesie.js.map

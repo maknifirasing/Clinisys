@@ -1,4 +1,3 @@
-"use strict";
 var Patient = (function () {
     function Patient() {
     }
@@ -76,4 +75,5 @@ var Patient = (function () {
     };
     return Patient;
 }());
-exports.Patient = Patient;
+export { Patient };
+//# sourceMappingURL=Patient.js.map

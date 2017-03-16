@@ -3,43 +3,51 @@ import {Patient} from "../models/Patient";
 
 export class PatientService {
   public patient: Array<Patient> = [];
-  verif: boolean;
 
   constructor() {
   }
 
-  public verifPatient(patients: any, user, searchText, etage) {
-    this.verif = false;
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'", [])
-        .then(result => {
-          if (result.rows.length === patients.length) {
-            this.verif = true;
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 0 Patient  ' + error);
-        })
+  public  verifPatient(patients: any, user, searchText, etage, codeClinique): Promise<boolean> {
+    return new Promise<boolean>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("select * from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.length === patients.length) {
+              resolve(true);
+              return true;
+            }
+            else {
+              resolve(false);
+              return false;
+            }
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 0 Patient  ' + error);
+            resolve(false);
+            return false;
+          })
+      });
+      db.close();
+      return this;
     });
-    db.close();
-    return this.verif;
+
   }
 
-  public getPatients(patients: any, user, searchText, etage) {
+  public getPatients(patients: any, user, searchText, etage, codeClinique) {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'", [])
+      db.executeSql("select * from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertPatients(patients, user, searchText, etage)
+            this._insertPatients(patients, user, searchText, etage, codeClinique)
           } else {
             var p;
             for (var i = 0; i < result.rows.length; i++) {
@@ -69,7 +77,7 @@ export class PatientService {
     return this.patient;
   }
 
-  private _insertPatients(patients: Array<Patient>, user, searchText, etage): void {
+  private _insertPatients(patients: Array<Patient>, user, searchText, etage, codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -80,7 +88,8 @@ export class PatientService {
           continue;
         }
         let patient = patients[key];
-        db.executeSql('insert into Patient (id, dossier, chambre, nom, prenom, dateNaiss, medecin, spec, etat, age, img, nature,  user, searchText, etage) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+        db.executeSql('insert into Patient (id, dossier, chambre, nom, prenom, dateNaiss, medecin, spec, etat, age, img, nature,  user, searchText, etage,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+
           patient.getid(),
           patient.getdossier(),
           patient.getchambre(),
@@ -95,7 +104,8 @@ export class PatientService {
           patient.getnature(),
           user,
           searchText,
-          etage
+          etage,
+          codeClinique
         ]);
       }
     }).catch(error => {
@@ -106,16 +116,16 @@ export class PatientService {
   }
 
 
-  public deletePatients(user, searchText, etage) {
+  public deletePatients(user, searchText, etage, codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'", [])
+      db.executeSql("delete from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-        //  alert("Suppression de table Patient est terminé avec succes");
+          //  alert("Suppression de table Patient est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);

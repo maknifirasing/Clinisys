@@ -8,6 +8,11 @@ import {Variables} from "../../providers/variables";
 import {Patient} from "../../models/Patient";
 import {Labo} from "../../models/Labo";
 import {ExamenRadio} from "../../models/ExamenRadio";
+import {PdfViewPage} from "../pdf-view/pdf-view";
+import {LaboFService} from "../../services/LaboFService";
+import {LaboTService} from "../../services/LaboTService";
+import {tabBadgeLaboService} from "../../services/tabBadgeLaboService";
+import {tabBadge} from "../../models/tabBadge";
 
 @Component({
   selector: 'page-tabs',
@@ -21,14 +26,18 @@ export class TabsPage {
   tab3Root: any = ListPreanesthesiePage;
   tab4Root: any = ExamenLaboPage;
   pass: Patient;
+  pdf: string;
   dateFeuille: string;
   tabLangue: any;
   dat: string;
   countPdfT: number;
   countPdf: number;
+  countPdfs: any;
   public navCtrl: NavController;
   LabosT: Array<Labo> = [];
   LabosF: Array<Labo> = [];
+  LabosTs: any;
+  LabosFs: any;
   a: any;
   GetExamenRadioByNumDossResponseTest: boolean = false;
   examenRT: Array<ExamenRadio> = [];
@@ -36,29 +45,16 @@ export class TabsPage {
   coountexamenRT: number;
   coountexamenR: number;
   tab: any;
-  tab1:string;
-  tab2:string;
-  tab3:string;
-  tab4:string;
-  titreSortie:string;
-  titreAlert:string;
-  titreMaladie:string;
-  titreClini:string;
-  titreEvo:string;
-  titreConclu:string;
-  titreRegime:string;
-  titreDemande:string;
-  titreExamen:string;
-  titreAct:string;
-  titreChi:string;
-  titreDateAct:string;
-  titreHeureDeb:string;
-  titreHeureF:string;
-  titleMed:string;
+  tab1: string;
+  tab2: string;
+  tab3: string;
+  tab4: string;
+  codeClinique: string;
 
   constructor(public navParams: NavParams, private Url: Variables) {
+    this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("mypatient");
-    console.log("patient "+this.pass.getimg());
+    console.log("patient " + this.pass.getimg());
     this.coountexamenR = 0;
     this.coountexamenRT = 0;
     this.countPdfT = 0;
@@ -75,20 +71,20 @@ export class TabsPage {
       Labosf: this.LabosF,
       examenRT: this.examenRT,
       examenRF: this.examenRF,
-      langue:navParams.get("langue"),
-      tabLangue:navParams.data.tabLangue.tabLangue
+      langue: navParams.get("langue"),
+      tabLangue: navParams.data.tabLangue.tabLangue, codeClinique: this.codeClinique
 
-  };
+    };
   }
 
   ionViewDidLoad() {
-    this.findAllLaboByNumDossier(this.pass.getdossier());
-   this.GetExamenRadioByNumDossResponse(this.pass.getdossier());
-    console.log("getDoss ",this.pass.getdossier());
+    this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
+    this.GetExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
+    ;
 
   }
 
-  GetExamenRadioByNumDossResponse(numDoss) {
+  GetExamenRadioByNumDossResponse(numDoss, codeClinique) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
@@ -172,7 +168,8 @@ export class TabsPage {
             if (this.examenRT.length === 0 && this.examenRF.length === 0) {
               this.GetExamenRadioByNumDossResponseTest = false;
             }
-            console.log("emchi", this.coountexamenRT);
+
+
           } catch (Error) {
             this.GetExamenRadioByNumDossResponseTest = false;
           }
@@ -184,7 +181,7 @@ export class TabsPage {
     xmlhttp.send(sr);
   }
 
-  findAllLaboByNumDossier(numDoss) {
+  findAllLaboByNumDossier(numDoss, codeClinique) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
@@ -232,6 +229,7 @@ export class TabsPage {
               l.setstate(x[i].children[12].textContent);
               l.setuserName(x[i].children[13].textContent);
               l.setvalidation(x[i].children[14].textContent);
+              l.setpdf(this.Url.url + "dmi-web/LaboPDF/" + l.getnumAdmission() + "0.pdf");
               if (l.getcontenuePDF() === "true") {
                 this.LabosT.push(l);
                 this.countPdfT++;
@@ -240,6 +238,23 @@ export class TabsPage {
                 this.LabosF.push(l);
               }
             }
+            var tabgLabo = new tabBadge();
+            tabgLabo.setnumDoss(numDoss);
+            tabgLabo.setFichier(this.countPdf);
+            tabgLabo.setFichierT(this.countPdfT);
+            tabgLabo.setcodeClinique(codeClinique);
+
+
+
+            this.LabosFs = new LaboFService();
+            this.LabosFs.getLabos(this.LabosF, numDoss, codeClinique);
+
+            this.LabosTs = new LaboTService();
+            this.LabosTs.getLabos(this.LabosT, numDoss, codeClinique);
+
+            this.countPdfs = new tabBadgeLaboService();
+      //      this.countPdfs.getTabBadgeLabo(, numDoss, this.countPdfT, this.countPdf, codeClinique);
+
 
           } catch (Error) {
           }

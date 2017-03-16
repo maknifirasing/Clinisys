@@ -45,7 +45,7 @@
   <ion-navbar *ngIf="(lang.value)==='arabe'"
               dir="rtl">
     <table border="0" *ngFor="let labt of LabosT ">
-      <tr (click)="openURL(labt.getnumAdmission())">
+      <tr (click)="gotPdf(labt)">
         <td rowspan="3">
           <img src='/android_asset/www/assets/img/pdf.png' class="roundedImage">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -53,14 +53,14 @@
           <strong>{{navParams.data.tabLangue.titleMed}}:</strong>{{ labt.getmedecinTraitant() }}
         </td>
       </tr>
-      <tr>
+      <tr (click)="gotPdf(labt)">
         <td class="size">
           <strong>{{navParams.data.tabLangue.titreExamen}} :</strong>{{ labt.getcodeDemande().substr(0, 17)}}
           <br/>{{ labt.getcodeDemande().substr(17, 31)}}
           <br/>{{ labt.getcodeDemande().substr(31, labt.getcodeDemande().length)}}
         </td>
       </tr>
-      <tr>
+      <tr (click)="gotPdf(labt)">
         <td class="size">
           <strong>{{navParams.data.tabLangue.titreDemande}} </strong>{{ labt.getdateDemande() }}
         </td>
@@ -73,7 +73,7 @@
     </table>
 
     <table border="0" *ngFor="let labt of LabosF ">
-      <tr (click)="openURL(labt.getnumAdmission())">
+      <tr (click)="gotPdf(labt)">
         <td rowspan="3">
           <img src='/android_asset/www/assets/img/pdfoff.png' class="roundedImage">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -81,12 +81,12 @@
           <strong>{{navParams.data.titleMed}}:</strong>{{ labt.getmedecinTraitant() }}
         </td>
       </tr>
-      <tr>
+      <tr (click)="gotPdf(labt)">
         <td class="size">
           <strong>{{navParams.data.titreExamen}} :</strong> <br/>{{ labt.getcodeDemande() }}
         </td>
       </tr>
-      <tr>
+      <tr (click)="gotPdf(labt)">
         <td class="size">
           <strong>{{navParams.data.titreDemande}} </strong>{{ labt.getdateDemande() }}
         </td>
@@ -101,7 +101,7 @@
 
   <ion-navbar *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
     <table border="0" *ngFor="let labt of LabosT ">
-      <tr (click)="openURL(labt.getnumAdmission())">
+      <tr (click)="gotPdf(labt)">
         <td rowspan="3">
           <img src='/android_asset/www/assets/img/pdf.png' class="roundedImage">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -109,14 +109,14 @@
           <strong>{{navParams.data.tabLangue.titleMed}}:</strong>{{ labt.getmedecinTraitant() }}
         </td>
       </tr>
-      <tr>
+      <tr (click)="gotPdf(labt)">
         <td class="size">
           <strong>{{navParams.data.tabLangue.titreExamen}} :</strong>{{ labt.getcodeDemande().substr(0, 17)}}
           <br/>{{ labt.getcodeDemande().substr(17, 31)}}
           <br/>{{ labt.getcodeDemande().substr(31, labt.getcodeDemande().length)}}
         </td>
       </tr>
-      <tr>
+      <tr (click)="gotPdf(labt)">
         <td class="size">
           <strong>{{navParams.data.tabLangue.titreDemande}} </strong>{{ labt.getdateDemande() }}
         </td>
@@ -129,7 +129,7 @@
     </table>
 
     <table border="0" *ngFor="let labt of LabosF ">
-      <tr (click)="openURL(labt.getnumAdmission())">
+      <tr (click)="gotPdf(labt)">
         <td rowspan="3">
           <img src='/android_asset/www/assets/img/pdfoff.png' class="roundedImage">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -137,12 +137,12 @@
           <strong>{{navParams.data.titleMed}}:</strong>{{ labt.getmedecinTraitant() }}
         </td>
       </tr>
-      <tr>
+      <tr (click)="gotPdf(labt)">
         <td class="size">
           <strong>{{navParams.data.titreExamen}} :</strong> <br/>{{ labt.getcodeDemande() }}
         </td>
       </tr>
-      <tr>
+      <tr (click)="gotPdf(labt)">
         <td class="size">
           <strong>{{navParams.data.titreDemande}} </strong>{{ labt.getdateDemande() }}
         </td>

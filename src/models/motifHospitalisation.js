@@ -1,4 +1,3 @@
-"use strict";
 var MotifHospitalisation = (function () {
     function MotifHospitalisation() {
     }
@@ -100,4 +99,5 @@ var MotifHospitalisation = (function () {
     };
     return MotifHospitalisation;
 }());
-exports.MotifHospitalisation = MotifHospitalisation;
+export { MotifHospitalisation };
+//# sourceMappingURL=motifHospitalisation.js.map

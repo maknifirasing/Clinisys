@@ -17,18 +17,11 @@ export class ExamenLaboPage {
   countPdf: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-
     this.countPdfT = 0;
     this.countPdf = 0;
     this.LabosT = this.navParams.data.Labost;
     this.LabosF = this.navParams.data.Labosf;
-
   }
-
-  ionViewDidLoad() {
-
-  }
-
 
   openURL(numAdmission) {
     var xmlhttp = new XMLHttpRequest();
@@ -61,5 +54,8 @@ export class ExamenLaboPage {
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
+  }
+  gotPdf(pdf){
+    this.navCtrl.push(PdfViewPage, {pdf: pdf.getpdf()});
   }
 }

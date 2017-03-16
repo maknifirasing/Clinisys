@@ -7,7 +7,7 @@ export class SigneCliniqueAlertService {
   constructor() {
   }
 
-  public verifSigneCliniqueAlert(signeCliniques: any, numDoss, dateFeuille, nature) {
+  public verifSigneCliniqueAlert(signeCliniques: any, numDoss, dateFeuille, nature,codeClinique) {
     var verif: boolean;
     let db = new SQLite();
     db.openDatabase({
@@ -15,7 +15,7 @@ export class SigneCliniqueAlertService {
       location: 'default' // the location field is required
     }).then(() => {
       db.executeSql("select * from SigneCliniqueAlert where numDoss like '"+ numDoss +"' and dateFeuille like '"+ dateFeuille
-        +"' and nature like '"+ nature+"'", [])
+        +"' and nature like '"+ nature+ "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           verif = (result.rows.length === signeCliniques.length);
         })
@@ -28,7 +28,7 @@ export class SigneCliniqueAlertService {
     return verif;
   }
 
-  public getSigneCliniquesAlert(signeCliniques: any, numDoss, dateFeuille, nature) {
+  public getSigneCliniquesAlert(signeCliniques: any, numDoss, dateFeuille, nature,codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
@@ -36,10 +36,10 @@ export class SigneCliniqueAlertService {
       location: 'default' // the location field is required
     }).then(() => {
       db.executeSql("select * from SigneCliniqueAlert where numDoss like '"+ numDoss +"' and dateFeuille like '"+ dateFeuille
-        +"' and nature like '"+ nature+"'", [])
+        +"' and nature like '"+ nature+ "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertSigneCliniquesAlert(signeCliniques, numDoss, dateFeuille, nature)
+            this._insertSigneCliniquesAlert(signeCliniques, numDoss, dateFeuille, nature,codeClinique)
           } else {
             var s;
             for (var i = 0; i < result.rows.length; i++) {
@@ -61,7 +61,7 @@ export class SigneCliniqueAlertService {
     return this.signeClinique;
   }
 
-  private _insertSigneCliniquesAlert(signeCliniques: Array<SigneClinique>, numDoss, dateFeuille, nature): void {
+  private _insertSigneCliniquesAlert(signeCliniques: Array<SigneClinique>, numDoss, dateFeuille, nature,codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -72,14 +72,16 @@ export class SigneCliniqueAlertService {
           continue;
         }
         let s = signeCliniques[key];
-        db.executeSql('insert into SigneCliniqueAlert (codeType ,date ,designation ,quantite ,numDoss ,dateFeuille ,nature) values (?,?,?,?,?,?,?)', [
+        db.executeSql('insert into SigneCliniqueAlert (codeType ,date ,designation ,quantite ,numDoss ,dateFeuille ,nature,codeClinique) values (?,?,?,?,?,?,?,?)', [
+
           s.getcodeType(),
           s.getdate(),
           s.getdesignation(),
           s.getquantite(),
           numDoss,
           dateFeuille,
-          nature
+          nature,
+          codeClinique
         ]);
       }
     }).catch(error => {
@@ -89,14 +91,14 @@ export class SigneCliniqueAlertService {
     db.close();
   }
 
-   public deleteSigneCliniquesAlert(numDoss, dateFeuille, nature) {
+   public deleteSigneCliniquesAlert(numDoss, dateFeuille, nature,codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from SigneCliniqueAlert where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "'", [])
+      db.executeSql("delete from SigneCliniqueAlert where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           alert("Suppression de table SigneCliniqueAlert est terminé avec succes");
         })
