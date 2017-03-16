@@ -43,12 +43,10 @@ var Variables = (function () {
             function processRequest(e) {
                 if (xhr.readyState == 4) {
                     if (xhr.status >= 200 && xhr.status < 304) {
-                        alert("connection exists!");
                         resolve(true);
                         return true;
                     }
                     else {
-                        alert("connection doesn't exist!");
                         resolve(false);
                         return false;
                     }
