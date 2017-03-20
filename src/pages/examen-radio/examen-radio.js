@@ -23,15 +23,18 @@ var ExamenRadioPage = (function () {
         this.document = [];
         this.histD = [];
         this.histd = new HistDossier();
-        this.examenRF = this.navParams.data.examenRF;
-        this.examenRT = this.navParams.data.examenRT;
+        this.examenRF = navParams.get("examenRF");
+        this.examenRT = navParams.get("examenRT");
+        this.pass = navParams.get("pass");
+        this.codeClinique = navParams.get("codeClinique");
+        this.langue = navParams.get("langue");
         if (Variables.checconnection() === "No network connection") {
             this.connection = false;
         }
         else {
             this.connection = true;
         }
-        this.historiqueOff(this.histD, this.navParams.data.pass.getdossier(), navParams.get("codeClinique"));
+        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
     }
     ExamenRadioPage.prototype.ionViewDidLoad = function () {
     };

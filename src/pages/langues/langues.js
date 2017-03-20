@@ -8,33 +8,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component } from '@angular/core';
-import { NavController, Platform } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
 import { NativeStorage } from "ionic-native";
 import { ListeCliniquePage } from "../liste-clinique/liste-clinique";
 import { Langue } from "../../models/Langue";
 import { LangueService } from "../../services/LangueService";
 var LanguesPage = (function () {
-    function LanguesPage(navCtrl, platform) {
+    function LanguesPage(navCtrl) {
         this.navCtrl = navCtrl;
         this.langes = [];
-        this.users = [];
         NativeStorage.setItem("name", "basma");
     }
     LanguesPage.prototype.ionViewDidLoad = function () {
     };
-    LanguesPage.prototype.choixLang = function (langue) {
-        if (langue === "arabe") {
+    LanguesPage.prototype.choixLang = function (lang) {
+        if (lang === "arabe") {
             this.tabLangue = Variables.arabe;
         }
-        else if (langue === "francais") {
+        else if (lang === "francais") {
             this.tabLangue = Variables.francais;
         }
-        else if (langue === "anglais") {
+        else if (lang === "anglais") {
             this.tabLangue = Variables.anglais;
         }
         var l = new Langue();
-        l.setlangue(langue);
+        l.setlangue(lang);
         this.langes.push(l);
         this.langserv = new LangueService();
         try {
@@ -45,7 +44,7 @@ var LanguesPage = (function () {
             this.langserv.getLangues(this.langes);
         }
         this.langserv.getLangues(this.langes);
-        this.navCtrl.push(ListeCliniquePage, { tabLangue: this.tabLangue, langue: langue });
+        this.navCtrl.push(ListeCliniquePage, { tabLangue: this.tabLangue, langue: lang });
     };
     return LanguesPage;
 }());
@@ -54,7 +53,7 @@ LanguesPage = __decorate([
         selector: 'page-langues',
         templateUrl: 'langues.html'
     }),
-    __metadata("design:paramtypes", [NavController, Platform])
+    __metadata("design:paramtypes", [NavController])
 ], LanguesPage);
 export { LanguesPage };
 //# sourceMappingURL=langues.js.map

@@ -13,7 +13,7 @@ import {ListePage} from "../pages/liste/liste";
 })
 
 export class MyApp {
-
+  rootPage:any;
   @ViewChild(Nav) nav: Nav;
 
   pages: Array<{title: string, component: any}>;

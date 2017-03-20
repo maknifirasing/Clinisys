@@ -17,6 +17,8 @@ import { PatientService } from "../../services/PatientService";
 import { DateFeuille } from "../../models/DateFeuille";
 import { HistPatient } from "../../models/HistPatient";
 import { HistPatientService } from "../../services/HistPatientService";
+import { UserService } from "../../services/UserService";
+import { LanguesPage } from "../langues/langues";
 var ListePage = (function () {
     function ListePage(navCtrl, navParams, Url) {
         this.navCtrl = navCtrl;
@@ -29,22 +31,23 @@ var ListePage = (function () {
         this.histl = new HistPatient();
         this.dtFeuille = new DateFeuille();
         this.codeClinique = navParams.get("codeClinique");
-        console.log(navParams.get("tabLangue"));
+        this.tabLangue = navParams.get("tabLangue");
+        this.langue = navParams.get("langue");
         if (Variables.checconnection() === "No network connection") {
             this.connection = false;
-            //     this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
+            this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
             this.listeOff(this.patient, "admin", "", "all", this.codeClinique);
-            //    this.DateFeuilleOff(this.datefeuille, this.codeClinique);
+            this.DateFeuilleOff(this.datefeuille, this.codeClinique);
         }
         else {
             this.connection = true;
-            //    this.historique("admin", "", "all", this.codeClinique);
+            this.historique("admin", "", "all", this.codeClinique);
             this.liste("admin", "", "all", this.codeClinique);
-            //   this.DateFeuille(this.codeClinique);
+            this.DateFeuille(this.codeClinique);
         }
         this.patientliste = this.patient;
     }
-    ListePage.prototype.listee = function (user, searchText, etage, codeClinique) {
+    ListePage.prototype.liste = function (user, searchText, etage, codeClinique) {
         var _this = this;
         this.patient.pop();
         this.patient = [];
@@ -128,31 +131,6 @@ var ListePage = (function () {
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };
-    ListePage.prototype.liste = function (user, searchText, etage, codeClinique) {
-        var _this = this;
-        var p = new Patient();
-        p.setid("rr");
-        p.setdossier("rr");
-        p.setchambre("rr");
-        p.setprenom("rr");
-        p.setnom("rr");
-        p.setdateNaiss("rr");
-        p.setmedecin("rr");
-        p.setspec("rr");
-        p.setetat("rr");
-        p.setnature("sur");
-        p.setage(22);
-        p.setimg("babyboy.png");
-        this.patient.push(p);
-        if (searchText === "")
-            searchText = "vide";
-        this.patienserv = new PatientService();
-        this.patienserv.verifPatient(this.patient, user, searchText, etage, codeClinique).then(function (res) {
-            if (res === false) {
-                _this.patienserv.getPatients(_this.patient, user, searchText, etage, codeClinique);
-            }
-        });
-    };
     ListePage.prototype.listeOff = function (patient, user, searchText, etage, codeClinique) {
         if (searchText === "")
             searchText = "vide";
@@ -202,11 +180,8 @@ var ListePage = (function () {
         this.datefeuille = this.dtFeuilleserv.getDateFeuille(this.datefeuille, codeClinique);
     };
     ListePage.prototype.goToDossierPage = function (patient) {
-        this.tabLangue = {
-            tabLangue: this.navParams.data.tabLangue.tabLangue,
-        };
         this.navCtrl.push(TabsPage, {
-            tabLangue: this.tabLangue, langue: this.navParams.get("langue"), mypatient: patient,
+            tabLangue: this.tabLangue, langue: this.langue, mypatient: patient,
             dateFeuille: this.datefeuille[0].getdatefeuille(), codeClinique: this.codeClinique
         });
     };
@@ -285,6 +260,11 @@ var ListePage = (function () {
         this.histserv.getHistPatients(hist, user, searchText, etage, codeClinique).then(function (res) {
             _this.histl = res.getdate();
         });
+    };
+    ListePage.prototype.deconnexion = function () {
+        this.userserv = new UserService();
+        this.userserv.deleteUsers();
+        this.navCtrl.push(LanguesPage);
     };
     return ListePage;
 }());

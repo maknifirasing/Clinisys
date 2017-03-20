@@ -22,15 +22,19 @@ var ExamenLaboPage = (function () {
         this.LabosF = [];
         this.histD = [];
         this.histd = new HistDossier();
-        this.LabosT = this.navParams.data.Labost;
-        this.LabosF = this.navParams.data.Labosf;
+        this.LabosT = navParams.get("Labost");
+        this.LabosF = navParams.get("Labosf");
+        this.tabLangue = navParams.get("tabLangue");
+        this.pass = navParams.get("pass");
+        this.codeClinique = navParams.get("codeClinique");
+        this.langue = navParams.get("langue");
         if (Variables.checconnection() === "No network connection") {
             this.connection = false;
         }
         else {
             this.connection = true;
         }
-        this.historiqueOff(this.histD, this.navParams.data.pass.getdossier(), navParams.get("codeClinique"));
+        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
     }
     ExamenLaboPage.prototype.openURL = function (numAdmission) {
         var _this = this;

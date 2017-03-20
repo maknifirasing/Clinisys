@@ -1,10 +1,3 @@
-/**
- * Created by makni on 14/02/2017.
- */
-import {DateTime} from "ionic-angular";
-/**
- * Created by makni on 09/02/2017.
- */
 export class Users {
   private _actif: number;
   private _chStat: number;

@@ -121,13 +121,13 @@ var UserService = (function () {
         });
         db.close();
     };
-    UserService.prototype.deleteUsers = function (userName, passWord, codeClinique) {
+    UserService.prototype.deleteUsers = function () {
         var db = new SQLite();
         db.openDatabase({
             name: 'clinisys.db',
             location: 'default' // the location field is required
         }).then(function () {
-            db.executeSql("delete from User where userName like '" + userName + "' and passWord like '" + passWord + "'and codeClinique like '" + codeClinique + "'", [])
+            db.executeSql("delete from Users ", [])
                 .then(function () {
                 alert("Suppression de table User est terminé avec succes");
             })

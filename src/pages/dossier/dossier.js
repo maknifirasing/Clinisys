@@ -7,11 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { MotifHospitalisation } from '../../models/motifHospitalisation';
-import { Antec } from '../../models/Antec';
-import { SigneClinique } from '../../models/SigneClinique';
+import { Component } from "@angular/core";
+import { NavController, NavParams } from "ionic-angular";
+import { MotifHospitalisation } from "../../models/motifHospitalisation";
+import { Antec } from "../../models/Antec";
+import { SigneClinique } from "../../models/SigneClinique";
 import { Traitement } from "../../models/Traitement";
 import { Evenement } from "../../models/Evenement";
 import { Rigime } from "../../models/Rigime";
@@ -61,37 +61,41 @@ var DossierPage = (function () {
         this.histD = [];
         this.histd = new HistDossier();
         this.codeClinique = navParams.get("codeClinique");
-        if (this.navParams.data.pass.getnature() === "REA") {
+        this.tabLangue = navParams.get("tabLangue");
+        this.pass = navParams.get("pass");
+        this.dateFeuille = navParams.get("dateFeuille");
+        this.langue = navParams.get("langue");
+        if (this.pass.getnature() === "REA") {
             this.codeType = "'1','G','L','E','7','I','9','A','3'";
             this.codeTypeOf = "1GLE7I9A3";
         }
-        else if (this.navParams.data.pass.getnature() === "sur") {
+        else if (this.pass.getnature() === "sur") {
             this.codeType = "'1','3','4'";
             this.codeTypeOf = "134";
         }
         if (Variables.checconnection() === "No network connection") {
             this.connection = false;
-            //    alert("dossier " + this.navParams.data.pass.getdossier() + " date" + this.navParams.data.dateFeuille + " nature " + this.navParams.data.pass.getnature());
-            this.historiqueOff(this.histD, this.navParams.data.pass.getdossier(), this.codeClinique);
-            this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.navParams.data.pass.getdossier(), this.codeClinique);
-            this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.navParams.data.pass.getid(), this.codeClinique);
-            this.GetAlerteSigneCliniqueOff(this.signe, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeClinique);
-            this.GetTraitementsOff(this.traitement, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.codeClinique);
-            this.GetEvenementByDossierOff(this.navParams.data.pass.getdossier(), this.codeClinique);
-            this.GetListRegimeOff(this.rigime, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeClinique);
-            this.GetSigneCliniqueOff(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeTypeOf, this.codeClinique);
+            //    alert("dossier " + this.pass.getdossier() + " date" + this.dateFeuille + " nature " + this.pass.getnature());
+            this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
+            this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
+            this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
+            this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+            this.GetTraitementsOff(this.traitement, this.pass.getdossier(), this.dateFeuille, this.codeClinique);
+            this.GetEvenementByDossierOff(this.pass.getdossier(), this.codeClinique);
+            this.GetListRegimeOff(this.rigime, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+            this.GetSigneCliniqueOff(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeTypeOf, this.codeClinique);
         }
         else {
             this.connection = true;
-            this.historique(this.navParams.data.pass.getdossier(), this.codeClinique);
+            this.historique(this.pass.getdossier(), this.codeClinique);
             /*
-             this.GetAllMotifHospitalisationByNumDoss(this.navParams.data.pass.getdossier());
-             this.getAntecedentAllergieByIdentifiant(this.navParams.data.pass.getid());
-             this.GetAlerteSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
-             this.GetTraitements(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille);
-             this.GetEvenementByDossier(this.navParams.data.pass.getdossier());
-             this.GetListRegime(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature());
-             this.GetSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeType, this.codeTypeOf);
+             this.GetAllMotifHospitalisationByNumDoss(this.pass.getdossier());
+             this.getAntecedentAllergieByIdentifiant(this.pass.getid());
+             this.GetAlerteSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature());
+             this.GetTraitements(this.pass.getdossier(), this.dateFeuille);
+             this.GetEvenementByDossier(this.pass.getdossier());
+             this.GetListRegime(this.pass.getdossier(), this.dateFeuille, this.pass.getnature());
+             this.GetSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeType, this.codeTypeOf);
              */
             this.update();
         }
@@ -480,9 +484,9 @@ var DossierPage = (function () {
                             _this.trait = false;
                         }
                         _this.traitementServ = new TraitementService();
-                        _this.traitementServ.verifTraitement(_this.traitement, _this.navParams.data.pass.getdossier(), _this.navParams.data.dateFeuille, codeClinique).then(function (res) {
+                        _this.traitementServ.verifTraitement(_this.traitement, _this.pass.getdossier(), _this.dateFeuille, codeClinique).then(function (res) {
                             if (res === false) {
-                                _this.traitementServ.getTraitements(_this.traitement, _this.navParams.data.pass.getdossier(), _this.navParams.data.dateFeuille, codeClinique);
+                                _this.traitementServ.getTraitements(_this.traitement, _this.pass.getdossier(), _this.dateFeuille, codeClinique);
                             }
                         });
                     }
@@ -499,9 +503,9 @@ var DossierPage = (function () {
     DossierPage.prototype.GetTraitementsOff = function (traitement, numdoss, datefeuille, codeClinique) {
         var _this = this;
         this.traitementServ = new TraitementService();
-        this.traitementServ.verifTraitement(this.traitement, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, codeClinique).then(function (res) {
+        this.traitementServ.verifTraitement(this.traitement, this.pass.getdossier(), this.dateFeuille, codeClinique).then(function (res) {
             if (res === true) {
-                _this.traitement = _this.traitementServ.getTraitements(_this.traitement, _this.navParams.data.pass.getdossier(), _this.navParams.data.dateFeuille, codeClinique);
+                _this.traitement = _this.traitementServ.getTraitements(_this.traitement, _this.pass.getdossier(), _this.dateFeuille, codeClinique);
                 _this.trait = true;
             }
         });
@@ -595,9 +599,9 @@ var DossierPage = (function () {
                         }
                         else {
                             _this.EvenementConS = new EvenementConService();
-                            _this.EvenementConS.verifEvenement(_this.Conclusion, _this.navParams.data.pass.getdossier(), codeClinique).then(function (res) {
+                            _this.EvenementConS.verifEvenement(_this.Conclusion, _this.pass.getdossier(), codeClinique).then(function (res) {
                                 if (res === false) {
-                                    _this.EvenementConS.getEvenements(_this.Conclusion, _this.navParams.data.pass.getdossier(), codeClinique);
+                                    _this.EvenementConS.getEvenements(_this.Conclusion, _this.pass.getdossier(), codeClinique);
                                 }
                             });
                         }
@@ -606,9 +610,9 @@ var DossierPage = (function () {
                         }
                         else {
                             _this.EvenementExaS = new EvenementExaService();
-                            _this.EvenementExaS.verifEvenement(_this.Examenclinique, _this.navParams.data.pass.getdossier(), codeClinique).then(function (res) {
+                            _this.EvenementExaS.verifEvenement(_this.Examenclinique, _this.pass.getdossier(), codeClinique).then(function (res) {
                                 if (res === false) {
-                                    _this.EvenementExaS.getEvenements(_this.Examenclinique, _this.navParams.data.pass.getdossier(), codeClinique);
+                                    _this.EvenementExaS.getEvenements(_this.Examenclinique, _this.pass.getdossier(), codeClinique);
                                 }
                             });
                         }
@@ -617,9 +621,9 @@ var DossierPage = (function () {
                         }
                         else {
                             _this.EvenementHisS = new EvenementHisService();
-                            _this.EvenementHisS.verifEvenement(_this.Histoiremaladie, _this.navParams.data.pass.getdossier(), codeClinique).then(function (res) {
+                            _this.EvenementHisS.verifEvenement(_this.Histoiremaladie, _this.pass.getdossier(), codeClinique).then(function (res) {
                                 if (res === false) {
-                                    _this.EvenementHisS.getEvenements(_this.Histoiremaladie, _this.navParams.data.pass.getdossier(), codeClinique);
+                                    _this.EvenementHisS.getEvenements(_this.Histoiremaladie, _this.pass.getdossier(), codeClinique);
                                 }
                             });
                         }
@@ -628,9 +632,9 @@ var DossierPage = (function () {
                         }
                         else {
                             _this.EvenementEvoS = new EvenementEvoService();
-                            _this.EvenementEvoS.verifEvenement(_this.Evolution, _this.navParams.data.pass.getdossier(), codeClinique).then(function (res) {
+                            _this.EvenementEvoS.verifEvenement(_this.Evolution, _this.pass.getdossier(), codeClinique).then(function (res) {
                                 if (res === false) {
-                                    _this.EvenementEvoS.getEvenements(_this.Evolution, _this.navParams.data.pass.getdossier(), codeClinique);
+                                    _this.EvenementEvoS.getEvenements(_this.Evolution, _this.pass.getdossier(), codeClinique);
                                 }
                             });
                         }
@@ -654,23 +658,23 @@ var DossierPage = (function () {
             }
         });
         this.EvenementExaS = new EvenementExaService();
-        this.EvenementExaS.verifEvenement(this.Examenclinique, this.navParams.data.pass.getdossier(), codeClinique).then(function (res) {
+        this.EvenementExaS.verifEvenement(this.Examenclinique, this.pass.getdossier(), codeClinique).then(function (res) {
             if (res === true) {
                 _this.Examenclinique = _this.EvenementExaS.getEvenements(_this.Examenclinique, numdoss, codeClinique);
                 _this.Exa = true;
             }
         });
         this.EvenementHisS = new EvenementHisService();
-        this.EvenementHisS.verifEvenement(this.Histoiremaladie, this.navParams.data.pass.getdossier(), codeClinique).then(function (res) {
+        this.EvenementHisS.verifEvenement(this.Histoiremaladie, this.pass.getdossier(), codeClinique).then(function (res) {
             if (res === true) {
-                _this.Histoiremaladie = _this.EvenementHisS.getEvenements(_this.Histoiremaladie, _this.navParams.data.pass.getdossier(), codeClinique);
+                _this.Histoiremaladie = _this.EvenementHisS.getEvenements(_this.Histoiremaladie, _this.pass.getdossier(), codeClinique);
                 _this.His = true;
             }
         });
         this.EvenementEvoS = new EvenementEvoService();
-        this.EvenementEvoS.verifEvenement(this.Evolution, this.navParams.data.pass.getdossier(), codeClinique).then(function (res) {
+        this.EvenementEvoS.verifEvenement(this.Evolution, this.pass.getdossier(), codeClinique).then(function (res) {
             if (res === true) {
-                _this.Evolution = _this.EvenementEvoS.getEvenements(_this.Evolution, _this.navParams.data.pass.getdossier(), codeClinique);
+                _this.Evolution = _this.EvenementEvoS.getEvenements(_this.Evolution, _this.pass.getdossier(), codeClinique);
                 _this.Evo = true;
             }
         });
@@ -875,20 +879,20 @@ var DossierPage = (function () {
         this.signeCliniqueSigS.deleteSigneCliniques(numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
     };
     DossierPage.prototype.update = function () {
-        this.DeleteGetAllMotifHospitalisationByNumDoss(this.navParams.data.pass.getdossier(), this.codeClinique);
-        this.GetAllMotifHospitalisationByNumDoss(this.navParams.data.pass.getdossier(), this.codeClinique);
-        this.DeletegetAntecedentAllergieByIdentifiant(this.navParams.data.pass.getid(), this.codeClinique);
-        this.getAntecedentAllergieByIdentifiant(this.navParams.data.pass.getid(), this.codeClinique);
-        this.DeleteGetAlerteSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeClinique);
-        this.GetAlerteSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeClinique);
-        this.DeleteTraitement(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.codeClinique);
-        this.GetTraitements(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.codeClinique);
-        this.DeleteGetEvenementByDossier(this.navParams.data.pass.getdossier(), this.codeClinique);
-        this.GetEvenementByDossier(this.navParams.data.pass.getdossier(), this.codeClinique);
-        this.DeleteGetListRegime(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeClinique);
-        this.GetListRegime(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeClinique);
-        this.DeleteGetSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeTypeOf, this.codeClinique);
-        this.GetSigneClinique(this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature(), this.codeType, this.codeTypeOf, this.codeClinique);
+        this.DeleteGetAllMotifHospitalisationByNumDoss(this.pass.getdossier(), this.codeClinique);
+        this.GetAllMotifHospitalisationByNumDoss(this.pass.getdossier(), this.codeClinique);
+        this.DeletegetAntecedentAllergieByIdentifiant(this.pass.getid(), this.codeClinique);
+        this.getAntecedentAllergieByIdentifiant(this.pass.getid(), this.codeClinique);
+        this.DeleteGetAlerteSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+        this.GetAlerteSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+        this.DeleteTraitement(this.pass.getdossier(), this.dateFeuille, this.codeClinique);
+        this.GetTraitements(this.pass.getdossier(), this.dateFeuille, this.codeClinique);
+        this.DeleteGetEvenementByDossier(this.pass.getdossier(), this.codeClinique);
+        this.GetEvenementByDossier(this.pass.getdossier(), this.codeClinique);
+        this.DeleteGetListRegime(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+        this.GetListRegime(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+        this.DeleteGetSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeTypeOf, this.codeClinique);
+        this.GetSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeType, this.codeTypeOf, this.codeClinique);
     };
     DossierPage.prototype.doRefresh = function (refresher) {
         this.update();

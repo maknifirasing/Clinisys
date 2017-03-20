@@ -2,8 +2,6 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {NavController} from "ionic-angular";
-import * as needle from "needle";
-import * as chalk from "chalk";
 
 declare var navigator: any;
 declare var Connection: any;

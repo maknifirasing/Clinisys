@@ -9,7 +9,6 @@ import {DateFeuille} from "../../models/DateFeuille";
 import {HistPatient} from "../../models/HistPatient";
 import {HistPatientService} from "../../services/HistPatientService";
 import {UserService} from "../../services/UserService";
-import {LangueService} from "../../services/LangueService";
 import {LanguesPage} from "../langues/langues";
 
 @Component({

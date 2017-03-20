@@ -4,13 +4,13 @@
               dir="rtl">
       <ion-item color="custom-color">
         <ion-avatar item-left>
-          <img src='/android_asset/www/assets/img/{pass.getimg()}}'>
+          <img src='/android_asset/www/assets/img/{{pass.getimg()}}'>
         </ion-avatar>
         <ion-avatar item-right>
           <img src='/android_asset/www/assets/img/i.jpg'>
         </ion-avatar>
-        <p style="text-align: right">{pass.getnom()}}</p>
-        <p style="text-align: right"><strong>{{tabLangue.age}}: </strong>{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{pass.getchambre()}}
+        <p style="text-align: right">{{pass.getnom()}}</p>
+        <p style="text-align: right"><strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
         </p>
       </ion-item>
       <ion-item color="custom-color"  *ngIf="connection===true">
@@ -30,13 +30,13 @@
     <ion-list color="custom-color" *ngIf="langue==='francais' || langue==='anglais'">
       <ion-item color="custom-color">
         <ion-avatar item-left>
-          <img src='/android_asset/www/assets/img/{pass.getimg()}}'>
+          <img src='/android_asset/www/assets/img/{{pass.getimg()}}'>
         </ion-avatar>
         <ion-avatar item-right>
           <img src='/android_asset/www/assets/img/i.jpg'>
         </ion-avatar>
-        <p>{pass.getnom()}}</p>
-        <p><strong>{{tabLangue.age}}: </strong>{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{pass.getchambre()}}
+        <p>{{pass.getnom()}}</p>
+        <p><strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
         </p>
       </ion-item>
       <ion-item color="custom-color" *ngIf="connection===true">

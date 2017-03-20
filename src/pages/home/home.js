@@ -20,8 +20,10 @@ var HomePage = (function () {
         this.Url = Url;
         this.users = [];
         this.codeClinique = this.navParams.get("codeClinique");
+        this.tabLangue = navParams.get("tabLangue");
+        this.langue = navParams.get("langue");
     }
-    HomePage.prototype.connecterr = function (userName, passWord) {
+    HomePage.prototype.connecter = function (userName, passWord) {
         var _this = this;
         try {
             var xmlhttp = new XMLHttpRequest();
@@ -59,9 +61,6 @@ var HomePage = (function () {
                             user.setvalidCptRend(x[0].children[13].textContent);
                             user.setvalidPHNuit(x[0].children[14].textContent);
                             user.setcodeClinique(_this.codeClinique);
-                            _this.tabLangue = {
-                                tabLangue: _this.navParams.data.tabLangue
-                            };
                             _this.users.push(user);
                             if (_this.users.length > 0) {
                                 _this.userserv = new UserService();
@@ -74,16 +73,16 @@ var HomePage = (function () {
                                 });
                                 _this.navCtrl.push(ListePage, {
                                     tabLangue: _this.tabLangue,
-                                    langue: _this.navParams.get("langue"),
+                                    langue: _this.langue,
                                     codeClinique: _this.codeClinique
                                 });
                             }
                             else {
-                                _this.err = _this.navParams.data.tabLangue.err;
+                                _this.err = _this.tabLangue.err;
                             }
                         }
                         catch (Error) {
-                            _this.err = _this.navParams.data.tabLangue.err;
+                            _this.err = _this.tabLangue.err;
                         }
                     }
                 }
@@ -93,49 +92,7 @@ var HomePage = (function () {
             xmlhttp.send(sr);
         }
         catch (Error) {
-            this.errConn = this.navParams.data.tabLangue.errConn;
-        }
-    };
-    HomePage.prototype.connecter = function (userName, passWord) {
-        var _this = this;
-        var user = new Users();
-        user.setactif(1);
-        user.setchStat(1);
-        user.setcodeMedecinInfirmier("f");
-        user.setcodePin(2);
-        user.setdateModPwd("d");
-        user.setdernierDateCnx("e");
-        user.setdescription("ee");
-        user.setgrp("rr");
-        user.setmatricule("rr");
-        user.setnatureUserDS("rr");
-        user.setoldGrp("rr");
-        user.setpassWord("rr");
-        user.setuserName("rr");
-        user.setvalidCptRend("rr");
-        user.setvalidPHNuit("rr");
-        user.setcodeClinique(this.codeClinique);
-        this.tabLangue = {
-            tabLangue: this.navParams.data.tabLangue
-        };
-        this.users.push(user);
-        if (this.users.length > 0) {
-            this.userserv = new UserService();
-            //   this.userserv.verifUser(userName, passWord, this.codeClinique).then(res => {
-            this.userserv.verifUser().then(function (res) {
-                if (res === false) {
-                    //       this.userserv.getUser(this.users, userName, passWord, this.codeClinique);
-                    _this.userserv.getUser(_this.users);
-                }
-            });
-            this.navCtrl.push(ListePage, {
-                tabLangue: this.tabLangue,
-                langue: this.navParams.get("langue"),
-                codeClinique: this.codeClinique
-            });
-        }
-        else {
-            this.err = this.navParams.data.tabLangue.err;
+            this.errConn = this.tabLangue.errConn;
         }
     };
     HomePage.prototype.verifuser = function () {
@@ -151,12 +108,9 @@ var HomePage = (function () {
         });
     };
     HomePage.prototype.conn = function () {
-        this.tabLangue = {
-            tabLangue: this.navParams.data.tabLangue
-        };
         this.navCtrl.push(ListePage, {
             tabLangue: this.tabLangue,
-            langue: this.navParams.get("langue"),
+            langue: this.langue,
             codeClinique: this.codeClinique
         });
     };

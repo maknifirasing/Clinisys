@@ -1,13 +1,10 @@
 import {Component} from '@angular/core';
-import {NavController, Platform} from 'ionic-angular';
+import {NavController} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {NativeStorage} from "ionic-native";
 import {ListeCliniquePage} from "../liste-clinique/liste-clinique";
 import {Langue} from "../../models/Langue";
 import {LangueService} from "../../services/LangueService";
-import {UserService} from "../../services/UserService";
-import {Users} from "../../models/Users";
-import {ListePage} from "../liste/liste";
 
 @Component({
   selector: 'page-langues',

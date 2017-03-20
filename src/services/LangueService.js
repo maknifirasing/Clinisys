@@ -12,7 +12,7 @@ var LangueService = (function () {
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
             }).then(function () {
-                db.executeSql("select count(*) as sum from Langue", [])
+                db.executeSql("select count(*) as sum from Langue ", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
                         resolve(true);
@@ -52,7 +52,7 @@ var LangueService = (function () {
                         var l;
                         for (var i = 0; i < result.rows.length; i++) {
                             l = new Langue();
-                            l.getlangue(result.rows.item(i).langue);
+                            l.setlangue(result.rows.item(i).langue);
                             _this.langue.push(l);
                         }
                         resolve(_this.langue[0]);

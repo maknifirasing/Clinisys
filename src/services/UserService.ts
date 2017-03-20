@@ -1,6 +1,5 @@
 import {SQLite} from 'ionic-native';
 import {Users} from "../models/Users";
-import {resolveAppNgModuleFromMain} from "@ionic/app-scripts/dist/aot/app-module-resolver";
 
 export class UserService {
   users: Array<Users> = [];

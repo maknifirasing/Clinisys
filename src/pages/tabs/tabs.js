@@ -46,6 +46,8 @@ var TabsPage = (function () {
         this.ListeP = [];
         this.codeClinique = navParams.get("codeClinique");
         this.pass = navParams.get("mypatient");
+        this.tabLangue = navParams.get("tabLangue");
+        this.langue = navParams.get("langue");
         this.coountexamenR = 0;
         this.coountexamenRT = 0;
         this.coountListPreanesthesie = 0;
@@ -71,8 +73,8 @@ var TabsPage = (function () {
             ListeP: this.ListeP,
             examenRT: this.examenRT,
             examenRF: this.examenRF,
-            langue: navParams.get("langue"),
-            tabLangue: navParams.data.tabLangue.tabLangue, codeClinique: this.codeClinique
+            langue: this.langue,
+            tabLangue: this.tabLangue, codeClinique: this.codeClinique
         };
     }
     TabsPage.prototype.ionViewDidLoad = function () {

@@ -11,13 +11,11 @@ import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';
 import { LanguesPage } from '../pages/langues/langues';
 import { StatusBar, Splashscreen, SQLite } from 'ionic-native';
-import { Variables } from "../providers/variables";
-import { ListePage } from "../pages/liste/liste";
 var MyApp = (function () {
     function MyApp(platform) {
-        var _this = this;
         this.users = [];
         this.langes = [];
+        this.nav.setRoot(LanguesPage);
         this.pages = [
             { title: 'Langues', component: LanguesPage }
         ];
@@ -27,7 +25,7 @@ var MyApp = (function () {
                 location: 'default'
             })
                 .then(function (db) {
-                db.executeSql('CREATE TABLE IF NOT EXISTS Langue(langue VARCHAR(32))', {});
+                db.executeSql('CREATE TABLE IF NOT EXISTS Langue (langue VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeListPreanesthesie(codeClinique VARCHAR(32),numDoss VARCHAR(32),ListPreanesthesie VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeLabo(codeClinique VARCHAR(32),numDoss VARCHAR(32),LabosT VARCHAR(32),Labos VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeRadio(codeClinique VARCHAR(32),numDoss VARCHAR(32),RadioT VARCHAR(32),Radio VARCHAR(32))', {});
@@ -96,43 +94,38 @@ var MyApp = (function () {
                 console.error('Error opening database', error);
                 alert('Error opening database  ' + error);
             });
-            _this.tabLangue = Variables.anglais;
-            _this.nav.setRoot(ListePage, {
-                tabLangue: _this.tabLangue,
-                langue: _this.langue,
-                codeClinique: "11111"
-            });
-            /*  this.userserv = new UserService();
-              this.userserv.verifUser().then(res => {
-                if (res === true) {
-                  this.userserv.getUser(this.users).then(user => {
-                    this.codeClinique = user.getcodeClinique();
-        
-        
-                  this.langserv = new LangueService();
-                  this.langserv.getLangues(this.langes).then(lang => {
-                    this.langue = lang.setlangue();
-                    if (this.langue === "arabe") {
-                      this.tabLangue = Variables.arabe;
+            /*
+                this.userserv = new UserService();
+                  this.userserv.verifUser().then(res => {
+                    if (res === true) {
+                      this.userserv.getUser(this.users).then(user => {
+                        this.codeClinique = user.getcodeClinique();
+            
+            
+                      this.langserv = new LangueService();
+                      this.langserv.getLangues(this.langes).then(lang => {
+                        this.langue = lang.getlangue();
+                        if (this.langue === "arabe") {
+                          this.tabLangue = Variables.arabe;
+                        }
+                        else if (this.langue === "francais") {
+                          this.tabLangue = Variables.francais;
+                        }
+                        else if (this.langue === "anglais") {
+                          this.tabLangue = Variables.anglais;
+                        }
+                        this.nav.setRoot(ListePage, {
+                          tabLangue: this.tabLangue,
+                          langue: this.langue,
+                          codeClinique: this.codeClinique
+                        });
+                      });
+                      });
+                    }else {
+                      this.nav.setRoot(LanguesPage);
                     }
-                    else if (this.langue === "francais") {
-                      this.tabLangue = Variables.francais;
-                    }
-                    else if (this.langue === "anglais") {
-                      this.tabLangue = Variables.anglais;
-                    }
-                    this.nav.setRoot(ListePage, {
-                      tabLangue: this.tabLangue.data.tabLangue,
-                      langue: this.langue,
-                      codeClinique: this.codeClinique
-                    });
                   });
-                  });
-                }else {
-                  this.nav.setRoot(LanguesPage);
-                }
-              });
-        */
+            */
             StatusBar.styleDefault();
             Splashscreen.hide();
         });

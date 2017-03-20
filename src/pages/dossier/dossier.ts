@@ -15,7 +15,6 @@ import {EvenementExaService} from "../../services/EvenementExaService";
 import {EvenementHisService} from "../../services/EvenementHisService";
 import {motifHospitalisationService} from "../../services/motifHospitalisationService";
 import {RigimeService} from "../../services/RigimeService";
-import {SigneCliniqueService} from "../../services/SigneCliniqueService";
 import {SigneCliniqueEntService} from "../../services/SigneCliniqueEntService";
 import {SigneCliniqueSorService} from "../../services/SigneCliniqueSorService";
 import {SigneCliniqueSigService} from "../../services/SigneCliniqueSigService";

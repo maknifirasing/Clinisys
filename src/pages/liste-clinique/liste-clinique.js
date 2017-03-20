@@ -21,6 +21,8 @@ var ListeCliniquePage = (function () {
         this.viewCtrl = viewCtrl;
         this.clinique = [];
         this.viewCtrl.showBackButton(false);
+        this.tabLangue = navParams.get("tabLangue");
+        this.langue = navParams.get("langue");
         if (Variables.checconnection() === "No network connection") {
             this.connection = false;
             this.ListCliniqueOff(this.clinique);
@@ -30,7 +32,7 @@ var ListeCliniquePage = (function () {
             this.ListClinique();
         }
     }
-    ListeCliniquePage.prototype.ListCliniquee = function () {
+    ListeCliniquePage.prototype.ListClinique = function () {
         var _this = this;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
@@ -63,22 +65,12 @@ var ListeCliniquePage = (function () {
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };
-    ListeCliniquePage.prototype.ListClinique = function () {
-        this.c = new Clinique();
-        this.c.setcode("111111");
-        this.c.setid("ee");
-        this.c.setnom("ee");
-        this.c.seturl("ee");
-        this.clinique.push(this.c);
-        this.clinserv = new CliniqueService();
-        this.clinserv.getCliniques(this.clinique);
-    };
     ListeCliniquePage.prototype.ListCliniqueOff = function (cliniques) {
         this.clinserv = new CliniqueService();
         this.clinique = this.clinserv.getCliniques(cliniques);
     };
     ListeCliniquePage.prototype.goToHomePage = function (codeC) {
-        this.navCtrl.push(HomePage, { tabLangue: this.navParams.data.tabLangue, langue: this.navParams.get("langue"), codeClinique: codeC });
+        this.navCtrl.push(HomePage, { tabLangue: this.tabLangue, langue: this.langue, codeClinique: codeC });
     };
     return ListeCliniquePage;
 }());
