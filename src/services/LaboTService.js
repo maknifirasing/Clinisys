@@ -6,25 +6,33 @@ var LaboTService = (function () {
     }
     LaboTService.prototype.verifLabo = function (labos, numDossier, codeClinique) {
         var _this = this;
-        this.verif = false;
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("select * from LaboT where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
-                .then(function (result) {
-                if (result.rows.length === labos.length) {
-                    _this.verif = true;
-                }
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 0 LaboT  ' + error);
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                db.executeSql("select count(*) as sum  from LaboT where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
+                    .then(function (result) {
+                    if (result.rows.item(0).sum > 0) {
+                        resolve(true);
+                        return true;
+                    }
+                    else {
+                        resolve(false);
+                        return false;
+                    }
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    alert('Error 0 LaboT  ' + error);
+                    resolve(false);
+                    return false;
+                });
             });
+            db.close();
+            return _this;
         });
-        db.close();
-        return this.verif;
     };
     LaboTService.prototype.getLabos = function (labos, numDossier, codeClinique) {
         var _this = this;

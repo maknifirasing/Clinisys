@@ -3,113 +3,124 @@ import {Users} from "../models/Users";
 import {resolveAppNgModuleFromMain} from "@ionic/app-scripts/dist/aot/app-module-resolver";
 
 export class UserService {
-  public user: Users;
-  verif: boolean = false;
-  private dbPromise: Promise<SQLite>;
+  users: Array<Users> = [];
 
   constructor() {
   }
 
 
-  verifUser(codeClinique){
-  return   new Promise(res=>{
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-        alert("ee0");
-      db.executeSql("select * from Users where codeClinique like '" + codeClinique + "'", []).then(result => {
-          alert("ee1");
-          if (result.rows.length === 1) {
-            //  alert("ee 2 1");
-            Promise.resolve(true);
-              return true;
-
+  //verifUser(codeClinique,userName,passWord): Promise<boolean> {
+  verifUser(): Promise<boolean> {
+    return new Promise<boolean>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        //    db.executeSql("select count(*) as sum from Users where userName like '" + userName + "' and passWord like '" + passWord + "'and codeClinique like '" + codeClinique + "'", []).then(result => {
+        db.executeSql("select count(*) as sum from Users ", []).then(result => {
+          if (result.rows.item(0).sum > 0) {
+            resolve(true);
+            return true;
           }
           else {
-            //   alert("ee 2 2");
-            Promise.resolve(false);
+            resolve(false);
             return false;
           }
         })
           .catch(error => {
             console.error('Error opening database', error);
-            //     alert('Error 0 Users  ' + error);
+            alert('Error 0 Users  ' + error);
 
-            Promise.resolve(false);
+            resolve(false);
             return false;
           })
+      });
+      db.close();
+      return this;
     })
-      })
 
   }
 
-  public getUser(users: any,codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from Users where codeClinique like '" + codeClinique + "'", []).then(result => {
-        alert("rows1 " + result.rows.length);
-        if (result.rows.length === 0) {
-          this._insertUser(users,codeClinique)
-        } else {
-          this.user = new Users();
-          this.user.setactif(result.rows.item(0).actif);
-          this.user.setchStat(result.rows.item(0).chStat);
-          this.user.setcodeMedecinInfirmier(result.rows.item(0).codeMedecinInfirmier);
-          this.user.setcodePin(result.rows.item(0).codePin);
-          this.user.setdateModPwd(result.rows.item(0).dateModPwd);
-          this.user.setdernierDateCnx(result.rows.item(0).dernierDateCnx);
-          this.user.setdescription(result.rows.item(0).description);
-          this.user.setgrp(result.rows.item(0).grp);
-          this.user.setmatricule(result.rows.item(0).matricule);
-          this.user.setnatureUserDS(result.rows.item(0).natureUserDS);
-          this.user.setoldGrp(result.rows.item(0).oldGrp);
-          this.user.setpassWord(result.rows.item(0).passWord);
-          this.user.setuserName(result.rows.item(0).userName);
-          this.user.setvalidCptRend(result.rows.item(0).validCptRend);
-          this.user.setvalidPHNuit(result.rows.item(0).validPHNuit);
-        }
-      })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 Users  ' + error);
+  // public getUser(users: any,userName, passWord,codeClinique) {
+  public getUser(users: any): Promise<Users> {
+    return new Promise<Users>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        //   db.executeSql("select * from Users where userName like '" + userName + "' and passWord like '" + passWord + "'and codeClinique like '" + codeClinique + "'", []).then(result => {
+        db.executeSql("select * from Users ", []).then(result => {
+          if (result.rows.length === 0) {
+            this._insertUser(users);
+            resolve(users[0]);
+          } else {
+            var user;
+            for (var i = 0; i < result.rows.length; i++) {
+              user = new Users();
+              user.setactif(result.rows.item(0).actif);
+              user.setchStat(result.rows.item(0).chStat);
+              user.setcodeMedecinInfirmier(result.rows.item(0).codeMedecinInfirmier);
+              user.setcodePin(result.rows.item(0).codePin);
+              user.setdateModPwd(result.rows.item(0).dateModPwd);
+              user.setdernierDateCnx(result.rows.item(0).dernierDateCnx);
+              user.setdescription(result.rows.item(0).description);
+              user.setgrp(result.rows.item(0).grp);
+              user.setmatricule(result.rows.item(0).matricule);
+              user.setnatureUserDS(result.rows.item(0).natureUserDS);
+              user.setoldGrp(result.rows.item(0).oldGrp);
+              user.setpassWord(result.rows.item(0).passWord);
+              user.setuserName(result.rows.item(0).userName);
+              user.setvalidCptRend(result.rows.item(0).validCptRend);
+              user.setvalidPHNuit(result.rows.item(0).validPHNuit);
+              user.setcodeClinique(result.rows.item(0).codeClinique);
+              this.users.push(user);
+            }
+            resolve(this.users[0]);
+          }
         })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 1 Users  ' + error);
+          })
+      });
+      db.close();
+      return this;
     });
-    db.close();
-    alert("ee " + this.user.getchStat());
-    return this.user;
   }
 
-  private _insertUser(users,codeClinique): void {
+  private _insertUser(users): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql('insert into Users (actif ,chStat ,codeMedecinInfirmier ,codePin ,dateModPwd ,dernierDateCnx ,description ,grp ,matricule ,natureUserDS ,' +
-        'oldGrp ,passWord ,userName ,validCptRend ,validPHNuit,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
-        users.getactif(),
-        users.getchStat(),
-        users.getcodeMedecinInfirmier(),
-        users.getcodePin(),
-        users.getdateModPwd(),
-        users.getdernierDateCnx(),
-        users.getdescription(),
-        users.getgrp(),
-        users.getmatricule(),
-        users.getnatureUserDS(),
-        users.getoldGrp(),
-        users.getpassWord(),
-        users.getuserName(),
-        users.getvalidCptRend(),
-        users.getvalidPHNuit(),
-        codeClinique
-      ]);
-      alert("ok ");
+      for (let key in users) {
+        if (!users.hasOwnProperty(key)) {
+          continue;
+        }
+        let user = users[key];
+        db.executeSql('insert into Users (actif ,chStat ,codeMedecinInfirmier ,codePin ,dateModPwd ,dernierDateCnx ,description ,grp ,matricule ,natureUserDS ,' +
+          'oldGrp ,passWord ,userName ,validCptRend ,validPHNuit,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+          user.getactif(),
+          user.getchStat(),
+          user.getcodeMedecinInfirmier(),
+          user.getcodePin(),
+          user.getdateModPwd(),
+          user.getdernierDateCnx(),
+          user.getdescription(),
+          user.getgrp(),
+          user.getmatricule(),
+          user.getnatureUserDS(),
+          user.getoldGrp(),
+          user.getpassWord(),
+          user.getuserName(),
+          user.getvalidCptRend(),
+          user.getvalidPHNuit(),
+          user.getcodeClinique()
+        ]);
+      }
     }).catch(error => {
       console.error('Error opening database', error);
       alert('Error 2 Users ' + error);
@@ -118,24 +129,23 @@ export class UserService {
   }
 
 
-
-   public deleteUsers(codeClinique) {
+  public deleteUsers() {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from User where codeClinique like '" + codeClinique + "'", [])
+      db.executeSql("delete from Users ", [])
         .then(() => {
           alert("Suppression de table User est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
-          alert('Error 1 User  ' + error);
+          alert('Error 3 User  ' + error);
         })
     });
     db.close();
-    return this.user;
+    return this.users;
   }
 }

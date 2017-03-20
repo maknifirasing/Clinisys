@@ -1,11 +1,10 @@
-import {DateTime} from "ionic-angular";
 export class ListPreanesthesie {
   private _acte: string;
   private _chirurgien: string;
   private _codeActe: string;
   private _codeExamen: string;
-  private _codeMedecinReanimateur: any;
-  private _codeMedecinchirurgi: DateTime;
+  private _codeMedecinReanimateur: string;
+  private _codeMedecinchirurgi: string;
   private _codeMedecinchirurgien: string;
   private _codePostop: string;
   private _dateacte: string;
@@ -15,12 +14,12 @@ export class ListPreanesthesie {
   private _hasPost: string;
   private _hasPre: string;
   private _heureDebut: string;
-  private _heureFin: any;
-  private _id: DateTime;
-  private _identifiant: any;
+  private _heureFin: string;
+  private _id: string;
+  private _identifiant: string;
   private _kc: string;
   private _nom: string;
-  private _nomReanimateur: any;
+  private _nomReanimateur: string;
   private _numeroDossier: string;
   private _prenom: string;
 
@@ -60,19 +59,19 @@ export class ListPreanesthesie {
     this._codeExamen = value;
   }
 
-  getcodeMedecinReanimateur(): any {
+  getcodeMedecinReanimateur(): string {
     return this._codeMedecinReanimateur;
   }
 
-  setcodeMedecinReanimateur(value: any) {
+  setcodeMedecinReanimateur(value: string) {
     this._codeMedecinReanimateur = value;
   }
 
-  getcodeMedecinchirurgi(): DateTime {
+  getcodeMedecinchirurgi(): string {
     return this._codeMedecinchirurgi;
   }
 
-  setcodeMedecinchirurgi(value: DateTime) {
+  setcodeMedecinchirurgi(value: string) {
     this._codeMedecinchirurgi = value;
   }
 
@@ -148,27 +147,27 @@ export class ListPreanesthesie {
     this._heureDebut = value;
   }
 
-  getheureFin(): any {
+  getheureFin(): string {
     return this._heureFin;
   }
 
-  setheureFin(value: any) {
+  setheureFin(value: string) {
     this._heureFin = value;
   }
 
-  getid(): DateTime {
+  getid(): string {
     return this._id;
   }
 
-  setid(value: DateTime) {
+  setid(value: string) {
     this._id = value;
   }
 
-  getidentifiant(): any {
+  getidentifiant(): string {
     return this._identifiant;
   }
 
-  setidentifiant(value: any) {
+  setidentifiant(value: string) {
     this._identifiant = value;
   }
 
@@ -188,11 +187,11 @@ export class ListPreanesthesie {
     this._nom = value;
   }
 
-  getnomReanimateur(): any {
+  getnomReanimateur(): string {
     return this._nomReanimateur;
   }
 
-  setnomReanimateur(value: any) {
+  setnomReanimateur(value: string) {
     this._nomReanimateur = value;
   }
 

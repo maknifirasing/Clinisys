@@ -7,25 +7,35 @@ export class SigneCliniqueAlertService {
   constructor() {
   }
 
-  public verifSigneCliniqueAlert(signeCliniques: any, numDoss, dateFeuille, nature,codeClinique) {
-    var verif: boolean;
+  public verifSigneCliniqueAlert(signeCliniques: any, numDoss, dateFeuille, nature,codeClinique) : Promise<boolean> {
+    return new Promise<boolean>(resolve => {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from SigneCliniqueAlert where numDoss like '"+ numDoss +"' and dateFeuille like '"+ dateFeuille
+      db.executeSql("select count(*) as sum from SigneCliniqueAlert where numDoss like '"+ numDoss +"' and dateFeuille like '"+ dateFeuille
         +"' and nature like '"+ nature+ "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
-          verif = (result.rows.length === signeCliniques.length);
-        })
+          if (result.rows.item(0).sum > 0){
+          resolve(true);
+          return true;
+        }
+      else {
+        resolve(false);
+        return false;
+      }
+    })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 0 SigneCliniqueAlert  ' + error);
+          resolve(false);
+          return false;
         })
     });
-    db.close();
-    return verif;
+      db.close();
+      return this;
+    });
   }
 
   public getSigneCliniquesAlert(signeCliniques: any, numDoss, dateFeuille, nature,codeClinique) {

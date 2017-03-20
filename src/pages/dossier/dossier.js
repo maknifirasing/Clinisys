@@ -59,6 +59,7 @@ var DossierPage = (function () {
         this.Sorties = [];
         this.rigime = [];
         this.histD = [];
+        this.histd = new HistDossier();
         this.codeClinique = navParams.get("codeClinique");
         if (this.navParams.data.pass.getnature() === "REA") {
             this.codeType = "'1','G','L','E','7','I','9','A','3'";
@@ -70,7 +71,7 @@ var DossierPage = (function () {
         }
         if (Variables.checconnection() === "No network connection") {
             this.connection = false;
-            //   alert("dossier " + this.navParams.data.pass.getdossier() + " date" + this.navParams.data.dateFeuille + " nature " + this.navParams.data.pass.getnature());
+            //    alert("dossier " + this.navParams.data.pass.getdossier() + " date" + this.navParams.data.dateFeuille + " nature " + this.navParams.data.pass.getnature());
             this.historiqueOff(this.histD, this.navParams.data.pass.getdossier(), this.codeClinique);
             this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.navParams.data.pass.getdossier(), this.codeClinique);
             this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.navParams.data.pass.getid(), this.codeClinique);
@@ -137,9 +138,11 @@ var DossierPage = (function () {
                         _this.AlerteSigneCliniqueTest = false;
                     }
                     _this.signeCliniqueAlertS = new SigneCliniqueAlertService();
-                    //    if (this.signeCliniqueS.verifSigneCliniqueAlert(this.signe, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, this.navParams.data.pass.getnature())===false) {
-                    _this.signeCliniqueAlertS.getSigneCliniquesAlert(_this.signe, _this.navParams.data.pass.getdossier(), _this.navParams.data.dateFeuille, _this.navParams.data.pass.getnature(), codeClinique);
-                    //    }
+                    _this.signeCliniqueAlertS.verifSigneCliniqueAlert(_this.signe, numDoss, dateFeuille, nature, codeClinique).then(function (res) {
+                        if (res === false) {
+                            _this.signeCliniqueAlertS.getSigneCliniquesAlert(_this.signe, numDoss, dateFeuille, nature, codeClinique);
+                        }
+                    });
                 }
             }
         };
@@ -148,13 +151,14 @@ var DossierPage = (function () {
         xmlhttp.send(sr);
     };
     DossierPage.prototype.GetAlerteSigneCliniqueOff = function (signe, numDoss, dateFeuille, nature, codeClinique) {
+        var _this = this;
         this.signeCliniqueAlertS = new SigneCliniqueAlertService();
-        this.signe = this.signeCliniqueAlertS.getSigneCliniquesAlert(signe, numDoss, dateFeuille, nature, codeClinique);
-        //  if (this.signe.length === 0) {
-        //     this.AlerteSigneCliniqueTest = false;
-        // } else if (this.signe.length != 0) {
-        this.AlerteSigneCliniqueTest = true;
-        // }
+        this.signeCliniqueAlertS.verifSigneCliniqueAlert(signe, numDoss, dateFeuille, nature, codeClinique).then(function (res) {
+            if (res === true) {
+                _this.signe = _this.signeCliniqueAlertS.getSigneCliniquesAlert(signe, numDoss, dateFeuille, nature, codeClinique);
+                _this.AlerteSigneCliniqueTest = true;
+            }
+        });
     };
     DossierPage.prototype.DeleteGetAlerteSigneClinique = function (numDoss, dateFeuille, nature, codeClinique) {
         this.traitementServ = new TraitementService();
@@ -246,13 +250,21 @@ var DossierPage = (function () {
                         antech.setch(_this.stringAntec);
                         _this.antechl.push(antech);
                         _this.antecserv = new AntechService();
-                        _this.antecserv.getAntecs(_this.antechl, idpass, codeClinique);
+                        _this.antecserv.verifAntec(_this.antechl, idpass, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.antecserv.getAntecs(_this.antechl, idpass, codeClinique);
+                            }
+                        });
                         var alech = new AntecCh();
                         alech.setidpass(idpass);
                         alech.setch(_this.stringAlerg);
                         _this.alechl.push(alech);
                         _this.alegserv = new AlegchService();
-                        _this.alegserv.getAlegs(_this.alechl, idpass, codeClinique);
+                        _this.alegserv.verifAleg(_this.alechl, idpass, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.alegserv.getAlegs(_this.alechl, idpass, codeClinique);
+                            }
+                        });
                     }
                     catch (Error) {
                         _this.AntecedentAllergieTest = false;
@@ -265,13 +277,22 @@ var DossierPage = (function () {
         xmlhttp.send(sr);
     };
     DossierPage.prototype.getAntecedentAllergieByIdentifiantOff = function (antec, aleg, idpass, codeClinique) {
+        var _this = this;
         this.AntecedentAllergieTest = true;
         this.antecserv = new AntechService();
-        this.antechl = this.antecserv.getAntecs(antec, idpass, codeClinique);
-        this.Ante = true;
+        this.antecserv.verifAntec(this.antechl, idpass, codeClinique).then(function (res) {
+            if (res === true) {
+                _this.antechl = _this.antecserv.getAntecs(antec, idpass, codeClinique);
+                _this.Ante = true;
+            }
+        });
         this.alegserv = new AlegchService();
-        this.alechl = this.alegserv.getAlegs(aleg, idpass, codeClinique);
-        this.Alerg = true;
+        this.alegserv.verifAleg(this.alechl, idpass, codeClinique).then(function (res) {
+            if (res === true) {
+                _this.alechl = _this.alegserv.getAlegs(aleg, idpass, codeClinique);
+                _this.Alerg = true;
+            }
+        });
     };
     DossierPage.prototype.DeletegetAntecedentAllergieByIdentifiant = function (idpass, codeClinique) {
         this.antecserv = new AntechService();
@@ -352,7 +373,11 @@ var DossierPage = (function () {
                         }
                         //  return this.m;
                         _this.mserv = new motifHospitalisationService();
-                        _this.mserv.getmotifHospitalisations(_this.motifh, numDoss, codeClinique);
+                        _this.mserv.verifmotifHospitalisation(_this.motifh, numDoss, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.mserv.getmotifHospitalisations(_this.motifh, numDoss, codeClinique);
+                            }
+                        });
                     }
                     catch (Error) {
                         _this.test = false;
@@ -365,9 +390,14 @@ var DossierPage = (function () {
         xmlhttp.send(sr);
     };
     DossierPage.prototype.GetAllMotifHospitalisationByNumDossOff = function (motif, numdoss, codeClinique) {
+        var _this = this;
         this.mserv = new motifHospitalisationService();
-        this.motifh = this.mserv.getmotifHospitalisations(motif, numdoss, codeClinique);
-        this.test = true;
+        this.mserv.verifmotifHospitalisation(motif, numdoss, codeClinique).then(function (res) {
+            if (res === true) {
+                _this.motifh = _this.mserv.getmotifHospitalisations(motif, numdoss, codeClinique);
+                _this.test = true;
+            }
+        });
     };
     DossierPage.prototype.DeleteGetAllMotifHospitalisationByNumDoss = function (numDoss, codeClinique) {
         this.mserv = new motifHospitalisationService();
@@ -450,9 +480,11 @@ var DossierPage = (function () {
                             _this.trait = false;
                         }
                         _this.traitementServ = new TraitementService();
-                        //    if (this.traitementServ.verifTraitement(this.traitement, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille))===false) {
-                        _this.traitementServ.getTraitements(_this.traitement, _this.navParams.data.pass.getdossier(), _this.navParams.data.dateFeuille, codeClinique);
-                        //    }
+                        _this.traitementServ.verifTraitement(_this.traitement, _this.navParams.data.pass.getdossier(), _this.navParams.data.dateFeuille, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.traitementServ.getTraitements(_this.traitement, _this.navParams.data.pass.getdossier(), _this.navParams.data.dateFeuille, codeClinique);
+                            }
+                        });
                     }
                     catch (Error) {
                         _this.trait = false;
@@ -465,9 +497,14 @@ var DossierPage = (function () {
         xmlhttp.send(sr);
     };
     DossierPage.prototype.GetTraitementsOff = function (traitement, numdoss, datefeuille, codeClinique) {
-        this.trait = true;
+        var _this = this;
         this.traitementServ = new TraitementService();
-        this.traitement = this.traitementServ.getTraitements(this.traitement, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, codeClinique);
+        this.traitementServ.verifTraitement(this.traitement, this.navParams.data.pass.getdossier(), this.navParams.data.dateFeuille, codeClinique).then(function (res) {
+            if (res === true) {
+                _this.traitement = _this.traitementServ.getTraitements(_this.traitement, _this.navParams.data.pass.getdossier(), _this.navParams.data.dateFeuille, codeClinique);
+                _this.trait = true;
+            }
+        });
     };
     DossierPage.prototype.DeleteTraitement = function (numdoss, dateFeuille, codeClinique) {
         this.traitementServ = new TraitementService();
@@ -558,28 +595,44 @@ var DossierPage = (function () {
                         }
                         else {
                             _this.EvenementConS = new EvenementConService();
-                            _this.EvenementConS.getEvenements(_this.Conclusion, _this.navParams.data.pass.getdossier(), codeClinique);
+                            _this.EvenementConS.verifEvenement(_this.Conclusion, _this.navParams.data.pass.getdossier(), codeClinique).then(function (res) {
+                                if (res === false) {
+                                    _this.EvenementConS.getEvenements(_this.Conclusion, _this.navParams.data.pass.getdossier(), codeClinique);
+                                }
+                            });
                         }
                         if (_this.Examenclinique.length === 0) {
                             _this.Exa = false;
                         }
                         else {
                             _this.EvenementExaS = new EvenementExaService();
-                            _this.EvenementExaS.getEvenements(_this.Examenclinique, _this.navParams.data.pass.getdossier(), codeClinique);
+                            _this.EvenementExaS.verifEvenement(_this.Examenclinique, _this.navParams.data.pass.getdossier(), codeClinique).then(function (res) {
+                                if (res === false) {
+                                    _this.EvenementExaS.getEvenements(_this.Examenclinique, _this.navParams.data.pass.getdossier(), codeClinique);
+                                }
+                            });
                         }
                         if (_this.Histoiremaladie.length === 0) {
                             _this.His = false;
                         }
                         else {
                             _this.EvenementHisS = new EvenementHisService();
-                            _this.EvenementHisS.getEvenements(_this.Histoiremaladie, _this.navParams.data.pass.getdossier(), codeClinique);
+                            _this.EvenementHisS.verifEvenement(_this.Histoiremaladie, _this.navParams.data.pass.getdossier(), codeClinique).then(function (res) {
+                                if (res === false) {
+                                    _this.EvenementHisS.getEvenements(_this.Histoiremaladie, _this.navParams.data.pass.getdossier(), codeClinique);
+                                }
+                            });
                         }
                         if (_this.Evolution.length === 0) {
                             _this.Evo = false;
                         }
                         else {
                             _this.EvenementEvoS = new EvenementEvoService();
-                            _this.EvenementEvoS.getEvenements(_this.Evolution, _this.navParams.data.pass.getdossier(), codeClinique);
+                            _this.EvenementEvoS.verifEvenement(_this.Evolution, _this.navParams.data.pass.getdossier(), codeClinique).then(function (res) {
+                                if (res === false) {
+                                    _this.EvenementEvoS.getEvenements(_this.Evolution, _this.navParams.data.pass.getdossier(), codeClinique);
+                                }
+                            });
                         }
                     }
                     catch (Error) {
@@ -592,33 +645,35 @@ var DossierPage = (function () {
         xmlhttp.send(sr);
     };
     DossierPage.prototype.GetEvenementByDossierOff = function (numdoss, codeClinique) {
+        var _this = this;
         this.EvenementConS = new EvenementConService();
-        this.Conclusion = this.EvenementConS.getEvenements(this.Conclusion, this.navParams.data.pass.getdossier(), codeClinique);
-        this.EvenementEvoS = new EvenementEvoService();
-        this.Evolution = this.EvenementEvoS.getEvenements(this.Evolution, this.navParams.data.pass.getdossier(), codeClinique);
+        this.EvenementConS.verifEvenement(this.Conclusion, numdoss, codeClinique).then(function (res) {
+            if (res === true) {
+                _this.Conclusion = _this.EvenementConS.getEvenements(_this.Conclusion, numdoss, codeClinique);
+                _this.Con = true;
+            }
+        });
         this.EvenementExaS = new EvenementExaService();
-        this.Examenclinique = this.EvenementExaS.getEvenements(this.Examenclinique, this.navParams.data.pass.getdossier(), codeClinique);
+        this.EvenementExaS.verifEvenement(this.Examenclinique, this.navParams.data.pass.getdossier(), codeClinique).then(function (res) {
+            if (res === true) {
+                _this.Examenclinique = _this.EvenementExaS.getEvenements(_this.Examenclinique, numdoss, codeClinique);
+                _this.Exa = true;
+            }
+        });
         this.EvenementHisS = new EvenementHisService();
-        this.Histoiremaladie = this.EvenementHisS.getEvenements(this.Histoiremaladie, this.navParams.data.pass.getdossier(), codeClinique);
-        this.Con = true;
-        this.Exa = true;
-        this.His = true;
-        this.Evo = true;
-        /*
-         if (this.Conclusion.length === 0) {
-         this.Con = false;
-         }
-         if (this.Examenclinique.length === 0) {
-         this.Exa = false;
-         }
-         if (this.Histoiremaladie.length === 0) {
-         this.His = false;
-         }
-         if (this.Evolution.length === 0) {
-         this.Evo = false;
-         }
-    
-         */
+        this.EvenementHisS.verifEvenement(this.Histoiremaladie, this.navParams.data.pass.getdossier(), codeClinique).then(function (res) {
+            if (res === true) {
+                _this.Histoiremaladie = _this.EvenementHisS.getEvenements(_this.Histoiremaladie, _this.navParams.data.pass.getdossier(), codeClinique);
+                _this.His = true;
+            }
+        });
+        this.EvenementEvoS = new EvenementEvoService();
+        this.EvenementEvoS.verifEvenement(this.Evolution, this.navParams.data.pass.getdossier(), codeClinique).then(function (res) {
+            if (res === true) {
+                _this.Evolution = _this.EvenementEvoS.getEvenements(_this.Evolution, _this.navParams.data.pass.getdossier(), codeClinique);
+                _this.Evo = true;
+            }
+        });
     };
     DossierPage.prototype.DeleteGetEvenementByDossier = function (numdoss, codeClinique) {
         this.EvenementConS = new EvenementConService();
@@ -635,7 +690,6 @@ var DossierPage = (function () {
         this.rigime.pop();
         this.rigime = [];
         this.rigime.length = 0;
-        this.Ri = true;
         var xmlhttp = new XMLHttpRequest();
         this.Ri = false;
         xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
@@ -665,8 +719,15 @@ var DossierPage = (function () {
                         if (_this.rigime.length === 0) {
                             _this.Ri = false;
                         }
+                        else {
+                            _this.Ri = true;
+                        }
                         _this.rigimeserv = new RigimeService();
-                        _this.rigimeserv.getRigimes(_this.rigime, numdoss, datefeuille, nature, codeClinique);
+                        _this.rigimeserv.verifRigime(_this.rigime, numdoss, datefeuille, nature, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.rigimeserv.getRigimes(_this.rigime, numdoss, datefeuille, nature, codeClinique);
+                            }
+                        });
                     }
                     catch (Error) {
                         _this.Ri = false;
@@ -679,9 +740,14 @@ var DossierPage = (function () {
         xmlhttp.send(sr);
     };
     DossierPage.prototype.GetListRegimeOff = function (rigime, numdoss, datefeuille, nature, codeClinique) {
-        this.Ri = true;
+        var _this = this;
         this.rigimeserv = new RigimeService();
-        this.rigime = this.rigimeserv.getRigimes(rigime, numdoss, datefeuille, nature, codeClinique);
+        this.rigimeserv.verifRigime(this.rigime, numdoss, datefeuille, nature, codeClinique).then(function (res) {
+            if (res === true) {
+                _this.rigimeserv.getRigimes(_this.rigime, numdoss, datefeuille, nature, codeClinique);
+                _this.Ri = true;
+            }
+        });
     };
     DossierPage.prototype.DeleteGetListRegime = function (numdoss, datefeuille, nature, codeClinique) {
         this.rigimeserv = new RigimeService();
@@ -746,11 +812,23 @@ var DossierPage = (function () {
                             _this.Ent = false;
                         }
                         _this.signeCliniqueEntS = new SigneCliniqueEntService();
-                        _this.signeCliniqueEntS.getSigneCliniques(_this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
+                        _this.signeCliniqueEntS.verifSigneClinique(_this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.signeCliniqueEntS.getSigneCliniques(_this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
+                            }
+                        });
                         _this.signeCliniqueSorS = new SigneCliniqueSorService();
-                        _this.signeCliniqueSorS.getSigneCliniques(_this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
+                        _this.signeCliniqueSorS.verifSigneClinique(_this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.signeCliniqueSorS.getSigneCliniques(_this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
+                            }
+                        });
                         _this.signeCliniqueSigS = new SigneCliniqueSigService();
-                        _this.signeCliniqueSigS.getSigneCliniques(_this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
+                        _this.signeCliniqueSigS.verifSigneClinique(_this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.signeCliniqueSigS.getSigneCliniques(_this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
+                            }
+                        });
                     }
                     catch (Error) {
                         _this.AlerteS = false;
@@ -765,20 +843,28 @@ var DossierPage = (function () {
         xmlhttp.send(sr);
     };
     DossierPage.prototype.GetSigneCliniqueOff = function (numdoss, dateFeuille, nature, codeTypeOf, codeClinique) {
+        var _this = this;
         this.signeCliniqueEntS = new SigneCliniqueEntService();
-        this.Entrees = this.signeCliniqueEntS.getSigneCliniques(this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
+        this.signeCliniqueEntS.verifSigneClinique(this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(function (res) {
+            if (res === true) {
+                _this.Entrees = _this.signeCliniqueEntS.getSigneCliniques(_this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
+                _this.Ent = true;
+            }
+        });
         this.signeCliniqueSorS = new SigneCliniqueSorService();
-        this.Sorties = this.signeCliniqueSorS.getSigneCliniques(this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
+        this.signeCliniqueSorS.verifSigneClinique(this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(function (res) {
+            if (res === true) {
+                _this.Sorties = _this.signeCliniqueSorS.getSigneCliniques(_this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
+                _this.Sor = true;
+            }
+        });
         this.signeCliniqueSigS = new SigneCliniqueSigService();
-        this.signec = this.signeCliniqueSigS.getSigneCliniques(this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
-        this.AlerteS = true;
-        this.Sor = true;
-        this.Ent = true;
-        //  if (this.signe.length === 0) {
-        //     this.AlerteSigneCliniqueTest = false;
-        // } else if (this.signe.length != 0) {
-        this.Ent = true;
-        // }
+        this.signeCliniqueSigS.verifSigneClinique(this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(function (res) {
+            if (res === true) {
+                _this.signec = _this.signeCliniqueSigS.getSigneCliniques(_this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
+                _this.AlerteS = true;
+            }
+        });
     };
     DossierPage.prototype.DeleteGetSigneClinique = function (numdoss, dateFeuille, nature, codeTypeOf, codeClinique) {
         this.signeCliniqueEntS = new SigneCliniqueEntService();
@@ -812,6 +898,7 @@ var DossierPage = (function () {
         }, 2000);
     };
     DossierPage.prototype.historique = function (numDoss, codeClinique) {
+        var _this = this;
         this.histserv = new HistDossierService();
         var h = new HistDossier();
         var d = new Date();
@@ -821,15 +908,22 @@ var DossierPage = (function () {
         this.histD.push(h);
         try {
             this.histserv.deleteHistDossiers(numDoss, codeClinique);
-            this.histD = this.histserv.getHistDossiers(this.histD, numDoss, codeClinique);
+            this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(function (res) {
+                _this.histd = res.getdate();
+            });
         }
         catch (Error) {
-            this.histD = this.histserv.getHistDossiers(this.histD, numDoss, codeClinique);
+            this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(function (res) {
+                _this.histd = res.getdate();
+            });
         }
     };
     DossierPage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
+        var _this = this;
         this.histserv = new HistDossierService();
-        this.histD = this.histserv.getHistDossiersOff(hist, numDoss, codeClinique);
+        this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(function (res) {
+            _this.histd = res.getdate();
+        });
     };
     return DossierPage;
 }());

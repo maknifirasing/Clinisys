@@ -8,6 +8,9 @@ import {PatientService} from "../../services/PatientService";
 import {DateFeuille} from "../../models/DateFeuille";
 import {HistPatient} from "../../models/HistPatient";
 import {HistPatientService} from "../../services/HistPatientService";
+import {UserService} from "../../services/UserService";
+import {LangueService} from "../../services/LangueService";
+import {LanguesPage} from "../langues/langues";
 
 @Component({
   selector: 'page-liste',
@@ -26,11 +29,16 @@ export class ListePage {
   connection: boolean;
   histserv: any;
   hist: Array<HistPatient> = [];
+  histl = new HistPatient();
   codeClinique: string;
+  private userserv: any;
+  langue: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.dtFeuille = new DateFeuille();
     this.codeClinique = navParams.get("codeClinique");
+    this.tabLangue=navParams.get("tabLangue");
+    this.langue = navParams.get("langue");
     if (Variables.checconnection() === "No network connection") {
       this.connection = false;
       this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
@@ -45,7 +53,6 @@ export class ListePage {
     }
     this.patientliste = this.patient;
   }
-
 
   liste(user, searchText, etage, codeClinique) {
     this.patient.pop();
@@ -185,12 +192,8 @@ export class ListePage {
   }
 
   goToDossierPage(patient) {
-    this.tabLangue = {
-      tabLangue: this.navParams.data.tabLangue.tabLangue,
-
-    };
     this.navCtrl.push(TabsPage, {
-      tabLangue: this.tabLangue, langue: this.navParams.get("langue"), mypatient: patient,
+      tabLangue: this.tabLangue, langue: this.langue, mypatient: patient,
       dateFeuille: this.datefeuille[0].getdatefeuille(), codeClinique: this.codeClinique
     });
   }
@@ -258,16 +261,29 @@ export class ListePage {
     this.hist.push(h);
     try {
       this.histserv.deleteHistPatients(user, searchText, etage, codeClinique);
-      this.hist = this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique);
+      this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique).then(res=>{
+        this.histl=res.getdate();
+      });
     }
     catch (Error) {
-      this.hist = this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique);
+      this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique).then(res=>{
+        this.histl=res.getdate();
+      });
     }
 
   }
 
   historiqueOff(hist, user, searchText, etage, codeClinique) {
     this.histserv = new HistPatientService();
-    this.hist = this.histserv.getHistPatientsOff(hist, user, searchText, etage, codeClinique);
+    this.histserv.getHistPatients(hist, user, searchText, etage, codeClinique).then(res=>{
+      this.histl=res.getdate();
+    });
+  }
+
+  deconnexion()
+  {
+    this.userserv = new UserService();
+    this.userserv.deleteUsers();
+    this.navCtrl.push(LanguesPage);
   }
 }

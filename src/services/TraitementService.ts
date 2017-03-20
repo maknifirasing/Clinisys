@@ -3,35 +3,41 @@ import {Traitement} from "../models/Traitement";
 
 export class TraitementService {
   public traitement: Array<Traitement> = [];
-  verif: boolean;
 
   constructor() {
   }
 
-  public verifTraitement(traitements: any, numDoss, datefeuille,codeClinique) {
-    this.verif = false;
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      alert("g "+traitements[0].getnumDoss());
-      db.executeSql("select * from Traitement where numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.length === traitements.length) {
-            this.verif = true;
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 0 Traitement  ' + error);
-        })
+  public verifTraitement(traitements: any, numDoss, datefeuille, codeClinique): Promise<boolean> {
+    return new Promise<boolean>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("select count(*) as sum from Traitement where numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.item(0).sum > 0) {
+              resolve(true);
+              return true;
+            }
+            else {
+              resolve(false);
+              return false;
+            }
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 0 Traitement  ' + error);
+            resolve(false);
+            return false;
+          })
+      });
+      db.close();
+      return this;
     });
-    db.close();
-    return this.verif;
   }
 
-  public getTraitements(traitements: any, numDoss, datefeuille,codeClinique) {
+  public getTraitements(traitements: any, numDoss, datefeuille, codeClinique) {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -40,7 +46,7 @@ export class TraitementService {
       db.executeSql("select * from Traitement where numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertTraitements(traitements, datefeuille,codeClinique)
+            this._insertTraitements(traitements, datefeuille, codeClinique)
           } else {
             var t;
             for (var i = 0; i < result.rows.length; i++) {
@@ -78,7 +84,7 @@ export class TraitementService {
     return this.traitement;
   }
 
-  private _insertTraitements(traitements: Array<Traitement>, datefeuille,codeClinique): void {
+  private _insertTraitements(traitements: Array<Traitement>, datefeuille, codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -121,7 +127,7 @@ export class TraitementService {
     db.close();
   }
 
-  public deleteTraitements(numDoss,datefeuille,codeClinique) {
+  public deleteTraitements(numDoss, datefeuille, codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
@@ -130,7 +136,7 @@ export class TraitementService {
     }).then(() => {
       db.executeSql("delete from Traitement where  numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-       //   alert("Suppression de table Traitement est terminé avec succes");
+          //   alert("Suppression de table Traitement est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);

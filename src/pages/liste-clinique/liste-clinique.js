@@ -30,7 +30,7 @@ var ListeCliniquePage = (function () {
             this.ListClinique();
         }
     }
-    ListeCliniquePage.prototype.ListClinique = function () {
+    ListeCliniquePage.prototype.ListCliniquee = function () {
         var _this = this;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
@@ -62,6 +62,16 @@ var ListeCliniquePage = (function () {
         xmlhttp.setRequestHeader('Content-Type', 'text/xml');
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
+    };
+    ListeCliniquePage.prototype.ListClinique = function () {
+        this.c = new Clinique();
+        this.c.setcode("111111");
+        this.c.setid("ee");
+        this.c.setnom("ee");
+        this.c.seturl("ee");
+        this.clinique.push(this.c);
+        this.clinserv = new CliniqueService();
+        this.clinserv.getCliniques(this.clinique);
     };
     ListeCliniquePage.prototype.ListCliniqueOff = function (cliniques) {
         this.clinserv = new CliniqueService();

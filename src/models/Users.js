@@ -94,6 +94,12 @@ var Users = (function () {
     Users.prototype.setvalidPHNuit = function (value) {
         this._validPHNuit = value;
     };
+    Users.prototype.getcodeClinique = function () {
+        return this._codeClinique;
+    };
+    Users.prototype.setcodeClinique = function (value) {
+        this._codeClinique = value;
+    };
     return Users;
 }());
 export { Users };

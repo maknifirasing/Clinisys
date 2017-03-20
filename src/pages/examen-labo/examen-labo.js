@@ -11,6 +11,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
 import { PdfViewPage } from "../pdf-view/pdf-view";
+import { HistDossier } from "../../models/HistDossier";
+import { HistDossierService } from "../../services/HistDossierService";
 var ExamenLaboPage = (function () {
     function ExamenLaboPage(navCtrl, navParams, Url) {
         this.navCtrl = navCtrl;
@@ -18,10 +20,17 @@ var ExamenLaboPage = (function () {
         this.Url = Url;
         this.LabosT = [];
         this.LabosF = [];
-        this.countPdfT = 0;
-        this.countPdf = 0;
+        this.histD = [];
+        this.histd = new HistDossier();
         this.LabosT = this.navParams.data.Labost;
         this.LabosF = this.navParams.data.Labosf;
+        if (Variables.checconnection() === "No network connection") {
+            this.connection = false;
+        }
+        else {
+            this.connection = true;
+        }
+        this.historiqueOff(this.histD, this.navParams.data.pass.getdossier(), navParams.get("codeClinique"));
     }
     ExamenLaboPage.prototype.openURL = function (numAdmission) {
         var _this = this;
@@ -58,6 +67,13 @@ var ExamenLaboPage = (function () {
     };
     ExamenLaboPage.prototype.gotPdf = function (pdf) {
         this.navCtrl.push(PdfViewPage, { pdf: pdf.getpdf() });
+    };
+    ExamenLaboPage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
+        var _this = this;
+        this.histserv = new HistDossierService();
+        this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(function (res) {
+            _this.histd = res.getdate();
+        });
     };
     return ExamenLaboPage;
 }());

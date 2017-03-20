@@ -13,8 +13,8 @@ export class DateFeuilleService {
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from DateFeuille where codeClinique like '" + codeClinique + "'", []).then(result => {
-        if (result.rows.length === 0) {
+      db.executeSql("select count(*) as sum from DateFeuille where codeClinique like '" + codeClinique + "'", []).then(result => {
+        if (result.rows.item(0).sum > 0) {
           resolve(true);
           return true;
         }else {

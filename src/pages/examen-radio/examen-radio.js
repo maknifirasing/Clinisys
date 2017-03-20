@@ -10,6 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
+import { HistDossier } from "../../models/HistDossier";
+import { HistDossierService } from "../../services/HistDossierService";
 var ExamenRadioPage = (function () {
     function ExamenRadioPage(navCtrl, navParams, Url) {
         this.navCtrl = navCtrl;
@@ -19,13 +21,29 @@ var ExamenRadioPage = (function () {
         this.examenRT = [];
         this.examenRF = [];
         this.document = [];
+        this.histD = [];
+        this.histd = new HistDossier();
         this.examenRF = this.navParams.data.examenRF;
         this.examenRT = this.navParams.data.examenRT;
+        if (Variables.checconnection() === "No network connection") {
+            this.connection = false;
+        }
+        else {
+            this.connection = true;
+        }
+        this.historiqueOff(this.histD, this.navParams.data.pass.getdossier(), navParams.get("codeClinique"));
     }
     ExamenRadioPage.prototype.ionViewDidLoad = function () {
     };
     ExamenRadioPage.prototype.getdocumentById = function (observ) {
         this.url = this.Url.url + "dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
+    };
+    ExamenRadioPage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
+        var _this = this;
+        this.histserv = new HistDossierService();
+        this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(function (res) {
+            _this.histd = res.getdate();
+        });
     };
     return ExamenRadioPage;
 }());

@@ -3,6 +3,8 @@ import {NavController, NavParams} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {Labo} from "../../models/Labo";
 import {PdfViewPage} from "../pdf-view/pdf-view";
+import {HistDossier} from "../../models/HistDossier";
+import {HistDossierService} from "../../services/HistDossierService";
 
 @Component({
   selector: 'page-examen-labo',
@@ -13,14 +15,27 @@ export class ExamenLaboPage {
   LabosT: Array<Labo> = [];
   LabosF: Array<Labo> = [];
   pdf: string;
-  countPdfT: number;
-  countPdf: number;
-
+  histD: Array<HistDossier> = [];
+  histd = new HistDossier();
+  histserv: any;
+  connection: boolean;
+  tabLangue: any;
+  pass:any;
+  codeClinique:any;
+  langue: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-    this.countPdfT = 0;
-    this.countPdf = 0;
-    this.LabosT = this.navParams.data.Labost;
-    this.LabosF = this.navParams.data.Labosf;
+    this.LabosT = navParams.get("Labost");
+    this.LabosF = navParams.get("Labosf");
+    this.tabLangue = navParams.get("tabLangue");
+    this.pass = navParams.get("pass");
+    this.codeClinique = navParams.get("codeClinique");
+    this.langue = navParams.get("langue");
+    if (Variables.checconnection() === "No network connection") {
+      this.connection = false;
+    } else {
+      this.connection = true;
+    }
+    this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique)
   }
 
   openURL(numAdmission) {
@@ -55,7 +70,15 @@ export class ExamenLaboPage {
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
   }
-  gotPdf(pdf){
+
+  gotPdf(pdf) {
     this.navCtrl.push(PdfViewPage, {pdf: pdf.getpdf()});
+  }
+
+  historiqueOff(hist, numDoss, codeClinique) {
+    this.histserv = new HistDossierService();
+    this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(res => {
+      this.histd = res.getdate();
+    });
   }
 }

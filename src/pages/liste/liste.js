@@ -26,23 +26,25 @@ var ListePage = (function () {
         this.patientliste = [];
         this.datefeuille = [];
         this.hist = [];
+        this.histl = new HistPatient();
         this.dtFeuille = new DateFeuille();
         this.codeClinique = navParams.get("codeClinique");
+        console.log(navParams.get("tabLangue"));
         if (Variables.checconnection() === "No network connection") {
             this.connection = false;
-            this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
+            //     this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
             this.listeOff(this.patient, "admin", "", "all", this.codeClinique);
-            this.DateFeuilleOff(this.datefeuille, this.codeClinique);
+            //    this.DateFeuilleOff(this.datefeuille, this.codeClinique);
         }
         else {
             this.connection = true;
-            this.historique("admin", "", "all", this.codeClinique);
+            //    this.historique("admin", "", "all", this.codeClinique);
             this.liste("admin", "", "all", this.codeClinique);
-            this.DateFeuille(this.codeClinique);
+            //   this.DateFeuille(this.codeClinique);
         }
         this.patientliste = this.patient;
     }
-    ListePage.prototype.liste = function (user, searchText, etage, codeClinique) {
+    ListePage.prototype.listee = function (user, searchText, etage, codeClinique) {
         var _this = this;
         this.patient.pop();
         this.patient = [];
@@ -125,6 +127,31 @@ var ListePage = (function () {
         xmlhttp.setRequestHeader('Content-Type', 'text/xml');
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
+    };
+    ListePage.prototype.liste = function (user, searchText, etage, codeClinique) {
+        var _this = this;
+        var p = new Patient();
+        p.setid("rr");
+        p.setdossier("rr");
+        p.setchambre("rr");
+        p.setprenom("rr");
+        p.setnom("rr");
+        p.setdateNaiss("rr");
+        p.setmedecin("rr");
+        p.setspec("rr");
+        p.setetat("rr");
+        p.setnature("sur");
+        p.setage(22);
+        p.setimg("babyboy.png");
+        this.patient.push(p);
+        if (searchText === "")
+            searchText = "vide";
+        this.patienserv = new PatientService();
+        this.patienserv.verifPatient(this.patient, user, searchText, etage, codeClinique).then(function (res) {
+            if (res === false) {
+                _this.patienserv.getPatients(_this.patient, user, searchText, etage, codeClinique);
+            }
+        });
     };
     ListePage.prototype.listeOff = function (patient, user, searchText, etage, codeClinique) {
         if (searchText === "")
@@ -230,6 +257,7 @@ var ListePage = (function () {
         }, 2000);
     };
     ListePage.prototype.historique = function (user, searchText, etage, codeClinique) {
+        var _this = this;
         this.histserv = new HistPatientService();
         var h = new HistPatient();
         var d = new Date();
@@ -241,15 +269,22 @@ var ListePage = (function () {
         this.hist.push(h);
         try {
             this.histserv.deleteHistPatients(user, searchText, etage, codeClinique);
-            this.hist = this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique);
+            this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique).then(function (res) {
+                _this.histl = res.getdate();
+            });
         }
         catch (Error) {
-            this.hist = this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique);
+            this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique).then(function (res) {
+                _this.histl = res.getdate();
+            });
         }
     };
     ListePage.prototype.historiqueOff = function (hist, user, searchText, etage, codeClinique) {
+        var _this = this;
         this.histserv = new HistPatientService();
-        this.hist = this.histserv.getHistPatientsOff(hist, user, searchText, etage, codeClinique);
+        this.histserv.getHistPatients(hist, user, searchText, etage, codeClinique).then(function (res) {
+            _this.histl = res.getdate();
+        });
     };
     return ListePage;
 }());

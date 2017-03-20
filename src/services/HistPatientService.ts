@@ -3,35 +3,42 @@ import {HistPatient} from "../models/HistPatient";
 
 export class HistPatientService {
   public histPatient: Array<HistPatient> = [];
-  verif: boolean;
 
   constructor() {
   }
 
-  public verifHistPatient(user, searchText, etage,codeClinique) {
-    this.verif = false;
+  public verifHistPatient(user, searchText, etage,codeClinique) : Promise<boolean> {
+    return new Promise<boolean>(resolve => {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
+      db.executeSql("select count(*) as sum from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
-          if (result.rows.length === 1) {
-            this.verif = true;
+          if (result.rows.item(0).sum > 0) {
+            resolve(true);
+            return true;
+          }
+          else {
+            resolve(false);
+            return false;
           }
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 0 HistPatient  ' + error);
+          resolve(false);
+          return false;
         })
     });
-    db.close();
-    return this.verif;
+      db.close();
+      return this;
+    });
   }
 
-  public getHistPatients(histPatients: any, user, searchText, etage, codeClinique) {
-    this.histPatient.push(histPatients[0]);
+  public getHistPatients(histPatients: any, user, searchText, etage, codeClinique) : Promise<HistPatient> {
+    return new Promise<HistPatient>(resolve => {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -41,10 +48,8 @@ export class HistPatientService {
         .then(result => {
           if (result.rows.length === 0) {
             this._insertHistPatients(histPatients);
+            resolve(histPatients[0]);
           } else {
-            this.histPatient.pop();
-            this.histPatient=[];
-            this.histPatient.length=0;
             var p;
             for (var i = 0; i < result.rows.length; i++) {
               p = new HistPatient();
@@ -55,6 +60,7 @@ export class HistPatientService {
               p.setcodeClinique(result.rows.item(i).codeClinique);
               this.histPatient.push(p);
             }
+            resolve(this.histPatient[0]);
           }
         })
         .catch(error => {
@@ -63,41 +69,9 @@ export class HistPatientService {
         })
     });
     db.close();
-    return this.histPatient;
-  }
-
-  public getHistPatientsOff(histPatients: any, user, searchText, etage, codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.length === 0) {
-            return this.histPatient;
-          } else {
-            var p;
-            for (var i = 0; i < result.rows.length; i++) {
-              p = new HistPatient();
-              p.setuser(result.rows.item(i).user);
-              p.setsearchText(result.rows.item(i).searchText);
-              p.setetage(result.rows.item(i).etage);
-              p.setdate(result.rows.item(i).date);
-              p.setcodeClinique(result.rows.item(i).codeClinique);
-              this.histPatient.push(p);
-            }
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1.2 HistPatient  ' + error);
-        })
+      return this;
     });
-    db.close();
-    return this.histPatient;
   }
-
 
   private _insertHistPatients(histPatients: Array<HistPatient>): void {
     let db = new SQLite();

@@ -21,6 +21,7 @@ export class Users {
   private _userName: string;
   private _validCptRend: string;
   private _validPHNuit: string;
+  private _codeClinique:string;
 
   constructor() {
   }
@@ -143,5 +144,13 @@ export class Users {
 
   setvalidPHNuit(value: string) {
     this._validPHNuit = value;
+  }
+
+  getcodeClinique(): string {
+    return this._codeClinique;
+  }
+
+  setcodeClinique(value: string) {
+    this._codeClinique = value;
   }
 }

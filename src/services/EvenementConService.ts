@@ -3,31 +3,38 @@ import {Evenement} from "../models/Evenement";
 
 export class EvenementConService {
   public evenement: Array<Evenement> = [];
-  verif: boolean;
 
   constructor() {
   }
 
-  public verifEvenement(evenements: any, numdoss,codeClinique) {
-    this.verif = false;
+  public verifEvenement(evenements: any, numdoss,codeClinique) : Promise<boolean> {
+    return new Promise<boolean>(resolve => {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from EvenementCon where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
+      db.executeSql("select count(*) as sum from EvenementCon where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
-          if (result.rows.length === evenements.length) {
-            this.verif = true;
+          if (result.rows.item(0).sum > 0) {
+            resolve(true);
+            return true;
+          }
+          else {
+            resolve(false);
+            return false;
           }
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 0 EvenementCon  ' + error);
+          resolve(false);
+          return false;
         })
     });
-    db.close();
-    return this.verif;
+      db.close();
+      return this;
+    });
   }
 
   public getEvenements(evenements: any, numdoss,codeClinique) {

@@ -6,25 +6,33 @@ var EvenementHisService = (function () {
     }
     EvenementHisService.prototype.verifEvenement = function (evenements, numdoss, codeClinique) {
         var _this = this;
-        this.verif = false;
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("select * from EvenementHis where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
-                .then(function (result) {
-                if (result.rows.length === evenements.length) {
-                    _this.verif = true;
-                }
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 0 EvenementHis  ' + error);
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                db.executeSql("select count(*) as sum from EvenementHis where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
+                    .then(function (result) {
+                    if (result.rows.item(0).sum > 0) {
+                        resolve(true);
+                        return true;
+                    }
+                    else {
+                        resolve(false);
+                        return false;
+                    }
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    alert('Error 0 EvenementHis  ' + error);
+                    resolve(false);
+                    return false;
+                });
             });
+            db.close();
+            return _this;
         });
-        db.close();
-        return this.verif;
     };
     EvenementHisService.prototype.getEvenements = function (evenements, numdoss, codeClinique) {
         var _this = this;

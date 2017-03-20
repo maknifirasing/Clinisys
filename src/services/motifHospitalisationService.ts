@@ -3,31 +3,38 @@ import {MotifHospitalisation} from "../models/motifHospitalisation";
 
 export class motifHospitalisationService {
   public motifhospitalisation: Array<MotifHospitalisation> = [];
-  verif: boolean;
 
   constructor() {
   }
 
-  public verifmotifHospitalisation(motifhospitalisations: any, numdoss,codeClinique) {
-    this.verif = false;
+  public verifmotifHospitalisation(motifhospitalisations: any, numdoss,codeClinique) : Promise<boolean> {
+    return new Promise<boolean>(resolve => {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from motifHospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
+      db.executeSql("select count(*) as sum from motifHospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
-          if (result.rows.length === motifhospitalisations.length) {
-            this.verif = true;
+          if (result.rows.item(0).sum > 0) {
+            resolve(true);
+            return true;
+          }
+          else {
+            resolve(false);
+            return false;
           }
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 0 motifHospitalisation  ' + error);
+          resolve(false);
+          return false;
         })
     });
-    db.close();
-    return this.verif;
+      db.close();
+      return this;
+    });
   }
 
   public getmotifHospitalisations(motifhospitalisations: any, numdoss,codeClinique) {
