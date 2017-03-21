@@ -7,5 +7,54 @@
       white-space: nowrap;
       height: 100%;
     }
+    .md-icon-button{
+      float: right;
+      background-color: #0277bd;
+    }
+    .md-card{
+      background-color:#0277bd;
+      color:white;
+    }
+    .p{
+      margin-top:5px;
+      line-height:5px;
+      color: #0f7ec0;
+    }
+    .p2{
+      margin-top:5px;
+      line-height:5px;
+    }
+    .list{
+      padding-left:0px;
+      width:70px;
+      height:70px;
+    }
+
+    .md-icon-buttonArr{
+      float: left;
+      background-color: #0277bd;
+    }
+    .firstArr {
+      width: 90px;
+      float:right; /* add this */
+     //  border: 1px solid red;
+    }
+    .first {
+      width: 90px;
+      float:left; /* add this */
+     // border: 1px solid red;
+    }
+    .second {
+      width: 200px;
+     // border: 1px solid green;
+      overflow: hidden; /* if you don't want #second to wrap below #first */
+    }
+    .secondArr {
+      width: 200px;
+
+   //   border: 1px solid green;
+      overflow: hidden; /* if you don't want #second to wrap below #first */
+    }
   }
+
 }

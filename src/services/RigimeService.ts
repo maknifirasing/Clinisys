@@ -2,20 +2,20 @@ import {SQLite} from 'ionic-native';
 import {Rigime} from "../models/Rigime";
 
 export class RigimeService {
-  public rigime = new Rigime();
+  public rigime: Array<Rigime> = [];
   verif: boolean;
 
   constructor() {
   }
 
-  public verifRigime(rigimes: any, numdoss, datefeuille, nature) {
+  public verifRigime(rigimes: any, numdoss, datefeuille, nature,codeClinique) {
     this.verif = false;
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Rigime where numdoss like '" + numdoss + "' and datefeuille like '" + datefeuille + "' and nature like '" + nature + "'", [])
+      db.executeSql("select * from Rigime where numdoss like '" + numdoss + "' and datefeuille like '" + datefeuille + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === rigimes.length) {
             this.verif = true;
@@ -30,21 +30,25 @@ export class RigimeService {
     return this.verif;
   }
 
-  public getRigimes(rigimes, numdoss, datefeuille, nature) {
+  public getRigimes(rigimes, numdoss, datefeuille, nature,codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Rigime where numdoss like '" + numdoss + "' and datefeuille like '" + datefeuille + "' and nature like '" + nature + "'", [])
+      db.executeSql("select * from Rigime where numdoss like '" + numdoss + "' and datefeuille like '" + datefeuille + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertRigimes(rigimes, numdoss, datefeuille, nature);
+            this._insertRigimes(rigimes, numdoss, datefeuille, nature,codeClinique);
           } else {
-            this.rigime.setcodeRegime(result.rows.item(0).codeRegime);
-            this.rigime.setdesignation(result.rows.item(0).designation);
-
+            var r;
+            for (var i = 0; i < result.rows.length; i++) {
+              r = new Rigime();
+              r.setcodeRegime(result.rows.item(0).codeRegime);
+              r.setdesignation(result.rows.item(0).designation);
+              this.rigime.push(r);
+            }
           }
         })
         .catch(error => {
@@ -56,20 +60,27 @@ export class RigimeService {
     return this.rigime;
   }
 
-  private _insertRigimes(rigime, numdoss, datefeuille, nature): void {
+  private _insertRigimes(rigimes, numdoss, datefeuille, nature,codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql('insert into Rigime (codeRegime, designation ,numdoss ' +
-        ',datefeuille, nature) values (?,?,?,?,?)', [
-        rigime.getcodeRegime(),
-        rigime.getdesignation(),
-        numdoss,
-        datefeuille,
-        nature
-      ]);
+      for (let key in rigimes) {
+        if (!rigimes.hasOwnProperty(key)) {
+          continue;
+        }
+        let rigime = rigimes[key];
+        db.executeSql('insert into Rigime (codeRegime, designation ,numdoss ' +
+          ',datefeuille, nature,codeClinique) values (?,?,?,?,?,?)', [
+          rigime.getcodeRegime(),
+          rigime.getdesignation(),
+          numdoss,
+          datefeuille,
+          nature,
+          codeClinique
+        ]);
+      }
     }).catch(error => {
       console.error('Error opening database', error);
       alert('Error 2 Rigime ' + error);
@@ -78,14 +89,14 @@ export class RigimeService {
   }
 
 
-  public deleteRigimes(numdoss, datefeuille, nature) {
+  public deleteRigimes(numdoss, datefeuille, nature,codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from Rigime where numdoss like '" + numdoss + "' and datefeuille like '" + datefeuille + "' and nature like '" + nature + "'", [])
+      db.executeSql("delete from Rigime where numdoss like '" + numdoss + "' and datefeuille like '" + datefeuille + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           //      alert("Suppression de table Rigime est terminé avec succes");
         })

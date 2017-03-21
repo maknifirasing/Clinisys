@@ -8,14 +8,14 @@ export class AlegchService {
   constructor() {
   }
 
-  public verifAleg(alegs: any, idpass) {
+  public verifAleg(alegs: any, idpass,codeClinique) {
     this.verif = false;
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Alegc where idpass like '" + idpass + "'", [])
+      db.executeSql("select * from Alegc where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === alegs.length) {
             this.verif = true;
@@ -30,16 +30,16 @@ export class AlegchService {
     return this.verif;
   }
 
-  public getAlegs(alegs: any, idpass) {
+  public getAlegs(alegs: any, idpass,codeClinique) {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Alegc where idpass like '" + idpass + "'", [])
+      db.executeSql("select * from Alegc where idpass like '" + idpass + "' and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertAlegs(alegs);
+            this._insertAlegs(alegs,codeClinique);
           } else {
             var an;
             for (var i = 0; i < result.rows.length; i++) {
@@ -59,7 +59,7 @@ export class AlegchService {
     return this.aleg;
   }
 
-  private _insertAlegs(alegs: Array<AntecCh>): void {
+  private _insertAlegs(alegs: Array<AntecCh>,codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -70,9 +70,10 @@ export class AlegchService {
           continue;
         }
         let antec = alegs[key];
-        db.executeSql('insert into Alegc (idpass ,ch) values (?,?)', [
+        db.executeSql('insert into Alegc (idpass ,ch ,codeClinique) values (?,?,?)', [
           antec.getidpass(),
-          antec.getch()
+          antec.getch(),
+          codeClinique
         ]);
       }
     }).catch(error => {
@@ -82,14 +83,14 @@ export class AlegchService {
     db.close();
   }
 
-  public deleteAlegs(idpass) {
+  public deleteAlegs(idpass,codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from Alegc where  idpass like '" + idpass + "'", [])
+      db.executeSql("delete from Alegc where  idpass like '" + idpass + "' and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
       //    alert("Suppression de table Aleg est terminé avec succes");
         })

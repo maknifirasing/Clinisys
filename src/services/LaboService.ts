@@ -8,14 +8,14 @@ export class LaboService {
   constructor() {
   }
 
-  public verifLabo(labos: any, numAdmission) {
+  public verifLabo(labos: any, numAdmission,codeClinique,pdf) {
     this.verif = false;
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Labo where numAdmission like '" + numAdmission + "'", [])
+      db.executeSql("select * from Labo where numAdmission like '" + numAdmission + "'and codeClinique like '" + codeClinique + "' and pdf like '" +pdf +"'", [])
         .then(result => {
           if (result.rows.length === labos.length) {
             this.verif = true;
@@ -30,17 +30,17 @@ export class LaboService {
     return this.verif;
   }
 
-  public getLabos(labos: any, numAdmission) {
+  public getLabos(labos: any, numAdmission,codeClinique,pdf) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Labo where numAdmission like '" + numAdmission + "'", [])
+      db.executeSql("select * from Labo where numAdmission like '" + numAdmission + "'and codeClinique like '" + codeClinique + "' and pdf like '" +pdf +"'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertLabos(labos);
+            this._insertLabos(labos,codeClinique,pdf);
           } else {
             var l;
             for (var i = 0; i < result.rows.length; i++) {
@@ -73,7 +73,7 @@ export class LaboService {
     return this.labo;
   }
 
-  private _insertLabos(labos: Array<Labo>): void {
+  private _insertLabos(labos: Array<Labo>,codeClinique,pdf): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -85,7 +85,8 @@ export class LaboService {
         }
         let labo = labos[key];
         db.executeSql('insert into Labo (codeDemande,contenuePDF ,dateDemande ' +
-          'dateRealisation, designation,etatExamen,id,medecinTraitant,nomLabo,numAdmission,numDossier,patient,state,userName,validation) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+          'dateRealisation, designation,etatExamen,id,medecinTraitant,nomLabo,numAdmission,numDossier,patient,state,userName,validation,codeClinique,pdf) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+
           labo.getcodeDemande(),
           labo.getcontenuePDF(),
           labo.getdateDemande(),
@@ -100,7 +101,9 @@ export class LaboService {
           labo.getpatient(),
           labo.getstate(),
           labo.getuserName(),
-          labo.getvalidation()
+          labo.getvalidation(),
+          codeClinique,
+          pdf
 
         ]);
       }
@@ -111,14 +114,14 @@ export class LaboService {
     db.close();
   }
 
-  public deleteLabos(numAdmission) {
+  public deleteLabos(numAdmission,codeClinique,pdf) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from Labo where numAdmission like '" + numAdmission + "'", [])
+      db.executeSql("delete from Labo where numAdmission like '" + numAdmission + "'and codeClinique like '" + codeClinique + "' and pdf like '" +pdf +"'", [])
         .then(() => {
           alert("Suppression de table Labo est terminé avec succes");
         })

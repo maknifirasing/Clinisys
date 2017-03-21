@@ -3,6 +3,7 @@ import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {Clinique} from "../../models/Clinique";
 import {HomePage} from "../home/home";
+import {CliniqueService} from "../../services/CliniqueService";
 
 @Component({
   selector: 'page-liste-clinique',
@@ -12,14 +13,22 @@ import {HomePage} from "../home/home";
 export class ListeCliniquePage {
   clinique: Array<Clinique> = [];
   c:any;
+  clinserv: any;
+  connection: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,private viewCtrl: ViewController) {
+    this.viewCtrl.showBackButton(false);
+    if (Variables.checconnection() === "No network connection") {
+      this.connection = false;
+      this.ListCliniqueOff(this.clinique);
+    }
+    else {
+      this.connection = true;
+      this.ListClinique();
+
+    }
   }
 
-  ionViewDidLoad() {
-    this.viewCtrl.showBackButton(false);
-    this.ListClinique();
-  }
 
   ListClinique() {
     var xmlhttp = new XMLHttpRequest();
@@ -45,6 +54,8 @@ export class ListeCliniquePage {
             this.c.seturl(x[i].children[3].textContent);
             this.clinique.push(this.c);
           }
+          this.clinserv = new CliniqueService();
+          this.clinserv.getCliniques(this.clinique);
         }
       }
     }
@@ -53,6 +64,12 @@ export class ListeCliniquePage {
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
   }
+
+  ListCliniqueOff(cliniques) {
+    this.clinserv = new CliniqueService();
+    this.clinique=this.clinserv.getCliniques(cliniques);
+  }
+
   goToHomePage(codeC){
     this.navCtrl.push(HomePage,{tabLangue: this.navParams.data.tabLangue,langue:this.navParams.get("langue"),codeClinique:codeC});
   }

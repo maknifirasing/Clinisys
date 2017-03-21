@@ -1,4 +1,3 @@
-"use strict";
 var ExamenRadio = (function () {
     function ExamenRadio() {
     }
@@ -88,4 +87,5 @@ var ExamenRadio = (function () {
     };
     return ExamenRadio;
 }());
-exports.ExamenRadio = ExamenRadio;
+export { ExamenRadio };
+//# sourceMappingURL=ExamenRadio.js.map

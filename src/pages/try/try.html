@@ -1,0 +1,69 @@
+
+<ion-header>
+  <ion-header>
+    <md-card class="md-card"
+             >
+      <IMG class="displayed" md-icon-button src="../../assets/img/green.png" width="15" height="15">
+      <button md-icon-button md-primary menuToggle class="md-icon-button">
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      {{date}}
+
+    </md-card>
+
+   <!-- <md-card style="background-color: #0277bd">
+      <img src="../../assets/img/green.png" class="md-card-image" width="15" height="15"/>
+      {{date}}
+      <button md-mini-fab menuToggle >
+        <md-icon class="md-24" name="menu" ></md-icon>
+      </button>
+    </md-card>
+   <!-- <ion-list>
+      <ion-item color="custom-color" class="size">
+
+
+
+       <ion-label> <img src='../../assets/img/green.png' width="15" height="15">{{dateArr.substr(0,35)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;{{dateArr.substr(35,10)}}</ion-label>
+        <button ion-button menuToggle item-right>
+          <ion-icon name="menu" width="100px"></ion-icon>
+        </button>
+      </ion-item>
+    </ion-list>
+    <!--
+    <ion-list>
+      <ion-item color="custom-color" class="size">
+
+          <img src='../../assets/img/green.png' width="15" height="15">
+
+{{date.substr(0,45)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;{{date.substr(45,10)}}
+        <button ion-button menuToggle item-right>
+          <ion-icon name="menu" width="100px"></ion-icon>
+        </button>
+      </ion-item>
+    </ion-list>
+-->
+
+
+
+  <ion-navbar class="ion-navbar">
+
+    <p>
+      <ion-searchbar color="white" placeholder="recherche"
+                     (ionInput)="getItems($event)"></ion-searchbar>
+    </p>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+aaaaaaaaaaaaaaaaaaaa
+  <md-card>
+    <button md-button>flat</button>
+    <button md-raised-button>raised</button>
+    <button md-mini-fab>
+      <md-icon class="md-24">add</md-icon>
+    </button>
+  </md-card>
+
+</ion-content>

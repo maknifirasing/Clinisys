@@ -8,14 +8,14 @@ export class AntechService {
   constructor() {
   }
 
-  public verifAntec(antecs: any, idpass) {
+  public verifAntec(antecs: any, idpass,codeClinique) {
     this.verif = false;
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Antech where idpass like '" + idpass + "'", [])
+      db.executeSql("select * from Antech where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === antecs.length) {
             this.verif = true;
@@ -30,16 +30,16 @@ export class AntechService {
     return this.verif;
   }
 
-  public getAntecs(antecs: any, idpass) {
+  public getAntecs(antecs: any, idpass,codeClinique) {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Antech where idpass like '" + idpass + "'", [])
+      db.executeSql("select * from Antech where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertAntecs(antecs);
+            this._insertAntecs(antecs,codeClinique);
           } else {
             var an;
             for (var i = 0; i < result.rows.length; i++) {
@@ -59,7 +59,7 @@ export class AntechService {
     return this.antec;
   }
 
-  private _insertAntecs(antecs: Array<AntecCh>): void {
+  private _insertAntecs(antecs: Array<AntecCh>,codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -70,9 +70,10 @@ export class AntechService {
           continue;
         }
         let antec = antecs[key];
-        db.executeSql('insert into Antech (idpass ,ch) values (?,?)', [
+        db.executeSql('insert into Antech (idpass ,ch ,codeClinique) values (?,?,?)', [
           antec.getidpass(),
-          antec.getch()
+          antec.getch(),
+          codeClinique
         ]);
       }
     }).catch(error => {
@@ -82,14 +83,14 @@ export class AntechService {
     db.close();
   }
 
-  public deleteAntecs(idpass) {
+  public deleteAntecs(idpass,codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from Antech where  idpass like '" + idpass + "'", [])
+      db.executeSql("delete from Antech where  idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
    //       alert("Suppression de table Antech est terminé avec succes");
         })

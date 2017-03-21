@@ -8,14 +8,14 @@ export class ExamenRadioService {
 
   constructor() {
   }
-  public verifExamenRadio(examenRadios: any,observ) {
+  public verifExamenRadio(examenRadios: any,observ,codeClinique) {
     this.verif = false;
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from ExamenRadio where observ like '" + observ + "'", [])
+      db.executeSql("select * from ExamenRadio where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === examenRadios.length) {
             this.verif = true;
@@ -30,17 +30,17 @@ export class ExamenRadioService {
     return this.verif;
   }
 
-  public getExamenRadios(examenRadios: any,observ) {
+  public getExamenRadios(examenRadios: any,observ,codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
- db.executeSql("select * from ExamenRadio where observ like '" + observ + "'", [])
+ db.executeSql("select * from ExamenRadio where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
          .then(result => {
           if (result.rows.length === 0) {
-            this._insertExamenRadios(examenRadios);
+            this._insertExamenRadios(examenRadios,codeClinique);
           } else {
             var ex;
             for (var i = 0; i < result.rows.length; i++) {
@@ -81,7 +81,7 @@ export class ExamenRadioService {
     db.close();
     return this.examenRadio;
   }
-  private _insertExamenRadios(examenRadios: Array<ExamenRadio>): void {
+  private _insertExamenRadios(examenRadios: Array<ExamenRadio>,codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -93,8 +93,9 @@ export class ExamenRadioService {
         }
         let examenRadio = examenRadios[key];
         db.executeSql('insert into ExamenRadio (codeExamen,compterendu ,dateExamen ' +
-            ',datePrevu, date_RDV,designationExamen,heurePrevu,idres,medecin,nature,numeroDossier,numeroExamen,observ,resultat) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
-       examenRadio.getcodeExamen(),
+            ',datePrevu, date_RDV,designationExamen,heurePrevu,idres,medecin,nature,numeroDossier,numeroExamen,observ,resultat,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+
+              examenRadio.getcodeExamen(),
               examenRadio.getcompterendu(),
 
                 examenRadio.getdateExamen(),
@@ -114,7 +115,8 @@ export class ExamenRadioService {
               examenRadio.getnumeroExamen(),
 
                examenRadio.getobserv(),
-              examenRadio.getresultat()
+              examenRadio.getresultat(),
+          codeClinique
         ]);
       }
     }).catch(error => {
@@ -124,14 +126,14 @@ export class ExamenRadioService {
     db.close();
   }
 
-  public deleteExamenRadios(observ) {
+  public deleteExamenRadios(observ,codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from ExamenRadio where observ like '" + observ + "'", [])
+      db.executeSql("delete from ExamenRadio where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           alert("Suppression de table ExamenRadio est terminé avec succes");
         })

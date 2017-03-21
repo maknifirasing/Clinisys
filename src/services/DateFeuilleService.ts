@@ -2,41 +2,47 @@ import {DateFeuille} from "../models/DateFeuille";
 import {SQLite} from "ionic-native";
 export class DateFeuilleService {
   date: Array<DateFeuille> = [];
-  verif: boolean;
 
   constructor() {
   }
 
-  public verifDateFeuille() {
-    this.verif = false;
+  public verifDateFeuille(codeClinique):Promise<boolean> {
+    return  new Promise<boolean>(resolve => {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql('select * from DateFeuille', []).then(result => {
-        if (result.rows.length === 0) {
-          this.verif = true;
+      db.executeSql("select * from DateFeuille where codeClinique like '" + codeClinique + "'", []).then(result => {
+        if (result.rows.length === 1) {
+          resolve(true);
+          return true;
+        }else {
+          resolve(false);
+          return false;
         }
       })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 0 datefeuille  ' + error);
+          resolve(false);
+          return false;
         })
     });
     db.close();
-    return this.verif;
+      return this;
+    });
   }
 
-  public getDateFeuille(dates: any) {
+  public getDateFeuille(dates: any,codeClinique) {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql('select * from DateFeuille', []).then(result => {
+      db.executeSql("select * from DateFeuille where codeClinique like '" + codeClinique + "'", []).then(result => {
         if (result.rows.length === 0) {
-          this._insertDateFeuille(dates);
+          this._insertDateFeuille(dates,codeClinique);
         } else {
           var d;
           for (var i = 0; i < result.rows.length; i++) {
@@ -55,7 +61,7 @@ export class DateFeuilleService {
     return this.date;
   }
 
-  private _insertDateFeuille(dates: Array<DateFeuille>,): void {
+  private _insertDateFeuille(dates: Array<DateFeuille>,codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -66,8 +72,9 @@ export class DateFeuilleService {
           continue;
         }
         let date = dates[key];
-        db.executeSql('insert into DateFeuille (datefeuille) values (?)', [
-          date.getdatefeuille()
+        db.executeSql('insert into DateFeuille (datefeuille ,codeClinique) values (?,?)', [
+          date.getdatefeuille(),
+          codeClinique
         ]);
       }
     }).catch(error => {
@@ -77,13 +84,13 @@ export class DateFeuilleService {
     db.close();
   }
 
-  public deleteDateFeuille() {
+  public deleteDateFeuille(codeClinique) {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from DateFeuille", [])
+      db.executeSql("delete from DateFeuille where codeClinique like '" + codeClinique + "'", [])
         .then(() => {
       //    alert("Suppression de table DateFeuille est terminé avec succes");
         })

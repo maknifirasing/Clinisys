@@ -8,14 +8,14 @@ export class EvenementConService {
   constructor() {
   }
 
-  public verifEvenement(evenements: any, numdoss) {
+  public verifEvenement(evenements: any, numdoss,codeClinique) {
     this.verif = false;
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from EvenementCon where numdoss like '" + numdoss + "'", [])
+      db.executeSql("select * from EvenementCon where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === evenements.length) {
             this.verif = true;
@@ -30,16 +30,16 @@ export class EvenementConService {
     return this.verif;
   }
 
-  public getEvenements(evenements: any, numdoss) {
+  public getEvenements(evenements: any, numdoss,codeClinique) {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from EvenementCon where numdoss like '" + numdoss + "'", [])
+      db.executeSql("select * from EvenementCon where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertEvenements(evenements);
+            this._insertEvenements(evenements,codeClinique);
           } else {
             var e;
             for (var i = 0; i < result.rows.length; i++) {
@@ -67,7 +67,7 @@ export class EvenementConService {
     return this.evenement;
   }
 
-  private _insertEvenements(evenements: Array<Evenement>): void {
+  private _insertEvenements(evenements: Array<Evenement>,codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -79,7 +79,8 @@ export class EvenementConService {
         }
         let evenement = evenements[key];
         db.executeSql('insert into EvenementCon (access ,code ,evenements ' +
-          ',orderEvenement ,visible ,date ,detail ,IDEvenement ,numdoss ,userCreat) values (?,?,?,?,?,?,?,?,?,?)', [
+          ',orderEvenement ,visible ,date ,detail ,IDEvenement ,numdoss ,userCreat,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?)', [
+
           evenement.getaccess(),
           evenement.getcode(),
           evenement.getevenements(),
@@ -89,7 +90,8 @@ export class EvenementConService {
           evenement.getdetail(),
           evenement.getIDEvenement(),
           evenement.getnumdoss(),
-          evenement.getuserCreat()
+          evenement.getuserCreat(),
+          codeClinique
         ]);
       }
     }).catch(error => {
@@ -99,14 +101,14 @@ export class EvenementConService {
     db.close();
   }
 
-   public deleteEvenementCons(numdoss) {
+   public deleteEvenementCons(numdoss,codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from EvenementCon where  numdoss like '" + numdoss + "'", [])
+      db.executeSql("delete from EvenementCon where  numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
  //         alert("Suppression de table EvenementCon est terminé avec succes");
         })

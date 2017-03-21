@@ -25,9 +25,25 @@ page-dossier {
     width:35px;
     height:35px;
   }
+  .first {
+    width: 90px;
+    float:left; /* add this */
+    // border: 1px solid red;
+  }
+  .second {
+    width: 200px;
+    // border: 1px solid green;
+    overflow: hidden; /* if you don't want #second to wrap below #first */
+  }
 
-  .strong{
-    color: #0c60ee;
+.strong{
+  color: #0c60ee;
+  font-size: 20px;
+}
+
+  .strong2{
+
+    font-size: 20px;
   }
   .size{
     font-size: 80%;

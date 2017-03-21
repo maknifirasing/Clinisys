@@ -1,28 +1,52 @@
 <input type="hidden" value="{{this.navParams.get('langue')}}" #lang/>
 <ion-header>
 
-  <ion-item color="custom-color" *ngIf="(lang.value)==='arabe'"
-            dir="rtl" class="ion-navbar">
-    <p item-right *ngIf="connection===true">
-      <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
-    </p>
-    <p item-right *ngIf="connection===false">
-      <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
-    </p>
-    <p style="text-align: right" *ngFor="let h of hist ">{{navParams.data.tabLangue.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
-  </ion-item>
 
+  <md-card class="md-card" *ngIf="(lang.value)==='arabe' && (connection===true)" dir="rtl"
+  >
+    <div *ngFor="let h of hist " >
+      <IMG class="displayed" md-card-avatar src="/android_asset/www/assets/img/green.png" width="15" height="15" >
+      <button ion-button menuToggle class="md-icon-buttonArr">
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      {{navParams.data.tabLangue.tabLangue.titreEnligne}} {{h.getdate()}}
+    </div>
 
-  <ion-item color="custom-color" class="ion-navbar" class="animated fadeInRight"
-            *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'"  class="ion-navbar">
-    <p *ngIf="connection===true">
-      <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
-    </p>
-    <p  *ngIf="connection===false">
-      <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
-    </p>
-    <p *ngFor="let h of hist ">{{navParams.data.tabLangue.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
-  </ion-item>
+  </md-card>
+  <md-card class="md-card" *ngIf="(lang.value)==='arabe' && (connection===false)" dir="rtl"
+  >
+
+    <div *ngFor="let h of hist " >
+      <IMG class="displayed" md-card-avatar src="/android_asset/www/assets/img/red.png" width="15" height="15" >
+      <button ion-button menuToggle class="md-icon-buttonArr">
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      {{navParams.data.tabLangue.tabLangue.titreHorsLigne}} {{h.getdate()}}
+    </div>
+  </md-card>
+
+  <md-card class="md-card" *ngIf="((lang.value)==='francais' || (lang.value)==='anglais') && (connection===true)"
+  >
+   <div *ngFor="let h of hist ">
+    <IMG class="displayed" md-card-avatar src="/android_asset/www/assets/img/green.png" width="15" height="15" >
+     <button ion-button menuToggle class="md-icon-button">
+       <ion-icon name="menu"></ion-icon>
+     </button>
+    {{navParams.data.tabLangue.tabLangue.titreEnligne}} {{h.getdate()}}
+    </div>
+
+  </md-card>
+  <md-card class="md-card" *ngIf="((lang.value)==='francais' || (lang.value)==='anglais') && (connection===false)"
+  >
+
+    <div *ngFor="let h of hist ">
+      <IMG class="displayed" md-card-avatar src="/android_asset/www/assets/img/red.png" width="15" height="15" >
+      <button ion-button menuToggle class="md-icon-button">
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      {{navParams.data.tabLangue.tabLangue.titreHorsLigne}} {{h.getdate()}}
+    </div>
+  </md-card>
 
   <ion-navbar class="ion-navbar" *ngIf="(lang.value)==='arabe'" dir="rtl">
 
@@ -40,9 +64,12 @@
     <p></p>
   </ion-navbar>
 </ion-header>
-
-
 <ion-content>
+<md-card>
+  <md-card-header>
+
+  </md-card-header>
+<md-card-content *ngIf="(lang.value)==='arabe'" dir="rtl">
   <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="connection===true">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"
@@ -51,38 +78,47 @@
       refreshingText="{{navParams.data.tabLangue.tabLangue.refreshingText}}">
     </ion-refresher-content>
   </ion-refresher>
-  <ion-scroll scrollY="true">
+<div *ngFor="let pas of patientliste ">
+  <div class="firstArr">
+    <img src='/android_asset/www/assets/img/{{pas.getimg()}}' md-card-avatar class="list">
 
-    <ion-list>
+  </div>
+  <div class="secondArr" (click)="goToDossierPage(pas)">
 
-      <ion-item-sliding *ngFor="let pas of patientliste ">
+    <strong class="p2">{{ pas.getnom() }}</strong>
+    <p class="p"><strong>{{navParams.data.tabLangue.tabLangue.age}} :</strong> {{ pas.getage() }}
+      <strong>{{navParams.data.tabLangue.tabLangue.ch}}:</strong> {{ pas.getchambre() }}</p>
+    <p class="p">{{ pas.getmedecin() }}</p>
 
-        <ion-item (click)="goToDossierPage(pas)" *ngIf="(lang.value)==='arabe'"
-                  dir="rtl">
+  </div>
+  <hr/>
+</div>
 
-          <ion-avatar item-left>
-            <img src='/android_asset/www/assets/img/{{pas.getimg()}}'>
-          </ion-avatar>
-          <h4 style="text-align: right"><strong>{{ pas.getnom() }}</strong></h4>
-          <p style="text-align: right">{{navParams.data.tabLangue.tabLangue.age}} : {{ pas.getage() }}
-            {{navParams.data.tabLangue.tabLangue.ch}}: {{ pas.getchambre() }}</p>
-          <p style="text-align: right">{{ pas.getmedecin() }}</p>
+</md-card-content >
+  <md-card-content *ngIf="((lang.value)==='francais' || (lang.value)==='anglais')">
+    <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="connection===true">
+      <ion-refresher-content
+        pullingIcon="arrow-dropdown"
+        pullingText="{{navParams.data.tabLangue.tabLangue.pullingText}}"
+        refreshingSpinner="circles"
+        refreshingText="{{navParams.data.tabLangue.tabLangue.refreshingText}}">
+      </ion-refresher-content>
+    </ion-refresher>
+    <div *ngFor="let pas of patientliste ">
+      <div class="first">
+        <img src='/android_asset/www/assets/img/{{pas.getimg()}}' md-card-avatar class="list">
 
-        </ion-item>
-        <ion-item (click)="goToDossierPage(pas)" *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+      </div>
+      <div class="second" (click)="goToDossierPage(pas)">
 
-          <ion-avatar item-left>
-            <img src='/android_asset/www/assets/img/{{pas.getimg()}}'>
-          </ion-avatar>
-          <h4><strong>{{ pas.getnom() }}</strong></h4>
-          <p>{{navParams.data.tabLangue.tabLangue.age}} : {{ pas.getage() }} {{navParams.data.tabLangue.tabLangue.ch}}:
-            {{ pas.getchambre() }}</p>
-          <p>{{ pas.getmedecin() }}</p>
+        <strong class="p2">{{ pas.getnom() }}</strong>
+        <p class="p"><strong>{{navParams.data.tabLangue.tabLangue.age}} :</strong> {{ pas.getage() }}
+          <strong>{{navParams.data.tabLangue.tabLangue.ch}}:</strong> {{ pas.getchambre() }}</p>
+        <p class="p">{{ pas.getmedecin() }}</p>
 
-        </ion-item>
+      </div>
+      <hr/>
+    </div>
 
-      </ion-item-sliding>
+  </md-card-content>
 
-    </ion-list>
-  </ion-scroll>
-</ion-content>

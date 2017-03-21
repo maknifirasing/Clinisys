@@ -17,6 +17,7 @@ export class Labo {
   private _state: string;
   private _userName: string;
   private _validation: string;
+  private  _pdf:string;
 
   constructor() {
   }
@@ -139,5 +140,13 @@ export class Labo {
 
   setvalidation(value: string) {
     this._validation = value;
+  }
+
+  getpdf(): string {
+    return this._pdf;
+  }
+
+  setpdf(value: string) {
+    this._pdf = value;
   }
 }

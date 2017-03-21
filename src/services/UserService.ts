@@ -11,7 +11,7 @@ export class UserService {
   }
 
 
-  verifUser(){
+  verifUser(codeClinique){
   return   new Promise(res=>{
     let db = new SQLite();
     db.openDatabase({
@@ -19,7 +19,7 @@ export class UserService {
       location: 'default' // the location field is required
     }).then(() => {
         alert("ee0");
-      db.executeSql('select * from Users', []).then(result => {
+      db.executeSql("select * from Users where codeClinique like '" + codeClinique + "'", []).then(result => {
           alert("ee1");
           if (result.rows.length === 1) {
             //  alert("ee 2 1");
@@ -45,16 +45,16 @@ export class UserService {
 
   }
 
-  public getUser(users: any) {
+  public getUser(users: any,codeClinique) {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql('select * from Users', []).then(result => {
+      db.executeSql("select * from Users where codeClinique like '" + codeClinique + "'", []).then(result => {
         alert("rows1 " + result.rows.length);
         if (result.rows.length === 0) {
-          this._insertUser(users)
+          this._insertUser(users,codeClinique)
         } else {
           this.user = new Users();
           this.user.setactif(result.rows.item(0).actif);
@@ -84,14 +84,14 @@ export class UserService {
     return this.user;
   }
 
-  private _insertUser(users): void {
+  private _insertUser(users,codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
       db.executeSql('insert into Users (actif ,chStat ,codeMedecinInfirmier ,codePin ,dateModPwd ,dernierDateCnx ,description ,grp ,matricule ,natureUserDS ,' +
-        'oldGrp ,passWord ,userName ,validCptRend ,validPHNuit) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+        'oldGrp ,passWord ,userName ,validCptRend ,validPHNuit,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
         users.getactif(),
         users.getchStat(),
         users.getcodeMedecinInfirmier(),
@@ -106,7 +106,8 @@ export class UserService {
         users.getpassWord(),
         users.getuserName(),
         users.getvalidCptRend(),
-        users.getvalidPHNuit()
+        users.getvalidPHNuit(),
+        codeClinique
       ]);
       alert("ok ");
     }).catch(error => {
@@ -118,14 +119,14 @@ export class UserService {
 
 
 
-   public deleteUsers() {
+   public deleteUsers(codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from User", [])
+      db.executeSql("delete from User where codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           alert("Suppression de table User est terminé avec succes");
         })

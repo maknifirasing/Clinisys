@@ -25,7 +25,7 @@ export class ListePage {
   patienserv: any;
   connection: boolean;
   histserv: any;
-  hist: Array<HistPatient>= [];
+  hist: Array<HistPatient> = [];
   codeClinique: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
@@ -34,21 +34,20 @@ export class ListePage {
     if (Variables.checconnection() === "No network connection") {
       this.connection = false;
       this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
-      this.listeOff(this.patient, "admin", "", "all");
-      this.DateFeuilleOff(this.datefeuille);
+      this.listeOff(this.patient, "admin", "", "all", this.codeClinique);
+      this.DateFeuilleOff(this.datefeuille, this.codeClinique);
     }
     else {
       this.connection = true;
       this.historique("admin", "", "all", this.codeClinique);
-      this.liste("admin", "", "all");
-      this.DateFeuille();
-
+      this.liste("admin", "", "all", this.codeClinique);
+      this.DateFeuille(this.codeClinique);
     }
     this.patientliste = this.patient;
   }
 
 
-  liste(user, searchText, etage) {
+  liste(user, searchText, etage, codeClinique) {
     this.patient.pop();
     this.patient = [];
     this.patient.length = 0;
@@ -120,9 +119,11 @@ export class ListePage {
           if (searchText === "")
             searchText = "vide";
           this.patienserv = new PatientService();
-          //     if (this.patienserv.verifPatient(this.patient, user, searchText, etage) === false) {
-          this.patienserv.getPatients(this.patient, user, searchText, etage);
-          //     }
+          this.patienserv.verifPatient(this.patient, user, searchText, etage, codeClinique).then(res => {
+            if (res === false) {
+              this.patienserv.getPatients(this.patient, user, searchText, etage, codeClinique);
+            }
+          });
         }
       }
     }
@@ -132,15 +133,15 @@ export class ListePage {
     xmlhttp.send(sr);
   }
 
-  listeOff(patient, user, searchText, etage) {
+  listeOff(patient, user, searchText, etage, codeClinique) {
     if (searchText === "")
       searchText = "vide";
     this.patienserv = new PatientService();
-    this.patient = this.patienserv.getPatients(patient, user, searchText, etage);
+    this.patient = this.patienserv.getPatients(patient, user, searchText, etage, codeClinique);
     this.patientliste = this.patient;
   }
 
-  DateFeuille() {
+  DateFeuille(codeClinique) {
     this.datefeuille.pop();
     this.datefeuille = [];
     this.datefeuille.length = 0;
@@ -159,17 +160,17 @@ export class ListePage {
           this.xml = xmlhttp.responseXML;
           var x, i, d;
           x = this.xml.getElementsByTagName("return");
-          //    this.datefeuille = this.datefeuille + this.DateF[0].childNodes[0].nodeValue;
           for (i = 0; i < x.length; i++) {
             d = new DateFeuille();
             d.setdatefeuille(x[i].childNodes[0].nodeValue);
             this.datefeuille.push(d);
           }
           this.dtFeuilleserv = new DateFeuilleService();
-          //    if (this.dtFeuilleserv.verifDateFeuille() === false) {
-          this.dtFeuilleserv.getDateFeuille(this.datefeuille);
-          //      }
-          //    return this.datefeuille;
+          this.dtFeuilleserv.verifDateFeuille(codeClinique).then(res => {
+            if (res === false) {
+              this.dtFeuilleserv.getDateFeuille(this.datefeuille, codeClinique);
+            }
+          });
         }
       }
     }
@@ -178,9 +179,9 @@ export class ListePage {
     xmlhttp.send(sr);
   }
 
-  DateFeuilleOff(datefeuille) {
+  DateFeuilleOff(datefeuille, codeClinique) {
     this.dtFeuilleserv = new DateFeuilleService();
-    this.datefeuille = this.dtFeuilleserv.getDateFeuille(this.datefeuille);
+    this.datefeuille = this.dtFeuilleserv.getDateFeuille(this.datefeuille, codeClinique);
   }
 
   goToDossierPage(patient) {
@@ -190,7 +191,7 @@ export class ListePage {
     };
     this.navCtrl.push(TabsPage, {
       tabLangue: this.tabLangue, langue: this.navParams.get("langue"), mypatient: patient,
-      dateFeuille: this.datefeuille[0].getdatefeuille()
+      dateFeuille: this.datefeuille[0].getdatefeuille(), codeClinique: this.codeClinique
     });
   }
 
@@ -223,23 +224,22 @@ export class ListePage {
     });
   }
 
-
-  deleteListe(user, searchText, etage) {
+  deleteListe(user, searchText, etage, codeClinique) {
     this.patienserv = new PatientService();
-    this.patienserv.deletePatients(user, searchText, etage);
+    this.patienserv.deletePatients(user, searchText, etage, codeClinique);
   }
 
-  deleteDateFeuille() {
+  deleteDateFeuille(codeClinique) {
     this.dtFeuilleserv = new DateFeuilleService();
-    this.dtFeuilleserv.deleteDateFeuille();
+    this.dtFeuilleserv.deleteDateFeuille(codeClinique);
   }
 
-  doRefresh(refresher) {
-    this.historique("admin", "", "all", this.codeClinique);
-    this.deleteListe("admin", "", "all");
-    this.liste("admin", "", "all");
-    this.deleteDateFeuille();
-    this.DateFeuille();
+  doRefresh(refresher, codeClinique) {
+    this.historique("admin", "", "all", codeClinique);
+    this.deleteListe("admin", "", "all", codeClinique);
+    this.liste("admin", "", "all", codeClinique);
+    this.deleteDateFeuille(codeClinique);
+    this.DateFeuille(codeClinique);
     setTimeout(() => {
       //   alert('Async operation has ended');
       refresher.complete();
@@ -260,8 +260,7 @@ export class ListePage {
       this.histserv.deleteHistPatients(user, searchText, etage, codeClinique);
       this.hist = this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique);
     }
-    catch (Error)
-    {
+    catch (Error) {
       this.hist = this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique);
     }
 

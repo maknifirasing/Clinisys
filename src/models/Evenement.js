@@ -1,4 +1,3 @@
-"use strict";
 var Evenement = (function () {
     function Evenement() {
     }
@@ -64,4 +63,5 @@ var Evenement = (function () {
     };
     return Evenement;
 }());
-exports.Evenement = Evenement;
+export { Evenement };
+//# sourceMappingURL=Evenement.js.map

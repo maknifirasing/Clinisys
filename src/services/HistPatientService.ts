@@ -59,7 +59,7 @@ export class HistPatientService {
         })
         .catch(error => {
           console.error('Error opening database', error);
-          alert('Error 1 HistPatient  ' + error);
+          alert('Error 1.1 HistPatient  ' + error);
         })
     });
     db.close();
@@ -75,7 +75,7 @@ export class HistPatientService {
       db.executeSql("select * from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertHistPatients(histPatients);
+            return this.histPatient;
           } else {
             var p;
             for (var i = 0; i < result.rows.length; i++) {
@@ -91,7 +91,7 @@ export class HistPatientService {
         })
         .catch(error => {
           console.error('Error opening database', error);
-          alert('Error 1 HistPatient  ' + error);
+          alert('Error 1.2 HistPatient  ' + error);
         })
     });
     db.close();

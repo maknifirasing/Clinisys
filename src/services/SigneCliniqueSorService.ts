@@ -7,7 +7,7 @@ export class SigneCliniqueSorService {
   constructor() {
   }
 
-  public verifSigneClinique(signeCliniques: any, numDoss, dateFeuille, nature, codeType) {
+  public verifSigneClinique(signeCliniques: any, numDoss, dateFeuille, nature, codeType, codeClinique) {
     var verif: boolean;
     let db = new SQLite();
     db.openDatabase({
@@ -15,7 +15,7 @@ export class SigneCliniqueSorService {
       location: 'default' // the location field is required
     }).then(() => {
       db.executeSql("select * from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
-        +"' and nature like '" + nature + "' and codetypeof like '" + codeType + "'", [])
+        +"' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           verif = (result.rows.length === signeCliniques.length);
         })
@@ -28,7 +28,7 @@ export class SigneCliniqueSorService {
     return verif;
   }
 
-  public getSigneCliniques(signeCliniques: any, numDoss, dateFeuille, nature, codeType) {
+  public getSigneCliniques(signeCliniques: any, numDoss, dateFeuille, nature, codeType, codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
@@ -36,10 +36,10 @@ export class SigneCliniqueSorService {
       location: 'default' // the location field is required
     }).then(() => {
       db.executeSql("select * from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
-        +"' and nature like '" + nature + "' and codetypeof like '" + codeType + "'", [])
+        +"' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertSigneCliniques(signeCliniques, numDoss, dateFeuille, nature,codeType)
+            this._insertSigneCliniques(signeCliniques, numDoss, dateFeuille, nature,codeType, codeClinique)
           } else {
             var s;
             for (var i = 0; i < result.rows.length; i++) {
@@ -61,7 +61,7 @@ export class SigneCliniqueSorService {
     return this.signeClinique;
   }
 
-  private _insertSigneCliniques(signeCliniques: Array<SigneClinique>, numDoss, dateFeuille, nature,codeType): void {
+  private _insertSigneCliniques(signeCliniques: Array<SigneClinique>, numDoss, dateFeuille, nature,codeType, codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -72,7 +72,7 @@ export class SigneCliniqueSorService {
           continue;
         }
         let s = signeCliniques[key];
-        db.executeSql('insert into SigneCliniqueSor (codeType ,date ,designation ,quantite ,numDoss ,dateFeuille, nature ,codetypeof) values (?,?,?,?,?,?,?,?)', [
+        db.executeSql('insert into SigneCliniqueSor (codeType ,date ,designation ,quantite ,numDoss ,dateFeuille, nature ,codetypeof, codeClinique) values (?,?,?,?,?,?,?,?,?)', [
           s.getcodeType(),
           s.getdate(),
           s.getdesignation(),
@@ -80,7 +80,8 @@ export class SigneCliniqueSorService {
           numDoss,
           dateFeuille,
           nature,
-          codeType
+          codeType,
+          codeClinique
         ]);
       }
     }).catch(error => {
@@ -90,14 +91,14 @@ export class SigneCliniqueSorService {
     db.close();
   }
 
-  public deleteSigneCliniques(numDoss, dateFeuille, nature, codeType) {
+  public deleteSigneCliniques(numDoss, dateFeuille, nature, codeType, codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'", [])
+      db.executeSql("delete from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
       //    alert("Suppression de table SigneCliniqueSor est terminé avec succes");
         })

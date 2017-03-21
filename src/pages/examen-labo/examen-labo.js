@@ -1,13 +1,16 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var core_1 = require('@angular/core');
-var variables_1 = require("../../providers/variables");
-var pdf_view_1 = require("../pdf-view/pdf-view");
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
+import { Variables } from "../../providers/variables";
+import { PdfViewPage } from "../pdf-view/pdf-view";
 var ExamenLaboPage = (function () {
     function ExamenLaboPage(navCtrl, navParams, Url) {
         this.navCtrl = navCtrl;
@@ -20,8 +23,6 @@ var ExamenLaboPage = (function () {
         this.LabosT = this.navParams.data.Labost;
         this.LabosF = this.navParams.data.Labosf;
     }
-    ExamenLaboPage.prototype.ionViewDidLoad = function () {
-    };
     ExamenLaboPage.prototype.openURL = function (numAdmission) {
         var _this = this;
         var xmlhttp = new XMLHttpRequest();
@@ -44,7 +45,7 @@ var ExamenLaboPage = (function () {
                         _this.pdf = _this.Url.url + "dmi-web/LaboPDF/" + x[0].childNodes[0].nodeValue.split("1.")[0] + ".pdf";
                         console.log("p   " + x[0].childNodes[0].nodeValue);
                         console.log("pdf   " + _this.pdf);
-                        _this.navCtrl.push(pdf_view_1.PdfViewPage, { pdf: _this.pdf });
+                        _this.navCtrl.push(PdfViewPage, { pdf: _this.pdf });
                     }
                     catch (Error) {
                     }
@@ -55,13 +56,18 @@ var ExamenLaboPage = (function () {
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };
-    ExamenLaboPage = __decorate([
-        core_1.Component({
-            selector: 'page-examen-labo',
-            templateUrl: 'examen-labo.html',
-            providers: [variables_1.Variables]
-        })
-    ], ExamenLaboPage);
+    ExamenLaboPage.prototype.gotPdf = function (pdf) {
+        this.navCtrl.push(PdfViewPage, { pdf: pdf.getpdf() });
+    };
     return ExamenLaboPage;
 }());
-exports.ExamenLaboPage = ExamenLaboPage;
+ExamenLaboPage = __decorate([
+    Component({
+        selector: 'page-examen-labo',
+        templateUrl: 'examen-labo.html',
+        providers: [Variables]
+    }),
+    __metadata("design:paramtypes", [NavController, NavParams, Variables])
+], ExamenLaboPage);
+export { ExamenLaboPage };
+//# sourceMappingURL=examen-labo.js.map

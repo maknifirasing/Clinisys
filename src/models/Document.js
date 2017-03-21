@@ -1,4 +1,3 @@
-"use strict";
 var Document = (function () {
     function Document() {
     }
@@ -70,4 +69,5 @@ var Document = (function () {
     };
     return Document;
 }());
-exports.Document = Document;
+export { Document };
+//# sourceMappingURL=Document.js.map

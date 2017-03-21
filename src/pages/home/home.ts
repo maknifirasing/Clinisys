@@ -5,11 +5,11 @@ import {ListePage} from "../liste/liste";
 import {Variables} from "../../providers/variables";
 import {UserService} from "../../services/UserService";
 
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
   providers: [Variables]
-
 })
 export class HomePage {
   err: string;
@@ -18,7 +18,9 @@ export class HomePage {
   errConn: string;
   tabLangue: any;
   userserv: any;
+  codeClinique:string;
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+    this.codeClinique=this.navParams.get("codeClinique");
     this.user = new Users;
     //  this.verifuser();
   }
@@ -65,12 +67,12 @@ export class HomePage {
 
               };
 
-              /*
+
                this.userserv = new UserService();
                //      if (this.userserv.verifUser() === false) {
-               this.userserv.getUser(this.user);
+               this.userserv.getUser(this.user,this.codeClinique);
                //    }
-               */
+
 
               this.navCtrl.push(ListePage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue")});
             } catch (Error) {
@@ -93,7 +95,7 @@ export class HomePage {
 
   verifuser() {
     this.userserv = new UserService();
-    alert("ee4 "+this.userserv.verifUser())  ;
+    alert("ee4 "+this.userserv.verifUser(this.codeClinique))  ;
   }
 
 
@@ -102,7 +104,9 @@ export class HomePage {
   }
 
   doesConnectionExist() {
-    alert("service " +   Variables.checservice(this.Url.url));
+       Variables.checservice(this.Url.url).then(res =>{
+         alert("serv "+res);
+       });
   }
 
   conn()
@@ -110,6 +114,7 @@ export class HomePage {
     this.tabLangue = {
       tabLangue: this.navParams.data.tabLangue
     };
-    this.navCtrl.push(ListePage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue"),codeClinique:this.navParams.get("codeClinique")});
+    this.navCtrl.push(ListePage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue"),codeClinique:this.codeClinique});
   }
+
 }

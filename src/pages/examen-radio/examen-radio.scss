@@ -8,8 +8,41 @@ page-examen-radio {
     -webkit-border-radius:50px;
     -moz-border-radius:50px;
     border-radius:50px;
-    width:35px;
-    height:35px;
+    width:40px;
+    height:40px;
+  }
+  .md-icon-buttonArr{
+    float: left;
+    background-color: #0277bd;
+  }
+  .i{
+    float: left;
+  }
+  a { color: inherit;
+    text-decoration: none;}
+  .card{
+    overflow: hidden;
+  }
+  .firstArr {
+    width: 50px;
+    float:right; /* add this */
+    //  border: 1px solid red;
+  }
+  .first {
+    width: 90px;
+    float:left; /* add this */
+    // border: 1px solid red;
+  }
+  .second {
+    width: 200px;
+    // border: 1px solid green;
+    overflow: hidden; /* if you don't want #second to wrap below #first */
+  }
+  .secondArr {
+    width: 200px;
+
+    //   border: 1px solid green;
+    overflow: hidden; /* if you don't want #second to wrap below #first */
   }
   .ion-navbar{
     height: 120px !important;

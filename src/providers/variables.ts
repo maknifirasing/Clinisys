@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {NavController} from "ionic-angular";
-import {Platform} from "ionic-angular";
+import * as needle from "needle";
+import * as chalk from "chalk";
 
 declare var navigator: any;
 declare var Connection: any;
@@ -23,6 +24,7 @@ static arabe= {
   rech: "بحث",
   age: "العمر ",
   ch: "الغرفة ",
+  titreHorsLigne:"خارج الخط: آخر تحديث",
   titreEnligne: "على الانترنت: آخر تحديث",
   titreMotif: "أسباب دخول المستشفى",
   titreAnt: "السوابق",
@@ -66,6 +68,7 @@ static arabe= {
     rech: "Recherche",
     age: "Age ",
     ch: "CH ",
+    titreHorsLigne:"Hors Ligne: Derniére mise a jour le",
     titreEnligne: "En Ligne: Derniére mise a jour le",
     titreMotif: "Motifs de l'hospitalisation",
     titreAnt: "Antécédents",
@@ -109,6 +112,7 @@ static arabe= {
     rech: "Search",
     age: "Age ",
     ch: "CH ",
+    titreHorsLigne:"Offline: Last Updated on",
     titreEnligne: "Online: Last Updated on",
     titreMotif: "Reasons for hospitalization",
     titreAnt: "Antecedents",
@@ -157,7 +161,8 @@ static arabe= {
     return states[networkState];
   }
 
-  public static  checservice(url) {
+  public static  checservice(url) : Promise<boolean>  {
+    return new Promise<boolean>(resolve => {
     var xhr = new XMLHttpRequest();
     var file = url;
 
@@ -169,14 +174,17 @@ static arabe= {
     function processRequest(e) {
       if (xhr.readyState == 4) {
         if (xhr.status >= 200 && xhr.status < 304) {
-          alert("connection exists!");
+          resolve(true);
+          return true;
         } else {
-          alert("connection doesn't exist!");
+          resolve(false);
+          return false;
         }
       }
     }
+      return this;
+    });
   }
-
 
 
 }

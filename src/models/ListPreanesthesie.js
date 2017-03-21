@@ -1,4 +1,3 @@
-"use strict";
 var ListPreanesthesie = (function () {
     function ListPreanesthesie() {
     }
@@ -142,4 +141,5 @@ var ListPreanesthesie = (function () {
     };
     return ListPreanesthesie;
 }());
-exports.ListPreanesthesie = ListPreanesthesie;
+export { ListPreanesthesie };
+//# sourceMappingURL=ListPreanesthesie.js.map

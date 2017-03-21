@@ -1,4 +1,3 @@
-"use strict";
 /**
  * Created by makni on 15/02/2017.
  */
@@ -127,4 +126,5 @@ var Traitement = (function () {
     };
     return Traitement;
 }());
-exports.Traitement = Traitement;
+export { Traitement };
+//# sourceMappingURL=Traitement.js.map
