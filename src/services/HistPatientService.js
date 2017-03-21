@@ -6,95 +6,70 @@ var HistPatientService = (function () {
     }
     HistPatientService.prototype.verifHistPatient = function (user, searchText, etage, codeClinique) {
         var _this = this;
-        this.verif = false;
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("select * from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
-                .then(function (result) {
-                if (result.rows.length === 1) {
-                    _this.verif = true;
-                }
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 0 HistPatient  ' + error);
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                db.executeSql("select count(*) as sum from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
+                    .then(function (result) {
+                    if (result.rows.item(0).sum > 0) {
+                        resolve(true);
+                        return true;
+                    }
+                    else {
+                        resolve(false);
+                        return false;
+                    }
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    alert('Error 0 HistPatient  ' + error);
+                    resolve(false);
+                    return false;
+                });
             });
+            db.close();
+            return _this;
         });
-        db.close();
-        return this.verif;
     };
     HistPatientService.prototype.getHistPatients = function (histPatients, user, searchText, etage, codeClinique) {
         var _this = this;
-        this.histPatient.push(histPatients[0]);
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("select * from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
-                .then(function (result) {
-                if (result.rows.length === 0) {
-                    _this._insertHistPatients(histPatients);
-                }
-                else {
-                    _this.histPatient.pop();
-                    _this.histPatient = [];
-                    _this.histPatient.length = 0;
-                    var p;
-                    for (var i = 0; i < result.rows.length; i++) {
-                        p = new HistPatient();
-                        p.setuser(result.rows.item(i).user);
-                        p.setsearchText(result.rows.item(i).searchText);
-                        p.setetage(result.rows.item(i).etage);
-                        p.setdate(result.rows.item(i).date);
-                        p.setcodeClinique(result.rows.item(i).codeClinique);
-                        _this.histPatient.push(p);
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                db.executeSql("select * from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
+                    .then(function (result) {
+                    if (result.rows.length === 0) {
+                        _this._insertHistPatients(histPatients);
+                        resolve(histPatients[0]);
                     }
-                }
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1.1 HistPatient  ' + error);
-            });
-        });
-        db.close();
-        return this.histPatient;
-    };
-    HistPatientService.prototype.getHistPatientsOff = function (histPatients, user, searchText, etage, codeClinique) {
-        var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("select * from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
-                .then(function (result) {
-                if (result.rows.length === 0) {
-                    return _this.histPatient;
-                }
-                else {
-                    var p;
-                    for (var i = 0; i < result.rows.length; i++) {
-                        p = new HistPatient();
-                        p.setuser(result.rows.item(i).user);
-                        p.setsearchText(result.rows.item(i).searchText);
-                        p.setetage(result.rows.item(i).etage);
-                        p.setdate(result.rows.item(i).date);
-                        p.setcodeClinique(result.rows.item(i).codeClinique);
-                        _this.histPatient.push(p);
+                    else {
+                        var p;
+                        for (var i = 0; i < result.rows.length; i++) {
+                            p = new HistPatient();
+                            p.setuser(result.rows.item(i).user);
+                            p.setsearchText(result.rows.item(i).searchText);
+                            p.setetage(result.rows.item(i).etage);
+                            p.setdate(result.rows.item(i).date);
+                            p.setcodeClinique(result.rows.item(i).codeClinique);
+                            _this.histPatient.push(p);
+                        }
+                        resolve(_this.histPatient[0]);
                     }
-                }
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1.2 HistPatient  ' + error);
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    alert('Error 1.1 HistPatient  ' + error);
+                });
             });
+            db.close();
+            return _this;
         });
-        db.close();
-        return this.histPatient;
     };
     HistPatientService.prototype._insertHistPatients = function (histPatients) {
         var db = new SQLite();

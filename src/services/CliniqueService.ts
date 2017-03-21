@@ -3,31 +3,38 @@ import {Clinique} from "../models/Clinique";
 
 export class CliniqueService {
   public clinique: Array<Clinique> = [];
-  verif: boolean;
 
   constructor() {
   }
 
-  public verifClinique(cliniques: any) {
-    this.verif = false;
+  public verifClinique(cliniques: any): Promise<boolean> {
+    return new Promise<boolean>(resolve => {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Clinique ", [])
+      db.executeSql("select count(*) as sum from Clinique ", [])
         .then(result => {
-          if (result.rows.length === cliniques.length) {
-            this.verif = true;
+          if (result.rows.item(0).sum >0) {
+            resolve(true);
+            return true;
+          }
+          else {
+            resolve(false);
+            return false;
           }
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 0 Clinique  ' + error);
+          resolve(false);
+          return false;
         })
     });
-    db.close();
-    return this.verif;
+      db.close();
+      return this;
+    })
   }
 
   public getCliniques(cliniques: any) {
@@ -87,7 +94,6 @@ export class CliniqueService {
   }
 
   public deleteCliniques() {
-
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',

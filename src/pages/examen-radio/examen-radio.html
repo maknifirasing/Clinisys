@@ -1,48 +1,59 @@
-<input type="text" value="{{this.navParams.get('langue')}}" #lang/>
 <ion-header  class="ion-navbar">
   <ion-navbar color="custom-color" class="ion-navbar">
-    <ion-list color="custom-color" *ngIf="(lang.value)==='arabe'"
+    <ion-list color="custom-color" *ngIf="langue==='arabe'"
               dir="rtl">
       <ion-item color="custom-color">
         <ion-avatar item-left>
-          <img src='/android_asset/www/assets/img/{{navParams.data.pass.getimg()}}'>
+          <img src='/android_asset/www/assets/img/{{pass.getimg()}}'>
         </ion-avatar>
         <ion-avatar item-right>
           <img src='/android_asset/www/assets/img/i.jpg'>
         </ion-avatar>
-        <p style="text-align: right">{{navParams.data.pass.getnom()}}</p>
-        <p style="text-align: right"><strong>{{navParams.data.tabLangue.age}}: </strong>{{navParams.data.pass.getage()}}<strong>{{navParams.data.tabLangue.ch}}: </strong>{{navParams.data.pass.getchambre()}}</p>
+        <p style="text-align: right">{{pass.getnom()}}</p>
+        <p style="text-align: right"><strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}</p>
       </ion-item>
-      <ion-item color="custom-color">
+      <ion-item color="custom-color" *ngIf="connection===true">
         <p item-right>
           <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
         </p>
-        <p style="text-align: right">{{navParams.data.tabLangue.titreEnligne}}<br/> {{navParams.data.dat}}</p>
+        <p style="text-align: right">{{tabLangue.titreEnligne}}<br/> {{histd}}</p>
+      </ion-item>
+      <ion-item color="custom-color" *ngIf="connection===false">
+        <p item-right>
+          <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
+        </p>
+        <p style="text-align: right">{{tabLangue.titreHorsLigne}}<br/> {{histd}}</p>
       </ion-item>
     </ion-list>
 
-    <ion-list color="custom-color" *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+    <ion-list color="custom-color" *ngIf="langue==='francais' || langue==='anglais'">
       <ion-item color="custom-color">
         <ion-avatar item-left>
-          <img src='/android_asset/www/assets/img/{{navParams.data.pass.getimg()}}'>
+          <img src='/android_asset/www/assets/img/{{pass.getimg()}}'>
         </ion-avatar>
         <ion-avatar item-right>
           <img src='/android_asset/www/assets/img/i.jpg'>
         </ion-avatar>
-        <p>{{navParams.data.pass.getnom()}}</p>
-        <p><strong>{{navParams.data.tabLangue.age}}: </strong>{{navParams.data.pass.getage()}}<strong>{{navParams.data.tabLangue.ch}}: </strong>{{navParams.data.pass.getchambre()}}</p>
+        <p>{{pass.getnom()}}</p>
+        <p><strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}</p>
       </ion-item>
-      <ion-item color="custom-color">
+      <ion-item color="custom-color" *ngIf="connection===true">
         <p item-left>
           <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
         </p>
-        <p>{{navParams.data.tabLangue.titreEnligne}}<br/> {{navParams.data.dat}}</p>
+        <p>{{tabLangue.titreEnligne}}<br/> {{histd}}</p>
+      </ion-item>
+      <ion-item color="custom-color" *ngIf="connection===false">
+        <p item-left>
+          <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
+        </p>
+        <p>{{tabLangue.titreHorsLigne}}<br/> {{histd}}</p>
       </ion-item>
     </ion-list>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-navbar *ngIf="(lang.value)==='arabe'"
+  <ion-navbar *ngIf="langue==='arabe'"
                dir="rtl">
     <table border="0" *ngFor="let ExRad of examenRT ">
       <input type="hidden" #observ value="{{ExRad.getobserv()}}">
@@ -51,14 +62,14 @@
           <img src='/android_asset/www/assets/img/word.png' class="roundedImage">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td class="size">
-          <a href="{{url}}"> <strong>{{navParams.data.tabLangue.titreDemande}}:</strong>
+          <a href="{{url}}"> <strong>{{tabLangue.titreDemande}}:</strong>
           </a>
           {{ExRad.getdateExamen()}}
         </td>
       </tr>
       <tr>
         <td class="size">
-          <strong> {{navParams.data.tabLangue.titreExamen}}:</strong>{{ExRad.getdesignationExamen().substr(0, 17)}}
+          <strong> {{tabLangue.titreExamen}}:</strong>{{ExRad.getdesignationExamen().substr(0, 17)}}
           <br/>{{ExRad.getdesignationExamen().substr(17, 31)}}
           <br/>{{ExRad.getdesignationExamen().substr(31,ExRad.getdesignationExamen.length)}}
         </td>
@@ -77,12 +88,12 @@
           <img src='/android_asset/www/assets/img/wordoff.png'  class="roundedImage">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td class="size">
-          <a href="{{url}}"> <strong>{{navParams.data.tabLangue.titreDemande}}:</strong> </a>{{ExRadF.getdateExamen()}}
+          <a href="{{url}}"> <strong>{{tabLangue.titreDemande}}:</strong> </a>{{ExRadF.getdateExamen()}}
         </td>
       </tr>
       <tr>
         <td class="size">
-          <strong>{{navParams.data.tabLangue.titreExamen}}:</strong>{{ExRadF.getdesignationExamen()}}
+          <strong>{{tabLangue.titreExamen}}:</strong>{{ExRadF.getdesignationExamen()}}
         </td>
       </tr>
       <tr>
@@ -93,7 +104,7 @@
     </table>
   </ion-navbar>
 
-  <ion-navbar *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+  <ion-navbar *ngIf="langue==='francais' || langue==='anglais'">
     <table border="0" *ngFor="let ExRad of examenRT ">
       <input type="hidden" #observ value="{{ExRad.getobserv()}}">
       <tr (click)="getdocumentById(observ.value)">
@@ -101,14 +112,14 @@
           <img src='/android_asset/www/assets/img/word.png' class="roundedImage">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td class="size">
-          <a href="{{url}}"> <strong>{{navParams.data.tabLangue.titreDemande}}:</strong>
+          <a href="{{url}}"> <strong>{{tabLangue.titreDemande}}:</strong>
           </a>
           {{ExRad.getdateExamen()}}
         </td>
       </tr>
       <tr>
         <td class="size">
-          <strong> {{navParams.data.tabLangue.titreExamen}}:</strong>{{ExRad.getdesignationExamen().substr(0, 17)}}
+          <strong> {{tabLangue.titreExamen}}:</strong>{{ExRad.getdesignationExamen().substr(0, 17)}}
           <br/>{{ExRad.getdesignationExamen().substr(17, 31)}}
           <br/>{{ExRad.getdesignationExamen().substr(31,ExRad.getdesignationExamen.length)}}
         </td>
@@ -127,12 +138,12 @@
           <img src='/android_asset/www/assets/img/wordoff.png'  class="roundedImage">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td class="size">
-          <a href="{{url}}"> <strong>{{navParams.data.tabLangue.titreDemande}}:</strong> </a>{{ExRadF.getdateExamen()}}
+          <a href="{{url}}"> <strong>{{tabLangue.titreDemande}}:</strong> </a>{{ExRadF.getdateExamen()}}
         </td>
       </tr>
       <tr>
         <td class="size">
-          <strong>{{navParams.data.tabLangue.titreExamen}}:</strong>{{ExRadF.getdesignationExamen()}}
+          <strong>{{tabLangue.titreExamen}}:</strong>{{ExRadF.getdesignationExamen()}}
         </td>
       </tr>
       <tr>

@@ -1,40 +1,45 @@
-<input type="hidden" value="{{this.navParams.get('langue')}}" #lang/>
 <ion-header>
 
-  <ion-item color="custom-color" *ngIf="(lang.value)==='arabe'"
+  <ion-item color="custom-color" *ngIf="langue==='arabe'"
             dir="rtl" class="ion-navbar">
+    <button (click)="deconnexion()">deconnexion</button>
+    <button (click)="lg()">langue</button>
     <p item-right *ngIf="connection===true">
       <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
+      {{tabLangue.titreEnligne}}<br/> {{histl}}
     </p>
     <p item-right *ngIf="connection===false">
       <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
+      {{tabLangue.titreHorsLigne}}<br/> {{histl}}
     </p>
-    <p style="text-align: right" *ngFor="let h of hist ">{{navParams.data.tabLangue.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
   </ion-item>
 
 
   <ion-item color="custom-color" class="ion-navbar" class="animated fadeInRight"
-            *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'"  class="ion-navbar">
+            *ngIf="langue==='francais' || langue==='anglais'" class="ion-navbar">
+    <button (click)="deconnexion()">deconnexion</button>
+    <button (click)="lg()">langue</button>
     <p *ngIf="connection===true">
       <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
+      {{tabLangue.titreEnligne}}<br/> {{histl}}
     </p>
-    <p  *ngIf="connection===false">
+    <p *ngIf="connection===false">
       <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
+      {{tabLangue.titreHorsLigne}}<br/> {{histl}}
     </p>
-    <p *ngFor="let h of hist ">{{navParams.data.tabLangue.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
   </ion-item>
 
-  <ion-navbar class="ion-navbar" *ngIf="(lang.value)==='arabe'" dir="rtl">
+  <ion-navbar class="ion-navbar" *ngIf="langue==='arabe'" dir="rtl">
 
     <p>
-      <ion-searchbar color="white" placeholder=" {{navParams.data.tabLangue.tabLangue.rech}}"
+      <ion-searchbar color="white" placeholder=" {{tabLangue.rech}}"
                      (ionInput)="getItems($event)"></ion-searchbar>
     </p>
   </ion-navbar>
-  <ion-navbar class="ion-navbar" *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+  <ion-navbar class="ion-navbar" *ngIf="langue==='francais' || langue==='anglais'">
 
     <p>
-      <ion-searchbar color="white" placeholder="{{navParams.data.tabLangue.tabLangue.rech}}"
+      <ion-searchbar color="white" placeholder="{{tabLangue.rech}}"
                      (ionInput)="getItems($event)"></ion-searchbar>
     </p>
     <p></p>
@@ -46,9 +51,9 @@
   <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="connection===true">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"
-      pullingText="{{navParams.data.tabLangue.tabLangue.pullingText}}"
+      pullingText="{{tabLangue.pullingText}}"
       refreshingSpinner="circles"
-      refreshingText="{{navParams.data.tabLangue.tabLangue.refreshingText}}">
+      refreshingText="{{tabLangue.refreshingText}}">
     </ion-refresher-content>
   </ion-refresher>
   <ion-scroll scrollY="true">
@@ -57,25 +62,25 @@
 
       <ion-item-sliding *ngFor="let pas of patientliste ">
 
-        <ion-item (click)="goToDossierPage(pas)" *ngIf="(lang.value)==='arabe'"
+        <ion-item (click)="goToDossierPage(pas)" *ngIf="langue==='arabe'"
                   dir="rtl">
 
           <ion-avatar item-left>
             <img src='/android_asset/www/assets/img/{{pas.getimg()}}'>
           </ion-avatar>
           <h4 style="text-align: right"><strong>{{ pas.getnom() }}</strong></h4>
-          <p style="text-align: right">{{navParams.data.tabLangue.tabLangue.age}} : {{ pas.getage() }}
-            {{navParams.data.tabLangue.tabLangue.ch}}: {{ pas.getchambre() }}</p>
+          <p style="text-align: right">{{tabLangue.age}} : {{ pas.getage() }}
+            {{tabLangue.ch}}: {{ pas.getchambre() }}</p>
           <p style="text-align: right">{{ pas.getmedecin() }}</p>
 
         </ion-item>
-        <ion-item (click)="goToDossierPage(pas)" *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+        <ion-item (click)="goToDossierPage(pas)" *ngIf="langue==='francais' || langue==='anglais'">
 
           <ion-avatar item-left>
             <img src='/android_asset/www/assets/img/{{pas.getimg()}}'>
           </ion-avatar>
           <h4><strong>{{ pas.getnom() }}</strong></h4>
-          <p>{{navParams.data.tabLangue.tabLangue.age}} : {{ pas.getage() }} {{navParams.data.tabLangue.tabLangue.ch}}:
+          <p>{{tabLangue.age}} : {{ pas.getage() }} {{tabLangue.ch}}:
             {{ pas.getchambre() }}</p>
           <p>{{ pas.getmedecin() }}</p>
 

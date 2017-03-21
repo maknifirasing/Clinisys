@@ -1,39 +1,47 @@
 import { SQLite } from 'ionic-native';
 import { ExamenRadio } from "../models/ExamenRadio";
-var ExamenRadioService = (function () {
-    function ExamenRadioService() {
+var ExamenRadioFService = (function () {
+    function ExamenRadioFService() {
         this.examenRadio = [];
     }
-    ExamenRadioService.prototype.verifExamenRadio = function (examenRadios, observ, codeClinique) {
+    ExamenRadioFService.prototype.verifExamenRadio = function (examenRadios, numeroDossier, codeClinique) {
         var _this = this;
-        this.verif = false;
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("select * from ExamenRadio where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
-                .then(function (result) {
-                if (result.rows.length === examenRadios.length) {
-                    _this.verif = true;
-                }
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 0 ExamenRadio  ' + error);
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                db.executeSql("select count(*) as sum from ExamenRadioF where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
+                    .then(function (result) {
+                    if (result.rows.item(0).sum > 0) {
+                        resolve(true);
+                        return true;
+                    }
+                    else {
+                        resolve(false);
+                        return false;
+                    }
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    alert('Error 0 ExamenRadioF  ' + error);
+                    resolve(false);
+                    return false;
+                });
             });
+            db.close();
+            return _this;
         });
-        db.close();
-        return this.verif;
     };
-    ExamenRadioService.prototype.getExamenRadios = function (examenRadios, observ, codeClinique) {
+    ExamenRadioFService.prototype.getExamenRadios = function (examenRadios, numeroDossier, codeClinique) {
         var _this = this;
         var db = new SQLite();
         db.openDatabase({
             name: 'clinisys.db',
             location: 'default' // the location field is required
         }).then(function () {
-            db.executeSql("select * from ExamenRadio where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
+            db.executeSql("select * from ExamenRadioF where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
                     _this._insertExamenRadios(examenRadios, codeClinique);
@@ -62,13 +70,13 @@ var ExamenRadioService = (function () {
             })
                 .catch(function (error) {
                 console.error('Error opening database', error);
-                alert('Error 1 ExamenRadio  ' + error);
+                alert('Error 1 ExamenRadioF  ' + error);
             });
         });
         db.close();
         return this.examenRadio;
     };
-    ExamenRadioService.prototype._insertExamenRadios = function (examenRadios, codeClinique) {
+    ExamenRadioFService.prototype._insertExamenRadios = function (examenRadios, codeClinique) {
         var db = new SQLite();
         db.openDatabase({
             name: 'clinisys.db',
@@ -79,7 +87,7 @@ var ExamenRadioService = (function () {
                     continue;
                 }
                 var examenRadio = examenRadios[key];
-                db.executeSql('insert into ExamenRadio (codeExamen,compterendu ,dateExamen ' +
+                db.executeSql('insert into ExamenRadioF (codeExamen,compterendu ,dateExamen ' +
                     ',datePrevu, date_RDV,designationExamen,heurePrevu,idres,medecin,nature,numeroDossier,numeroExamen,observ,resultat,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
                     examenRadio.getcodeExamen(),
                     examenRadio.getcompterendu(),
@@ -100,29 +108,29 @@ var ExamenRadioService = (function () {
             }
         }).catch(function (error) {
             console.error('Error opening database', error);
-            alert('Error 2 ExamenRadio ' + error);
+            alert('Error 2 ExamenRadioF ' + error);
         });
         db.close();
     };
-    ExamenRadioService.prototype.deleteExamenRadios = function (observ, codeClinique) {
+    ExamenRadioFService.prototype.deleteExamenRadios = function (numeroDossier, codeClinique) {
         var db = new SQLite();
         db.openDatabase({
             name: 'clinisys.db',
             location: 'default' // the location field is required
         }).then(function () {
-            db.executeSql("delete from ExamenRadio where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
+            db.executeSql("delete from ExamenRadioF where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                alert("Suppression de table ExamenRadio est terminé avec succes");
+                alert("Suppression de table ExamenRadioF est terminé avec succes");
             })
                 .catch(function (error) {
                 console.error('Error opening database', error);
-                alert('Error 1 ExamenRadio  ' + error);
+                alert('Error 3 ExamenRadioF  ' + error);
             });
         });
         db.close();
         return this.examenRadio;
     };
-    return ExamenRadioService;
+    return ExamenRadioFService;
 }());
-export { ExamenRadioService };
-//# sourceMappingURL=ExamenRadioService.js.map
+export { ExamenRadioFService };
+//# sourceMappingURL=ExamenRadioFService.js.map

@@ -3,97 +3,76 @@ import {HistDossier} from "../models/HistDossier";
 
 export class HistDossierService {
   public histDossier: Array<HistDossier> = [];
-  verif: boolean;
 
   constructor() {
   }
 
-  public verifHistDossier(numDoss, codeClinique) {
-    this.verif = false;
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.length === 1) {
-            this.verif = true;
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 0 HistDossier  ' + error);
-        })
-    });
-    db.close();
-    return this.verif;
-  }
-
-  public getHistDossiers(histDossiers: any, numDoss, codeClinique) {
-    this.histDossier.push(histDossiers[0]);
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.length === 0) {
-            this._insertHistPatients(histDossiers);
-          } else {
-            this.histDossier.pop();
-            this.histDossier = [];
-            this.histDossier.length = 0;
-            var d;
-            for (var i = 0; i < result.rows.length; i++) {
-              d = new HistDossier();
-              d.setnumDoss(result.rows.item(i).numDoss);
-              d.setdate(result.rows.item(i).date);
-              d.setcodeClinique(result.rows.item(i).codeClinique);
-              this.histDossier.push(d);
+  public verifHistDossier(numDoss, codeClinique): Promise<boolean> {
+    return new Promise<boolean>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("select count(*) as sum from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.item(0).sum > 0) {
+              resolve(true);
+              return true;
             }
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1.1 HistDossier  ' + error);
-        })
-    });
-    db.close();
-    return this.histDossier;
-  }
-
-  public getHistDossiersOff(histDossiers: any, numDoss, codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.length === 0) {
-            return this.histDossier;
-          } else {
-            var d;
-            for (var i = 0; i < result.rows.length; i++) {
-              d = new HistDossier();
-              d.setnumDoss(result.rows.item(i).numDoss);
-              d.setdate(result.rows.item(i).date);
-              d.setcodeClinique(result.rows.item(i).codeClinique);
-              this.histDossier.push(d);
+            else {
+              resolve(false);
+              return false;
             }
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1.2 HistDossier  ' + error);
-        })
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 0 HistDossier  ' + error);
+            resolve(false);
+            return false;
+          })
+      });
+      db.close();
+      return this;
     });
-    db.close();
-    return this.histDossier;
   }
 
+  public getHistDossiers(histDossiers: any, numDoss, codeClinique): Promise<HistDossier> {
+    return new Promise<HistDossier>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("select * from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.length === 0) {
+              this._insertHistPatients(histDossiers);
+              resolve(histDossiers[0]);
+            } else {
+              this.histDossier.pop();
+              this.histDossier = [];
+              this.histDossier.length = 0;
+              var d;
+              for (var i = 0; i < result.rows.length; i++) {
+                d = new HistDossier();
+                d.setnumDoss(result.rows.item(i).numDoss);
+                d.setdate(result.rows.item(i).date);
+                d.setcodeClinique(result.rows.item(i).codeClinique);
+                this.histDossier.push(d);
+              }
+              resolve(this.histDossier[0]);
+            }
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 1.1 HistDossier  ' + error);
+          })
+      });
+      db.close();
+      return this;
+    });
+  }
 
   private _insertHistPatients(histDossiers: Array<HistDossier>): void {
     let db = new SQLite();

@@ -1,6 +1,5 @@
-<input type="hidden" value="{{this.navParams.get('langue')}}" #lang/>
 <ion-content>
-  <div padding id="cloud-layer" *ngIf="(lang.value)==='arabe'" dir="rtl">
+  <div padding id="cloud-layer" *ngIf="langue==='arabe'" dir="rtl">
 
     <ion-row>
       <ion-col class="animated fadeInUp">
@@ -14,11 +13,11 @@
       <ion-col>
         <ion-list inset>
           <ion-item class="animated fadeInUp">
-            <ion-input type="text" #login placeholder="{{navParams.data.tabLangue.nomUtili}}"
+            <ion-input type="text" #userName placeholder="{{tabLangue.nomUtili}}"
                        required="true"></ion-input>
           </ion-item>
           <ion-item class="animated fadeInUp">
-            <ion-input type="password" #password placeholder="{{navParams.data.tabLangue.mo2pass}}"
+            <ion-input type="password" #passWord placeholder="{{tabLangue.mo2pass}}"
                        required="true"></ion-input>
           </ion-item>
         </ion-list>
@@ -26,8 +25,8 @@
     </ion-row>
     <ion-row>
       <ion-col class="animated fadeInUp">
-        <button ion-button class="login-button" (click)="connecter(login.value,password.value)">
-          {{navParams.data.tabLangue.login}}
+        <button ion-button class="login-button" (click)="connecter(userName.value,passWord.value)">
+          {{tabLangue.login}}
         </button>
         <button (click)="conn()">Connecter</button>
         <button (click)="checkNetwork()">Check Network</button>
@@ -36,7 +35,7 @@
       </ion-col>
     </ion-row>
   </div>
-  <div padding id="cloud-layer2" *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+  <div padding id="cloud-layer2" *ngIf="langue==='francais' || langue==='anglais'">
 
     <ion-row>
       <ion-col class="animated fadeInUp">
@@ -49,11 +48,11 @@
       <ion-col>
         <ion-list inset>
           <ion-item class="animated fadeInUp">
-            <ion-input type="text" #login placeholder="{{navParams.data.tabLangue.nomUtili}}"
+            <ion-input type="text" #userName placeholder="{{tabLangue.nomUtili}}"
                        required="true"></ion-input>
           </ion-item>
           <ion-item class="animated fadeInUp">
-            <ion-input type="password" #password placeholder="{{navParams.data.tabLangue.mo2pass}}"
+            <ion-input type="password" #passWord placeholder="{{tabLangue.mo2pass}}"
                        required="true"></ion-input>
           </ion-item>
         </ion-list>
@@ -61,8 +60,8 @@
     </ion-row>
     <ion-row>
       <ion-col class="animated fadeInUp">
-        <button ion-button class="login-button" (click)="connecter(login.value,password.value)">
-          {{navParams.data.tabLangue.login}}
+        <button ion-button class="login-button" (click)="connecter(userName.value,passWord.value)">
+          {{tabLangue.login}}
         </button>
         <button (click)="conn()">Connecter</button>
         <button (click)="checkNetwork()">Check Network</button>

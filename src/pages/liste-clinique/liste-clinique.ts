@@ -15,9 +15,12 @@ export class ListeCliniquePage {
   c:any;
   clinserv: any;
   connection: boolean;
-
+  tabLangue: any;
+  langue: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,private viewCtrl: ViewController) {
     this.viewCtrl.showBackButton(false);
+    this.tabLangue=navParams.get("tabLangue");
+    this.langue = navParams.get("langue");
     if (Variables.checconnection() === "No network connection") {
       this.connection = false;
       this.ListCliniqueOff(this.clinique);
@@ -71,6 +74,6 @@ export class ListeCliniquePage {
   }
 
   goToHomePage(codeC){
-    this.navCtrl.push(HomePage,{tabLangue: this.navParams.data.tabLangue,langue:this.navParams.get("langue"),codeClinique:codeC});
+    this.navCtrl.push(HomePage,{tabLangue: this.tabLangue,langue:this.langue,codeClinique:codeC});
   }
 }

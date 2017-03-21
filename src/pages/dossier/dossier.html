@@ -1,68 +1,67 @@
-<input type="text" value="{{this.navParams.get('langue')}}" #lang/>
 <ion-header class="ion-navbar">
   <ion-navbar color="custom-color" class="ion-navbar">
-    <ion-list color="custom-color" *ngIf="(lang.value)==='arabe'"
+    <ion-list color="custom-color" *ngIf="langue==='arabe'"
               dir="rtl">
       <ion-item color="custom-color">
         <ion-avatar item-left>
-          <img src='/android_asset/www/assets/img/{{navParams.data.pass.getimg()}}'>
+          <img src='/android_asset/www/assets/img/{{pass.getimg()}}'>
         </ion-avatar>
         <ion-avatar item-right>
           <img src='/android_asset/www/assets/img/i.jpg'>
         </ion-avatar>
-        <p style="text-align: right">{{navParams.data.pass.getnom()}}</p>
-        <p style="text-align: right"><strong>{{navParams.data.tabLangue.age}}: </strong>{{navParams.data.pass.getage()}}<strong>{{navParams.data.tabLangue.ch}}: </strong>{{navParams.data.pass.getchambre()}}
+        <p style="text-align: right">{{pass.getnom()}}</p>
+        <p style="text-align: right"><strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
         </p>
       </ion-item>
       <ion-item color="custom-color"  *ngIf="connection===true">
         <p item-right>
           <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
         </p>
-        <p style="text-align: right" *ngFor="let h of histD">{{navParams.data.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
+        <p style="text-align: right" >{{tabLangue.titreEnligne}}<br/> {{histd}}</p>
       </ion-item>
       <ion-item color="custom-color"  *ngIf="connection===false">
         <p item-right>
           <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
         </p>
-        <p style="text-align: right" *ngFor="let h of histD">{{navParams.data.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
+        <p style="text-align: right" >{{tabLangue.titreHorsLigne}}<br/> {{histd}}</p>
       </ion-item>
     </ion-list>
 
-    <ion-list color="custom-color" *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+    <ion-list color="custom-color" *ngIf="langue==='francais' || langue==='anglais'">
       <ion-item color="custom-color">
         <ion-avatar item-left>
-          <img src='/android_asset/www/assets/img/{{navParams.data.pass.getimg()}}'>
+          <img src='/android_asset/www/assets/img/{{pass.getimg()}}'>
         </ion-avatar>
         <ion-avatar item-right>
           <img src='/android_asset/www/assets/img/i.jpg'>
         </ion-avatar>
-        <p>{{navParams.data.pass.getnom()}}</p>
-        <p><strong>{{navParams.data.tabLangue.age}}: </strong>{{navParams.data.pass.getage()}}<strong>{{navParams.data.tabLangue.ch}}: </strong>{{navParams.data.pass.getchambre()}}
+        <p>{{pass.getnom()}}</p>
+        <p><strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
         </p>
       </ion-item>
       <ion-item color="custom-color" *ngIf="connection===true">
         <p item-left>
           <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
         </p>
-        <p *ngFor="let h of histD">{{navParams.data.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
+        <p>{{tabLangue.titreEnligne}}<br/> {{histd}}</p>
       </ion-item>
       <ion-item color="custom-color" *ngIf="connection===false">
         <p item-left>
           <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
         </p>
-        <p *ngFor="let h of histD">{{navParams.data.tabLangue.titreEnligne}}<br/> {{h.getdate()}}</p>
+        <p>{{tabLangue.titreHorsLigne}}<br/> {{histd}}</p>
       </ion-item>
     </ion-list>
   </ion-navbar>
 </ion-header>
 <ion-content>
   <ion-scroll scrollY="true">
-    <ion-navbar *ngIf="(lang.value)==='arabe'"
+    <ion-navbar *ngIf="langue==='arabe'"
                 dir="rtl">
       <table border="0" *ngIf="test===true">
         <tr>
           <th class="strong">
-            {{navParams.data.tabLangue.titreMotif}}
+            {{tabLangue.titreMotif}}
           </th>
         </tr>
 
@@ -78,7 +77,7 @@
 
       <table border="0" *ngIf="Ante===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreAnt}}
+          {{tabLangue.titreAnt}}
         </strong>
 
         <!--     <tr>
@@ -98,7 +97,7 @@
 
       <table border="0" *ngIf="Alerg===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreAll}}
+          {{tabLangue.titreAll}}
         </strong>
         <!--     <tr>
                <td class="size">
@@ -116,7 +115,7 @@
       </table>
       <table border="0" *ngIf="AlerteS===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreSigneV}}
+          {{tabLangue.titreSigneV}}
         </strong>
         <tr *ngFor="let sig of signec ">
           <td class="size">
@@ -131,7 +130,7 @@
 
       <table border="0" *ngIf="Ent===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreEnt}}
+          {{tabLangue.titreEnt}}
         </strong>
         <tr *ngFor="let en of Entrees ">
           <td class="size">
@@ -146,7 +145,7 @@
 
       <table border="0" *ngIf="trait===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreTrait}}
+          {{tabLangue.titreTrait}}
         </strong>
         <tr *ngFor="let tra of traitement ">
           <td class="size">
@@ -162,7 +161,7 @@
 
       <table border="0" *ngIf="Sor===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreSortie}}
+          {{tabLangue.titreSortie}}
         </strong>
         <tr *ngFor="let so of Sorties ">
           <td class="size">
@@ -176,7 +175,7 @@
 
       <table border="0" *ngIf="AlerteSigneCliniqueTest===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreAlert}}
+          {{tabLangue.titreAlert}}
         </strong>
         <tr *ngFor="let pas of signe ">
           <td class="size">
@@ -189,7 +188,7 @@
       </table>
       <table border="0" *ngIf="His===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreMaladie}}
+          {{tabLangue.titreMaladie}}
         </strong>
         <tr *ngFor="let his of Histoiremaladie ">
           <td>
@@ -211,7 +210,7 @@
       </table>
       <table border="0" *ngIf="Exa===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreClini}}
+          {{tabLangue.titreClini}}
         </strong>
         <p></p>
         <tr *ngFor="let exa of Examenclinique ">
@@ -234,7 +233,7 @@
 
       <table border="0" *ngIf="Evo===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreEvo}}
+          {{tabLangue.titreEvo}}
         </strong>
         <p></p>
         <tr *ngFor="let evo of Evolution ">
@@ -256,7 +255,7 @@
 
       <table border="0" *ngIf="Ri===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreRegime}}
+          {{tabLangue.titreRegime}}
         </strong>
         <p></p>
         <tr *ngFor="let r of rigime ">
@@ -268,7 +267,7 @@
 
       <table border="0" *ngIf="Con===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreConclu}}
+          {{tabLangue.titreConclu}}
         </strong>
         <p></p>
         <tr *ngFor="let con of Conclusion ">
@@ -289,11 +288,11 @@
         </tr>
       </table>
     </ion-navbar>
-    <ion-navbar *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+    <ion-navbar *ngIf="langue==='francais' || langue==='anglais'">
       <table border="0" *ngIf="test===true">
         <tr>
           <th class="strong">
-            {{navParams.data.tabLangue.titreMotif}}
+            {{tabLangue.titreMotif}}
           </th>
         </tr>
 
@@ -309,7 +308,7 @@
 
       <table border="0" *ngIf="Ante===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreAnt}}
+          {{tabLangue.titreAnt}}
         </strong>
 
         <!--
@@ -331,7 +330,7 @@
 
       <table border="0" *ngIf="Alerg===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreAll}}
+          {{tabLangue.titreAll}}
         </strong>
         <!--
          <tr>
@@ -351,7 +350,7 @@
       </table>
       <table border="0" *ngIf="AlerteS===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreSigneV}}
+          {{tabLangue.titreSigneV}}
         </strong>
         <tr *ngFor="let sig of signec ">
           <td class="size">
@@ -366,7 +365,7 @@
 
       <table border="0" *ngIf="Ent===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreEnt}}
+          {{tabLangue.titreEnt}}
         </strong>
         <tr *ngFor="let en of Entrees ">
           <td class="size">
@@ -381,7 +380,7 @@
 
       <table border="0" *ngIf="trait===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreTrait}}
+          {{tabLangue.titreTrait}}
         </strong>
         <tr *ngFor="let tra of traitement ">
           <td class="size">
@@ -397,7 +396,7 @@
 
       <table border="0" *ngIf="Sor===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreSortie}}
+          {{tabLangue.titreSortie}}
         </strong>
         <tr *ngFor="let so of Sorties ">
           <td class="size">
@@ -411,7 +410,7 @@
 
       <table border="0" *ngIf="AlerteSigneCliniqueTest===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreAlert}}
+          {{tabLangue.titreAlert}}
         </strong>
         <tr *ngFor="let pas of signe ">
           <td class="size">
@@ -424,7 +423,7 @@
       </table>
       <table border="0" *ngIf="His===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreMaladie}}
+          {{tabLangue.titreMaladie}}
         </strong>
         <tr *ngFor="let his of Histoiremaladie ">
           <td>
@@ -446,7 +445,7 @@
       </table>
       <table border="0" *ngIf="Exa===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreClini}}
+          {{tabLangue.titreClini}}
         </strong>
         <p></p>
         <tr *ngFor="let exa of Examenclinique ">
@@ -469,7 +468,7 @@
 
       <table border="0" *ngIf="Evo===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreEvo}}
+          {{tabLangue.titreEvo}}
         </strong>
         <p></p>
         <tr *ngFor="let evo of Evolution ">
@@ -491,7 +490,7 @@
 
       <table border="0" *ngIf="Ri===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreRegime}}
+          {{tabLangue.titreRegime}}
         </strong>
         <p></p>
         <tr *ngFor="let r of rigime ">
@@ -503,7 +502,7 @@
 
       <table border="0" *ngIf="Con===true">
         <strong class="strong">
-          {{navParams.data.tabLangue.titreConclu}}
+          {{tabLangue.titreConclu}}
         </strong>
         <p></p>
         <tr *ngFor="let con of Conclusion ">

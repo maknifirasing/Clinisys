@@ -14,18 +14,20 @@ import {UserService} from "../../services/UserService";
 export class HomePage {
   err: string;
   xml: any;
-  user: Users;
+  users: Array<Users> = [];
   errConn: string;
   tabLangue: any;
   userserv: any;
-  codeClinique:string;
+  codeClinique: string;
+  langue: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-    this.codeClinique=this.navParams.get("codeClinique");
-    this.user = new Users;
-    //  this.verifuser();
+    this.codeClinique = this.navParams.get("codeClinique");
+    this.tabLangue = navParams.get("tabLangue");
+    this.langue = navParams.get("langue");
   }
 
-  connecter(login, password) {
+  connecter(userName, passWord) {
     try {
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
@@ -34,8 +36,8 @@ export class HomePage {
         '<soapenv:Header/>' +
         '<soapenv:Body>' +
         '<ser:Authentification>' +
-        '<username>' + login + '</username>' +
-        '<password>' + password + '</password>' +
+        '<username>' + userName + '</username>' +
+        '<password>' + passWord + '</password>' +
         '</ser:Authentification>' +
         '</soapenv:Body>' +
         '</soapenv:Envelope>';
@@ -45,38 +47,47 @@ export class HomePage {
             try {
 
               this.xml = xmlhttp.responseXML;
-              var x;
+              var x, user;
               x = this.xml.getElementsByTagName("return");
-              this.user.setactif(x[0].children[0].textContent);
-              this.user.setchStat(x[0].children[1].textContent);
-              this.user.setcodeMedecinInfirmier(x[0].children[2].textContent);
-              this.user.setcodePin(x[0].children[3].textContent);
-              this.user.setdateModPwd(x[0].children[4].textContent);
-              this.user.setdernierDateCnx(x[0].children[5].textContent);
-              this.user.setdescription(x[0].children[6].textContent);
-              this.user.setgrp(x[0].children[7].textContent);
-              this.user.setmatricule(x[0].children[8].textContent);
-              this.user.setnatureUserDS(x[0].children[9].textContent);
-              this.user.setoldGrp(x[0].children[10].textContent);
-              this.user.setpassWord(x[0].children[11].textContent);
-              this.user.setuserName(x[0].children[12].textContent);
-              this.user.setvalidCptRend(x[0].children[13].textContent);
-              this.user.setvalidPHNuit(x[0].children[14].textContent);
-              this.tabLangue = {
-                tabLangue: this.navParams.data.tabLangue
+              user = new Users();
+              user.setactif(x[0].children[0].textContent);
+              user.setchStat(x[0].children[1].textContent);
+              user.setcodeMedecinInfirmier(x[0].children[2].textContent);
+              user.setcodePin(x[0].children[3].textContent);
+              user.setdateModPwd(x[0].children[4].textContent);
+              user.setdernierDateCnx(x[0].children[5].textContent);
+              user.setdescription(x[0].children[6].textContent);
+              user.setgrp(x[0].children[7].textContent);
+              user.setmatricule(x[0].children[8].textContent);
+              user.setnatureUserDS(x[0].children[9].textContent);
+              user.setoldGrp(x[0].children[10].textContent);
+              user.setpassWord(x[0].children[11].textContent);
+              user.setuserName(x[0].children[12].textContent);
+              user.setvalidCptRend(x[0].children[13].textContent);
+              user.setvalidPHNuit(x[0].children[14].textContent);
+              user.setcodeClinique(this.codeClinique);
+              this.users.push(user);
+              if (this.users.length > 0) {
+                this.userserv = new UserService();
+                //   this.userserv.verifUser(userName, passWord, this.codeClinique).then(res => {
+                this.userserv.verifUser().then(res => {
+                  if (res === false) {
+                    //       this.userserv.getUser(this.users, userName, passWord, this.codeClinique);
+                    this.userserv.getUser(this.users);
+                  }
+                });
+                this.navCtrl.push(ListePage, {
+                  tabLangue: this.tabLangue,
+                  langue: this.langue,
+                  codeClinique: this.codeClinique
+                });
+              }
+              else {
+                this.err = this.tabLangue.err;
+              }
 
-              };
-
-
-               this.userserv = new UserService();
-               //      if (this.userserv.verifUser() === false) {
-               this.userserv.getUser(this.user,this.codeClinique);
-               //    }
-
-
-              this.navCtrl.push(ListePage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue")});
             } catch (Error) {
-              this.err = this.navParams.data.tabLangue.err;
+              this.err = this.tabLangue.err;
             }
           }
         }
@@ -86,16 +97,13 @@ export class HomePage {
       xmlhttp.responseType = "document";
       xmlhttp.send(sr);
     } catch (Error) {
-      this.errConn = this.navParams.data.tabLangue.errConn;
+      this.errConn = this.tabLangue.errConn;
     }
   }
 
-
-
-
   verifuser() {
     this.userserv = new UserService();
-    alert("ee4 "+this.userserv.verifUser(this.codeClinique))  ;
+    alert("ee4 " + this.userserv.verifUser(this.codeClinique));
   }
 
 
@@ -104,17 +112,17 @@ export class HomePage {
   }
 
   doesConnectionExist() {
-       Variables.checservice(this.Url.url).then(res =>{
-         alert("serv "+res);
-       });
+    Variables.checservice(this.Url.url).then(res => {
+      alert("serv " + res);
+    });
   }
 
-  conn()
-  {
-    this.tabLangue = {
-      tabLangue: this.navParams.data.tabLangue
-    };
-    this.navCtrl.push(ListePage, {tabLangue: this.tabLangue,langue:this.navParams.get("langue"),codeClinique:this.codeClinique});
+  conn() {
+    this.navCtrl.push(ListePage, {
+      tabLangue: this.tabLangue,
+      langue: this.langue,
+      codeClinique: this.codeClinique
+    });
   }
 
 }
