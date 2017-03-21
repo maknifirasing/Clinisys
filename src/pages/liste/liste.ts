@@ -285,4 +285,8 @@ export class ListePage {
     this.userserv.deleteUsers();
     this.navCtrl.push(LanguesPage);
   }
+  lg()
+  {
+    this.navCtrl.push(LanguesPage);
+  }
 }

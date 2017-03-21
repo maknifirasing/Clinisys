@@ -5,6 +5,9 @@ import {NativeStorage} from "ionic-native";
 import {ListeCliniquePage} from "../liste-clinique/liste-clinique";
 import {Langue} from "../../models/Langue";
 import {LangueService} from "../../services/LangueService";
+import {UserService} from "../../services/UserService";
+import {ListePage} from "../liste/liste";
+import {Users} from "../../models/Users";
 
 @Component({
   selector: 'page-langues',
@@ -15,8 +18,10 @@ export class LanguesPage {
   tabLangue: any;
   langserv: any;
   langes: Array<Langue> = [];
-
+  users: Array<Users> = [];
+  private codeClinique: string;
   langue: string;
+  private userserv: UserService;
 
 
   constructor(public navCtrl: NavController) {
@@ -49,7 +54,22 @@ export class LanguesPage {
       this.langserv.getLangues(this.langes);
     }
     this.langserv.getLangues(this.langes);
-    this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
+
+    this.userserv = new UserService();
+    this.userserv.verifUser().then(res => {
+      if (res === true) {
+        this.userserv.getUser(this.users).then(user => {
+          this.codeClinique = user.getcodeClinique();
+          this.navCtrl.push(ListePage, {
+            tabLangue: this.tabLangue,
+            langue: lang,
+            codeClinique: this.codeClinique
+          });
+        });
+      } else {
+        this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
+      }
+    });
   }
 
 }

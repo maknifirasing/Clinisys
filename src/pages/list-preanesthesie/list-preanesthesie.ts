@@ -26,9 +26,11 @@ export class ListPreanesthesiePage {
   pass:any;
   codeClinique:any;
   langue: any;
+  tabLangue: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.ListeP = navParams.get("ListeP");
     this.pass = navParams.get("pass");
+    this.tabLangue = navParams.get("tabLangue");
     this.codeClinique = navParams.get("codeClinique");
     this.langue = navParams.get("langue");
     if (Variables.checconnection() === "No network connection") {

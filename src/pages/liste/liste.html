@@ -3,6 +3,7 @@
   <ion-item color="custom-color" *ngIf="langue==='arabe'"
             dir="rtl" class="ion-navbar">
     <button (click)="deconnexion()">deconnexion</button>
+    <button (click)="lg()">langue</button>
     <p item-right *ngIf="connection===true">
       <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
       {{tabLangue.titreEnligne}}<br/> {{histl}}
@@ -17,6 +18,7 @@
   <ion-item color="custom-color" class="ion-navbar" class="animated fadeInRight"
             *ngIf="langue==='francais' || langue==='anglais'" class="ion-navbar">
     <button (click)="deconnexion()">deconnexion</button>
+    <button (click)="lg()">langue</button>
     <p *ngIf="connection===true">
       <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
       {{tabLangue.titreEnligne}}<br/> {{histl}}

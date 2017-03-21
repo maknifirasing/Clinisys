@@ -21,12 +21,15 @@ export class ExamenRadioPage {
   histd = new HistDossier();
   histserv: any;
   connection: boolean;
-  pass:any;
-  codeClinique:any;
+  pass: any;
+  codeClinique: any;
   langue: any;
+  tabLangue: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.examenRF = navParams.get("examenRF");
     this.examenRT = navParams.get("examenRT");
+    this.tabLangue = navParams.get("tabLangue");
     this.pass = navParams.get("pass");
     this.codeClinique = navParams.get("codeClinique");
     this.langue = navParams.get("langue");

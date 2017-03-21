@@ -20,9 +20,10 @@ export class ExamenLaboPage {
   histserv: any;
   connection: boolean;
   tabLangue: any;
-  pass:any;
-  codeClinique:any;
+  pass: any;
+  codeClinique: any;
   langue: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.LabosT = navParams.get("Labost");
     this.LabosF = navParams.get("Labosf");
