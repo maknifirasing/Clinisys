@@ -115,7 +115,7 @@
 
   <md-card padding-top="100" *ngIf="langue==='arabe'" dir="rtl">
 
-    <md-card-header *ngFor="let ExRad of examenRT " (click)="getdocumentById2('http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc='+observ.value)"  >
+    <md-card-header *ngFor="let ExRad of examenRT " (click)="getdocumentById(observF.value)"  >
       <input type="hidden" #observ value="{{ExRad.getobserv()}}">
       <img md-card-avatar src="/android_asset/www/assets/img/word.png">
       <md-card-subtitle><strong>{{tabLangue.titreDemande}}:</strong> {{ExRad.getdateExamen()}}</md-card-subtitle>
@@ -126,8 +126,8 @@
     <md-card-header *ngFor="let ExRadF of examenRF " (click)="getdocumentById(observF.value)">
       <input type="hidden" #observF value="{{ExRadF.getobserv()}}">
       <img md-card-avatar src="/android_asset/www/assets/img/wordoff.png">
-      <md-card-subtitle><a href="{{url}}" ><strong>{{tabLangue.titreDemande}}:</strong> {{ExRadF.getdateExamen()}}</a></md-card-subtitle>
-      <md-card-subtitle style="color: #0c60ee"> <a href="{{url}}" ><strong>{{tabLangue.titreExamen}}: </strong>{{ExRadF.getdesignationExamen()}}</a></md-card-subtitle>
+      <md-card-subtitle><strong>{{tabLangue.titreDemande}}:</strong> {{ExRadF.getdateExamen()}}</md-card-subtitle>
+      <md-card-subtitle style="color: #0c60ee"> <strong>{{tabLangue.titreExamen}}: </strong>{{ExRadF.getdesignationExamen()}}</md-card-subtitle>
     </md-card-header>
   </md-card>
 
@@ -137,16 +137,16 @@
     <md-card-header *ngFor="let ExRad of examenRT " (click)="getdocumentById(observ.value)">
       <input type="hidden" #observ value="{{ExRad.getobserv()}}">
       <img md-card-avatar src="/android_asset/www/assets/img/word.png">
-      <md-card-subtitle><a href="{{url}}" ><strong>{{tabLangue.titreDemande}}:</strong> {{ExRad.getdateExamen()}}</a></md-card-subtitle>
-      <md-card-subtitle style="color: #0c60ee"> <a href="{{url}}" ><strong>{{tabLangue.titreExamen}}: </strong>{{ExRad.getdesignationExamen()}}</a></md-card-subtitle>
+      <md-card-subtitle><strong>{{tabLangue.titreDemande}}:</strong> {{ExRad.getdateExamen()}}</md-card-subtitle>
+      <md-card-subtitle style="color: #0c60ee"> <strong>{{tabLangue.titreExamen}}: </strong>{{ExRad.getdesignationExamen()}}</md-card-subtitle>
 
     </md-card-header>
 
     <md-card-header *ngFor="let ExRadF of examenRF " (click)="getdocumentById(observF.value)">
       <input type="hidden" #observF value="{{ExRadF.getobserv()}}">
       <img md-card-avatar src="/android_asset/www/assets/img/wordoff.png">
-      <md-card-subtitle><a href="{{url}}" ><strong>{{tabLangue.titreDemande}}:</strong> {{ExRadF.getdateExamen()}}</a></md-card-subtitle>
-      <md-card-subtitle style="color: #0c60ee"> <a href="{{url}}" ><strong>{{tabLangue.titreExamen}}: </strong>{{ExRadF.getdesignationExamen()}}</a></md-card-subtitle>
+      <md-card-subtitle><strong>{{tabLangue.titreDemande}}:</strong> {{ExRadF.getdateExamen()}}</md-card-subtitle>
+      <md-card-subtitle style="color: #0c60ee"> <strong>{{tabLangue.titreExamen}}: </strong>{{ExRadF.getdesignationExamen()}}</md-card-subtitle>
     </md-card-header>
   </md-card>
 
