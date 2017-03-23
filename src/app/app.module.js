@@ -19,6 +19,7 @@ import { PdfViewPage } from '../pages/pdf-view/pdf-view';
 import { ListPreanesthesiePage } from "../pages/list-preanesthesie/list-preanesthesie";
 import { LanguesPage } from "../pages/langues/langues";
 import { ListeCliniquePage } from "../pages/liste-clinique/liste-clinique";
+import { DocViewPage } from "../pages/doc-view/doc-view";
 var AppModule = (function () {
     function AppModule() {
     }
@@ -39,7 +40,8 @@ AppModule = __decorate([
             PdfViewerComponent,
             ListPreanesthesiePage,
             LanguesPage,
-            ListeCliniquePage
+            ListeCliniquePage,
+            DocViewPage
         ],
         imports: [
             IonicModule.forRoot(MyApp)
@@ -57,7 +59,8 @@ AppModule = __decorate([
             PdfViewPage,
             ListPreanesthesiePage,
             LanguesPage,
-            ListeCliniquePage
+            ListeCliniquePage,
+            DocViewPage
         ],
         providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }]
     })

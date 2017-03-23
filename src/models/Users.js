@@ -1,6 +1,3 @@
-/**
- * Created by makni on 09/02/2017.
- */
 var Users = (function () {
     function Users() {
     }

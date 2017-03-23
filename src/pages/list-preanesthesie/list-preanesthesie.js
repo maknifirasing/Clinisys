@@ -29,6 +29,7 @@ var ListPreanesthesiePage = (function () {
         this.histd = new HistDossier();
         this.ListeP = navParams.get("ListeP");
         this.pass = navParams.get("pass");
+        this.tabLangue = navParams.get("tabLangue");
         this.codeClinique = navParams.get("codeClinique");
         this.langue = navParams.get("langue");
         if (Variables.checconnection() === "No network connection") {

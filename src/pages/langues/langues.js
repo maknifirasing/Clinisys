@@ -18,6 +18,7 @@ var LanguesPage = (function () {
     function LanguesPage(navCtrl) {
         this.navCtrl = navCtrl;
         this.langes = [];
+        this.users = [];
         NativeStorage.setItem("name", "basma");
     }
     LanguesPage.prototype.ionViewDidLoad = function () {
@@ -45,6 +46,23 @@ var LanguesPage = (function () {
         }
         this.langserv.getLangues(this.langes);
         this.navCtrl.push(ListeCliniquePage, { tabLangue: this.tabLangue, langue: lang });
+        /*
+        this.userserv = new UserService();
+        this.userserv.verifUser().then(res => {
+          if (res === true) {
+            this.userserv.getUser(this.users).then(user => {
+              this.codeClinique = user.getcodeClinique();
+              this.navCtrl.push(ListePage, {
+                tabLangue: this.tabLangue,
+                langue: lang,
+                codeClinique: this.codeClinique
+              });
+            });
+          } else {
+            this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
+          }
+        });
+        */
     };
     return LanguesPage;
 }());

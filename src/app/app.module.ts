@@ -13,6 +13,7 @@ import {PdfViewPage} from '../pages/pdf-view/pdf-view';
 import {ListPreanesthesiePage} from "../pages/list-preanesthesie/list-preanesthesie";
 import {LanguesPage} from "../pages/langues/langues";
 import {ListeCliniquePage} from "../pages/liste-clinique/liste-clinique";
+import {DocViewPage} from "../pages/doc-view/doc-view";
 @NgModule({
   declarations: [
     MyApp,
@@ -27,7 +28,8 @@ import {ListeCliniquePage} from "../pages/liste-clinique/liste-clinique";
     PdfViewerComponent,
     ListPreanesthesiePage,
     LanguesPage,
-    ListeCliniquePage
+    ListeCliniquePage,
+    DocViewPage
 
   ],
   imports: [
@@ -46,7 +48,8 @@ import {ListeCliniquePage} from "../pages/liste-clinique/liste-clinique";
     PdfViewPage,
     ListPreanesthesiePage,
     LanguesPage,
-    ListeCliniquePage
+    ListeCliniquePage,
+    DocViewPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

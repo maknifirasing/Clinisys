@@ -10,12 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
-/*
- Generated class for the Consigne page.
-
- See http://ionicframework.com/docs/v2/components/#navigation for more info on
- Ionic pages and navigation.
- */
 var ConsignePage = (function () {
     function ConsignePage(navCtrl, navParams, Url) {
         this.navCtrl = navCtrl;
@@ -24,38 +18,6 @@ var ConsignePage = (function () {
     }
     ConsignePage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad ConsignePage');
-    };
-    ConsignePage.prototype.CreatePlanificationTacheInfirmiereForTablette = function (type, heure, details, userCreate, numdoss, codemed, etat) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
-        var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
-            '<soapenv:Header/>' +
-            '<soapenv:Body>' +
-            '<ser:CreatePlanificationTacheInfirmiereForTablette>' +
-            '<numdoss>' + numdoss + '</numdoss>' +
-            '<details>' + details + '</details>' +
-            '<type>' + type + '</type>' +
-            '<heure>' + heure + '</heure>' +
-            '<userCreate>' + userCreate + '</userCreate>' +
-            '<etat>' + etat + '</etat>' +
-            '<codemed>' + codemed + '</codemed>' +
-            '</ser:CreatePlanificationTacheInfirmiereForTablette>' +
-            '</soapenv:Body>' +
-            '</soapenv:Envelope>';
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4) {
-                if (xmlhttp.status == 200) {
-                    try {
-                        var xml = xmlhttp.responseXML;
-                    }
-                    catch (Error) {
-                    }
-                }
-            }
-        };
-        xmlhttp.setRequestHeader('Content-Type', 'text/xml');
-        xmlhttp.responseType = "document";
-        xmlhttp.send(sr);
     };
     return ConsignePage;
 }());

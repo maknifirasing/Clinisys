@@ -266,6 +266,9 @@ var ListePage = (function () {
         this.userserv.deleteUsers();
         this.navCtrl.push(LanguesPage);
     };
+    ListePage.prototype.lg = function () {
+        this.navCtrl.push(LanguesPage);
+    };
     return ListePage;
 }());
 ListePage = __decorate([
