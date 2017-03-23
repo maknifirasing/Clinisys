@@ -54,6 +54,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     LanguesPage,
     ListeCliniquePage,
     TryPage
+
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

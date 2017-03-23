@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {Platform, Nav, NavController} from 'ionic-angular';
+import {Platform, Nav} from 'ionic-angular';
 import {LanguesPage} from '../pages/langues/langues';
 import {StatusBar, Splashscreen, SQLite} from 'ionic-native';
 import {UserService} from "../services/UserService";
@@ -13,11 +13,10 @@ import {ListePage} from "../pages/liste/liste";
 })
 
 export class MyApp {
-  rootPage:any;
+  rootPage: any;
   @ViewChild(Nav) nav: Nav;
-  navCrt: NavController;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
   private userserv: any;
   users: Array<Users> = [];
   private codeClinique: string;
@@ -36,9 +35,6 @@ export class MyApp {
         location: 'default'
       })
         .then((db: SQLite) => {
-          db.executeSql('CREATE TABLE IF NOT EXISTS Document (accessUsersGrp VARCHAR(32),arborescenceID VARCHAR(32),IDArborPere VARCHAR(32),nomarborescence VARCHAR(32),datedoc' +
-            ' VARCHAR(32),description VARCHAR(32),doc VARCHAR(32),docID VARCHAR(32),extension VARCHAR(32),nomdoc VARCHAR(32),users VARCHAR(32))', {});
-
           db.executeSql('CREATE TABLE IF NOT EXISTS Langue (langue VARCHAR(32))', {});
 
           db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeListPreanesthesie(codeClinique VARCHAR(32),numDoss VARCHAR(32),ListPreanesthesie VARCHAR(32))', {});
@@ -133,54 +129,53 @@ export class MyApp {
             'codeMedecinchirurgi VARCHAR(32),codeMedecinchirurgien VARCHAR(32),codePostop VARCHAR(32),dateacte VARCHAR(32),datedemande VARCHAR(32),etatReservationBloc VARCHAR(32),' +
             'hasAnesth VARCHAR(32),hasPost VARCHAR(32),hasPre VARCHAR(32),heureDebut VARCHAR(32),heureFin VARCHAR(32),id VARCHAR(32),identifiant VARCHAR(32),kc VARCHAR(32),nom VARCHAR(32),nomReanimateur VARCHAR(32)' +
             ',prenom VARCHAR(32),numeroDossier VARCHAR(32),codeClinique VARCHAR(32))', {});
+
+          db.executeSql('CREATE TABLE IF NOT EXISTS Document (url VARCHAR(32),observ VARCHAR(32),codeClinique VARCHAR(32))', {});
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error opening database  ' + error);
         });
 
-   /* this.userserv = new UserService();
+      this.userserv = new UserService();
       this.userserv.verifUser().then(res => {
         if (res === true) {
           this.userserv.getUser(this.users).then(user => {
             this.codeClinique = user.getcodeClinique();
 
 
-          this.langserv = new LangueService();
-          this.langserv.getLangues(this.langes).then(lang => {
-            this.langue = lang.getlangue();
-            if (this.langue === "arabe") {
-              this.tabLangue = Variables.arabe;
-            }
-            else if (this.langue === "francais") {
-              this.tabLangue = Variables.francais;
-            }
-            else if (this.langue === "anglais") {
-              this.tabLangue = Variables.anglais;
-            }
-            this.nav.setRoot(ListePage, {
-              tabLangue: this.tabLangue,
-              langue: this.langue,
-              codeClinique: this.codeClinique
+            this.langserv = new LangueService();
+            this.langserv.getLangues(this.langes).then(lang => {
+              this.langue = lang.getlangue();
+              if (this.langue === "arabe") {
+                this.tabLangue = Variables.arabe;
+              }
+              else if (this.langue === "francais") {
+                this.tabLangue = Variables.francais;
+              }
+              else if (this.langue === "anglais") {
+                this.tabLangue = Variables.anglais;
+              }
+              this.nav.setRoot(ListePage, {
+                tabLangue: this.tabLangue,
+                langue: this.langue,
+                codeClinique: this.codeClinique
+              });
             });
           });
-          });
-        }else {
+        } else {
           this.nav.setRoot(LanguesPage);
         }
       });
-*/
-      this.nav.setRoot(LanguesPage);
       StatusBar.styleDefault();
       Splashscreen.hide();
     });
 
   }
 
- /* openPage(page) {
+  openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
-  }*/
-
+  }
 }

@@ -7,14 +7,14 @@ export class DocumentService {
   constructor() {
   }
 
-  public  verifDocument(documents: any, observ): Promise<boolean> {
+  public  verifDocument(documents: any, observ, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
       let db = new SQLite();
       db.openDatabase({
         name: 'clinisys.db',
         location: 'default' // the location field is required
       }).then(() => {
-        db.executeSql("select count(*) as sums from Document where observ like '" + observ + "'", [])
+        db.executeSql("select count(*) as sums from Document where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
               resolve(true);
@@ -37,46 +37,41 @@ export class DocumentService {
     });
   }
 
-  public getDocuments(documents: any,observ) {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from Document where observ like '" + observ + "'", [])
-        .then(result => {
-          if (result.rows.length === 0) {
-            this._insertDocuments(documents, observ)
-          } else {
-            var doc;
-            for (var i = 0; i < result.rows.length; i++) {
-              doc = new Document();
-              doc.setaccessUsersGrp(result.rows.item(i).accessUsersGrp);
-              doc.setarborescenceID(result.rows.item(i).arborescenceID);
-              doc.setIDArborPere(result.rows.item(i).IDArborPere);
-              doc.setnomarborescence(result.rows.item(i).nomarborescence);
-              doc.setdatedoc(result.rows.item(i).datedoc);
-              doc.setdescription(result.rows.item(i).description);
-              doc.setdoc(result.rows.item(i).doc);
-              doc.setdocID(result.rows.item(i).docID);
-              doc.setextension(result.rows.item(i).extension);
-              doc.setnomdoc(result.rows.item(i).nomdoc);
-              doc.setusers(result.rows.item(i).users);
-
-              this.document.push(doc);
+  public getDocuments(documents: any, observ, codeClinique): Promise<Document> {
+    return new Promise<Document>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("select * from Document where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.length === 0) {
+              this._insertDocuments(documents);
+              resolve(documents[0]);
+            } else {
+              var doc;
+              for (var i = 0; i < result.rows.length; i++) {
+                doc = new Document();
+                doc.seturl(result.rows.item(i).url);
+                doc.setobserv(result.rows.item(i).observ);
+                doc.setcodeClinique(result.rows.item(i).codeClinique);
+                this.document.push(doc);
+                resolve(this.document[0]);
+              }
             }
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 Document  ' + error);
-        })
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 1 Document  ' + error);
+          })
+      });
+      db.close();
+      return this;
     });
-    db.close();
-    return this.document;
   }
 
-  private _insertDocuments(documents: Array<Document>, observ): void {
+  private _insertDocuments(documents: Array<Document>): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -87,20 +82,10 @@ export class DocumentService {
           continue;
         }
         let document = documents[key];
-        db.executeSql('insert into Document (accessUsersGrp ,arborescenceID ,IDArborPere ,nomarborescence ,datedoc' +
-          ' ,description, doc, docID, extension, nomdoc, users, observ) values (?,?,?,?,?,?,?,?,?,?,?,?)', [
-          document.getaccessUsersGrp(),
-        document.getarborescenceID(),
-        document.getIDArborPere(),
-        document.getnomarborescence(),
-        document.getdatedoc(),
-        document.getdescription(),
-        document.getdoc(),
-        document.getdocID(),
-        document.getextension(),
-        document.getnomdoc(),
-        document.getusers(),
-          observ
+        db.executeSql('insert into Document (url ,observ ,codeClinique) values (?,?,?)', [
+          document.geturl(),
+          document.getobserv(),
+          document.getcodeClinique()
         ]);
       }
     }).catch(error => {
@@ -111,14 +96,14 @@ export class DocumentService {
   }
 
 
-  public deleteDocuments(observ) {
+  public deleteDocuments(observ, codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from Document where observ like '" + observ + "'", [])
+      db.executeSql("delete from Document where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           //  alert("Suppression de table Patient est terminé avec succes");
         })

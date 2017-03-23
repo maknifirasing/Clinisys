@@ -1,104 +1,35 @@
 export class Document {
-  private _accessUsersGrp: string;
-  private _arborescenceID: string;
-  private _IDArborPere: string;
-  private _nomarborescence: string;
-  private _datedoc: string;
-  private _description: string;
-  private _doc: string;
-  private _docID: string;
-  private _extension: string;
-  private _nomdoc: string;
-  private _users: string;
+
+  private _url: string;
+  private _observ: string;
+  private _codeClinique: string;
+
 
   constructor() {
   }
 
-  getaccessUsersGrp(): string {
-    return this._accessUsersGrp;
+
+  geturl(): string {
+    return this._url;
   }
 
-  setaccessUsersGrp(value: string) {
-    this._accessUsersGrp = value;
+  seturl(value: string) {
+    this._url = value;
   }
 
-  getarborescenceID(): string {
-    return this._arborescenceID;
+  getobserv(): string {
+    return this._observ;
   }
 
-  setarborescenceID(value: string) {
-    this._arborescenceID = value;
+  setobserv(value: string) {
+    this._observ = value;
   }
 
-  getIDArborPere(): string {
-    return this._IDArborPere;
+  getcodeClinique(): string {
+    return this._codeClinique;
   }
 
-  setIDArborPere(value: string) {
-    this._IDArborPere = value;
-  }
-
-  getnomarborescence(): string {
-    return this._nomarborescence;
-  }
-
-  setnomarborescence(value: string) {
-    this._nomarborescence = value;
-  }
-
-  getdatedoc(): string {
-    return this._datedoc;
-  }
-
-  setdatedoc(value: string) {
-    this._datedoc = value;
-  }
-
-  getdescription(): string {
-    return this._description;
-  }
-
-  setdescription(value: string) {
-    this._description = value;
-  }
-
-  getdoc(): string {
-    return this._doc;
-  }
-
-  setdoc(value: string) {
-    this._doc = value;
-  }
-
-  getdocID(): string {
-    return this._docID;
-  }
-
-  setdocID(value: string) {
-    this._docID = value;
-  }
-
-  getextension(): string {
-    return this._extension;
-  }
-
-  setextension(value: string) {
-    this._extension = value;
-  }
-
-  getnomdoc(): string {
-    return this._nomdoc;
-  }
-
-  setnomdoc(value: string) {
-    this._nomdoc = value;
-  }
-
-  getusers(): string {
-    return this._users;
-  }
-
-  setusers(value: string) {
-    this._users = value;
+  setcodeClinique(value: string) {
+    this._codeClinique = value;
   }
 }

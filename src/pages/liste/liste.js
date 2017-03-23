@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Patient } from '../../models/Patient';
 import { Variables } from "../../providers/variables";
@@ -17,30 +17,26 @@ import { PatientService } from "../../services/PatientService";
 import { DateFeuille } from "../../models/DateFeuille";
 import { HistPatient } from "../../models/HistPatient";
 import { HistPatientService } from "../../services/HistPatientService";
-<<<<<<< HEAD
-=======
 import { UserService } from "../../services/UserService";
 import { LanguesPage } from "../langues/langues";
->>>>>>> 4be4927213b1323428f917514734f104c677a059
+import { MenuController } from 'ionic-angular';
+import { MdMenuTrigger } from "@angular/material";
 var ListePage = (function () {
-    function ListePage(navCtrl, navParams, Url) {
+    function ListePage(navCtrl, navParams, Url, menuCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
+        this.menuCtrl = menuCtrl;
         this.patient = [];
         this.patientliste = [];
         this.datefeuille = [];
         this.hist = [];
-<<<<<<< HEAD
-        this.dtFeuille = new DateFeuille();
-        this.codeClinique = navParams.get("codeClinique");
-=======
         this.histl = new HistPatient();
         this.dtFeuille = new DateFeuille();
         this.codeClinique = navParams.get("codeClinique");
+        this.nomClinique = navParams.get("nomClinique");
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
->>>>>>> 4be4927213b1323428f917514734f104c677a059
         if (Variables.checconnection() === "No network connection") {
             this.connection = false;
             this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
@@ -55,6 +51,9 @@ var ListePage = (function () {
         }
         this.patientliste = this.patient;
     }
+    ListePage.prototype.someMethod = function () {
+        this.trigger.openMenu();
+    };
     ListePage.prototype.liste = function (user, searchText, etage, codeClinique) {
         var _this = this;
         this.patient.pop();
@@ -188,16 +187,9 @@ var ListePage = (function () {
         this.datefeuille = this.dtFeuilleserv.getDateFeuille(this.datefeuille, codeClinique);
     };
     ListePage.prototype.goToDossierPage = function (patient) {
-<<<<<<< HEAD
-        this.tabLangue = {
-            tabLangue: this.navParams.data.tabLangue.tabLangue,
-        };
-        this.navCtrl.push(TabsPage, {
-            tabLangue: this.tabLangue, langue: this.navParams.get("langue"), mypatient: patient,
-=======
+        console.log("patient " + patient.getdossier());
         this.navCtrl.push(TabsPage, {
             tabLangue: this.tabLangue, langue: this.langue, mypatient: patient,
->>>>>>> 4be4927213b1323428f917514734f104c677a059
             dateFeuille: this.datefeuille[0].getdatefeuille(), codeClinique: this.codeClinique
         });
     };
@@ -248,10 +240,7 @@ var ListePage = (function () {
         }, 2000);
     };
     ListePage.prototype.historique = function (user, searchText, etage, codeClinique) {
-<<<<<<< HEAD
-=======
         var _this = this;
->>>>>>> 4be4927213b1323428f917514734f104c677a059
         this.histserv = new HistPatientService();
         var h = new HistPatient();
         var d = new Date();
@@ -263,17 +252,6 @@ var ListePage = (function () {
         this.hist.push(h);
         try {
             this.histserv.deleteHistPatients(user, searchText, etage, codeClinique);
-<<<<<<< HEAD
-            this.hist = this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique);
-        }
-        catch (Error) {
-            this.hist = this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique);
-        }
-    };
-    ListePage.prototype.historiqueOff = function (hist, user, searchText, etage, codeClinique) {
-        this.histserv = new HistPatientService();
-        this.hist = this.histserv.getHistPatientsOff(hist, user, searchText, etage, codeClinique);
-=======
             this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique).then(function (res) {
                 _this.histl = res.getdate();
             });
@@ -291,21 +269,31 @@ var ListePage = (function () {
             _this.histl = res.getdate();
         });
     };
+    ListePage.prototype.openMenu = function () {
+        console.log("open");
+        this.menuCtrl.open();
+    };
     ListePage.prototype.deconnexion = function () {
         this.userserv = new UserService();
         this.userserv.deleteUsers();
         this.navCtrl.push(LanguesPage);
->>>>>>> 4be4927213b1323428f917514734f104c677a059
+    };
+    ListePage.prototype.changerlangue = function () {
+        this.navCtrl.push(LanguesPage);
     };
     return ListePage;
 }());
+__decorate([
+    ViewChild(MdMenuTrigger),
+    __metadata("design:type", MdMenuTrigger)
+], ListePage.prototype, "trigger", void 0);
 ListePage = __decorate([
     Component({
         selector: 'page-liste',
         templateUrl: 'liste.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, MenuController])
 ], ListePage);
 export { ListePage };
 //# sourceMappingURL=liste.js.map

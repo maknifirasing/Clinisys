@@ -58,6 +58,11 @@ var Variables = (function () {
     return Variables;
 }());
 Variables.arabe = {
+    titreSync: "تزامن",
+    titreMod: "تغيير كلمة المرور",
+    titreChangClini: "تغيير العيادة",
+    titreDeconnexion: "تسجيل الخروج",
+    titreChangLangue: "تغيير اللغة",
     refreshingText: "تحديث ...",
     pullingText: "سحب للتحديث",
     listeClinique: "قائمة العيادات",
@@ -100,6 +105,10 @@ Variables.arabe = {
     titleMed: "الطبيب"
 };
 Variables.francais = {
+    titreSync: "Synchroniser",
+    titreMod: "Modifier Mot de Passe",
+    titreChangClini: "Changer Clinique",
+    titreDeconnexion: "Deconnexion",
     refreshingText: "Rafraîchissant...",
     pullingText: "Tirer pour rafraîchir",
     listeClinique: "Liste des Cliniques",
@@ -122,7 +131,8 @@ Variables.francais = {
     titreSigneV: "Signes Vitaux",
     titreEnt: "Entrées",
     titreTrait: "Traitement En cours",
-    tab1: "Page p:incipale",
+    titreChangLangue: "Changer Langue",
+    tab1: "Page principale",
     tab2: "Revue de Radio",
     tab3: "La liste des pré-anesthésie",
     tab4: "Examen du laboratoire",
@@ -143,6 +153,11 @@ Variables.francais = {
     titleMed: "Medecin"
 };
 Variables.anglais = {
+    titreSync: "Synchronize",
+    titreMod: "Edit Password",
+    titreChangClini: "Change Clinic",
+    titreChangLangue: "Change language",
+    titreDeconnexion: "Disconnection",
     refreshingText: "Refreshing...",
     pullingText: "Pull to refresh",
     listeClinique: "List of Clinics",

@@ -11,11 +11,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
 import { PdfViewPage } from "../pdf-view/pdf-view";
-<<<<<<< HEAD
-=======
 import { HistDossier } from "../../models/HistDossier";
 import { HistDossierService } from "../../services/HistDossierService";
->>>>>>> 4be4927213b1323428f917514734f104c677a059
 var ExamenLaboPage = (function () {
     function ExamenLaboPage(navCtrl, navParams, Url) {
         this.navCtrl = navCtrl;
@@ -75,8 +72,6 @@ var ExamenLaboPage = (function () {
     ExamenLaboPage.prototype.gotPdf = function (pdf) {
         this.navCtrl.push(PdfViewPage, { pdf: pdf.getpdf() });
     };
-<<<<<<< HEAD
-=======
     ExamenLaboPage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
         var _this = this;
         this.histserv = new HistDossierService();
@@ -84,7 +79,6 @@ var ExamenLaboPage = (function () {
             _this.histd = res.getdate();
         });
     };
->>>>>>> 4be4927213b1323428f917514734f104c677a059
     return ExamenLaboPage;
 }());
 ExamenLaboPage = __decorate([

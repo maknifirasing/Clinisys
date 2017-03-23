@@ -18,20 +18,13 @@ var HomePage = (function () {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
-<<<<<<< HEAD
-        this.codeClinique = this.navParams.get("codeClinique");
-        this.user = new Users;
-        //  this.verifuser();
-    }
-    HomePage.prototype.connecter = function (login, password) {
-=======
         this.users = [];
         this.codeClinique = this.navParams.get("codeClinique");
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
+        this.nomClinique = navParams.get("nomClinique");
     }
     HomePage.prototype.connecter = function (userName, passWord) {
->>>>>>> 4be4927213b1323428f917514734f104c677a059
         var _this = this;
         try {
             var xmlhttp = new XMLHttpRequest();
@@ -40,13 +33,8 @@ var HomePage = (function () {
                 '<soapenv:Header/>' +
                 '<soapenv:Body>' +
                 '<ser:Authentification>' +
-<<<<<<< HEAD
-                '<username>' + login + '</username>' +
-                '<password>' + password + '</password>' +
-=======
                 '<username>' + userName + '</username>' +
                 '<password>' + passWord + '</password>' +
->>>>>>> 4be4927213b1323428f917514734f104c677a059
                 '</ser:Authentification>' +
                 '</soapenv:Body>' +
                 '</soapenv:Envelope>';
@@ -55,36 +43,6 @@ var HomePage = (function () {
                     if (xmlhttp.status == 200) {
                         try {
                             _this.xml = xmlhttp.responseXML;
-<<<<<<< HEAD
-                            var x;
-                            x = _this.xml.getElementsByTagName("return");
-                            _this.user.setactif(x[0].children[0].textContent);
-                            _this.user.setchStat(x[0].children[1].textContent);
-                            _this.user.setcodeMedecinInfirmier(x[0].children[2].textContent);
-                            _this.user.setcodePin(x[0].children[3].textContent);
-                            _this.user.setdateModPwd(x[0].children[4].textContent);
-                            _this.user.setdernierDateCnx(x[0].children[5].textContent);
-                            _this.user.setdescription(x[0].children[6].textContent);
-                            _this.user.setgrp(x[0].children[7].textContent);
-                            _this.user.setmatricule(x[0].children[8].textContent);
-                            _this.user.setnatureUserDS(x[0].children[9].textContent);
-                            _this.user.setoldGrp(x[0].children[10].textContent);
-                            _this.user.setpassWord(x[0].children[11].textContent);
-                            _this.user.setuserName(x[0].children[12].textContent);
-                            _this.user.setvalidCptRend(x[0].children[13].textContent);
-                            _this.user.setvalidPHNuit(x[0].children[14].textContent);
-                            _this.tabLangue = {
-                                tabLangue: _this.navParams.data.tabLangue
-                            };
-                            _this.userserv = new UserService();
-                            //      if (this.userserv.verifUser() === false) {
-                            _this.userserv.getUser(_this.user, _this.codeClinique);
-                            //    }
-                            _this.navCtrl.push(ListePage, { tabLangue: _this.tabLangue, langue: _this.navParams.get("langue") });
-                        }
-                        catch (Error) {
-                            _this.err = _this.navParams.data.tabLangue.err;
-=======
                             var x, user;
                             x = _this.xml.getElementsByTagName("return");
                             user = new Users();
@@ -117,7 +75,8 @@ var HomePage = (function () {
                                 _this.navCtrl.push(ListePage, {
                                     tabLangue: _this.tabLangue,
                                     langue: _this.langue,
-                                    codeClinique: _this.codeClinique
+                                    codeClinique: _this.codeClinique,
+                                    nomClinique: _this.nomClinique
                                 });
                             }
                             else {
@@ -126,7 +85,6 @@ var HomePage = (function () {
                         }
                         catch (Error) {
                             _this.err = _this.tabLangue.err;
->>>>>>> 4be4927213b1323428f917514734f104c677a059
                         }
                     }
                 }
@@ -136,11 +94,7 @@ var HomePage = (function () {
             xmlhttp.send(sr);
         }
         catch (Error) {
-<<<<<<< HEAD
-            this.errConn = this.navParams.data.tabLangue.errConn;
-=======
             this.errConn = this.tabLangue.errConn;
->>>>>>> 4be4927213b1323428f917514734f104c677a059
         }
     };
     HomePage.prototype.verifuser = function () {
@@ -156,18 +110,11 @@ var HomePage = (function () {
         });
     };
     HomePage.prototype.conn = function () {
-<<<<<<< HEAD
-        this.tabLangue = {
-            tabLangue: this.navParams.data.tabLangue
-        };
-        this.navCtrl.push(ListePage, { tabLangue: this.tabLangue, langue: this.navParams.get("langue"), codeClinique: this.codeClinique });
-=======
         this.navCtrl.push(ListePage, {
             tabLangue: this.tabLangue,
             langue: this.langue,
             codeClinique: this.codeClinique
         });
->>>>>>> 4be4927213b1323428f917514734f104c677a059
     };
     return HomePage;
 }());
