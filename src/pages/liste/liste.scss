@@ -55,6 +55,66 @@
    //   border: 1px solid green;
       overflow: hidden; /* if you don't want #second to wrap below #first */
     }
+    #wrap:after {
+      display: block;
+      height: 0px;
+      clear: both;
+      float: none;
+    }
+    #wrap div {
+      float: left;
+      word-break: break-all;
+    }
+    .one {
+      width: 40%;
+      // background-color: red;
+      direction: ltr;
+      margin-top: 6px;
+    }
+    .oneFRANG {
+      width: 10%;
+      // background-color: red;
+
+      //margin-top: 10px;
+    }
+    .threeFRANG {
+      width: 45%;
+      //  background-color: blue;
+      direction: rtl;
+    }
+    .two {
+      width: 45%;
+      color: white;
+      // background-color: yellow;
+    }
+    .three {
+      width: 15%;
+      //  background-color: blue;
+
+    }
+    .bar-header {
+      height: 10px !important; /*just an example*/
+    }
+    .ion-navbar{
+      height: 10px !important;
+    //  margin:5px;
+
+
+    }
+    .search{
+      margin-top: 0;
+      padding-top: 0;
+    }
+    #wrap2:after {
+      display: block;
+      height: 0px;
+      clear: both;
+      float: none;
+    }
+    #wrap2 div {
+      float: left;
+      word-break: break-all;
+    }
   }
 
 }

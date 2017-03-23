@@ -3,35 +3,41 @@ import {Labo} from "../models/Labo";
 
 export class LaboFService {
   public labo: Array<Labo> = [];
-  verif: boolean;
 
   constructor() {
   }
 
-  public verifLabo(labos: any, numDossier,codeClinique) {
-    this.verif = false;
+  public verifLabo(labos: any, numDossier,codeClinique) : Promise<boolean> {
+    return new Promise<boolean>(resolve => {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from LaboF where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
+      db.executeSql("select count(*) as sum from LaboF where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
-          if (result.rows.length === labos.length) {
-            this.verif = true;
+          if (result.rows.item(0).sum > 0) {
+            resolve(true);
+            return true;
+          }
+          else {
+            resolve(false);
+            return false;
           }
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 0 LaboF  ' + error);
+          resolve(false);
+          return false;
         })
     });
-    db.close();
-    return this.verif;
+      db.close();
+      return this;
+    });
   }
 
   public getLabos(labos: any, numDossier,codeClinique) {
-
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',

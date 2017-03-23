@@ -7,8 +7,8 @@ export class Document {
   private _description: string;
   private _doc: string;
   private _docID: string;
-  private _extension: boolean;
-  private _nomdoc: number;
+  private _extension: string;
+  private _nomdoc: string;
   private _users: string;
 
   constructor() {
@@ -78,19 +78,19 @@ export class Document {
     this._docID = value;
   }
 
-  getextension(): boolean {
+  getextension(): string {
     return this._extension;
   }
 
-  setextension(value: boolean) {
+  setextension(value: string) {
     this._extension = value;
   }
 
-  getnomdoc(): number {
+  getnomdoc(): string {
     return this._nomdoc;
   }
 
-  setnomdoc(value: number) {
+  setnomdoc(value: string) {
     this._nomdoc = value;
   }
 

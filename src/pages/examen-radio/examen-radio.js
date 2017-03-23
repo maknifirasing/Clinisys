@@ -10,6 +10,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
+<<<<<<< HEAD
+=======
+import { HistDossier } from "../../models/HistDossier";
+import { HistDossierService } from "../../services/HistDossierService";
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
 var ExamenRadioPage = (function () {
     function ExamenRadioPage(navCtrl, navParams, Url) {
         this.navCtrl = navCtrl;
@@ -19,14 +24,36 @@ var ExamenRadioPage = (function () {
         this.examenRT = [];
         this.examenRF = [];
         this.document = [];
-        this.examenRF = this.navParams.data.examenRF;
-        this.examenRT = this.navParams.data.examenRT;
+        this.histD = [];
+        this.histd = new HistDossier();
+        this.examenRF = navParams.get("examenRF");
+        this.examenRT = navParams.get("examenRT");
+        this.pass = navParams.get("pass");
+        this.codeClinique = navParams.get("codeClinique");
+        this.langue = navParams.get("langue");
+        if (Variables.checconnection() === "No network connection") {
+            this.connection = false;
+        }
+        else {
+            this.connection = true;
+        }
+        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
     }
     ExamenRadioPage.prototype.ionViewDidLoad = function () {
     };
     ExamenRadioPage.prototype.getdocumentById = function (observ) {
         this.url = this.Url.url + "dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
     };
+<<<<<<< HEAD
+=======
+    ExamenRadioPage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
+        var _this = this;
+        this.histserv = new HistDossierService();
+        this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(function (res) {
+            _this.histd = res.getdate();
+        });
+    };
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
     return ExamenRadioPage;
 }());
 ExamenRadioPage = __decorate([

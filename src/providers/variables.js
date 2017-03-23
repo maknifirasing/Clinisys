@@ -43,12 +43,10 @@ var Variables = (function () {
             function processRequest(e) {
                 if (xhr.readyState == 4) {
                     if (xhr.status >= 200 && xhr.status < 304) {
-                        alert("connection exists!");
                         resolve(true);
                         return true;
                     }
                     else {
-                        alert("connection doesn't exist!");
                         resolve(false);
                         return false;
                     }
@@ -73,6 +71,7 @@ Variables.arabe = {
     rech: "بحث",
     age: "العمر ",
     ch: "الغرفة ",
+    titreHorsLigne: "خارج الخط: آخر تحديث",
     titreEnligne: "على الانترنت: آخر تحديث",
     titreMotif: "أسباب دخول المستشفى",
     titreAnt: "السوابق",
@@ -115,6 +114,7 @@ Variables.francais = {
     rech: "Recherche",
     age: "Age ",
     ch: "CH ",
+    titreHorsLigne: "Hors Ligne: Derniére mise a jour le",
     titreEnligne: "En Ligne: Derniére mise a jour le",
     titreMotif: "Motifs de l'hospitalisation",
     titreAnt: "Antécédents",
@@ -157,6 +157,7 @@ Variables.anglais = {
     rech: "Search",
     age: "Age ",
     ch: "CH ",
+    titreHorsLigne: "Offline: Last Updated on",
     titreEnligne: "Online: Last Updated on",
     titreMotif: "Reasons for hospitalization",
     titreAnt: "Antecedents",

@@ -1,10 +1,3 @@
-/**
- * Created by makni on 14/02/2017.
- */
-import {DateTime} from "ionic-angular";
-/**
- * Created by makni on 09/02/2017.
- */
 export class Users {
   private _actif: number;
   private _chStat: number;
@@ -21,6 +14,7 @@ export class Users {
   private _userName: string;
   private _validCptRend: string;
   private _validPHNuit: string;
+  private _codeClinique:string;
 
   constructor() {
   }
@@ -143,5 +137,13 @@ export class Users {
 
   setvalidPHNuit(value: string) {
     this._validPHNuit = value;
+  }
+
+  getcodeClinique(): string {
+    return this._codeClinique;
+  }
+
+  setcodeClinique(value: string) {
+    this._codeClinique = value;
   }
 }

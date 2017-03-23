@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
 import {Variables} from "../../providers/variables";
@@ -8,13 +8,17 @@ import {PatientService} from "../../services/PatientService";
 import {DateFeuille} from "../../models/DateFeuille";
 import {HistPatient} from "../../models/HistPatient";
 import {HistPatientService} from "../../services/HistPatientService";
-
+import {UserService} from "../../services/UserService";
+import {LanguesPage} from "../langues/langues";
+import { MenuController } from 'ionic-angular';
+import {MdMenuTrigger} from "@angular/material";
 @Component({
   selector: 'page-liste',
   templateUrl: 'liste.html',
   providers: [Variables]
 })
 export class ListePage {
+  @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   xml: any;
   patient: Array<Patient> = [];
   patientliste: Array<Patient> = [];
@@ -26,11 +30,18 @@ export class ListePage {
   connection: boolean;
   histserv: any;
   hist: Array<HistPatient> = [];
+  histl = new HistPatient();
   codeClinique: string;
+  nomClinique: string;
+  private userserv: any;
+  langue: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,public menuCtrl: MenuController) {
     this.dtFeuille = new DateFeuille();
     this.codeClinique = navParams.get("codeClinique");
+    this.nomClinique = navParams.get("nomClinique");
+    this.tabLangue=navParams.get("tabLangue");
+    this.langue = navParams.get("langue");
     if (Variables.checconnection() === "No network connection") {
       this.connection = false;
       this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
@@ -45,8 +56,9 @@ export class ListePage {
     }
     this.patientliste = this.patient;
   }
-
-
+  someMethod() {
+    this.trigger.openMenu();
+  }
   liste(user, searchText, etage, codeClinique) {
     this.patient.pop();
     this.patient = [];
@@ -185,12 +197,9 @@ export class ListePage {
   }
 
   goToDossierPage(patient) {
-    this.tabLangue = {
-      tabLangue: this.navParams.data.tabLangue.tabLangue,
-
-    };
+    console.log("patient "+patient.getdossier());
     this.navCtrl.push(TabsPage, {
-      tabLangue: this.tabLangue, langue: this.navParams.get("langue"), mypatient: patient,
+      tabLangue: this.tabLangue, langue: this.langue, mypatient: patient,
       dateFeuille: this.datefeuille[0].getdatefeuille(), codeClinique: this.codeClinique
     });
   }
@@ -258,16 +267,37 @@ export class ListePage {
     this.hist.push(h);
     try {
       this.histserv.deleteHistPatients(user, searchText, etage, codeClinique);
-      this.hist = this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique);
+      this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique).then(res=>{
+        this.histl=res.getdate();
+      });
     }
     catch (Error) {
-      this.hist = this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique);
+      this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique).then(res=>{
+        this.histl=res.getdate();
+      });
     }
 
   }
 
   historiqueOff(hist, user, searchText, etage, codeClinique) {
     this.histserv = new HistPatientService();
-    this.hist = this.histserv.getHistPatientsOff(hist, user, searchText, etage, codeClinique);
+    this.histserv.getHistPatients(hist, user, searchText, etage, codeClinique).then(res=>{
+      this.histl=res.getdate();
+    });
+  }
+
+  openMenu() {
+    console.log("open");
+    this.menuCtrl.open();
+  }
+  deconnexion()
+  {
+    this.userserv = new UserService();
+    this.userserv.deleteUsers();
+    this.navCtrl.push(LanguesPage);
+  }
+  changerlangue()
+  {
+    this.navCtrl.push(LanguesPage);
   }
 }

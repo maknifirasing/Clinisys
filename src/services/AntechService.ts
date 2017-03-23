@@ -3,31 +3,37 @@ import {AntecCh} from "../models/AntecCh";
 
 export class AntechService {
   public antec: Array<AntecCh> = [];
-  verif: boolean;
 
   constructor() {
   }
 
-  public verifAntec(antecs: any, idpass,codeClinique) {
-    this.verif = false;
+  public verifAntec(antecs: any, idpass,codeClinique) : Promise<boolean> {
+    return new Promise<boolean>(resolve => {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Antech where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
+      db.executeSql("select count(*) as sum from Antech where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
-          if (result.rows.length === antecs.length) {
-            this.verif = true;
+          if (result.rows.item(0).sum >0) {
+            resolve(true);
+            return true;
+          }
+          else {
+            resolve(false);
+            return false;
           }
         })
         .catch(error => {
           console.error('Error opening database', error);
-          alert('Error 0 Antech  ' + error);
+          resolve(false);
+          return false;
         })
     });
-    db.close();
-    return this.verif;
+      db.close();
+      return this;
+    });
   }
 
   public getAntecs(antecs: any, idpass,codeClinique) {

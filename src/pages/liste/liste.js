@@ -17,6 +17,11 @@ import { PatientService } from "../../services/PatientService";
 import { DateFeuille } from "../../models/DateFeuille";
 import { HistPatient } from "../../models/HistPatient";
 import { HistPatientService } from "../../services/HistPatientService";
+<<<<<<< HEAD
+=======
+import { UserService } from "../../services/UserService";
+import { LanguesPage } from "../langues/langues";
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
 var ListePage = (function () {
     function ListePage(navCtrl, navParams, Url) {
         this.navCtrl = navCtrl;
@@ -26,8 +31,16 @@ var ListePage = (function () {
         this.patientliste = [];
         this.datefeuille = [];
         this.hist = [];
+<<<<<<< HEAD
         this.dtFeuille = new DateFeuille();
         this.codeClinique = navParams.get("codeClinique");
+=======
+        this.histl = new HistPatient();
+        this.dtFeuille = new DateFeuille();
+        this.codeClinique = navParams.get("codeClinique");
+        this.tabLangue = navParams.get("tabLangue");
+        this.langue = navParams.get("langue");
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
         if (Variables.checconnection() === "No network connection") {
             this.connection = false;
             this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
@@ -175,11 +188,16 @@ var ListePage = (function () {
         this.datefeuille = this.dtFeuilleserv.getDateFeuille(this.datefeuille, codeClinique);
     };
     ListePage.prototype.goToDossierPage = function (patient) {
+<<<<<<< HEAD
         this.tabLangue = {
             tabLangue: this.navParams.data.tabLangue.tabLangue,
         };
         this.navCtrl.push(TabsPage, {
             tabLangue: this.tabLangue, langue: this.navParams.get("langue"), mypatient: patient,
+=======
+        this.navCtrl.push(TabsPage, {
+            tabLangue: this.tabLangue, langue: this.langue, mypatient: patient,
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
             dateFeuille: this.datefeuille[0].getdatefeuille(), codeClinique: this.codeClinique
         });
     };
@@ -230,6 +248,10 @@ var ListePage = (function () {
         }, 2000);
     };
     ListePage.prototype.historique = function (user, searchText, etage, codeClinique) {
+<<<<<<< HEAD
+=======
+        var _this = this;
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
         this.histserv = new HistPatientService();
         var h = new HistPatient();
         var d = new Date();
@@ -241,6 +263,7 @@ var ListePage = (function () {
         this.hist.push(h);
         try {
             this.histserv.deleteHistPatients(user, searchText, etage, codeClinique);
+<<<<<<< HEAD
             this.hist = this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique);
         }
         catch (Error) {
@@ -250,6 +273,29 @@ var ListePage = (function () {
     ListePage.prototype.historiqueOff = function (hist, user, searchText, etage, codeClinique) {
         this.histserv = new HistPatientService();
         this.hist = this.histserv.getHistPatientsOff(hist, user, searchText, etage, codeClinique);
+=======
+            this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique).then(function (res) {
+                _this.histl = res.getdate();
+            });
+        }
+        catch (Error) {
+            this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique).then(function (res) {
+                _this.histl = res.getdate();
+            });
+        }
+    };
+    ListePage.prototype.historiqueOff = function (hist, user, searchText, etage, codeClinique) {
+        var _this = this;
+        this.histserv = new HistPatientService();
+        this.histserv.getHistPatients(hist, user, searchText, etage, codeClinique).then(function (res) {
+            _this.histl = res.getdate();
+        });
+    };
+    ListePage.prototype.deconnexion = function () {
+        this.userserv = new UserService();
+        this.userserv.deleteUsers();
+        this.navCtrl.push(LanguesPage);
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
     };
     return ListePage;
 }());

@@ -12,9 +12,9 @@ var PatientService = (function () {
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
             }).then(function () {
-                db.executeSql("select * from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
+                db.executeSql("select count(*) as sums from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
-                    if (result.rows.length === patients.length) {
+                    if (result.rows.item(0).sum > 0) {
                         resolve(true);
                         return true;
                     }
@@ -85,7 +85,7 @@ var PatientService = (function () {
                     continue;
                 }
                 var patient = patients[key];
-                db.executeSql('insert into Patient (id, dossier, chambre, nom, prenom, dateNaiss, medecin, spec, etat, age, img, nature,  user, searchText, etage,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+                db.executeSql('insert into Patient (id ,dossier ,chambre ,nom ,prenom ,dateNaiss, medecin, spec, etat, age, img, nature ,user, searchText ,etage,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
                     patient.getid(),
                     patient.getdossier(),
                     patient.getchambre(),

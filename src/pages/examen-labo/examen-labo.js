@@ -11,6 +11,11 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
 import { PdfViewPage } from "../pdf-view/pdf-view";
+<<<<<<< HEAD
+=======
+import { HistDossier } from "../../models/HistDossier";
+import { HistDossierService } from "../../services/HistDossierService";
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
 var ExamenLaboPage = (function () {
     function ExamenLaboPage(navCtrl, navParams, Url) {
         this.navCtrl = navCtrl;
@@ -18,10 +23,21 @@ var ExamenLaboPage = (function () {
         this.Url = Url;
         this.LabosT = [];
         this.LabosF = [];
-        this.countPdfT = 0;
-        this.countPdf = 0;
-        this.LabosT = this.navParams.data.Labost;
-        this.LabosF = this.navParams.data.Labosf;
+        this.histD = [];
+        this.histd = new HistDossier();
+        this.LabosT = navParams.get("Labost");
+        this.LabosF = navParams.get("Labosf");
+        this.tabLangue = navParams.get("tabLangue");
+        this.pass = navParams.get("pass");
+        this.codeClinique = navParams.get("codeClinique");
+        this.langue = navParams.get("langue");
+        if (Variables.checconnection() === "No network connection") {
+            this.connection = false;
+        }
+        else {
+            this.connection = true;
+        }
+        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
     }
     ExamenLaboPage.prototype.openURL = function (numAdmission) {
         var _this = this;
@@ -59,6 +75,16 @@ var ExamenLaboPage = (function () {
     ExamenLaboPage.prototype.gotPdf = function (pdf) {
         this.navCtrl.push(PdfViewPage, { pdf: pdf.getpdf() });
     };
+<<<<<<< HEAD
+=======
+    ExamenLaboPage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
+        var _this = this;
+        this.histserv = new HistDossierService();
+        this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(function (res) {
+            _this.histd = res.getdate();
+        });
+    };
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
     return ExamenLaboPage;
 }());
 ExamenLaboPage = __decorate([

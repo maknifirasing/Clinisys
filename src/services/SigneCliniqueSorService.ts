@@ -7,25 +7,35 @@ export class SigneCliniqueSorService {
   constructor() {
   }
 
-  public verifSigneClinique(signeCliniques: any, numDoss, dateFeuille, nature, codeType, codeClinique) {
-    var verif: boolean;
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
-        +"' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          verif = (result.rows.length === signeCliniques.length);
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 0 SigneCliniqueSor  ' + error);
-        })
+  public verifSigneClinique(signeCliniques: any, numDoss, dateFeuille, nature, codeType, codeClinique): Promise<boolean> {
+    return new Promise<boolean>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("select count(*) as sum from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
+          + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.item(0).sum > 0) {
+              resolve(true);
+              return true;
+            }
+            else {
+              resolve(false);
+              return false;
+            }
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 0 SigneCliniqueSor  ' + error);
+            resolve(false);
+            return false;
+          })
+      });
+      db.close();
+      return this;
     });
-    db.close();
-    return verif;
   }
 
   public getSigneCliniques(signeCliniques: any, numDoss, dateFeuille, nature, codeType, codeClinique) {
@@ -36,10 +46,10 @@ export class SigneCliniqueSorService {
       location: 'default' // the location field is required
     }).then(() => {
       db.executeSql("select * from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
-        +"' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
+        + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertSigneCliniques(signeCliniques, numDoss, dateFeuille, nature,codeType, codeClinique)
+            this._insertSigneCliniques(signeCliniques, numDoss, dateFeuille, nature, codeType, codeClinique)
           } else {
             var s;
             for (var i = 0; i < result.rows.length; i++) {
@@ -61,7 +71,7 @@ export class SigneCliniqueSorService {
     return this.signeClinique;
   }
 
-  private _insertSigneCliniques(signeCliniques: Array<SigneClinique>, numDoss, dateFeuille, nature,codeType, codeClinique): void {
+  private _insertSigneCliniques(signeCliniques: Array<SigneClinique>, numDoss, dateFeuille, nature, codeType, codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -100,7 +110,7 @@ export class SigneCliniqueSorService {
     }).then(() => {
       db.executeSql("delete from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-      //    alert("Suppression de table SigneCliniqueSor est terminé avec succes");
+          //    alert("Suppression de table SigneCliniqueSor est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);

@@ -5,24 +5,35 @@ var SigneCliniqueAlertService = (function () {
         this.signeClinique = [];
     }
     SigneCliniqueAlertService.prototype.verifSigneCliniqueAlert = function (signeCliniques, numDoss, dateFeuille, nature, codeClinique) {
-        var verif;
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("select * from SigneCliniqueAlert where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
-                + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
-                .then(function (result) {
-                verif = (result.rows.length === signeCliniques.length);
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 0 SigneCliniqueAlert  ' + error);
+        var _this = this;
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                db.executeSql("select count(*) as sum from SigneCliniqueAlert where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
+                    + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
+                    .then(function (result) {
+                    if (result.rows.item(0).sum > 0) {
+                        resolve(true);
+                        return true;
+                    }
+                    else {
+                        resolve(false);
+                        return false;
+                    }
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    alert('Error 0 SigneCliniqueAlert  ' + error);
+                    resolve(false);
+                    return false;
+                });
             });
+            db.close();
+            return _this;
         });
-        db.close();
-        return verif;
     };
     SigneCliniqueAlertService.prototype.getSigneCliniquesAlert = function (signeCliniques, numDoss, dateFeuille, nature, codeClinique) {
         var _this = this;

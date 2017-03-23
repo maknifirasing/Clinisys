@@ -2,127 +2,142 @@ import { SQLite } from 'ionic-native';
 import { Users } from "../models/Users";
 var UserService = (function () {
     function UserService() {
-        this.verif = false;
+        this.users = [];
     }
-    UserService.prototype.verifUser = function (codeClinique) {
-        return new Promise(function (res) {
+    //verifUser(codeClinique,userName,passWord): Promise<boolean> {
+    UserService.prototype.verifUser = function () {
+        var _this = this;
+        return new Promise(function (resolve) {
             var db = new SQLite();
             db.openDatabase({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
             }).then(function () {
-                alert("ee0");
-                db.executeSql("select * from Users where codeClinique like '" + codeClinique + "'", []).then(function (result) {
-                    alert("ee1");
-                    if (result.rows.length === 1) {
-                        //  alert("ee 2 1");
-                        Promise.resolve(true);
+                //    db.executeSql("select count(*) as sum from Users where userName like '" + userName + "' and passWord like '" + passWord + "'and codeClinique like '" + codeClinique + "'", []).then(result => {
+                db.executeSql("select count(*) as sum from Users ", []).then(function (result) {
+                    if (result.rows.item(0).sum > 0) {
+                        resolve(true);
                         return true;
                     }
                     else {
-                        //   alert("ee 2 2");
-                        Promise.resolve(false);
+                        resolve(false);
                         return false;
                     }
                 })
                     .catch(function (error) {
                     console.error('Error opening database', error);
-                    //     alert('Error 0 Users  ' + error);
-                    Promise.resolve(false);
+                    alert('Error 0 Users  ' + error);
+                    resolve(false);
                     return false;
                 });
             });
+            db.close();
+            return _this;
         });
     };
-    UserService.prototype.getUser = function (users, codeClinique) {
+    // public getUser(users: any,userName, passWord,codeClinique) {
+    UserService.prototype.getUser = function (users) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("select * from Users where codeClinique like '" + codeClinique + "'", []).then(function (result) {
-                alert("rows1 " + result.rows.length);
-                if (result.rows.length === 0) {
-                    _this._insertUser(users, codeClinique);
-                }
-                else {
-                    _this.user = new Users();
-                    _this.user.setactif(result.rows.item(0).actif);
-                    _this.user.setchStat(result.rows.item(0).chStat);
-                    _this.user.setcodeMedecinInfirmier(result.rows.item(0).codeMedecinInfirmier);
-                    _this.user.setcodePin(result.rows.item(0).codePin);
-                    _this.user.setdateModPwd(result.rows.item(0).dateModPwd);
-                    _this.user.setdernierDateCnx(result.rows.item(0).dernierDateCnx);
-                    _this.user.setdescription(result.rows.item(0).description);
-                    _this.user.setgrp(result.rows.item(0).grp);
-                    _this.user.setmatricule(result.rows.item(0).matricule);
-                    _this.user.setnatureUserDS(result.rows.item(0).natureUserDS);
-                    _this.user.setoldGrp(result.rows.item(0).oldGrp);
-                    _this.user.setpassWord(result.rows.item(0).passWord);
-                    _this.user.setuserName(result.rows.item(0).userName);
-                    _this.user.setvalidCptRend(result.rows.item(0).validCptRend);
-                    _this.user.setvalidPHNuit(result.rows.item(0).validPHNuit);
-                }
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 Users  ' + error);
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                //   db.executeSql("select * from Users where userName like '" + userName + "' and passWord like '" + passWord + "'and codeClinique like '" + codeClinique + "'", []).then(result => {
+                db.executeSql("select * from Users ", []).then(function (result) {
+                    if (result.rows.length === 0) {
+                        _this._insertUser(users);
+                        resolve(users[0]);
+                    }
+                    else {
+                        var user;
+                        for (var i = 0; i < result.rows.length; i++) {
+                            user = new Users();
+                            user.setactif(result.rows.item(0).actif);
+                            user.setchStat(result.rows.item(0).chStat);
+                            user.setcodeMedecinInfirmier(result.rows.item(0).codeMedecinInfirmier);
+                            user.setcodePin(result.rows.item(0).codePin);
+                            user.setdateModPwd(result.rows.item(0).dateModPwd);
+                            user.setdernierDateCnx(result.rows.item(0).dernierDateCnx);
+                            user.setdescription(result.rows.item(0).description);
+                            user.setgrp(result.rows.item(0).grp);
+                            user.setmatricule(result.rows.item(0).matricule);
+                            user.setnatureUserDS(result.rows.item(0).natureUserDS);
+                            user.setoldGrp(result.rows.item(0).oldGrp);
+                            user.setpassWord(result.rows.item(0).passWord);
+                            user.setuserName(result.rows.item(0).userName);
+                            user.setvalidCptRend(result.rows.item(0).validCptRend);
+                            user.setvalidPHNuit(result.rows.item(0).validPHNuit);
+                            user.setcodeClinique(result.rows.item(0).codeClinique);
+                            _this.users.push(user);
+                        }
+                        resolve(_this.users[0]);
+                    }
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    alert('Error 1 Users  ' + error);
+                });
             });
+            db.close();
+            return _this;
         });
-        db.close();
-        alert("ee " + this.user.getchStat());
-        return this.user;
     };
-    UserService.prototype._insertUser = function (users, codeClinique) {
+    UserService.prototype._insertUser = function (users) {
         var db = new SQLite();
         db.openDatabase({
             name: 'clinisys.db',
             location: 'default' // the location field is required
         }).then(function () {
-            db.executeSql('insert into Users (actif ,chStat ,codeMedecinInfirmier ,codePin ,dateModPwd ,dernierDateCnx ,description ,grp ,matricule ,natureUserDS ,' +
-                'oldGrp ,passWord ,userName ,validCptRend ,validPHNuit,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
-                users.getactif(),
-                users.getchStat(),
-                users.getcodeMedecinInfirmier(),
-                users.getcodePin(),
-                users.getdateModPwd(),
-                users.getdernierDateCnx(),
-                users.getdescription(),
-                users.getgrp(),
-                users.getmatricule(),
-                users.getnatureUserDS(),
-                users.getoldGrp(),
-                users.getpassWord(),
-                users.getuserName(),
-                users.getvalidCptRend(),
-                users.getvalidPHNuit(),
-                codeClinique
-            ]);
-            alert("ok ");
+            for (var key in users) {
+                if (!users.hasOwnProperty(key)) {
+                    continue;
+                }
+                var user = users[key];
+                db.executeSql('insert into Users (actif ,chStat ,codeMedecinInfirmier ,codePin ,dateModPwd ,dernierDateCnx ,description ,grp ,matricule ,natureUserDS ,' +
+                    'oldGrp ,passWord ,userName ,validCptRend ,validPHNuit,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+                    user.getactif(),
+                    user.getchStat(),
+                    user.getcodeMedecinInfirmier(),
+                    user.getcodePin(),
+                    user.getdateModPwd(),
+                    user.getdernierDateCnx(),
+                    user.getdescription(),
+                    user.getgrp(),
+                    user.getmatricule(),
+                    user.getnatureUserDS(),
+                    user.getoldGrp(),
+                    user.getpassWord(),
+                    user.getuserName(),
+                    user.getvalidCptRend(),
+                    user.getvalidPHNuit(),
+                    user.getcodeClinique()
+                ]);
+            }
         }).catch(function (error) {
             console.error('Error opening database', error);
             alert('Error 2 Users ' + error);
         });
         db.close();
     };
-    UserService.prototype.deleteUsers = function (codeClinique) {
+    UserService.prototype.deleteUsers = function () {
         var db = new SQLite();
         db.openDatabase({
             name: 'clinisys.db',
             location: 'default' // the location field is required
         }).then(function () {
-            db.executeSql("delete from User where codeClinique like '" + codeClinique + "'", [])
+            db.executeSql("delete from Users ", [])
                 .then(function () {
                 alert("Suppression de table User est terminé avec succes");
             })
                 .catch(function (error) {
                 console.error('Error opening database', error);
-                alert('Error 1 User  ' + error);
+                alert('Error 3 User  ' + error);
             });
         });
         db.close();
-        return this.user;
+        return this.users;
     };
     return UserService;
 }());

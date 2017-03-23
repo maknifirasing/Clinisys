@@ -1,45 +1,36 @@
-<!--
-  Generated template for the ListeClinique page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<input type="text" value="{{this.navParams.get('langue')}}" #lang/>
 <ion-header>
   <ion-item color="custom-color">
-    <button ion-button menuToggle>
-      <ion-icon name="menu" width="100px"></ion-icon>
-    </button>
+
     <IMG class="displayed" src="/android_asset/www/assets/img/clinisys.png">
   </ion-item>
 
 
   <ion-navbar hideBackButton="true">
 
-    <ion-title style="text-align: center">{{navParams.data.tabLangue.listeClinique}}</ion-title>
+    <ion-title style="text-align: center">{{tabLangue.listeClinique}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding *ngIf="(lang.value)==='arabe'" dir="rtl">
-
-
-    <ul *ngFor="let clini of clinique ">
-      <input type="hidden" #codeC value="{{clini.getcode()}}">
-      <li (click)="goToHomePage(codeC.value)">
-        {{clini.getnom()}}
-      </li>
-    </ul>
-
-</ion-content>
-
-<ion-content padding *ngIf="(lang.value)==='francais' || (lang.value)==='anglais'">
+<ion-content padding *ngIf="langue==='arabe'" dir="rtl">
 
 
   <ul *ngFor="let clini of clinique ">
-    <input type="hidden" #codeC value="{{clini.getcode()}}">
-    <li (click)="goToHomePage(codeC.value)">
+
+    <li (click)="goToHomePage(clini)">
+      {{clini.getnom()}}
+    </li>
+  </ul>
+
+</ion-content>
+
+<ion-content padding *ngIf="langue==='francais' || langue==='anglais'">
+
+
+  <ul *ngFor="let clini of clinique ">
+
+    <li (click)="goToHomePage(clini)">
       {{clini.getnom()}}
     </li>
   </ul>

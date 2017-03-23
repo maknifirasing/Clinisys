@@ -1,21 +1,21 @@
 import {SQLite} from 'ionic-native';
 import {Labo} from "../models/Labo";
 
-export class LaboService {
+export class LaboFService {
   public labo: Array<Labo> = [];
   verif: boolean;
 
   constructor() {
   }
 
-  public verifLabo(labos: any, numAdmission,codeClinique,pdf) {
+  public verifLabo(labos: any, numDossier,codeClinique) {
     this.verif = false;
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Labo where numAdmission like '" + numAdmission + "'and codeClinique like '" + codeClinique + "' and pdf like '" +pdf +"'", [])
+      db.executeSql("select * from LaboF where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === labos.length) {
             this.verif = true;
@@ -23,24 +23,24 @@ export class LaboService {
         })
         .catch(error => {
           console.error('Error opening database', error);
-          alert('Error 0 Labo  ' + error);
+          alert('Error 0 LaboF  ' + error);
         })
     });
     db.close();
     return this.verif;
   }
 
-  public getLabos(labos: any, numAdmission,codeClinique,pdf) {
+  public getLabos(labos: any, numDossier,codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Labo where numAdmission like '" + numAdmission + "'and codeClinique like '" + codeClinique + "' and pdf like '" +pdf +"'", [])
+      db.executeSql("select * from LaboF where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertLabos(labos,codeClinique,pdf);
+            this._insertLabos(labos,codeClinique);
           } else {
             var l;
             for (var i = 0; i < result.rows.length; i++) {
@@ -60,20 +60,21 @@ export class LaboService {
               l.setstate(result.rows.item(i).state);
               l.setuserName(result.rows.item(i).userName);
               l.setvalidation(result.rows.item(i).validation);
+              l.setpdf(result.rows.item(i).pdf);
               this.labo.push(l);
             }
           }
         })
         .catch(error => {
           console.error('Error opening database', error);
-          alert('Error 1 Labo  ' + error);
+          alert('Error 1 LaboF  ' + error);
         })
     });
     db.close();
     return this.labo;
   }
 
-  private _insertLabos(labos: Array<Labo>,codeClinique,pdf): void {
+  private _insertLabos(labos: Array<Labo>,codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -84,9 +85,8 @@ export class LaboService {
           continue;
         }
         let labo = labos[key];
-        db.executeSql('insert into Labo (codeDemande,contenuePDF ,dateDemande ' +
-          'dateRealisation, designation,etatExamen,id,medecinTraitant,nomLabo,numAdmission,numDossier,patient,state,userName,validation,codeClinique,pdf) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
-
+        db.executeSql('insert into LaboF (codeDemande,contenuePDF ,dateDemande ' +
+          ',dateRealisation, designation,etatExamen,id,medecinTraitant,nomLabo,numAdmission,numDossier,patient,state,userName,validation,pdf,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
           labo.getcodeDemande(),
           labo.getcontenuePDF(),
           labo.getdateDemande(),
@@ -102,32 +102,31 @@ export class LaboService {
           labo.getstate(),
           labo.getuserName(),
           labo.getvalidation(),
-          codeClinique,
-          pdf
-
+          labo.getpdf(),
+          codeClinique
         ]);
       }
     }).catch(error => {
       console.error('Error opening database', error);
-      alert('Error 2 Labo ' + error);
+      alert('Error 2 LaboF ' + error);
     });
     db.close();
   }
 
-  public deleteLabos(numAdmission,codeClinique,pdf) {
+  public deleteLabos(numDossier,codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from Labo where numAdmission like '" + numAdmission + "'and codeClinique like '" + codeClinique + "' and pdf like '" +pdf +"'", [])
+      db.executeSql("delete from LaboF where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           alert("Suppression de table Labo est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
-          alert('Error 1 Labo  ' + error);
+          alert('Error 3 LaboF  ' + error);
         })
     });
     db.close();

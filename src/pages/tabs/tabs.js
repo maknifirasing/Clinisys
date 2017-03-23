@@ -20,6 +20,15 @@ import { LaboFService } from "../../services/LaboFService";
 import { LaboTService } from "../../services/LaboTService";
 import { tabBadgeLaboService } from "../../services/tabBadgeLaboService";
 import { tabBadge } from "../../models/tabBadge";
+<<<<<<< HEAD
+=======
+import { ExamenRadioTService } from "../../services/ExamenRadioTService";
+import { ExamenRadioFService } from "../../services/ExamenRadioFService";
+import { tabBadgeRadioService } from "../../services/tabBadgeRadioService";
+import { ListPreanesthesie } from "../../models/ListPreanesthesie";
+import { ListPreanesthesieService } from "../../services/ListPreanesthesieService";
+import { tabBadgeListPreanesthesie } from "../../services/tabBadgeListPreanesthesie";
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
 var TabsPage = (function () {
     function TabsPage(navParams, Url) {
         this.navParams = navParams;
@@ -28,28 +37,60 @@ var TabsPage = (function () {
         this.tab2Root = ExamenRadioPage;
         this.tab3Root = ListPreanesthesiePage;
         this.tab4Root = ExamenLaboPage;
+<<<<<<< HEAD
+=======
+        this.tabgLabo = [];
+        this.tabgRadio = [];
+        this.ListPreanesthesies = [];
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
         this.LabosT = [];
         this.LabosF = [];
         this.GetExamenRadioByNumDossResponseTest = false;
         this.examenRT = [];
         this.examenRF = [];
+<<<<<<< HEAD
         this.codeClinique = navParams.get("codeClinique");
         this.pass = navParams.get("mypatient");
         console.log("patient " + this.pass.getimg());
+=======
+        this.ListPreanesthesieByNumeroDossierTest = false;
+        this.ListeP = [];
+        this.codeClinique = navParams.get("codeClinique");
+        this.pass = navParams.get("mypatient");
+        this.tabLangue = navParams.get("tabLangue");
+        this.langue = navParams.get("langue");
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
         this.coountexamenR = 0;
         this.coountexamenRT = 0;
+        this.coountListPreanesthesie = 0;
         this.countPdfT = 0;
         this.countPdf = 0;
+<<<<<<< HEAD
         var d = new Date();
         this.dat = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+=======
+        if (Variables.checconnection() === "No network connection") {
+            this.connection = false;
+            this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
+            this.GetExamenRadioByNumDossResponseOff(this.pass.getdossier(), this.codeClinique);
+            this.findListPreanesthesieByNumeroDossierResponseOff(this.ListeP, this.pass.getdossier(), this.codeClinique);
+        }
+        else {
+            this.connection = true;
+            this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
+            this.GetExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
+            this.findListPreanesthesieByNumeroDossierResponse(this.pass.getdossier(), this.codeClinique);
+        }
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
         this.tabLangue = {
             pass: navParams.get("mypatient"),
             dateFeuille: navParams.get("dateFeuille"),
-            dat: d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds(),
             Labost: this.LabosT,
             Labosf: this.LabosF,
+            ListeP: this.ListeP,
             examenRT: this.examenRT,
             examenRF: this.examenRF,
+<<<<<<< HEAD
             langue: navParams.get("langue"),
             tabLangue: navParams.data.tabLangue.tabLangue, codeClinique: this.codeClinique
         };
@@ -58,6 +99,13 @@ var TabsPage = (function () {
         this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
         this.GetExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
         ;
+=======
+            langue: this.langue,
+            tabLangue: this.tabLangue, codeClinique: this.codeClinique
+        };
+    }
+    TabsPage.prototype.ionViewDidLoad = function () {
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
     };
     TabsPage.prototype.GetExamenRadioByNumDossResponse = function (numDoss, codeClinique) {
         var _this = this;
@@ -140,6 +188,33 @@ var TabsPage = (function () {
                         if (_this.examenRT.length === 0 && _this.examenRF.length === 0) {
                             _this.GetExamenRadioByNumDossResponseTest = false;
                         }
+<<<<<<< HEAD
+=======
+                        var tRadio = new tabBadge();
+                        tRadio.setnumDoss(numDoss);
+                        tRadio.setFichier(_this.coountexamenR);
+                        tRadio.setFichierT(_this.coountexamenRT);
+                        tRadio.setcodeClinique(codeClinique);
+                        _this.tabgRadio.push(tRadio);
+                        _this.RadiosFs = new ExamenRadioFService();
+                        _this.RadiosFs.verifExamenRadio(_this.examenRF, numDoss, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.RadiosFs.getExamenRadios(_this.examenRF, numDoss, codeClinique);
+                            }
+                        });
+                        _this.RadiosTs = new ExamenRadioTService();
+                        _this.RadiosTs.verifExamenRadio(_this.examenRT, numDoss, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.RadiosTs.getExamenRadios(_this.examenRT, numDoss, codeClinique);
+                            }
+                        });
+                        _this.countDocs = new tabBadgeRadioService();
+                        _this.countDocs.verifTabBadgeRadio(numDoss, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.countDocs.getTabBadgeRadio(_this.tabgRadio, numDoss, codeClinique);
+                            }
+                        });
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
                     }
                     catch (Error) {
                         _this.GetExamenRadioByNumDossResponseTest = false;
@@ -151,6 +226,21 @@ var TabsPage = (function () {
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };
+<<<<<<< HEAD
+=======
+    TabsPage.prototype.GetExamenRadioByNumDossResponseOff = function (numDoss, codeClinique) {
+        var _this = this;
+        this.RadiosTs = new ExamenRadioTService();
+        this.examenRT = this.RadiosTs.getExamenRadios(this.examenRT, numDoss, codeClinique);
+        this.RadiosFs = new ExamenRadioFService();
+        this.examenRF = this.RadiosFs.getExamenRadios(this.examenRF, numDoss, codeClinique);
+        this.countDocs = new tabBadgeRadioService();
+        this.countDocs.getTabBadgeRadio(this.tabgRadio, numDoss, codeClinique).then(function (res) {
+            _this.coountexamenR = res.getFichier();
+            _this.coountexamenRT = res.getFichierT();
+        });
+    };
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
     TabsPage.prototype.findAllLaboByNumDossier = function (numDoss, codeClinique) {
         var _this = this;
         var xmlhttp = new XMLHttpRequest();
@@ -208,6 +298,7 @@ var TabsPage = (function () {
                                 _this.LabosF.push(l);
                             }
                         }
+<<<<<<< HEAD
                         var tabgLabo = new tabBadge();
                         tabgLabo.setnumDoss(numDoss);
                         tabgLabo.setFichier(_this.countPdf);
@@ -219,6 +310,32 @@ var TabsPage = (function () {
                         _this.LabosTs.getLabos(_this.LabosT, numDoss, codeClinique);
                         _this.countPdfs = new tabBadgeLaboService();
                         //      this.countPdfs.getTabBadgeLabo(, numDoss, this.countPdfT, this.countPdf, codeClinique);
+=======
+                        var tLabo = new tabBadge();
+                        tLabo.setnumDoss(numDoss);
+                        tLabo.setFichier(_this.countPdf);
+                        tLabo.setFichierT(_this.countPdfT);
+                        tLabo.setcodeClinique(codeClinique);
+                        _this.tabgLabo.push(tLabo);
+                        _this.LabosFs = new LaboFService();
+                        _this.LabosFs.verifLabo(_this.LabosF, numDoss, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.LabosFs.getLabos(_this.LabosF, numDoss, codeClinique);
+                            }
+                        });
+                        _this.LabosTs = new LaboTService();
+                        _this.LabosTs.verifLabo(_this.LabosT, numDoss, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.LabosTs.getLabos(_this.LabosT, numDoss, codeClinique);
+                            }
+                        });
+                        _this.countPdfs = new tabBadgeLaboService();
+                        _this.countPdfs.verifTabBadgeLabo(numDoss, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.countPdfs.getTabBadgeLabo(_this.tabgLabo, numDoss, codeClinique);
+                            }
+                        });
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
                     }
                     catch (Error) {
                     }
@@ -229,6 +346,124 @@ var TabsPage = (function () {
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };
+<<<<<<< HEAD
+=======
+    TabsPage.prototype.findAllLaboByNumDossierOff = function (numDoss, codeClinique) {
+        var _this = this;
+        this.LabosFs = new LaboFService();
+        this.LabosF = this.LabosFs.getLabos(this.LabosF, numDoss, codeClinique);
+        this.LabosTs = new LaboTService();
+        this.LabosT = this.LabosTs.getLabos(this.LabosT, numDoss, codeClinique);
+        this.countPdfs = new tabBadgeLaboService();
+        this.countPdfs.getTabBadgeLabo(this.tabgLabo, numDoss, codeClinique).then(function (res) {
+            _this.countPdf = res.getFichier();
+            _this.countPdfT = res.getFichierT();
+        });
+    };
+    TabsPage.prototype.findListPreanesthesieByNumeroDossierResponse = function (numDoss, codeClinique) {
+        var _this = this;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+        var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+            '<soapenv:Header/>' +
+            '<soapenv:Body>' +
+            '  <ser:findListPreanesthesieByNumeroDossier>' +
+            '<numeroDossier>' + numDoss + '</numeroDossier>' +
+            '</ser:findListPreanesthesieByNumeroDossier>' +
+            '</soapenv:Body>' +
+            '</soapenv:Envelope>';
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                if (xmlhttp.status == 200) {
+                    try {
+                        _this.ListPreanesthesieByNumeroDossierTest = true;
+                        var xml = xmlhttp.responseXML;
+                        var x, i, hdebut;
+                        x = xml.getElementsByTagName("return");
+                        var LP, hfin;
+                        var minu = "";
+                        var second = "";
+                        var hour = "";
+                        for (i = 0; i < x.length; i++) {
+                            LP = new ListPreanesthesie();
+                            LP.setacte(x[i].children[0].textContent);
+                            LP.setchirurgien(x[i].children[1].textContent);
+                            LP.setcodeActe(x[i].children[2].textContent);
+                            LP.setcodeExamen(x[i].children[3].textContent);
+                            LP.setcodeMedecinReanimateur(x[i].children[4].textContent);
+                            LP.setcodeMedecinchirurgi(x[i].children[5].textContent);
+                            LP.setcodeMedecinchirurgien(x[i].children[6].textContent);
+                            LP.setcodePostop(x[i].children[7].textContent);
+                            LP.setdateacte(x[0].children[8].textContent);
+                            LP.setdatedemande(x[0].children[8].textContent);
+                            LP.setetatReservationBloc(x[i].children[10].textContent);
+                            LP.sethasAnesth(x[i].children[11].textContent);
+                            LP.sethasPost(x[i].children[12].textContent);
+                            LP.sethasPre(x[i].children[13].textContent);
+                            hdebut = new Date(x[0].children[14].textContent);
+                            minu = hdebut.getMinutes();
+                            hour = hdebut.getHours();
+                            second = hdebut.getSeconds();
+                            LP.setheureDebut(hour + " : " + minu + " : " + second);
+                            hfin = new Date(x[0].children[15].textContent);
+                            minu = hfin.getMinutes();
+                            hour = hfin.getHours();
+                            second = hfin.getSeconds();
+                            LP.setheureFin(hour + " : " + minu + " : " + second);
+                            LP.setid(x[i].children[16].textContent);
+                            LP.setidentifiant(x[i].children[17].textContent);
+                            LP.setkc(x[i].children[18].textContent);
+                            LP.setnom(x[i].children[19].textContent);
+                            LP.setnomReanimateur(x[i].children[20].textContent);
+                            LP.setnumeroDossier(x[i].children[21].textContent);
+                            LP.setprenom(x[i].children[22].textContent);
+                            _this.coountListPreanesthesie++;
+                            _this.ListeP.push(LP);
+                        }
+                        if (_this.ListeP.length === 0) {
+                            _this.ListPreanesthesieByNumeroDossierTest = false;
+                        }
+                        else {
+                            _this.ListePserv = new ListPreanesthesieService();
+                            _this.ListePserv.verifListPreanesthesie(_this.ListeP, numDoss, codeClinique).then(function (res) {
+                                if (res === false) {
+                                    _this.ListePserv.getListPreanesthesies(_this.ListeP, numDoss, codeClinique);
+                                }
+                            });
+                        }
+                        var tList = new tabBadge();
+                        tList.setnumDoss(numDoss);
+                        tList.setFichier(_this.coountListPreanesthesie);
+                        tList.setFichierT(0);
+                        tList.setcodeClinique(codeClinique);
+                        _this.ListPreanesthesies.push(tList);
+                        _this.countListPreanesthesiess = new tabBadgeListPreanesthesie();
+                        _this.countListPreanesthesiess.verifTabBadgeList(numDoss, codeClinique).then(function (res) {
+                            if (res === false) {
+                                _this.countListPreanesthesiess.getTabBadgeList(_this.ListPreanesthesies, numDoss, codeClinique);
+                            }
+                        });
+                    }
+                    catch (Error) {
+                        _this.ListPreanesthesieByNumeroDossierTest = false;
+                    }
+                }
+            }
+        };
+        xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+        xmlhttp.responseType = "document";
+        xmlhttp.send(sr);
+    };
+    TabsPage.prototype.findListPreanesthesieByNumeroDossierResponseOff = function (ListeP, numDoss, codeClinique) {
+        var _this = this;
+        this.ListePserv = new ListPreanesthesieService();
+        this.ListeP = this.ListePserv.getListPreanesthesies(ListeP, numDoss, codeClinique);
+        this.countListPreanesthesiess = new tabBadgeListPreanesthesie();
+        this.countListPreanesthesiess.getTabBadgeList(this.ListPreanesthesies, numDoss, codeClinique).then(function (res) {
+            _this.coountListPreanesthesie = res.getFichier();
+        });
+    };
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
     return TabsPage;
 }());
 TabsPage = __decorate([

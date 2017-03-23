@@ -15,6 +15,7 @@ import {LanguesPage} from "../pages/langues/langues";
 import {ListeCliniquePage} from "../pages/liste-clinique/liste-clinique";
 import {MaterialModule} from "@angular/material";
 import {TryPage} from "../pages/try/try";
+import {FlexLayoutModule} from "@angular/flex-layout";
 @NgModule({
   declarations: [
     MyApp,
@@ -35,6 +36,7 @@ import {TryPage} from "../pages/try/try";
   ],
   imports: [
     IonicModule.forRoot(MyApp),
+    FlexLayoutModule,
     MaterialModule
   ],
   bootstrap: [IonicApp],

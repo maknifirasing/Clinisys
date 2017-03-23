@@ -10,7 +10,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
+<<<<<<< HEAD
 import { ListPreanesthesie } from "../../models/ListPreanesthesie";
+=======
+import { HistDossier } from "../../models/HistDossier";
+import { HistDossierService } from "../../services/HistDossierService";
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
 /*
  Generated class for the ListPreanesthesie page.
 
@@ -24,12 +29,25 @@ var ListPreanesthesiePage = (function () {
         this.Url = Url;
         this.ListPreanesthesieByNumeroDossierTest = false;
         this.ListeP = [];
+        this.histD = [];
+        this.histd = new HistDossier();
+        this.ListeP = navParams.get("ListeP");
+        this.pass = navParams.get("pass");
+        this.codeClinique = navParams.get("codeClinique");
+        this.langue = navParams.get("langue");
+        if (Variables.checconnection() === "No network connection") {
+            this.connection = false;
+        }
+        else {
+            this.connection = true;
+        }
+        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
     }
     ListPreanesthesiePage.prototype.ionViewDidLoad = function () {
-        this.findListPreanesthesieByNumeroDossierResponse(this.navParams.data.pass.getdossier());
     };
-    ListPreanesthesiePage.prototype.findListPreanesthesieByNumeroDossierResponse = function (numDoss) {
+    ListPreanesthesiePage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
         var _this = this;
+<<<<<<< HEAD
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
@@ -100,6 +118,12 @@ var ListPreanesthesiePage = (function () {
         xmlhttp.setRequestHeader('Content-Type', 'text/xml');
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
+=======
+        this.histserv = new HistDossierService();
+        this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(function (res) {
+            _this.histd = res.getdate();
+        });
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
     };
     return ListPreanesthesiePage;
 }());

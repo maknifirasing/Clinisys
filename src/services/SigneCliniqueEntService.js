@@ -5,24 +5,35 @@ var SigneCliniqueEntService = (function () {
         this.signeClinique = [];
     }
     SigneCliniqueEntService.prototype.verifSigneClinique = function (signeCliniques, numDoss, dateFeuille, nature, codeType, codeClinique) {
-        var verif;
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("select * from SigneCliniqueEnt where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
-                + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
-                .then(function (result) {
-                verif = (result.rows.length === signeCliniques.length);
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 0 SigneCliniqueEnt  ' + error);
+        var _this = this;
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                db.executeSql("select count(*) as sum from SigneCliniqueEnt where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
+                    + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
+                    .then(function (result) {
+                    if (result.rows.item(0).sum > 0) {
+                        resolve(true);
+                        return true;
+                    }
+                    else {
+                        resolve(false);
+                        return false;
+                    }
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    alert('Error 0 SigneCliniqueEnt  ' + error);
+                    resolve(false);
+                    return false;
+                });
             });
+            db.close();
+            return _this;
         });
-        db.close();
-        return verif;
     };
     SigneCliniqueEntService.prototype.getSigneCliniques = function (signeCliniques, numDoss, dateFeuille, nature, codeType, codeClinique) {
         var _this = this;

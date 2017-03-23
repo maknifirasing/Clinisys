@@ -1,15 +1,7 @@
 
-<ion-header>
-  <ion-header>
-    <md-card class="md-card"
-             >
-      <IMG class="displayed" md-icon-button src="../../assets/img/green.png" width="15" height="15">
-      <button md-icon-button md-primary menuToggle class="md-icon-button">
-        <ion-icon name="menu"></ion-icon>
-      </button>
-      {{date}}
 
-    </md-card>
+  <ion-header>
+
 
    <!-- <md-card style="background-color: #0277bd">
       <img src="../../assets/img/green.png" class="md-card-image" width="15" height="15"/>
@@ -57,13 +49,23 @@
 
 
 <ion-content>
-aaaaaaaaaaaaaaaaaaaa
-  <md-card>
-    <button md-button>flat</button>
-    <button md-raised-button>raised</button>
-    <button md-mini-fab>
-      <md-icon class="md-24">add</md-icon>
-    </button>
-  </md-card>
+
+  <div id="wrap">
+    <div id="one"> <img md-card-avatar src="../../assets/img/babyboy.png" width="45" height="45"></div>
+    <div id="two"> basma hammami <p><strong>Age: </strong>21 ans<strong>CH: </strong>211</p>   </div>
+    <div id="three">
+      <button md-icon-button [md-menu-trigger-for]="menu">
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <md-menu  #menu="mdMenu">
+        <button md-menu-item> Refresh </button>
+        <button md-menu-item> Settings </button>
+        <button md-menu-item> Help </button>
+        <button md-menu-item disabled> Sign Out </button>
+      </md-menu>
+    </div>
+  </div>
+
+
 
 </ion-content>

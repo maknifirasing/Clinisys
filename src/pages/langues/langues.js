@@ -12,13 +12,23 @@ import { NavController } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
 import { NativeStorage } from "ionic-native";
 import { ListeCliniquePage } from "../liste-clinique/liste-clinique";
+<<<<<<< HEAD
 var LanguesPage = (function () {
     function LanguesPage(navCtrl) {
         this.navCtrl = navCtrl;
+=======
+import { Langue } from "../../models/Langue";
+import { LangueService } from "../../services/LangueService";
+var LanguesPage = (function () {
+    function LanguesPage(navCtrl) {
+        this.navCtrl = navCtrl;
+        this.langes = [];
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
         NativeStorage.setItem("name", "basma");
     }
     LanguesPage.prototype.ionViewDidLoad = function () {
     };
+<<<<<<< HEAD
     LanguesPage.prototype.choixLang = function (langue) {
         if (langue === "arabe") {
             this.tabLangue = Variables.arabe;
@@ -31,6 +41,31 @@ var LanguesPage = (function () {
         }
         console.log("fra " + langue);
         this.navCtrl.push(ListeCliniquePage, { tabLangue: this.tabLangue, langue: langue });
+=======
+    LanguesPage.prototype.choixLang = function (lang) {
+        if (lang === "arabe") {
+            this.tabLangue = Variables.arabe;
+        }
+        else if (lang === "francais") {
+            this.tabLangue = Variables.francais;
+        }
+        else if (lang === "anglais") {
+            this.tabLangue = Variables.anglais;
+        }
+        var l = new Langue();
+        l.setlangue(lang);
+        this.langes.push(l);
+        this.langserv = new LangueService();
+        try {
+            this.langserv.deleteLangues();
+            this.langserv.getLangues(this.langes);
+        }
+        catch (Error) {
+            this.langserv.getLangues(this.langes);
+        }
+        this.langserv.getLangues(this.langes);
+        this.navCtrl.push(ListeCliniquePage, { tabLangue: this.tabLangue, langue: lang });
+>>>>>>> 4be4927213b1323428f917514734f104c677a059
     };
     return LanguesPage;
 }());

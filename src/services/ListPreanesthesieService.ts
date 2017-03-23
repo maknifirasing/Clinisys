@@ -3,43 +3,50 @@ import {ListPreanesthesie} from "../models/ListPreanesthesie";
 
 export class ListPreanesthesieService {
   public listPreanesthesie: Array<ListPreanesthesie> = [];
-  verif: boolean;
 
   constructor() {
   }
 
-  public verifListPreanesthesie(ListPreanesthesies: any,numeroDossier,codeClinique) {
-    this.verif = false;
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from ListPreanesthesie where numeroDossier like '" + numeroDossier + "' and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.length === ListPreanesthesies.length) {
-            this.verif = true;
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 0 listPreanesthesie  ' + error);
-        })
-    });
-    db.close();
-    return this.verif;
+  public verifListPreanesthesie(ListPreanesthesies: any, numeroDossier, codeClinique): Promise<boolean> {
+    return new Promise<boolean>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("select count(*) as sum  from ListPreanesthesie where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.item(0).sum > 0) {
+              resolve(true);
+              return true;
+            }
+            else {
+              resolve(false);
+              return false;
+            }
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 0 listPreanesthesie  ' + error);
+            resolve(false);
+            return false;
+          })
+      });
+      db.close();
+      return this;
+    })
   }
 
-  public getListPreanesthesies(ListPreanesthesies: any,numeroDossier,codeClinique) {
+  public getListPreanesthesies(ListPreanesthesies: any, numeroDossier, codeClinique) {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from ListPreanesthesie where numeroDossier like '" + numeroDossier + "' and codeClinique like '" + codeClinique + "'", [])
+      db.executeSql("select * from ListPreanesthesie where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertListPreanesthesies(ListPreanesthesies,numeroDossier,codeClinique);
+            this._insertListPreanesthesies(ListPreanesthesies, codeClinique);
           } else {
             var lp;
             for (var i = 0; i < result.rows.length; i++) {
@@ -48,31 +55,25 @@ export class ListPreanesthesieService {
               lp.setchirurgien(result.rows.item(i).chirurgien);
               lp.setcodeActe(result.rows.item(i).codeActe);
               lp.setcodeExamen(result.rows.item(i).codeExamen);
-
               lp.setcodeMedecinReanimateur(result.rows.item(i).codeMedecinReanimateur);
               lp.setcodeMedecinchirurgi(result.rows.item(i).codeMedecinchirurgi);
               lp.setcodeMedecinchirurgien(result.rows.item(i).codeMedecinchirurgien);
               lp.setcodePostop(result.rows.item(i).codePostop);
-
               lp.setdateacte(result.rows.item(i).dateacte);
               lp.setdatedemande(result.rows.item(i).datedemande);
               lp.setetatReservationBloc(result.rows.item(i).etatReservationBloc);
               lp.sethasAnesth(result.rows.item(i).hasAnesth);
-
               lp.sethasPost(result.rows.item(i).hasPost);
               lp.sethasPre(result.rows.item(i).hasPre);
               lp.setheureDebut(result.rows.item(i).heureDebut);
               lp.setheureFin(result.rows.item(i).heureFin);
-
               lp.setid(result.rows.item(i).id);
               lp.setidentifiant(result.rows.item(i).identifiant);
               lp.setkc(result.rows.item(i).kc);
               lp.setnom(result.rows.item(i).nom);
-
               lp.setnomReanimateur(result.rows.item(i).nomReanimateur);
               lp.setnumeroDossier(result.rows.item(i).numeroDossier);
               lp.setprenom(result.rows.item(i).prenom);
-
               this.listPreanesthesie.push(lp);
             }
           }
@@ -86,7 +87,7 @@ export class ListPreanesthesieService {
     return this.listPreanesthesie;
   }
 
-  private _insertListPreanesthesies(ListPreanesthesies: Array<ListPreanesthesie>,numeroDossier,codeClinique): void {
+  private _insertListPreanesthesies(ListPreanesthesies: Array<ListPreanesthesie>, codeClinique): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -101,32 +102,26 @@ export class ListPreanesthesieService {
           'codeMedecinchirurgi,codeMedecinchirurgien,codePostop,dateacte,datedemande,etatReservationBloc,' +
           'hasAnesth,hasPost,hasPre,heureDebut,heureFin,id,identifiant,kc,nom,nomReanimateur' +
           ',prenom,numeroDossier,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
-          listPreanesthesie = new ListPreanesthesie(),
-        listPreanesthesie.getacte(),
+          listPreanesthesie.getacte(),
           listPreanesthesie.getchirurgien(),
           listPreanesthesie.getcodeActe(),
           listPreanesthesie.getcodeExamen(),
-
           listPreanesthesie.getcodeMedecinReanimateur(),
           listPreanesthesie.getcodeMedecinchirurgi(),
           listPreanesthesie.getcodeMedecinchirurgien(),
           listPreanesthesie.getcodePostop(),
-
           listPreanesthesie.getdateacte(),
           listPreanesthesie.getdatedemande(),
           listPreanesthesie.getetatReservationBloc(),
           listPreanesthesie.gethasAnesth(),
-
           listPreanesthesie.gethasPost(),
           listPreanesthesie.gethasPre(),
           listPreanesthesie.getheureDebut(),
           listPreanesthesie.getheureFin(),
-
           listPreanesthesie.getid(),
           listPreanesthesie.getidentifiant(),
           listPreanesthesie.getkc(),
           listPreanesthesie.getnom(),
-
           listPreanesthesie.getnomReanimateur(),
           listPreanesthesie.getprenom(),
           listPreanesthesie.getnumeroDossier(),
@@ -140,7 +135,7 @@ export class ListPreanesthesieService {
     db.close();
   }
 
-  public deleteListPreanesthesies(numeroDossier,codeClinique) {
+  public deleteListPreanesthesies(numeroDossier, codeClinique) {
 
     let db = new SQLite();
     db.openDatabase({

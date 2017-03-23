@@ -6,25 +6,33 @@ var CliniqueService = (function () {
     }
     CliniqueService.prototype.verifClinique = function (cliniques) {
         var _this = this;
-        this.verif = false;
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("select * from Clinique ", [])
-                .then(function (result) {
-                if (result.rows.length === cliniques.length) {
-                    _this.verif = true;
-                }
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 0 Clinique  ' + error);
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                db.executeSql("select count(*) as sum from Clinique ", [])
+                    .then(function (result) {
+                    if (result.rows.item(0).sum > 0) {
+                        resolve(true);
+                        return true;
+                    }
+                    else {
+                        resolve(false);
+                        return false;
+                    }
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    alert('Error 0 Clinique  ' + error);
+                    resolve(false);
+                    return false;
+                });
             });
+            db.close();
+            return _this;
         });
-        db.close();
-        return this.verif;
     };
     CliniqueService.prototype.getCliniques = function (cliniques) {
         var _this = this;

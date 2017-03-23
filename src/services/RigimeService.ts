@@ -3,35 +3,41 @@ import {Rigime} from "../models/Rigime";
 
 export class RigimeService {
   public rigime: Array<Rigime> = [];
-  verif: boolean;
 
   constructor() {
   }
 
-  public verifRigime(rigimes: any, numdoss, datefeuille, nature,codeClinique) {
-    this.verif = false;
+  public verifRigime(rigimes: any, numdoss, datefeuille, nature,codeClinique) : Promise<boolean> {
+    return new Promise<boolean>(resolve => {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Rigime where numdoss like '" + numdoss + "' and datefeuille like '" + datefeuille + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
+      db.executeSql("select count(*) as sum from Rigime where numdoss like '" + numdoss + "' and datefeuille like '" + datefeuille + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
-          if (result.rows.length === rigimes.length) {
-            this.verif = true;
+          if (result.rows.item(0).sum >0) {
+            resolve(true);
+            return true;
+          }
+          else {
+            resolve(false);
+            return false;
           }
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 0 Rigime  ' + error);
+          resolve(false);
+          return false;
         })
     });
-    db.close();
-    return this.verif;
+      db.close();
+      return this;
+    });
   }
 
   public getRigimes(rigimes, numdoss, datefeuille, nature,codeClinique) {
-
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',

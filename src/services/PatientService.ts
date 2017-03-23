@@ -14,9 +14,9 @@ export class PatientService {
         name: 'clinisys.db',
         location: 'default' // the location field is required
       }).then(() => {
-        db.executeSql("select * from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
+        db.executeSql("select count(*) as sums from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
-            if (result.rows.length === patients.length) {
+            if (result.rows.item(0).sum > 0) {
               resolve(true);
               return true;
             }
@@ -35,7 +35,6 @@ export class PatientService {
       db.close();
       return this;
     });
-
   }
 
   public getPatients(patients: any, user, searchText, etage, codeClinique) {
@@ -88,8 +87,7 @@ export class PatientService {
           continue;
         }
         let patient = patients[key];
-        db.executeSql('insert into Patient (id, dossier, chambre, nom, prenom, dateNaiss, medecin, spec, etat, age, img, nature,  user, searchText, etage,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
-
+        db.executeSql('insert into Patient (id ,dossier ,chambre ,nom ,prenom ,dateNaiss, medecin, spec, etat, age, img, nature ,user, searchText ,etage,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
           patient.getid(),
           patient.getdossier(),
           patient.getchambre(),

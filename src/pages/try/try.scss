@@ -7,6 +7,57 @@ page-try {
     float: left;
     background-color: #0277bd;
   }
+  .spacer {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+  }
+  #wrap:after {
+    display: block;
+    height: 0px;
+    clear: both;
+    float: none;
+  }
+  #wrap div {
+    float: left;
+    word-break: break-all;
+  }
+  #one {
+    width: 10%;
+    background-color: red;
+  }
+  .flex-container {
+    display: -webkit-flex;
+    display: flex;
+    width: 400px;
+    height: 250px;
+    background-color: lightgrey;
+  }
+
+  .flex-item {
+    background-color: cornflowerblue;
+    width: 100px;
+    height: 100px;
+
+  }
+  .flex-item3 {
+    background-color: cornflowerblue;
+    width: 100px;
+    height: 100px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+  }
+  #two {
+    width: 50%;
+    background-color: yellow;
+  }
+  #three {
+    width: 40%;
+    background-color: blue;
+    direction: rtl;
+  }
   .md-icon-button{
     float: right;
     background-color: #0277bd;

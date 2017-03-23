@@ -38,15 +38,66 @@ page-dossier {
 
 .strong{
   color: #0c60ee;
-  font-size: 20px;
+  font-size: 15px;
 }
 
   .strong2{
 
-    font-size: 20px;
+    font-size: 15px;
   }
   .size{
     font-size: 80%;
     padding-left: 2%;
+  }
+  #wrap:after {
+    display: block;
+    height: 0px;
+    clear: both;
+    float: none;
+  }
+  #wrap div {
+    float: left;
+    word-break: break-all;
+  }
+  #wrap2:after {
+    display: block;
+    height: 0px;
+    clear: both;
+    float: none;
+  }
+  #wrap2 div {
+    float: left;
+    word-break: break-all;
+  }
+
+  .oneFRANG {
+    width: 15%;
+    // background-color: red;
+
+    //margin-top: 10px;
+  }
+  .threeFRANG {
+    width: 40%;
+    margin-top: 35px;
+    direction: rtl;
+  }
+  .one {
+    width: 40%;
+   // background-color: red;
+    direction: ltr;
+    margin-top: 35px;
+  }
+  .two {
+    width: 45%;
+    color: white;
+   // background-color: yellow;
+  }
+  .three {
+    width: 15%;
+  //  background-color: blue;
+
+  }
+  .p{
+    line-height:8px;
   }
 }

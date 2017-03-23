@@ -6,25 +6,32 @@ var AntechService = (function () {
     }
     AntechService.prototype.verifAntec = function (antecs, idpass, codeClinique) {
         var _this = this;
-        this.verif = false;
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("select * from Antech where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
-                .then(function (result) {
-                if (result.rows.length === antecs.length) {
-                    _this.verif = true;
-                }
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 0 Antech  ' + error);
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                db.executeSql("select count(*) as sum from Antech where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
+                    .then(function (result) {
+                    if (result.rows.item(0).sum > 0) {
+                        resolve(true);
+                        return true;
+                    }
+                    else {
+                        resolve(false);
+                        return false;
+                    }
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    resolve(false);
+                    return false;
+                });
             });
+            db.close();
+            return _this;
         });
-        db.close();
-        return this.verif;
     };
     AntechService.prototype.getAntecs = function (antecs, idpass, codeClinique) {
         var _this = this;

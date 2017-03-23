@@ -3,31 +3,38 @@ import {AntecCh} from "../models/AntecCh";
 
 export class AlegchService {
   public aleg: Array<AntecCh> = [];
-  verif: boolean;
 
   constructor() {
   }
 
-  public verifAleg(alegs: any, idpass,codeClinique) {
-    this.verif = false;
+  public verifAleg(alegs: any, idpass,codeClinique) : Promise<boolean> {
+    return new Promise<boolean>(resolve => {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("select * from Alegc where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
+      db.executeSql("select count(*) as sum from Alegc where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
-          if (result.rows.length === alegs.length) {
-            this.verif = true;
+          if (result.rows.item(0).sum > 0) {
+            resolve(true);
+            return true;
+          }
+          else {
+            resolve(false);
+            return false;
           }
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 0 Alegc  ' + error);
+          resolve(false);
+          return false;
         })
     });
-    db.close();
-    return this.verif;
+      db.close();
+      return this;
+    })
   }
 
   public getAlegs(alegs: any, idpass,codeClinique) {
@@ -84,7 +91,6 @@ export class AlegchService {
   }
 
   public deleteAlegs(idpass,codeClinique) {
-
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
