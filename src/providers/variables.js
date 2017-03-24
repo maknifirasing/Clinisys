@@ -19,43 +19,43 @@ var Variables = Variables_1 = (function () {
         this.url = "http://192.168.0.138:8084/";
         Variables_1.uRL = this.url;
     }
-    /*
-  
-    public static checconnection(): Promise<boolean> {
-      return new Promise<boolean>(resolve => {
-      var states = {};
-      var networkState = navigator.connection.type;
-      states[Connection.UNKNOWN] = 'Unknown connection';
-      states[Connection.ETHERNET] = 'Ethernet connection';
-      states[Connection.WIFI] = 'WiFi connection';
-      states[Connection.CELL_2G] = 'Cell 2G connection';
-      states[Connection.CELL_3G] = 'Cell 3G connection';
-      states[Connection.CELL_4G] = 'Cell 4G connection';
-      states[Connection.CELL] = 'Cell generic connection';
-      states[Connection.NONE] = 'No network connection';
-      if (states[networkState]!=="No network connection") {
-        Variables.checservice(Variables.uRL).then(res => {
-          if (res === false) {
-            resolve(false);
-            return false;
-          }
-          else
-          {
-            resolve(true);
-            return true;
-          }
-        });
-      } else {
-        resolve(false);
-        return false;
-      }
-        return this;
-      });
-    }
-  */
     Variables.checconnection = function () {
+        var _this = this;
+        return new Promise(function (resolve) {
+            var states = {};
+            var networkState = navigator.connection.type;
+            states[Connection.UNKNOWN] = 'Unknown connection';
+            states[Connection.ETHERNET] = 'Ethernet connection';
+            states[Connection.WIFI] = 'WiFi connection';
+            states[Connection.CELL_2G] = 'Cell 2G connection';
+            states[Connection.CELL_3G] = 'Cell 3G connection';
+            states[Connection.CELL_4G] = 'Cell 4G connection';
+            states[Connection.CELL] = 'Cell generic connection';
+            states[Connection.NONE] = 'No network connection';
+            if (states[networkState] !== "No network connection") {
+                Variables_1.checservice().then(function (res) {
+                    if (res === false) {
+                        resolve(false);
+                        return false;
+                    }
+                    else {
+                        resolve(true);
+                        return true;
+                    }
+                });
+            }
+            else {
+                resolve(false);
+                return false;
+            }
+            return _this;
+        });
+    };
+    /*
+      public static checconnection() {
         var states = {};
         var networkState = navigator.connection.type;
+    
         states[Connection.UNKNOWN] = 'Unknown connection';
         states[Connection.ETHERNET] = 'Ethernet connection';
         states[Connection.WIFI] = 'WiFi connection';
@@ -64,18 +64,22 @@ var Variables = Variables_1 = (function () {
         states[Connection.CELL_4G] = 'Cell 4G connection';
         states[Connection.CELL] = 'Cell generic connection';
         states[Connection.NONE] = 'No network connection';
-        if (states[networkState] !== "No network connection") {
-            Variables_1.checservice().then(function (res) {
-                if (res === false) {
-                    return false;
-                }
-                else {
-                    return true;
-                }
-            });
+        if (states[networkState]!=="No network connection") {
+          Variables.checservice().then(res => {
+            if (res === false) {
+    
+              return "No network connection";
+            }
+            else {
+              return "No network connection";
+            }
+          });
+        }else {
+          return states[networkState];
         }
-        return states[networkState];
-    };
+    
+      }
+    */
     Variables.checservice = function () {
         var _this = this;
         return new Promise(function (resolve) {

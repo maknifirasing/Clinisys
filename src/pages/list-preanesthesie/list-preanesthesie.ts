@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams, Platform} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {ListPreanesthesie} from "../../models/ListPreanesthesie";
 import {HistDossier} from "../../models/HistDossier";
 import {HistDossierService} from "../../services/HistDossierService";
+import {ListPreanesthesieService} from "../../services/ListPreanesthesieService";
 
 /*
  Generated class for the ListPreanesthesie page.
@@ -27,18 +28,22 @@ export class ListPreanesthesiePage {
   codeClinique:any;
   langue: any;
   tabLangue: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+  ListePserv: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,public platform: Platform) {
     this.ListeP = navParams.get("ListeP");
     this.pass = navParams.get("pass");
     this.tabLangue = navParams.get("tabLangue");
     this.codeClinique = navParams.get("codeClinique");
     this.langue = navParams.get("langue");
+    this.platform.ready().then(() => {
     Variables.checconnection().then(connexion=> {
       if (connexion === false) {
         this.connection = false;
+        this.findListPreanesthesieByNumeroDossierResponseOff(this.pass.getdossier(), this.codeClinique);
       } else {
         this.connection = true;
       }
+    });
     });
     this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
 
@@ -53,5 +58,10 @@ export class ListPreanesthesiePage {
     this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(res => {
       this.histd = res.getdate();
     });
+  }
+
+  findListPreanesthesieByNumeroDossierResponseOff(numDoss, codeClinique) {
+    this.ListePserv = new ListPreanesthesieService();
+    this.ListeP = this.ListePserv.getListPreanesthesies(this.ListeP, numDoss, codeClinique);
   }
 }

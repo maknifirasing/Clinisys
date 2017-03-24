@@ -1,10 +1,12 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams, Platform} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {Labo} from "../../models/Labo";
 import {PdfViewPage} from "../pdf-view/pdf-view";
 import {HistDossier} from "../../models/HistDossier";
 import {HistDossierService} from "../../services/HistDossierService";
+import {LaboFService} from "../../services/LaboFService";
+import {LaboTService} from "../../services/LaboTService";
 
 @Component({
   selector: 'page-examen-labo',
@@ -23,21 +25,25 @@ export class ExamenLaboPage {
   pass: any;
   codeClinique: any;
   langue: any;
+  LabosFs: any;
+  LabosTs: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,public platform: Platform) {
     this.tabLangue = navParams.get("tabLangue");
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("pass");
     this.langue = navParams.get("langue");
     this.LabosT = navParams.get("Labost");
     this.LabosF = navParams.get("Labosf");
-
-    Variables.checconnection().then(connexion=> {
-      if (connexion === false) {
-        this.connection = false;
-      } else {
-        this.connection = true;
-      }
+    this.platform.ready().then(() => {
+      Variables.checconnection().then(connexion => {
+        if (connexion === false) {
+          this.connection = false;
+          this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
+        } else {
+          this.connection = true;
+        }
+      });
     });
     this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique)
   }
@@ -84,5 +90,13 @@ export class ExamenLaboPage {
     this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(res => {
       this.histd = res.getdate();
     });
+  }
+
+  findAllLaboByNumDossierOff(numDoss, codeClinique) {
+    this.LabosFs = new LaboFService();
+    this.LabosF = this.LabosFs.getLabos(this.LabosF, numDoss, codeClinique);
+
+    this.LabosTs = new LaboTService();
+    this.LabosT = this.LabosTs.getLabos(this.LabosT, numDoss, codeClinique);
   }
 }

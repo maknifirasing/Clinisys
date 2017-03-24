@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams, Platform} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
 import {Variables} from "../../providers/variables";
 import {TabsPage} from "../tabs/tabs";
@@ -36,12 +36,13 @@ export class ListePage {
   private userserv: any;
   langue: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,public menuCtrl: MenuController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,public menuCtrl: MenuController,public platform: Platform) {
     this.dtFeuille = new DateFeuille();
     this.codeClinique = navParams.get("codeClinique");
     this.nomClinique = navParams.get("nomClinique");
     this.tabLangue=navParams.get("tabLangue");
     this.langue = navParams.get("langue");
+    this.platform.ready().then(() => {
     Variables.checconnection().then(connexion=> {
       if (connexion === false) {
         this.connection = false;
@@ -56,6 +57,7 @@ export class ListePage {
         this.DateFeuille(this.codeClinique);
       }
       this.patientliste = this.patient;
+    });
     });
 
   }

@@ -12,6 +12,8 @@ import {
 } from '@ionic-native/themeable-browser';
 import {DocumentService} from "../../services/DocumentService";
 import {DocViewPage} from "../doc-view/doc-view";
+import {ExamenRadioTService} from "../../services/ExamenRadioTService";
+import {ExamenRadioFService} from "../../services/ExamenRadioFService";
 declare var cordova: any;
 @Component({
   selector: 'page-examen-radio',
@@ -35,22 +37,26 @@ export class ExamenRadioPage {
   tabLangue: any;
   docserv: any;
   storageDirectory: string = '';
+  RadiosTs: any;
+  RadiosFs: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private themeableBrowser: ThemeableBrowser, public alertCtrl: AlertController) {
-    this.examenRF = navParams.get("examenRF");
-    this.examenRT = navParams.get("examenRT");
     this.tabLangue = navParams.get("tabLangue");
     this.pass = navParams.get("pass");
+    this.examenRF = navParams.get("examenRF");
+    this.examenRT = navParams.get("examenRT");
     this.codeClinique = navParams.get("codeClinique");
     this.langue = navParams.get("langue");
-    this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
-    Variables.checconnection().then(connexion=> {
+
+    Variables.checconnection().then(connexion => {
       if (connexion === false) {
         this.connection = false;
+        this.GetExamenRadioByNumDossResponseOff(this.pass.getdossier(), this.codeClinique)
       } else {
         this.connection = true;
       }
     });
+    this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
   }
 
   ionViewDidLoad() {
@@ -75,31 +81,34 @@ export class ExamenRadioPage {
         // exit otherwise, but you could add further types here e.g. Windows
         return false;
       }
-      if (this.connection === false) {
+      Variables.checconnection().then(connexion => {
+        if (connexion === false) {
+          this.connection = false;
+          this.docserv = new DocumentService();
+          this.docserv.getDocuments(this.document, observ, this.codeClinique).then(res => {
+            this.retrieveImageOff(res);
+          });
+        }
+        else {
+          this.connection = true;
+          var d = new Document();
+          d.seturl(this.storageDirectory + observ);
+          d.setobserv(observ);
+          d.setcodeClinique(this.codeClinique);
+          this.document.push(d);
+          this.docserv = new DocumentService();
+          this.docserv.verifDocument(this.document, observ, this.codeClinique).then(res => {
+            if (res === false) {
+              this.docserv.getDocuments(this.document, observ, this.codeClinique);
+            }
+          });
 
-        this.docserv = new DocumentService();
-        this.docserv.getDocuments(this.document, observ, this.codeClinique).then(res => {
-          this.retrieveImageOff(res);
-        });
-      }
-      else {
-        var d = new Document();
-        d.seturl(this.storageDirectory + observ);
-        d.setobserv(observ);
-        d.setcodeClinique(this.codeClinique);
-        this.document.push(d);
-        this.docserv = new DocumentService();
-        this.docserv.verifDocument(this.document, observ, this.codeClinique).then(res => {
-          if (res === false) {
-            this.docserv.getDocuments(this.document, observ, this.codeClinique);
-          }
-        });
+          this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
+          this.open(this.url);
 
-        this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
-        this.open(this.url);
-
-        this.retrieveImage(this.url, d);
-      }
+          this.retrieveImage(this.url, d);
+        }
+      });
     });
 
   }
@@ -164,24 +173,24 @@ export class ExamenRadioPage {
 
       fileTransfer.download(url, this.storageDirectory + doc.getobserv()).then((entry) => {
 
-    /*    const alertSuccess = this.alertCtrl.create({
-          title: `Download Succeeded!`,
-          subTitle: `${doc.getobserv()} was successfully downloaded to: ${entry.toURL()}`,
-          buttons: ['Ok']
-        });
+        /*    const alertSuccess = this.alertCtrl.create({
+         title: `Download Succeeded!`,
+         subTitle: `${doc.getobserv()} was successfully downloaded to: ${entry.toURL()}`,
+         buttons: ['Ok']
+         });
 
-        alertSuccess.present();
-        */
+         alertSuccess.present();
+         */
       }, (error) => {
-/*
-        const alertFailure = this.alertCtrl.create({
-          title: `Download Failed!`,
-          subTitle: `${doc.getobserv()} was not successfully downloaded. Error code: ${error.code}`,
-          buttons: ['Ok']
-        });
+        /*
+         const alertFailure = this.alertCtrl.create({
+         title: `Download Failed!`,
+         subTitle: `${doc.getobserv()} was not successfully downloaded. Error code: ${error.code}`,
+         buttons: ['Ok']
+         });
 
-        alertFailure.present();
-*/
+         alertFailure.present();
+         */
       });
 
     });
@@ -193,14 +202,14 @@ export class ExamenRadioPage {
     File.checkFile(this.storageDirectory, file)
       .then(() => {
 
-    /*    const alertSuccess = this.alertCtrl.create({
-          title: `File retrieval Succeeded!`,
-          subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
-          buttons: ['Ok']
-        });
+        /*    const alertSuccess = this.alertCtrl.create({
+         title: `File retrieval Succeeded!`,
+         subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
+         buttons: ['Ok']
+         });
 
-        return alertSuccess.present();
-*/
+         return alertSuccess.present();
+         */
       })
       .catch((err) => {
         /*
@@ -222,14 +231,14 @@ export class ExamenRadioPage {
         this.url = doc.geturl();
         this.open(this.url);
 
-    /*    const alertSuccess = this.alertCtrl.create({
-          title: `File retrieval Succeeded!`,
-          subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
-          buttons: ['Ok']
-        });
+        /*    const alertSuccess = this.alertCtrl.create({
+         title: `File retrieval Succeeded!`,
+         subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
+         buttons: ['Ok']
+         });
 
-        return alertSuccess.present();
-*/
+         return alertSuccess.present();
+         */
       })
       .catch((err) => {
         /*
@@ -241,5 +250,14 @@ export class ExamenRadioPage {
          return alertFailure.present();*/
       });
 
+  }
+
+
+  GetExamenRadioByNumDossResponseOff(numDoss, codeClinique) {
+    this.RadiosTs = new ExamenRadioTService();
+    this.examenRT = this.RadiosTs.getExamenRadios(this.examenRT, numDoss, codeClinique);
+
+    this.RadiosFs = new ExamenRadioFService();
+    this.examenRF = this.RadiosFs.getExamenRadios(this.examenRF, numDoss, codeClinique);
   }
 }

@@ -54,6 +54,18 @@ var TabsPage = (function () {
         this.coountListPreanesthesie = 0;
         this.countPdfT = 0;
         this.countPdf = 0;
+        this.tabLangue = {
+            pass: navParams.get("mypatient"),
+            dateFeuille: navParams.get("dateFeuille"),
+            Labost: this.LabosT,
+            Labosf: this.LabosF,
+            ListeP: this.ListeP,
+            examenRT: this.examenRT,
+            examenRF: this.examenRF,
+            langue: this.langue,
+            tabLangue: this.tabLangue, codeClinique: this.codeClinique
+        };
+        console.log(this.tabLangue);
         Variables.checconnection().then(function (connexion) {
             if (connexion === false) {
                 _this.connection = false;
@@ -67,17 +79,6 @@ var TabsPage = (function () {
                 _this.GetExamenRadioByNumDossResponse(_this.pass.getdossier(), _this.codeClinique);
                 _this.findListPreanesthesieByNumeroDossierResponse(_this.pass.getdossier(), _this.codeClinique);
             }
-            _this.tabLangue = {
-                pass: navParams.get("mypatient"),
-                dateFeuille: navParams.get("dateFeuille"),
-                Labost: _this.LabosT,
-                Labosf: _this.LabosF,
-                ListeP: _this.ListeP,
-                examenRT: _this.examenRT,
-                examenRF: _this.examenRF,
-                langue: _this.langue,
-                tabLangue: _this.tabLangue, codeClinique: _this.codeClinique
-            };
         });
     }
     TabsPage.prototype.ionViewDidLoad = function () {

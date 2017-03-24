@@ -1,6 +1,6 @@
 import {Component, Injectable} from '@angular/core';
 import {DossierPage} from "../dossier/dossier";
-import {NavParams, NavController} from 'ionic-angular';
+import {NavParams, NavController, Platform} from 'ionic-angular';
 import {ExamenRadioPage} from "../examen-radio/examen-radio";
 import {ListPreanesthesiePage} from "../list-preanesthesie/list-preanesthesie";
 import {ExamenLaboPage} from "../examen-labo/examen-labo";
@@ -67,7 +67,7 @@ export class TabsPage {
   ListePserv: any;
   langue: any;
 
-  constructor(public navParams: NavParams, private Url: Variables) {
+  constructor(public navParams: NavParams, private Url: Variables, public platform: Platform) {
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("mypatient");
     this.tabLangue=navParams.get("tabLangue");
@@ -77,20 +77,6 @@ export class TabsPage {
     this.coountListPreanesthesie = 0;
     this.countPdfT = 0;
     this.countPdf = 0;
-    Variables.checconnection().then(connexion=> {
-      if (connexion === false) {
-        this.connection = false;
-        this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
-        this.GetExamenRadioByNumDossResponseOff(this.pass.getdossier(), this.codeClinique);
-        this.findListPreanesthesieByNumeroDossierResponseOff(this.ListeP, this.pass.getdossier(), this.codeClinique);
-      }
-      else {
-        this.connection = true;
-        this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
-        this.GetExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
-        this.findListPreanesthesieByNumeroDossierResponse(this.pass.getdossier(), this.codeClinique);
-      }
-    });
     this.tabLangue = {
       pass: navParams.get("mypatient"),
       dateFeuille: navParams.get("dateFeuille"),
@@ -102,6 +88,23 @@ export class TabsPage {
       langue: this.langue,
       tabLangue: this.tabLangue, codeClinique: this.codeClinique
     };
+    this.platform.ready().then(() => {
+    Variables.checconnection().then(connexion=> {
+      if (connexion === false) {
+        this.connection = false;
+        this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
+        this.GetExamenRadioByNumDossResponseOff(this.pass.getdossier(), this.codeClinique);
+        this.findListPreanesthesieByNumeroDossierResponseOff(this.pass.getdossier(), this.codeClinique);
+      }
+      else {
+        this.connection = true;
+        this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
+        this.GetExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
+        this.findListPreanesthesieByNumeroDossierResponse(this.pass.getdossier(), this.codeClinique);
+      }
+    });
+    });
+
   }
 
   ionViewDidLoad() {
@@ -232,12 +235,6 @@ export class TabsPage {
   }
 
   GetExamenRadioByNumDossResponseOff(numDoss, codeClinique) {
-    this.RadiosTs = new ExamenRadioTService();
-    this.examenRT = this.RadiosTs.getExamenRadios(this.examenRT, numDoss, codeClinique);
-
-    this.RadiosFs = new ExamenRadioFService();
-    this.examenRF = this.RadiosFs.getExamenRadios(this.examenRF, numDoss, codeClinique);
-
     this.countDocs = new tabBadgeRadioService();
     this.countDocs.getTabBadgeRadio(this.tabgRadio, numDoss, codeClinique).then(res => {
       this.coountexamenR = res.getFichier();
@@ -345,12 +342,6 @@ export class TabsPage {
   }
 
   findAllLaboByNumDossierOff(numDoss, codeClinique) {
-    this.LabosFs = new LaboFService();
-    this.LabosF = this.LabosFs.getLabos(this.LabosF, numDoss, codeClinique);
-
-    this.LabosTs = new LaboTService();
-    this.LabosT = this.LabosTs.getLabos(this.LabosT, numDoss, codeClinique);
-
     this.countPdfs = new tabBadgeLaboService();
     this.countPdfs.getTabBadgeLabo(this.tabgLabo, numDoss, codeClinique).then(res => {
       this.countPdf = res.getFichier();
@@ -457,10 +448,7 @@ export class TabsPage {
     xmlhttp.send(sr);
   }
 
-  findListPreanesthesieByNumeroDossierResponseOff(ListeP, numDoss, codeClinique) {
-    this.ListePserv = new ListPreanesthesieService();
-    this.ListeP = this.ListePserv.getListPreanesthesies(ListeP, numDoss, codeClinique);
-
+  findListPreanesthesieByNumeroDossierResponseOff(numDoss, codeClinique) {
     this.countListPreanesthesiess = new tabBadgeListPreanesthesie();
     this.countListPreanesthesiess.getTabBadgeList(this.ListPreanesthesies, numDoss, codeClinique).then(res => {
       this.coountListPreanesthesie = res.getFichier();

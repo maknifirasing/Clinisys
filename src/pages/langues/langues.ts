@@ -54,28 +54,22 @@ export class LanguesPage {
       this.langserv.getLangues(this.langes);
     }
     this.langserv.getLangues(this.langes);
-    /*
-     this.userserv = new UserService();
-     this.userserv.verifUser().then(res => {
-     if (res === true) {
-     this.userserv.getUser(this.users).then(user => {
-     this.codeClinique = user.getcodeClinique();
-     this.navCtrl.push(ListePage, {
-     tabLangue: this.tabLangue,
-     langue: lang,
-     codeClinique: this.codeClinique
-     });
-     });
-     } else {
-     this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
-     }
-     });
-     */
-    this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
-  }
-  checkNetwork() {
-    Variables.checconnection().then(connexion=> {
-      alert("connexion " +connexion);
+
+    this.userserv = new UserService();
+    this.userserv.verifUser().then(res => {
+      if (res === true) {
+        this.userserv.getUser(this.users).then(user => {
+          this.codeClinique = user.getcodeClinique();
+          this.navCtrl.push(ListePage, {
+            tabLangue: this.tabLangue,
+            langue: lang,
+            codeClinique: this.codeClinique
+          });
+        });
+      } else {
+        this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
+      }
     });
+
   }
 }

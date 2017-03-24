@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NavController, NavParams} from "ionic-angular";
+import {NavController, NavParams, Platform} from "ionic-angular";
 import {MotifHospitalisation} from "../../models/motifHospitalisation";
 import {Antec} from "../../models/Antec";
 import {SigneClinique} from "../../models/SigneClinique";
@@ -87,7 +87,7 @@ export class DossierPage {
   pass: any;
   dateFeuille: any;
   langue:any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,public platform: Platform) {
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.pass = navParams.get("pass");
@@ -102,6 +102,7 @@ export class DossierPage {
       this.codeType = "'1','3','4'";
       this.codeTypeOf = "134";
     }
+    this.platform.ready().then(() => {
     Variables.checconnection().then(res=> {
       if (res === false) {
         this.connection = false;
@@ -130,6 +131,7 @@ export class DossierPage {
          */
         this.update();
       }
+    });
     });
   }
 

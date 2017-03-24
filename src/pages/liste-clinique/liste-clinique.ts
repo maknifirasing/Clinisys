@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, ViewController} from 'ionic-angular';
+import {NavController, NavParams, Platform, ViewController} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {Clinique} from "../../models/Clinique";
 import {HomePage} from "../home/home";
@@ -18,11 +18,11 @@ export class ListeCliniquePage {
   tabLangue: any;
   langue: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private viewCtrl: ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private viewCtrl: ViewController,public platform: Platform) {
     this.viewCtrl.showBackButton(false);
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
-
+    this.platform.ready().then(() => {
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
         this.connection = false;
@@ -32,6 +32,7 @@ export class ListeCliniquePage {
         this.connection = true;
         this.ListClinique();
       }
+    });
     });
 
   }

@@ -15,6 +15,7 @@ import { HomePage } from "../home/home";
 import { CliniqueService } from "../../services/CliniqueService";
 var ListeCliniquePage = (function () {
     function ListeCliniquePage(navCtrl, navParams, Url, viewCtrl) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
@@ -23,19 +24,16 @@ var ListeCliniquePage = (function () {
         this.viewCtrl.showBackButton(false);
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
-        /* Variables.checconnection().then(connexion=> {
-           if (connexion === false) {
-             this.connection = false;
-             this.ListCliniqueOff(this.clinique);
-           }
-           else {
-             this.connection = true;
-             this.ListClinique();
-           }
-         });
-         */
-        this.connection = true;
-        this.ListClinique();
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+                _this.ListCliniqueOff(_this.clinique);
+            }
+            else {
+                _this.connection = true;
+                _this.ListClinique();
+            }
+        });
     }
     ListeCliniquePage.prototype.ListClinique = function () {
         var _this = this;
@@ -75,7 +73,12 @@ var ListeCliniquePage = (function () {
         this.clinique = this.clinserv.getCliniques(cliniques);
     };
     ListeCliniquePage.prototype.goToHomePage = function (codeC) {
-        this.navCtrl.push(HomePage, { tabLangue: this.tabLangue, langue: this.langue, codeClinique: codeC.getcode(), nomClinique: codeC.getnom() });
+        this.navCtrl.push(HomePage, {
+            tabLangue: this.tabLangue,
+            langue: this.langue,
+            codeClinique: codeC.getcode(),
+            nomClinique: codeC.getnom()
+        });
     };
     return ListeCliniquePage;
 }());
