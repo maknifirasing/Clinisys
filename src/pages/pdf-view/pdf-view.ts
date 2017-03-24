@@ -37,16 +37,18 @@ export class PdfViewPage {
         // exit otherwise, but you could add further types here e.g. Windows
         return false;
       }
-      if (Variables.checconnection() === "No network connection") {
-        this.connection = false;
-        var fields = this.pdf.split('/');
-        this.pdfSrc = this.storageDirectory + fields[5];
-      }
-      else {
-        this.connection = true;
-        this.pdfSrc =this.pdf;
-        this.retrieveImage(this.pdfSrc);
-      }
+      Variables.checconnection().then(connexion=> {
+        if (connexion === false) {
+          this.connection = false;
+          var fields = this.pdf.split('/');
+          this.pdfSrc = this.storageDirectory + fields[5];
+        }
+        else {
+          this.connection = true;
+          this.pdfSrc = this.pdf;
+          this.retrieveImage(this.pdfSrc);
+        }
+      });
     });
 
 
@@ -61,7 +63,7 @@ export class PdfViewPage {
       const fileTransfer = new Transfer();
 
       fileTransfer.download(this.pdf, this.storageDirectory + file).then((entry) => {
-
+/*
         const alertSuccess = this.alertCtrl.create({
           title: `Download Succeeded!`,
           subTitle: `${file} was successfully downloaded to: ${entry.toURL()}`,
@@ -69,8 +71,9 @@ export class PdfViewPage {
         });
 
         alertSuccess.present();
+        */
       }, (error) => {
-
+/*
         const alertFailure = this.alertCtrl.create({
           title: `Download Failed!`,
           subTitle: `${file} was not successfully downloaded. Error code: ${error.code}`,
@@ -78,7 +81,7 @@ export class PdfViewPage {
         });
 
         alertFailure.present();
-
+*/
       });
 
     });
@@ -94,7 +97,7 @@ export class PdfViewPage {
       .then(() => {
 
 
-
+/*
         const alertSuccess = this.alertCtrl.create({
           title: `File retrieval Succeeded!`,
           subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
@@ -102,7 +105,7 @@ export class PdfViewPage {
         });
 
         return alertSuccess.present();
-
+*/
       })
       .catch((err) => {
 

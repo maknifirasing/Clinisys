@@ -33,11 +33,13 @@ export class ListPreanesthesiePage {
     this.tabLangue = navParams.get("tabLangue");
     this.codeClinique = navParams.get("codeClinique");
     this.langue = navParams.get("langue");
-    if (Variables.checconnection() === "No network connection") {
-      this.connection = false;
-    } else {
-      this.connection = true;
-    }
+    Variables.checconnection().then(connexion=> {
+      if (connexion === false) {
+        this.connection = false;
+      } else {
+        this.connection = true;
+      }
+    });
     this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
 
   }

@@ -91,7 +91,8 @@
 
           <button md-menu-item> {{tabLangue.titreMod}} </button>
           <button md-menu-item> {{tabLangue.titreChangClini}} </button>
-          <button md-menu-item> {{tabLangue.titreDeconnexion}} </button>
+          <button menuClose md-menu-item (click)="changerlangue()"> {{tabLangue.titreChangLangue}} </button>
+          <button menuClose md-menu-item (click)="deconnexion()"> {{tabLangue.titreDeconnexion}} </button>
           <!-- <button md-menu-item> Help </button>
            <button md-menu-item disabled> Sign Out </button>-->
         </md-menu>
@@ -215,14 +216,6 @@
 
     </md-card-content >
     <md-card-content *ngIf="(langue==='francais' || langue==='anglais')">
-      <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="connection===true">
-        <ion-refresher-content
-          pullingIcon="arrow-dropdown"
-          pullingText="{{tabLangue.pullingText}}"
-          refreshingSpinner="circles"
-          refreshingText="{{tabLangue.refreshingText}}">
-        </ion-refresher-content>
-      </ion-refresher>
       <div *ngFor="let pas of patientliste ">
         <div class="first">
           <img src='/android_asset/www/assets/img/{{pas.getimg()}}' md-card-avatar class="list">

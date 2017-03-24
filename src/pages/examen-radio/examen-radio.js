@@ -18,6 +18,7 @@ import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 import { DocumentService } from "../../services/DocumentService";
 var ExamenRadioPage = (function () {
     function ExamenRadioPage(navCtrl, navParams, Url, platform, themeableBrowser, alertCtrl) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
@@ -38,12 +39,14 @@ var ExamenRadioPage = (function () {
         this.codeClinique = navParams.get("codeClinique");
         this.langue = navParams.get("langue");
         this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
-        if (Variables.checconnection() === "No network connection") {
-            this.connection = false;
-        }
-        else {
-            this.connection = true;
-        }
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+            }
+            else {
+                _this.connection = true;
+            }
+        });
     }
     ExamenRadioPage.prototype.ionViewDidLoad = function () {
     };
@@ -145,19 +148,24 @@ var ExamenRadioPage = (function () {
         this.platform.ready().then(function () {
             var fileTransfer = new Transfer();
             fileTransfer.download(url, _this.storageDirectory + doc.getobserv()).then(function (entry) {
-                var alertSuccess = _this.alertCtrl.create({
-                    title: "Download Succeeded!",
-                    subTitle: doc.getobserv() + " was successfully downloaded to: " + entry.toURL(),
-                    buttons: ['Ok']
-                });
-                alertSuccess.present();
+                /*    const alertSuccess = this.alertCtrl.create({
+                      title: `Download Succeeded!`,
+                      subTitle: `${doc.getobserv()} was successfully downloaded to: ${entry.toURL()}`,
+                      buttons: ['Ok']
+                    });
+            
+                    alertSuccess.present();
+                    */
             }, function (error) {
-                var alertFailure = _this.alertCtrl.create({
-                    title: "Download Failed!",
-                    subTitle: doc.getobserv() + " was not successfully downloaded. Error code: " + error.code,
-                    buttons: ['Ok']
-                });
-                alertFailure.present();
+                /*
+                        const alertFailure = this.alertCtrl.create({
+                          title: `Download Failed!`,
+                          subTitle: `${doc.getobserv()} was not successfully downloaded. Error code: ${error.code}`,
+                          buttons: ['Ok']
+                        });
+                
+                        alertFailure.present();
+                */
             });
         });
     };
@@ -166,12 +174,14 @@ var ExamenRadioPage = (function () {
         var file = doc.getobserv();
         File.checkFile(this.storageDirectory, file)
             .then(function () {
-            var alertSuccess = _this.alertCtrl.create({
-                title: "File retrieval Succeeded!",
-                subTitle: file + " was successfully retrieved from: " + _this.storageDirectory,
-                buttons: ['Ok']
-            });
-            return alertSuccess.present();
+            /*    const alertSuccess = this.alertCtrl.create({
+                  title: `File retrieval Succeeded!`,
+                  subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
+                  buttons: ['Ok']
+                });
+        
+                return alertSuccess.present();
+        */
         })
             .catch(function (err) {
             /*
@@ -191,12 +201,14 @@ var ExamenRadioPage = (function () {
             .then(function () {
             _this.url = doc.geturl();
             _this.open(_this.url);
-            var alertSuccess = _this.alertCtrl.create({
-                title: "File retrieval Succeeded!",
-                subTitle: file + " was successfully retrieved from: " + _this.storageDirectory,
-                buttons: ['Ok']
-            });
-            return alertSuccess.present();
+            /*    const alertSuccess = this.alertCtrl.create({
+                  title: `File retrieval Succeeded!`,
+                  subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
+                  buttons: ['Ok']
+                });
+        
+                return alertSuccess.present();
+        */
         })
             .catch(function (err) {
             /*

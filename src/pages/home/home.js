@@ -72,7 +72,7 @@ var HomePage = (function () {
                                         _this.userserv.getUser(_this.users);
                                     }
                                 });
-                                _this.navCtrl.push(ListePage, {
+                                _this.navCtrl.setRoot(ListePage, {
                                     tabLangue: _this.tabLangue,
                                     langue: _this.langue,
                                     codeClinique: _this.codeClinique,
@@ -101,11 +101,18 @@ var HomePage = (function () {
         this.userserv = new UserService();
         alert("ee4 " + this.userserv.verifUser(this.codeClinique));
     };
+    /* checkNetwork() {
+       Variables.checconnection().then(connexion=> {
+      alert("connexion " +connexion);
+         });
+     }
+   */
     HomePage.prototype.checkNetwork = function () {
-        alert("connexion " + Variables.checconnection());
+        console.log("connexion " + Variables.checconnection());
+        //  alert("connexion " + Variables.checconnection());
     };
     HomePage.prototype.doesConnectionExist = function () {
-        Variables.checservice(this.Url.url).then(function (res) {
+        Variables.checservice().then(function (res) {
             alert("serv " + res);
         });
     };

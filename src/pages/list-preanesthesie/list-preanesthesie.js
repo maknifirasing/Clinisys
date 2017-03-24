@@ -20,6 +20,7 @@ import { HistDossierService } from "../../services/HistDossierService";
  */
 var ListPreanesthesiePage = (function () {
     function ListPreanesthesiePage(navCtrl, navParams, Url) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
@@ -32,12 +33,14 @@ var ListPreanesthesiePage = (function () {
         this.tabLangue = navParams.get("tabLangue");
         this.codeClinique = navParams.get("codeClinique");
         this.langue = navParams.get("langue");
-        if (Variables.checconnection() === "No network connection") {
-            this.connection = false;
-        }
-        else {
-            this.connection = true;
-        }
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+            }
+            else {
+                _this.connection = true;
+            }
+        });
         this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
     }
     ListPreanesthesiePage.prototype.ionViewDidLoad = function () {

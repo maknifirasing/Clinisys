@@ -15,6 +15,7 @@ import { HistDossier } from "../../models/HistDossier";
 import { HistDossierService } from "../../services/HistDossierService";
 var ExamenLaboPage = (function () {
     function ExamenLaboPage(navCtrl, navParams, Url) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
@@ -22,18 +23,20 @@ var ExamenLaboPage = (function () {
         this.LabosF = [];
         this.histD = [];
         this.histd = new HistDossier();
+        this.tabLangue = navParams.get("tabLangue");
+        this.codeClinique = navParams.get("codeClinique");
+        this.pass = navParams.get("pass");
+        this.langue = navParams.get("langue");
         this.LabosT = navParams.get("Labost");
         this.LabosF = navParams.get("Labosf");
-        this.tabLangue = navParams.get("tabLangue");
-        this.pass = navParams.get("pass");
-        this.codeClinique = navParams.get("codeClinique");
-        this.langue = navParams.get("langue");
-        if (Variables.checconnection() === "No network connection") {
-            this.connection = false;
-        }
-        else {
-            this.connection = true;
-        }
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+            }
+            else {
+                _this.connection = true;
+            }
+        });
         this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
     }
     ExamenLaboPage.prototype.openURL = function (numAdmission) {

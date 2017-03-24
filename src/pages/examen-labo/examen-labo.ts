@@ -25,17 +25,20 @@ export class ExamenLaboPage {
   langue: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+    this.tabLangue = navParams.get("tabLangue");
+    this.codeClinique = navParams.get("codeClinique");
+    this.pass = navParams.get("pass");
+    this.langue = navParams.get("langue");
     this.LabosT = navParams.get("Labost");
     this.LabosF = navParams.get("Labosf");
-    this.tabLangue = navParams.get("tabLangue");
-    this.pass = navParams.get("pass");
-    this.codeClinique = navParams.get("codeClinique");
-    this.langue = navParams.get("langue");
-    if (Variables.checconnection() === "No network connection") {
-      this.connection = false;
-    } else {
-      this.connection = true;
-    }
+
+    Variables.checconnection().then(connexion=> {
+      if (connexion === false) {
+        this.connection = false;
+      } else {
+        this.connection = true;
+      }
+    });
     this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique)
   }
 

@@ -23,14 +23,19 @@ var ListeCliniquePage = (function () {
         this.viewCtrl.showBackButton(false);
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
-        if (Variables.checconnection() === "No network connection") {
-            this.connection = false;
-            this.ListCliniqueOff(this.clinique);
-        }
-        else {
-            this.connection = true;
-            this.ListClinique();
-        }
+        /* Variables.checconnection().then(connexion=> {
+           if (connexion === false) {
+             this.connection = false;
+             this.ListCliniqueOff(this.clinique);
+           }
+           else {
+             this.connection = true;
+             this.ListClinique();
+           }
+         });
+         */
+        this.connection = true;
+        this.ListClinique();
     }
     ListeCliniquePage.prototype.ListClinique = function () {
         var _this = this;

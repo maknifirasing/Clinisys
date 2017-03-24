@@ -12,24 +12,28 @@ import {CliniqueService} from "../../services/CliniqueService";
 })
 export class ListeCliniquePage {
   clinique: Array<Clinique> = [];
-  c:any;
+  c: any;
   clinserv: any;
   connection: boolean;
   tabLangue: any;
   langue: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,private viewCtrl: ViewController) {
-    this.viewCtrl.showBackButton(false);
-    this.tabLangue=navParams.get("tabLangue");
-    this.langue = navParams.get("langue");
-    if (Variables.checconnection() === "No network connection") {
-      this.connection = false;
-      this.ListCliniqueOff(this.clinique);
-    }
-    else {
-      this.connection = true;
-      this.ListClinique();
 
-    }
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private viewCtrl: ViewController) {
+    this.viewCtrl.showBackButton(false);
+    this.tabLangue = navParams.get("tabLangue");
+    this.langue = navParams.get("langue");
+
+    Variables.checconnection().then(connexion => {
+      if (connexion === false) {
+        this.connection = false;
+        this.ListCliniqueOff(this.clinique);
+      }
+      else {
+        this.connection = true;
+        this.ListClinique();
+      }
+    });
+
   }
 
 
@@ -70,11 +74,16 @@ export class ListeCliniquePage {
 
   ListCliniqueOff(cliniques) {
     this.clinserv = new CliniqueService();
-    this.clinique=this.clinserv.getCliniques(cliniques);
+    this.clinique = this.clinserv.getCliniques(cliniques);
   }
 
-  goToHomePage(codeC){
+  goToHomePage(codeC) {
 
-    this.navCtrl.push(HomePage,{tabLangue: this.tabLangue,langue:this.langue,codeClinique:codeC.getcode(),nomClinique:codeC.getnom()});
+    this.navCtrl.push(HomePage, {
+      tabLangue: this.tabLangue,
+      langue: this.langue,
+      codeClinique: codeC.getcode(),
+      nomClinique: codeC.getnom()
+    });
   }
 }

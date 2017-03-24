@@ -44,12 +44,13 @@ export class ExamenRadioPage {
     this.codeClinique = navParams.get("codeClinique");
     this.langue = navParams.get("langue");
     this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
-    if (Variables.checconnection() === "No network connection") {
-      this.connection = false;
-    } else {
-      this.connection = true;
-    }
-
+    Variables.checconnection().then(connexion=> {
+      if (connexion === false) {
+        this.connection = false;
+      } else {
+        this.connection = true;
+      }
+    });
   }
 
   ionViewDidLoad() {
@@ -163,15 +164,16 @@ export class ExamenRadioPage {
 
       fileTransfer.download(url, this.storageDirectory + doc.getobserv()).then((entry) => {
 
-        const alertSuccess = this.alertCtrl.create({
+    /*    const alertSuccess = this.alertCtrl.create({
           title: `Download Succeeded!`,
           subTitle: `${doc.getobserv()} was successfully downloaded to: ${entry.toURL()}`,
           buttons: ['Ok']
         });
 
         alertSuccess.present();
+        */
       }, (error) => {
-
+/*
         const alertFailure = this.alertCtrl.create({
           title: `Download Failed!`,
           subTitle: `${doc.getobserv()} was not successfully downloaded. Error code: ${error.code}`,
@@ -179,7 +181,7 @@ export class ExamenRadioPage {
         });
 
         alertFailure.present();
-
+*/
       });
 
     });
@@ -191,14 +193,14 @@ export class ExamenRadioPage {
     File.checkFile(this.storageDirectory, file)
       .then(() => {
 
-        const alertSuccess = this.alertCtrl.create({
+    /*    const alertSuccess = this.alertCtrl.create({
           title: `File retrieval Succeeded!`,
           subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
           buttons: ['Ok']
         });
 
         return alertSuccess.present();
-
+*/
       })
       .catch((err) => {
         /*
@@ -220,14 +222,14 @@ export class ExamenRadioPage {
         this.url = doc.geturl();
         this.open(this.url);
 
-        const alertSuccess = this.alertCtrl.create({
+    /*    const alertSuccess = this.alertCtrl.create({
           title: `File retrieval Succeeded!`,
           subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
           buttons: ['Ok']
         });
 
         return alertSuccess.present();
-
+*/
       })
       .catch((err) => {
         /*

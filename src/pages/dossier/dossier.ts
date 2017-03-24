@@ -102,33 +102,35 @@ export class DossierPage {
       this.codeType = "'1','3','4'";
       this.codeTypeOf = "134";
     }
-    if (Variables.checconnection() === "No network connection") {
-      this.connection = false;
-      //    alert("dossier " + this.pass.getdossier() + " date" + this.dateFeuille + " nature " + this.pass.getnature());
-      this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
-      this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
-      this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
-      this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
-      this.GetTraitementsOff(this.traitement, this.pass.getdossier(), this.dateFeuille, this.codeClinique);
-      this.GetEvenementByDossierOff(this.pass.getdossier(), this.codeClinique);
-      this.GetListRegimeOff(this.rigime, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
-      this.GetSigneCliniqueOff(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeTypeOf, this.codeClinique);
+    Variables.checconnection().then(res=> {
+      if (res === false) {
+        this.connection = false;
+        //    alert("dossier " + this.pass.getdossier() + " date" + this.dateFeuille + " nature " + this.pass.getnature());
+        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
+        this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
+        this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
+        this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+        this.GetTraitementsOff(this.traitement, this.pass.getdossier(), this.dateFeuille, this.codeClinique);
+        this.GetEvenementByDossierOff(this.pass.getdossier(), this.codeClinique);
+        this.GetListRegimeOff(this.rigime, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+        this.GetSigneCliniqueOff(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeTypeOf, this.codeClinique);
 
-    }
-    else {
-      this.connection = true;
-      this.historique(this.pass.getdossier(), this.codeClinique);
-      /*
-       this.GetAllMotifHospitalisationByNumDoss(this.pass.getdossier());
-       this.getAntecedentAllergieByIdentifiant(this.pass.getid());
-       this.GetAlerteSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature());
-       this.GetTraitements(this.pass.getdossier(), this.dateFeuille);
-       this.GetEvenementByDossier(this.pass.getdossier());
-       this.GetListRegime(this.pass.getdossier(), this.dateFeuille, this.pass.getnature());
-       this.GetSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeType, this.codeTypeOf);
-       */
-      this.update();
-    }
+      }
+      else {
+        this.connection = true;
+        this.historique(this.pass.getdossier(), this.codeClinique);
+        /*
+         this.GetAllMotifHospitalisationByNumDoss(this.pass.getdossier());
+         this.getAntecedentAllergieByIdentifiant(this.pass.getid());
+         this.GetAlerteSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature());
+         this.GetTraitements(this.pass.getdossier(), this.dateFeuille);
+         this.GetEvenementByDossier(this.pass.getdossier());
+         this.GetListRegime(this.pass.getdossier(), this.dateFeuille, this.pass.getnature());
+         this.GetSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeType, this.codeTypeOf);
+         */
+        this.update();
+      }
+    });
   }
 
   GetAlerteSigneClinique(numDoss, dateFeuille, nature, codeClinique) {

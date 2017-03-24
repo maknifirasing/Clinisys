@@ -28,6 +28,7 @@ import { ListPreanesthesieService } from "../../services/ListPreanesthesieServic
 import { tabBadgeListPreanesthesie } from "../../services/tabBadgeListPreanesthesie";
 var TabsPage = (function () {
     function TabsPage(navParams, Url) {
+        var _this = this;
         this.navParams = navParams;
         this.Url = Url;
         this.tab1Root = DossierPage;
@@ -53,29 +54,31 @@ var TabsPage = (function () {
         this.coountListPreanesthesie = 0;
         this.countPdfT = 0;
         this.countPdf = 0;
-        if (Variables.checconnection() === "No network connection") {
-            this.connection = false;
-            this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
-            this.GetExamenRadioByNumDossResponseOff(this.pass.getdossier(), this.codeClinique);
-            this.findListPreanesthesieByNumeroDossierResponseOff(this.ListeP, this.pass.getdossier(), this.codeClinique);
-        }
-        else {
-            this.connection = true;
-            this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
-            this.GetExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
-            this.findListPreanesthesieByNumeroDossierResponse(this.pass.getdossier(), this.codeClinique);
-        }
-        this.tabLangue = {
-            pass: navParams.get("mypatient"),
-            dateFeuille: navParams.get("dateFeuille"),
-            Labost: this.LabosT,
-            Labosf: this.LabosF,
-            ListeP: this.ListeP,
-            examenRT: this.examenRT,
-            examenRF: this.examenRF,
-            langue: this.langue,
-            tabLangue: this.tabLangue, codeClinique: this.codeClinique
-        };
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+                _this.findAllLaboByNumDossierOff(_this.pass.getdossier(), _this.codeClinique);
+                _this.GetExamenRadioByNumDossResponseOff(_this.pass.getdossier(), _this.codeClinique);
+                _this.findListPreanesthesieByNumeroDossierResponseOff(_this.ListeP, _this.pass.getdossier(), _this.codeClinique);
+            }
+            else {
+                _this.connection = true;
+                _this.findAllLaboByNumDossier(_this.pass.getdossier(), _this.codeClinique);
+                _this.GetExamenRadioByNumDossResponse(_this.pass.getdossier(), _this.codeClinique);
+                _this.findListPreanesthesieByNumeroDossierResponse(_this.pass.getdossier(), _this.codeClinique);
+            }
+            _this.tabLangue = {
+                pass: navParams.get("mypatient"),
+                dateFeuille: navParams.get("dateFeuille"),
+                Labost: _this.LabosT,
+                Labosf: _this.LabosF,
+                ListeP: _this.ListeP,
+                examenRT: _this.examenRT,
+                examenRF: _this.examenRF,
+                langue: _this.langue,
+                tabLangue: _this.tabLangue, codeClinique: _this.codeClinique
+            };
+        });
     }
     TabsPage.prototype.ionViewDidLoad = function () {
     };

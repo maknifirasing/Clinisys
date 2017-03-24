@@ -78,7 +78,7 @@ export class HomePage {
                     this.userserv.getUser(this.users);
                   }
                 });
-                this.navCtrl.push(ListePage, {
+                this.navCtrl.setRoot(ListePage, {
                   tabLangue: this.tabLangue,
                   langue: this.langue,
                   codeClinique: this.codeClinique,
@@ -110,12 +110,19 @@ export class HomePage {
   }
 
 
+ /* checkNetwork() {
+    Variables.checconnection().then(connexion=> {
+   alert("connexion " +connexion);
+      });
+  }
+*/
   checkNetwork() {
-    alert("connexion " + Variables.checconnection());
+    console.log("connexion " + Variables.checconnection());
+  //  alert("connexion " + Variables.checconnection());
   }
 
   doesConnectionExist() {
-    Variables.checservice(this.Url.url).then(res => {
+    Variables.checservice().then(res => {
       alert("serv " + res);
     });
   }

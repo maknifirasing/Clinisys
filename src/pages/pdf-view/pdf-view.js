@@ -38,16 +38,18 @@ var PdfViewPage = (function () {
                 // exit otherwise, but you could add further types here e.g. Windows
                 return false;
             }
-            if (Variables.checconnection() === "No network connection") {
-                _this.connection = false;
-                var fields = _this.pdf.split('/');
-                _this.pdfSrc = _this.storageDirectory + fields[5];
-            }
-            else {
-                _this.connection = true;
-                _this.pdfSrc = _this.pdf;
-                _this.retrieveImage(_this.pdfSrc);
-            }
+            Variables.checconnection().then(function (connexion) {
+                if (connexion === false) {
+                    _this.connection = false;
+                    var fields = _this.pdf.split('/');
+                    _this.pdfSrc = _this.storageDirectory + fields[5];
+                }
+                else {
+                    _this.connection = true;
+                    _this.pdfSrc = _this.pdf;
+                    _this.retrieveImage(_this.pdfSrc);
+                }
+            });
         });
     }
     PdfViewPage.prototype.ionViewDidLoad = function () {
@@ -57,19 +59,25 @@ var PdfViewPage = (function () {
         this.platform.ready().then(function () {
             var fileTransfer = new Transfer();
             fileTransfer.download(_this.pdf, _this.storageDirectory + file).then(function (entry) {
-                var alertSuccess = _this.alertCtrl.create({
-                    title: "Download Succeeded!",
-                    subTitle: file + " was successfully downloaded to: " + entry.toURL(),
-                    buttons: ['Ok']
-                });
-                alertSuccess.present();
+                /*
+                        const alertSuccess = this.alertCtrl.create({
+                          title: `Download Succeeded!`,
+                          subTitle: `${file} was successfully downloaded to: ${entry.toURL()}`,
+                          buttons: ['Ok']
+                        });
+                
+                        alertSuccess.present();
+                        */
             }, function (error) {
-                var alertFailure = _this.alertCtrl.create({
-                    title: "Download Failed!",
-                    subTitle: file + " was not successfully downloaded. Error code: " + error.code,
-                    buttons: ['Ok']
-                });
-                alertFailure.present();
+                /*
+                        const alertFailure = this.alertCtrl.create({
+                          title: `Download Failed!`,
+                          subTitle: `${file} was not successfully downloaded. Error code: ${error.code}`,
+                          buttons: ['Ok']
+                        });
+                
+                        alertFailure.present();
+                */
             });
         });
     };
@@ -80,12 +88,15 @@ var PdfViewPage = (function () {
         var file = fields[5];
         File.checkFile(this.storageDirectory, file)
             .then(function () {
-            var alertSuccess = _this.alertCtrl.create({
-                title: "File retrieval Succeeded!",
-                subTitle: file + " was successfully retrieved from: " + _this.storageDirectory,
-                buttons: ['Ok']
-            });
-            return alertSuccess.present();
+            /*
+                    const alertSuccess = this.alertCtrl.create({
+                      title: `File retrieval Succeeded!`,
+                      subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
+                      buttons: ['Ok']
+                    });
+            
+                    return alertSuccess.present();
+            */
         })
             .catch(function (err) {
             /*      const alertFailure = this.alertCtrl.create({

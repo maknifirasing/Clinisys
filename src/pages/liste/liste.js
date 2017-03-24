@@ -23,6 +23,7 @@ import { MenuController } from 'ionic-angular';
 import { MdMenuTrigger } from "@angular/material";
 var ListePage = (function () {
     function ListePage(navCtrl, navParams, Url, menuCtrl) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
@@ -37,19 +38,21 @@ var ListePage = (function () {
         this.nomClinique = navParams.get("nomClinique");
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
-        if (Variables.checconnection() === "No network connection") {
-            this.connection = false;
-            this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
-            this.listeOff(this.patient, "admin", "", "all", this.codeClinique);
-            this.DateFeuilleOff(this.datefeuille, this.codeClinique);
-        }
-        else {
-            this.connection = true;
-            this.historique("admin", "", "all", this.codeClinique);
-            this.liste("admin", "", "all", this.codeClinique);
-            this.DateFeuille(this.codeClinique);
-        }
-        this.patientliste = this.patient;
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+                _this.historiqueOff(_this.hist, "admin", "", "all", _this.codeClinique);
+                _this.listeOff(_this.patient, "admin", "", "all", _this.codeClinique);
+                _this.DateFeuilleOff(_this.datefeuille, _this.codeClinique);
+            }
+            else {
+                _this.connection = true;
+                _this.historique("admin", "", "all", _this.codeClinique);
+                _this.liste("admin", "", "all", _this.codeClinique);
+                _this.DateFeuille(_this.codeClinique);
+            }
+            _this.patientliste = _this.patient;
+        });
     }
     ListePage.prototype.someMethod = function () {
         this.trigger.openMenu();

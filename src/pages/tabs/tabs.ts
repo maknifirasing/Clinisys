@@ -77,18 +77,20 @@ export class TabsPage {
     this.coountListPreanesthesie = 0;
     this.countPdfT = 0;
     this.countPdf = 0;
-    if (Variables.checconnection() === "No network connection") {
-      this.connection = false;
-      this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
-      this.GetExamenRadioByNumDossResponseOff(this.pass.getdossier(), this.codeClinique);
-      this.findListPreanesthesieByNumeroDossierResponseOff(this.ListeP, this.pass.getdossier(), this.codeClinique);
-    }
-    else {
-      this.connection = true;
-      this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
-      this.GetExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
-      this.findListPreanesthesieByNumeroDossierResponse(this.pass.getdossier(), this.codeClinique);
-    }
+    Variables.checconnection().then(connexion=> {
+      if (connexion === false) {
+        this.connection = false;
+        this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
+        this.GetExamenRadioByNumDossResponseOff(this.pass.getdossier(), this.codeClinique);
+        this.findListPreanesthesieByNumeroDossierResponseOff(this.ListeP, this.pass.getdossier(), this.codeClinique);
+      }
+      else {
+        this.connection = true;
+        this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
+        this.GetExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
+        this.findListPreanesthesieByNumeroDossierResponse(this.pass.getdossier(), this.codeClinique);
+      }
+    });
     this.tabLangue = {
       pass: navParams.get("mypatient"),
       dateFeuille: navParams.get("dateFeuille"),
@@ -103,7 +105,6 @@ export class TabsPage {
   }
 
   ionViewDidLoad() {
-
   }
 
   GetExamenRadioByNumDossResponse(numDoss, codeClinique) {

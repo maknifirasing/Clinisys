@@ -42,19 +42,22 @@ export class ListePage {
     this.nomClinique = navParams.get("nomClinique");
     this.tabLangue=navParams.get("tabLangue");
     this.langue = navParams.get("langue");
-    if (Variables.checconnection() === "No network connection") {
-      this.connection = false;
-      this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
-      this.listeOff(this.patient, "admin", "", "all", this.codeClinique);
-      this.DateFeuilleOff(this.datefeuille, this.codeClinique);
-    }
-    else {
-      this.connection = true;
-      this.historique("admin", "", "all", this.codeClinique);
-      this.liste("admin", "", "all", this.codeClinique);
-      this.DateFeuille(this.codeClinique);
-    }
-    this.patientliste = this.patient;
+    Variables.checconnection().then(connexion=> {
+      if (connexion === false) {
+        this.connection = false;
+        this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
+        this.listeOff(this.patient, "admin", "", "all", this.codeClinique);
+        this.DateFeuilleOff(this.datefeuille, this.codeClinique);
+      }
+      else {
+        this.connection = true;
+        this.historique("admin", "", "all", this.codeClinique);
+        this.liste("admin", "", "all", this.codeClinique);
+        this.DateFeuille(this.codeClinique);
+      }
+      this.patientliste = this.patient;
+    });
+
   }
   someMethod() {
     this.trigger.openMenu();

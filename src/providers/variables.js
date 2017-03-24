@@ -11,13 +11,48 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { NavController } from "ionic-angular";
-var Variables = (function () {
+var Variables = Variables_1 = (function () {
     function Variables(http, navCtrl) {
         this.http = http;
         this.navCtrl = navCtrl;
         this.url = "";
         this.url = "http://192.168.0.138:8084/";
+        Variables_1.uRL = this.url;
     }
+    /*
+  
+    public static checconnection(): Promise<boolean> {
+      return new Promise<boolean>(resolve => {
+      var states = {};
+      var networkState = navigator.connection.type;
+      states[Connection.UNKNOWN] = 'Unknown connection';
+      states[Connection.ETHERNET] = 'Ethernet connection';
+      states[Connection.WIFI] = 'WiFi connection';
+      states[Connection.CELL_2G] = 'Cell 2G connection';
+      states[Connection.CELL_3G] = 'Cell 3G connection';
+      states[Connection.CELL_4G] = 'Cell 4G connection';
+      states[Connection.CELL] = 'Cell generic connection';
+      states[Connection.NONE] = 'No network connection';
+      if (states[networkState]!=="No network connection") {
+        Variables.checservice(Variables.uRL).then(res => {
+          if (res === false) {
+            resolve(false);
+            return false;
+          }
+          else
+          {
+            resolve(true);
+            return true;
+          }
+        });
+      } else {
+        resolve(false);
+        return false;
+      }
+        return this;
+      });
+    }
+  */
     Variables.checconnection = function () {
         var states = {};
         var networkState = navigator.connection.type;
@@ -29,13 +64,23 @@ var Variables = (function () {
         states[Connection.CELL_4G] = 'Cell 4G connection';
         states[Connection.CELL] = 'Cell generic connection';
         states[Connection.NONE] = 'No network connection';
+        if (states[networkState] !== "No network connection") {
+            Variables_1.checservice().then(function (res) {
+                if (res === false) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            });
+        }
         return states[networkState];
     };
-    Variables.checservice = function (url) {
+    Variables.checservice = function () {
         var _this = this;
         return new Promise(function (resolve) {
             var xhr = new XMLHttpRequest();
-            var file = url;
+            var file = Variables_1.uRL;
             xhr.timeout = 200;
             xhr.open('HEAD', file, true);
             xhr.send();
@@ -200,9 +245,11 @@ Variables.anglais = {
     titreHeureF: "Time End",
     titleMed: "Doctor"
 };
-Variables = __decorate([
+Variables.uRL = "";
+Variables = Variables_1 = __decorate([
     Injectable(),
     __metadata("design:paramtypes", [Http, NavController])
 ], Variables);
 export { Variables };
+var Variables_1;
 //# sourceMappingURL=variables.js.map

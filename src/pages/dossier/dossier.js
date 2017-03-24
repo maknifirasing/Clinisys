@@ -34,6 +34,7 @@ import { HistDossierService } from "../../services/HistDossierService";
 import { HistDossier } from "../../models/HistDossier";
 var DossierPage = (function () {
     function DossierPage(navCtrl, navParams, Url) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
@@ -73,32 +74,34 @@ var DossierPage = (function () {
             this.codeType = "'1','3','4'";
             this.codeTypeOf = "134";
         }
-        if (Variables.checconnection() === "No network connection") {
-            this.connection = false;
-            //    alert("dossier " + this.pass.getdossier() + " date" + this.dateFeuille + " nature " + this.pass.getnature());
-            this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
-            this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
-            this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
-            this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
-            this.GetTraitementsOff(this.traitement, this.pass.getdossier(), this.dateFeuille, this.codeClinique);
-            this.GetEvenementByDossierOff(this.pass.getdossier(), this.codeClinique);
-            this.GetListRegimeOff(this.rigime, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
-            this.GetSigneCliniqueOff(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeTypeOf, this.codeClinique);
-        }
-        else {
-            this.connection = true;
-            this.historique(this.pass.getdossier(), this.codeClinique);
-            /*
-             this.GetAllMotifHospitalisationByNumDoss(this.pass.getdossier());
-             this.getAntecedentAllergieByIdentifiant(this.pass.getid());
-             this.GetAlerteSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature());
-             this.GetTraitements(this.pass.getdossier(), this.dateFeuille);
-             this.GetEvenementByDossier(this.pass.getdossier());
-             this.GetListRegime(this.pass.getdossier(), this.dateFeuille, this.pass.getnature());
-             this.GetSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeType, this.codeTypeOf);
-             */
-            this.update();
-        }
+        Variables.checconnection().then(function (res) {
+            if (res === false) {
+                _this.connection = false;
+                //    alert("dossier " + this.pass.getdossier() + " date" + this.dateFeuille + " nature " + this.pass.getnature());
+                _this.historiqueOff(_this.histD, _this.pass.getdossier(), _this.codeClinique);
+                _this.GetAllMotifHospitalisationByNumDossOff(_this.motifh, _this.pass.getdossier(), _this.codeClinique);
+                _this.getAntecedentAllergieByIdentifiantOff(_this.antechl, _this.alechl, _this.pass.getid(), _this.codeClinique);
+                _this.GetAlerteSigneCliniqueOff(_this.signe, _this.pass.getdossier(), _this.dateFeuille, _this.pass.getnature(), _this.codeClinique);
+                _this.GetTraitementsOff(_this.traitement, _this.pass.getdossier(), _this.dateFeuille, _this.codeClinique);
+                _this.GetEvenementByDossierOff(_this.pass.getdossier(), _this.codeClinique);
+                _this.GetListRegimeOff(_this.rigime, _this.pass.getdossier(), _this.dateFeuille, _this.pass.getnature(), _this.codeClinique);
+                _this.GetSigneCliniqueOff(_this.pass.getdossier(), _this.dateFeuille, _this.pass.getnature(), _this.codeTypeOf, _this.codeClinique);
+            }
+            else {
+                _this.connection = true;
+                _this.historique(_this.pass.getdossier(), _this.codeClinique);
+                /*
+                 this.GetAllMotifHospitalisationByNumDoss(this.pass.getdossier());
+                 this.getAntecedentAllergieByIdentifiant(this.pass.getid());
+                 this.GetAlerteSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature());
+                 this.GetTraitements(this.pass.getdossier(), this.dateFeuille);
+                 this.GetEvenementByDossier(this.pass.getdossier());
+                 this.GetListRegime(this.pass.getdossier(), this.dateFeuille, this.pass.getnature());
+                 this.GetSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeType, this.codeTypeOf);
+                 */
+                _this.update();
+            }
+        });
     }
     DossierPage.prototype.GetAlerteSigneClinique = function (numDoss, dateFeuille, nature, codeClinique) {
         var _this = this;
