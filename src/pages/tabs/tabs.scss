@@ -21,5 +21,15 @@
       width: 35px;
       height: 35px;
     }
+    .tabs .tab-item .icon.mcfly {
+      background-repeat: no-repeat;
+      background-position: 50%;
+      height: 100%;
+      background-image: url('https://raw.github.com/driftyco/ionic-site/gh-pages/img/docs/mcfly.jpg');
+      background-size:contain;
+    }
+    .i{
+      background-image: url('https://raw.github.com/driftyco/ionic-site/gh-pages/img/docs/mcfly.jpg');
+    }
   }
 }

@@ -2,12 +2,15 @@ import {Component, ViewChild} from '@angular/core';
 import {Platform, Nav, NavController} from 'ionic-angular';
 import {LanguesPage} from '../pages/langues/langues';
 import {StatusBar, Splashscreen, SQLite} from 'ionic-native';
-import {UserService} from "../services/UserService";
 import {Users} from "../models/Users";
 import {LangueService} from "../services/LangueService";
 import {Langue} from "../models/Langue";
 import {Variables} from "../providers/variables";
 import {ListePage} from "../pages/liste/liste";
+import {TryPage} from "../pages/try/try";
+import {ClientDetailPage} from "../pages/client-detail/client-detail";
+import {ListeCliniquePage} from "../pages/liste-clinique/liste-clinique";
+import {NotificationPage} from "../pages/notification/notification";
 @Component({
   templateUrl: 'app.html'
 })
@@ -15,9 +18,6 @@ import {ListePage} from "../pages/liste/liste";
 export class MyApp {
   rootPage:any;
   @ViewChild(Nav) nav: Nav;
-  navCrt: NavController;
-
-  pages: Array<{title: string, component: any}>;
   private userserv: any;
   users: Array<Users> = [];
   private codeClinique: string;
@@ -27,9 +27,7 @@ export class MyApp {
   tabLangue: any;
 
   constructor(platform: Platform) {
-    this.pages = [
-      {title: 'Langues', component: LanguesPage}
-    ];
+
     platform.ready().then(() => {
       SQLite.openDatabase({
         name: 'clinisys.db',
@@ -133,6 +131,11 @@ export class MyApp {
             'codeMedecinchirurgi VARCHAR(32),codeMedecinchirurgien VARCHAR(32),codePostop VARCHAR(32),dateacte VARCHAR(32),datedemande VARCHAR(32),etatReservationBloc VARCHAR(32),' +
             'hasAnesth VARCHAR(32),hasPost VARCHAR(32),hasPre VARCHAR(32),heureDebut VARCHAR(32),heureFin VARCHAR(32),id VARCHAR(32),identifiant VARCHAR(32),kc VARCHAR(32),nom VARCHAR(32),nomReanimateur VARCHAR(32)' +
             ',prenom VARCHAR(32),numeroDossier VARCHAR(32),codeClinique VARCHAR(32))', {});
+
+          db.executeSql('CREATE TABLE IF NOT EXISTS Client (adrCli VARCHAR(32),datNai VARCHAR(32),libNat VARCHAR(32)' +
+            ',numTel VARCHAR(32),etage VARCHAR(32),numCha VARCHAR(32),numdoss VARCHAR(32),identifiant VARCHAR(32),codeClinique VARCHAR(32))', {});
+         db.executeSql('CREATE TABLE IF NOT EXISTS SigneCourbe (code VARCHAR(32),codePosologie VARCHAR(32),designation VARCHAR(32)' +
+           ',seuilMin VARCHAR(32),seuilMax VARCHAR(32),color VARCHAR(32),unite VARCHAR(32),quantite VARCHAR(32),heurePrise VARCHAR(32),dateHeurePrise VARCHAR(32),codeClinique VARCHAR(32),numdoss VARCHAR(32))', {});
         })
         .catch(error => {
           console.error('Error opening database', error);
@@ -177,10 +180,10 @@ export class MyApp {
 
   }
 
- /* openPage(page) {
+  openListeCliniquePage() {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
-  }*/
+    this.nav.setRoot(ListeCliniquePage);
+  }
 
 }

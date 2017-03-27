@@ -14,8 +14,10 @@ import {ListPreanesthesiePage} from "../pages/list-preanesthesie/list-preanesthe
 import {LanguesPage} from "../pages/langues/langues";
 import {ListeCliniquePage} from "../pages/liste-clinique/liste-clinique";
 import {MaterialModule} from "@angular/material";
-import {TryPage} from "../pages/try/try";
+
 import {FlexLayoutModule} from "@angular/flex-layout";
+import {ClientDetailPage} from "../pages/client-detail/client-detail";
+import {NotificationPage} from "../pages/notification/notification";
 @NgModule({
   declarations: [
     MyApp,
@@ -31,7 +33,8 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     ListPreanesthesiePage,
     LanguesPage,
     ListeCliniquePage,
-    TryPage
+    NotificationPage,
+    ClientDetailPage
 
   ],
   imports: [
@@ -53,7 +56,8 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     ListPreanesthesiePage,
     LanguesPage,
     ListeCliniquePage,
-    TryPage
+    NotificationPage,
+    ClientDetailPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

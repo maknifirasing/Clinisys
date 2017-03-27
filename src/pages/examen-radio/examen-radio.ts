@@ -28,6 +28,7 @@ export class ExamenRadioPage {
   tabLangue: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,platform:Platform) {
+
     platform.ready().then(() => {
       cordova.InAppBrowser.open('http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=6d303a74-a8cc-43c3-8815-bdc917fbeac1',"_system","location=yes");
     })
@@ -54,7 +55,7 @@ export class ExamenRadioPage {
   }
   getdocumentById(observ) {
    // this.url = this.Url.url + "dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
-    var xmlhttp = new XMLHttpRequest();
+  var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
@@ -103,5 +104,6 @@ export class ExamenRadioPage {
       this.histd = res.getdate();
     });
   }
+
 
 }

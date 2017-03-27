@@ -1,133 +1,52 @@
-<!--<ion-header  class="ion-navbar">
-  <ion-navbar color="custom-color" class="ion-navbar">
+<ion-header style="height: 95px;color: white">
+  <div fxLayout="row" fxLayoutWrap *ngIf="langue==='francais' || langue==='anglais'" class="md-card">
+    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/{{pass.getimg()}}" width="40" height="40"></div>
+    <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
+      <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
+    </div>
+    <div fxFlex="13" style="margin-top: 5px;direction:rtl;"><img src="/android_asset/www/assets/img/i.jpg" class="roundedImage"/>
+    </div>
+  </div>
 
-    <div id="wrap" *ngIf="langue==='francais' || langue==='anglais'">
-      <div class="oneFRANG" *ngIf="(connection===true)">
-        <img src="/android_asset/www/assets/img/{{pass.getimg()}}" width="40" height="40">
-        <p> <img src="/android_asset/www/assets/img/green.png" width="20" height="20"></p>
 
+  <md-card class="md-card2" *ngIf="langue==='francais' || langue==='anglais'">
+    <div fxLayout="row" fxLayoutWrap>
+      <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px"><img src="/android_asset/www/assets/img/green.png"
+                                                                               width="25" height="25"></div>
+      <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px"><img src="/android_asset/www/assets/img/red.png"
+                                                                                width="25" height="25"></div>
 
+      <div fxFlex="86" style="margin-top: -10px;font-size:10px;"><strong>{{tabLangue.titreEnligne}}</strong> {{histd}}
       </div>
-      <div class="oneFRANG" *ngIf="(connection===false)">
-        <img src="/android_asset/www/assets/img/{{pass.getimg()}}" width="40" height="40">
-        <p> <img src="/android_asset/www/assets/img/red.png" width="20" height="20"></p>
+    </div>
+  </md-card>
 
 
+  <div fxLayout="row" fxLayoutWrap *ngIf="langue==='arabe'" class="md-card">
+    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/i.jpg" class="roundedImage"/></div>
+    <div fxFlex="73" style="margin-top: 10px;direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
+      <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
+    </div>
+    <div fxFlex="13" style="margin-top: 5px;direction:rtl;"><img src="/android_asset/www/assets/img/{{pass.getimg()}}" width="40"
+                                                                 height="40"></div>
+  </div>
+  <md-card *ngIf="langue==='arabe'" class="md-card2">
+    <div fxLayout="row" fxLayoutWrap>
+
+      <div fxFlex="86" style="margin-top: -10px;font-size:10px;direction:rtl;"><strong>{{tabLangue.titreEnligne}}</strong>
+        {{histd}}
       </div>
-      <div class="two" *ngIf="(connection===true)"> <p>{{pass.getnom()}}</p>
-        <p class="p"> <strong>{{tabLangue.age}}:</strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}</p>
-        <p></p>
-        <p>{{tabLangue.titreEnligne}} {{histd}}</p>
-      </div>
-      <div class="two" *ngIf="(connection===false)"> <p>{{pass.getnom()}}</p>
-        <p class="p"> <strong>{{tabLangue.age}}:</strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}</p>
-        <p></p>
-        <p>{{tabLangue.titreHorsLigne}} {{histd}}</p>
-      </div>
-      <div class="threeFRANG">
-        <img src="/android_asset/www/assets/img/i.jpg" width="40" height="40" class="roundedImage">
-      </div>
-
-
-
+      <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px;direction:rtl;"><img
+        src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>
+      <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px;direction:rtl;"><img
+        src="/android_asset/www/assets/img/red.png" width="30" height="30"></div>
 
     </div>
-
-    <div id="wrap2" *ngIf="langue==='arabe'" dir="rtl">
-      <div class="one">
-        <img src="/android_asset/www/assets/img/i.jpg" width="40" height="40" class="roundedImage">
-
-      </div>
-      <div class="two" *ngIf="(connection===true)"> <p>{{pass.getnom()}}</p>
-        <p class="p"> <strong>{{tabLangue.age}}:</strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}</p>
-        <p></p>
-        <p>{{tabLangue.titreEnligne}} {{histd}}</p>
-      </div>
-      <div class="two" *ngIf="(connection===false)"> <p>{{pass.getnom()}}</p>
-        <p class="p"> <strong>{{tabLangue.age}}:</strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}</p>
-        <p></p>
-        <p>{{tabLangue.titreHorsLigne}} {{histd}}</p>
-      </div>
-      <div class="three" *ngIf="(connection===true)">
-        <img src="/android_asset/www/assets/img/{{pass.getimg()}}" width="40" height="40">
-        <p> <img src="/android_asset/www/assets/img/green.png" width="20" height="20"></p>
-      </div>
-      <div class="three" *ngIf="(connection===false)">
-        <img src="/android_asset/www/assets/img/{{pass.getimg()}}" width="40" height="40">
-        <p> <img src="/android_asset/www/assets/img/red.png" width="20" height="20"></p>
-      </div>
+  </md-card>
 
 
 
-
-
-    </div>
-
-
-  </ion-navbar>
-</ion-header>-->
-<ion-header class="ion-navbar">
-  <ion-navbar color="custom-color" class="ion-navbar">
-
-    <ion-list color="custom-color" *ngIf="langue==='arabe'"
-              dir="rtl">
-      <ion-item color="custom-color"></ion-item>
-      <ion-item color="custom-color">
-        <ion-avatar item-left>
-          <img src='/android_asset/www/assets/img/{{pass.getimg()}}'>
-        </ion-avatar>
-        <ion-avatar item-right>
-          <img src='/android_asset/www/assets/img/i.jpg'>
-        </ion-avatar>
-        <p style="text-align: right">{{pass.getnom()}}</p>
-        <p style="text-align: right"><strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
-        </p>
-      </ion-item>
-      <ion-item color="custom-color"  *ngIf="connection===true">
-        <p style="float: right;padding-right: 10px">
-          <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
-        </p>
-        <p style="text-align: right" >{{tabLangue.titreEnligne}}<br/> {{histd}}</p>
-      </ion-item>
-      <ion-item color="custom-color"  *ngIf="connection===false">
-        <p style="float: right;padding-right: 10px">
-          <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
-        </p>
-        <p style="text-align: right" >{{tabLangue.titreHorsLigne}}<br/> {{histd}}</p>
-      </ion-item>
-      <ion-item color="custom-color"></ion-item>
-    </ion-list>
-
-    <ion-list color="custom-color" *ngIf="langue==='francais' || langue==='anglais'">
-      <ion-item color="custom-color"></ion-item>
-      <ion-item color="custom-color">
-        <ion-avatar item-left>
-          <img src='/android_asset/www/assets/img/{{pass.getimg()}}'>
-        </ion-avatar>
-        <ion-avatar item-right>
-          <img src='/android_asset/www/assets/img/i.jpg'>
-        </ion-avatar>
-        <p>{{pass.getnom()}}</p>
-        <p><strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
-        </p>
-      </ion-item>
-      <ion-item color="custom-color" *ngIf="connection===true">
-        <p style="float: left;padding-right: 10px">
-          <img src='/android_asset/www/assets/img/green.png' width="15" height="15">
-        </p>
-        <p>{{tabLangue.titreEnligne}}<br/> {{histd}}</p>
-      </ion-item>
-      <ion-item color="custom-color" *ngIf="connection===false">
-        <p style="float: left;padding-right: 10px">
-          <img src='/android_asset/www/assets/img/red.png' width="15" height="15">
-        </p>
-        <p>{{tabLangue.titreHorsLigne}}<br/> {{histd}}</p>
-      </ion-item>
-      <ion-item color="custom-color"></ion-item>
-    </ion-list>
-  </ion-navbar>
 </ion-header>
-
 <ion-content>
 
 

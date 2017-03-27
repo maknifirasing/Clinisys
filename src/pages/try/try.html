@@ -1,71 +1,34 @@
+<!--
+  Generated template for the ClientDetail page.
 
-
-  <ion-header>
-
-
-   <!-- <md-card style="background-color: #0277bd">
-      <img src="../../assets/img/green.png" class="md-card-image" width="15" height="15"/>
-      {{date}}
-      <button md-mini-fab menuToggle >
-        <md-icon class="md-24" name="menu" ></md-icon>
-      </button>
-    </md-card>
-   <!-- <ion-list>
-      <ion-item color="custom-color" class="size">
-
-
-
-       <ion-label> <img src='../../assets/img/green.png' width="15" height="15">{{dateArr.substr(0,35)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;{{dateArr.substr(35,10)}}</ion-label>
-        <button ion-button menuToggle item-right>
-          <ion-icon name="menu" width="100px"></ion-icon>
-        </button>
-      </ion-item>
-    </ion-list>
-    <!--
-    <ion-list>
-      <ion-item color="custom-color" class="size">
-
-          <img src='../../assets/img/green.png' width="15" height="15">
-
-{{date.substr(0,45)}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;{{date.substr(45,10)}}
-        <button ion-button menuToggle item-right>
-          <ion-icon name="menu" width="100px"></ion-icon>
-        </button>
-      </ion-item>
-    </ion-list>
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
 -->
-
-
-
-  <ion-navbar class="ion-navbar">
-
-    <p>
-      <ion-searchbar color="white" placeholder="recherche"
-                     (ionInput)="getItems($event)"></ion-searchbar>
-    </p>
-  </ion-navbar>
+<ion-header>
+<md-card-title>aaaaaaaaaaaaaaaa</md-card-title>
 
 </ion-header>
 
 
-<ion-content>
+<ion-content padding>
 
-  <div id="wrap">
-    <div id="one"> <img md-card-avatar src="../../assets/img/babyboy.png" width="45" height="45"></div>
-    <div id="two"> basma hammami <p><strong>Age: </strong>21 ans<strong>CH: </strong>211</p>   </div>
-    <div id="three">
-      <button md-icon-button [md-menu-trigger-for]="menu">
-        <ion-icon name="menu"></ion-icon>
-      </button>
-      <md-menu  #menu="mdMenu">
-        <button md-menu-item> Refresh </button>
-        <button md-menu-item> Settings </button>
-        <button md-menu-item> Help </button>
-        <button md-menu-item disabled> Sign Out </button>
-      </md-menu>
-    </div>
+  <div class="one">
+    <p><img md-card-sm-image src="../../assets/img/chamb.png"/></p>
+    <p><img md-card-sm-image src="../../assets/img/etage.png"/></p>
+    <p><img md-card-sm-image src="../../assets/img/calendarin.png"/></p>
+    <p><img md-card-sm-image src="../../assets/img/numdoss.png"/></p>
+    <p><img md-card-sm-image src="../../assets/img/idcard.png"/></p>
   </div>
+  <div class="two">
+    <p><strong>Chambre: </strong></p>
+    <p><strong>Etage: </strong></p>
+    <p><strong>Date Admission: </strong></p>
+    <p><strong>Numéro Dossier: </strong></p>
+    <p><strong>Identifiant: </strong></p>
+  </div>
+  <div class="three">
 
 
+  </div>
 
 </ion-content>
