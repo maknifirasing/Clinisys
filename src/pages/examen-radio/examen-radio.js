@@ -16,6 +16,8 @@ import { HistDossierService } from "../../services/HistDossierService";
 import { File, Transfer } from 'ionic-native';
 import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 import { DocumentService } from "../../services/DocumentService";
+import { ExamenRadioTService } from "../../services/ExamenRadioTService";
+import { ExamenRadioFService } from "../../services/ExamenRadioFService";
 var ExamenRadioPage = (function () {
     function ExamenRadioPage(navCtrl, navParams, Url, platform, themeableBrowser, alertCtrl) {
         var _this = this;
@@ -32,21 +34,22 @@ var ExamenRadioPage = (function () {
         this.histD = [];
         this.histd = new HistDossier();
         this.storageDirectory = '';
-        this.examenRF = navParams.get("examenRF");
-        this.examenRT = navParams.get("examenRT");
         this.tabLangue = navParams.get("tabLangue");
         this.pass = navParams.get("pass");
+        this.examenRF = navParams.get("examenRF");
+        this.examenRT = navParams.get("examenRT");
         this.codeClinique = navParams.get("codeClinique");
         this.langue = navParams.get("langue");
-        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
         Variables.checconnection().then(function (connexion) {
             if (connexion === false) {
                 _this.connection = false;
+                _this.GetExamenRadioByNumDossResponseOff(_this.pass.getdossier(), _this.codeClinique);
             }
             else {
                 _this.connection = true;
             }
         });
+        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
     }
     ExamenRadioPage.prototype.ionViewDidLoad = function () {
     };
@@ -68,28 +71,32 @@ var ExamenRadioPage = (function () {
                 // exit otherwise, but you could add further types here e.g. Windows
                 return false;
             }
-            if (_this.connection === false) {
-                _this.docserv = new DocumentService();
-                _this.docserv.getDocuments(_this.document, observ, _this.codeClinique).then(function (res) {
-                    _this.retrieveImageOff(res);
-                });
-            }
-            else {
-                var d = new Document();
-                d.seturl(_this.storageDirectory + observ);
-                d.setobserv(observ);
-                d.setcodeClinique(_this.codeClinique);
-                _this.document.push(d);
-                _this.docserv = new DocumentService();
-                _this.docserv.verifDocument(_this.document, observ, _this.codeClinique).then(function (res) {
-                    if (res === false) {
-                        _this.docserv.getDocuments(_this.document, observ, _this.codeClinique);
-                    }
-                });
-                _this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
-                _this.open(_this.url);
-                _this.retrieveImage(_this.url, d);
-            }
+            Variables.checconnection().then(function (connexion) {
+                if (connexion === false) {
+                    _this.connection = false;
+                    _this.docserv = new DocumentService();
+                    _this.docserv.getDocuments(_this.document, observ, _this.codeClinique).then(function (res) {
+                        _this.retrieveImageOff(res);
+                    });
+                }
+                else {
+                    _this.connection = true;
+                    var d = new Document();
+                    d.seturl(_this.storageDirectory + observ);
+                    d.setobserv(observ);
+                    d.setcodeClinique(_this.codeClinique);
+                    _this.document.push(d);
+                    _this.docserv = new DocumentService();
+                    _this.docserv.verifDocument(_this.document, observ, _this.codeClinique).then(function (res) {
+                        if (res === false) {
+                            _this.docserv.getDocuments(_this.document, observ, _this.codeClinique);
+                        }
+                    });
+                    _this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
+                    _this.open(_this.url);
+                    _this.retrieveImage(_this.url, d);
+                }
+            });
         });
     };
     ExamenRadioPage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
@@ -149,23 +156,23 @@ var ExamenRadioPage = (function () {
             var fileTransfer = new Transfer();
             fileTransfer.download(url, _this.storageDirectory + doc.getobserv()).then(function (entry) {
                 /*    const alertSuccess = this.alertCtrl.create({
-                      title: `Download Succeeded!`,
-                      subTitle: `${doc.getobserv()} was successfully downloaded to: ${entry.toURL()}`,
-                      buttons: ['Ok']
-                    });
-            
-                    alertSuccess.present();
-                    */
+                 title: `Download Succeeded!`,
+                 subTitle: `${doc.getobserv()} was successfully downloaded to: ${entry.toURL()}`,
+                 buttons: ['Ok']
+                 });
+        
+                 alertSuccess.present();
+                 */
             }, function (error) {
                 /*
-                        const alertFailure = this.alertCtrl.create({
-                          title: `Download Failed!`,
-                          subTitle: `${doc.getobserv()} was not successfully downloaded. Error code: ${error.code}`,
-                          buttons: ['Ok']
-                        });
-                
-                        alertFailure.present();
-                */
+                 const alertFailure = this.alertCtrl.create({
+                 title: `Download Failed!`,
+                 subTitle: `${doc.getobserv()} was not successfully downloaded. Error code: ${error.code}`,
+                 buttons: ['Ok']
+                 });
+        
+                 alertFailure.present();
+                 */
             });
         });
     };
@@ -175,13 +182,13 @@ var ExamenRadioPage = (function () {
         File.checkFile(this.storageDirectory, file)
             .then(function () {
             /*    const alertSuccess = this.alertCtrl.create({
-                  title: `File retrieval Succeeded!`,
-                  subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
-                  buttons: ['Ok']
-                });
-        
-                return alertSuccess.present();
-        */
+             title: `File retrieval Succeeded!`,
+             subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
+             buttons: ['Ok']
+             });
+    
+             return alertSuccess.present();
+             */
         })
             .catch(function (err) {
             /*
@@ -202,13 +209,13 @@ var ExamenRadioPage = (function () {
             _this.url = doc.geturl();
             _this.open(_this.url);
             /*    const alertSuccess = this.alertCtrl.create({
-                  title: `File retrieval Succeeded!`,
-                  subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
-                  buttons: ['Ok']
-                });
-        
-                return alertSuccess.present();
-        */
+             title: `File retrieval Succeeded!`,
+             subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
+             buttons: ['Ok']
+             });
+    
+             return alertSuccess.present();
+             */
         })
             .catch(function (err) {
             /*
@@ -219,6 +226,12 @@ var ExamenRadioPage = (function () {
              });
              return alertFailure.present();*/
         });
+    };
+    ExamenRadioPage.prototype.GetExamenRadioByNumDossResponseOff = function (numDoss, codeClinique) {
+        this.RadiosTs = new ExamenRadioTService();
+        this.examenRT = this.RadiosTs.getExamenRadios(this.examenRT, numDoss, codeClinique);
+        this.RadiosFs = new ExamenRadioFService();
+        this.examenRF = this.RadiosFs.getExamenRadios(this.examenRF, numDoss, codeClinique);
     };
     return ExamenRadioPage;
 }());

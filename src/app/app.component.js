@@ -126,7 +126,7 @@ var MyApp = (function () {
                       this.nav.setRoot(LanguesPage);
                     }
                   });
-                  */
+            */
             _this.nav.setRoot(LanguesPage);
             StatusBar.styleDefault();
             Splashscreen.hide();

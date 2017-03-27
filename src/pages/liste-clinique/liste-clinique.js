@@ -8,31 +8,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, Platform, ViewController } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
 import { Clinique } from "../../models/Clinique";
 import { HomePage } from "../home/home";
 import { CliniqueService } from "../../services/CliniqueService";
 var ListeCliniquePage = (function () {
-    function ListeCliniquePage(navCtrl, navParams, Url, viewCtrl) {
+    function ListeCliniquePage(navCtrl, navParams, Url, viewCtrl, platform) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
         this.viewCtrl = viewCtrl;
+        this.platform = platform;
         this.clinique = [];
         this.viewCtrl.showBackButton(false);
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
-        Variables.checconnection().then(function (connexion) {
-            if (connexion === false) {
-                _this.connection = false;
-                _this.ListCliniqueOff(_this.clinique);
-            }
-            else {
-                _this.connection = true;
-                _this.ListClinique();
-            }
+        this.platform.ready().then(function () {
+            Variables.checconnection().then(function (connexion) {
+                if (connexion === false) {
+                    _this.connection = false;
+                    _this.ListCliniqueOff(_this.clinique);
+                }
+                else {
+                    _this.connection = true;
+                    _this.ListClinique();
+                }
+            });
         });
     }
     ListeCliniquePage.prototype.ListClinique = function () {
@@ -88,7 +91,7 @@ ListeCliniquePage = __decorate([
         templateUrl: 'liste-clinique.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables, ViewController])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, ViewController, Platform])
 ], ListeCliniquePage);
 export { ListeCliniquePage };
 //# sourceMappingURL=liste-clinique.js.map

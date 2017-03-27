@@ -8,7 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { Patient } from '../../models/Patient';
 import { Variables } from "../../providers/variables";
 import { TabsPage } from "../tabs/tabs";
@@ -22,12 +22,13 @@ import { LanguesPage } from "../langues/langues";
 import { MenuController } from 'ionic-angular';
 import { MdMenuTrigger } from "@angular/material";
 var ListePage = (function () {
-    function ListePage(navCtrl, navParams, Url, menuCtrl) {
+    function ListePage(navCtrl, navParams, Url, menuCtrl, platform) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
         this.menuCtrl = menuCtrl;
+        this.platform = platform;
         this.patient = [];
         this.patientliste = [];
         this.datefeuille = [];
@@ -38,20 +39,22 @@ var ListePage = (function () {
         this.nomClinique = navParams.get("nomClinique");
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
-        Variables.checconnection().then(function (connexion) {
-            if (connexion === false) {
-                _this.connection = false;
-                _this.historiqueOff(_this.hist, "admin", "", "all", _this.codeClinique);
-                _this.listeOff(_this.patient, "admin", "", "all", _this.codeClinique);
-                _this.DateFeuilleOff(_this.datefeuille, _this.codeClinique);
-            }
-            else {
-                _this.connection = true;
-                _this.historique("admin", "", "all", _this.codeClinique);
-                _this.liste("admin", "", "all", _this.codeClinique);
-                _this.DateFeuille(_this.codeClinique);
-            }
-            _this.patientliste = _this.patient;
+        this.platform.ready().then(function () {
+            Variables.checconnection().then(function (connexion) {
+                if (connexion === false) {
+                    _this.connection = false;
+                    _this.historiqueOff(_this.hist, "admin", "", "all", _this.codeClinique);
+                    _this.listeOff(_this.patient, "admin", "", "all", _this.codeClinique);
+                    _this.DateFeuilleOff(_this.datefeuille, _this.codeClinique);
+                }
+                else {
+                    _this.connection = true;
+                    _this.historique("admin", "", "all", _this.codeClinique);
+                    _this.liste("admin", "", "all", _this.codeClinique);
+                    _this.DateFeuille(_this.codeClinique);
+                }
+                _this.patientliste = _this.patient;
+            });
         });
     }
     ListePage.prototype.someMethod = function () {
@@ -296,7 +299,7 @@ ListePage = __decorate([
         templateUrl: 'liste.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables, MenuController])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, MenuController, Platform])
 ], ListePage);
 export { ListePage };
 //# sourceMappingURL=liste.js.map

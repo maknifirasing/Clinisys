@@ -22,6 +22,7 @@ import { ListeCliniquePage } from "../pages/liste-clinique/liste-clinique";
 import { MaterialModule } from "@angular/material";
 import { TryPage } from "../pages/try/try";
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { SigneCourbePage } from "../pages/signe-courbe/signe-courbe";
 var AppModule = (function () {
     function AppModule() {
     }
@@ -43,7 +44,8 @@ AppModule = __decorate([
             ListPreanesthesiePage,
             LanguesPage,
             ListeCliniquePage,
-            TryPage
+            TryPage,
+            SigneCourbePage
         ],
         imports: [
             IonicModule.forRoot(MyApp),
@@ -64,7 +66,8 @@ AppModule = __decorate([
             ListPreanesthesiePage,
             LanguesPage,
             ListeCliniquePage,
-            TryPage
+            TryPage,
+            SigneCourbePage
         ],
         providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }]
     })

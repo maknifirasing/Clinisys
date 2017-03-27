@@ -70,6 +70,5 @@ export class LanguesPage {
         this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
       }
     });
-
   }
 }

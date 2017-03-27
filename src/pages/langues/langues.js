@@ -46,22 +46,22 @@ var LanguesPage = (function () {
         }
         this.langserv.getLangues(this.langes);
         /*
-         this.userserv = new UserService();
-         this.userserv.verifUser().then(res => {
-         if (res === true) {
-         this.userserv.getUser(this.users).then(user => {
-         this.codeClinique = user.getcodeClinique();
-         this.navCtrl.push(ListePage, {
-         tabLangue: this.tabLangue,
-         langue: lang,
-         codeClinique: this.codeClinique
-         });
-         });
-         } else {
-         this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
-         }
-         });
-         */
+            this.userserv = new UserService();
+            this.userserv.verifUser().then(res => {
+              if (res === true) {
+                this.userserv.getUser(this.users).then(user => {
+                  this.codeClinique = user.getcodeClinique();
+                  this.navCtrl.push(ListePage, {
+                    tabLangue: this.tabLangue,
+                    langue: lang,
+                    codeClinique: this.codeClinique
+                  });
+                });
+              } else {
+                this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
+              }
+            });
+        */
         this.navCtrl.push(ListeCliniquePage, { tabLangue: this.tabLangue, langue: lang });
     };
     return LanguesPage;

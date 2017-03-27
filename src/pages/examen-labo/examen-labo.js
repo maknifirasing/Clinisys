@@ -8,17 +8,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
 import { PdfViewPage } from "../pdf-view/pdf-view";
 import { HistDossier } from "../../models/HistDossier";
 import { HistDossierService } from "../../services/HistDossierService";
+import { LaboFService } from "../../services/LaboFService";
+import { LaboTService } from "../../services/LaboTService";
 var ExamenLaboPage = (function () {
-    function ExamenLaboPage(navCtrl, navParams, Url) {
+    function ExamenLaboPage(navCtrl, navParams, Url, platform) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
+        this.platform = platform;
         this.LabosT = [];
         this.LabosF = [];
         this.histD = [];
@@ -29,13 +32,16 @@ var ExamenLaboPage = (function () {
         this.langue = navParams.get("langue");
         this.LabosT = navParams.get("Labost");
         this.LabosF = navParams.get("Labosf");
-        Variables.checconnection().then(function (connexion) {
-            if (connexion === false) {
-                _this.connection = false;
-            }
-            else {
-                _this.connection = true;
-            }
+        this.platform.ready().then(function () {
+            Variables.checconnection().then(function (connexion) {
+                if (connexion === false) {
+                    _this.connection = false;
+                    _this.findAllLaboByNumDossierOff(_this.pass.getdossier(), _this.codeClinique);
+                }
+                else {
+                    _this.connection = true;
+                }
+            });
         });
         this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
     }
@@ -82,6 +88,12 @@ var ExamenLaboPage = (function () {
             _this.histd = res.getdate();
         });
     };
+    ExamenLaboPage.prototype.findAllLaboByNumDossierOff = function (numDoss, codeClinique) {
+        this.LabosFs = new LaboFService();
+        this.LabosF = this.LabosFs.getLabos(this.LabosF, numDoss, codeClinique);
+        this.LabosTs = new LaboTService();
+        this.LabosT = this.LabosTs.getLabos(this.LabosT, numDoss, codeClinique);
+    };
     return ExamenLaboPage;
 }());
 ExamenLaboPage = __decorate([
@@ -90,7 +102,7 @@ ExamenLaboPage = __decorate([
         templateUrl: 'examen-labo.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform])
 ], ExamenLaboPage);
 export { ExamenLaboPage };
 //# sourceMappingURL=examen-labo.js.map

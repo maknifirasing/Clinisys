@@ -8,10 +8,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
 import { HistDossier } from "../../models/HistDossier";
 import { HistDossierService } from "../../services/HistDossierService";
+import { ListPreanesthesieService } from "../../services/ListPreanesthesieService";
 /*
  Generated class for the ListPreanesthesie page.
 
@@ -19,11 +20,12 @@ import { HistDossierService } from "../../services/HistDossierService";
  Ionic pages and navigation.
  */
 var ListPreanesthesiePage = (function () {
-    function ListPreanesthesiePage(navCtrl, navParams, Url) {
+    function ListPreanesthesiePage(navCtrl, navParams, Url, platform) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
+        this.platform = platform;
         this.ListPreanesthesieByNumeroDossierTest = false;
         this.ListeP = [];
         this.histD = [];
@@ -33,13 +35,16 @@ var ListPreanesthesiePage = (function () {
         this.tabLangue = navParams.get("tabLangue");
         this.codeClinique = navParams.get("codeClinique");
         this.langue = navParams.get("langue");
-        Variables.checconnection().then(function (connexion) {
-            if (connexion === false) {
-                _this.connection = false;
-            }
-            else {
-                _this.connection = true;
-            }
+        this.platform.ready().then(function () {
+            Variables.checconnection().then(function (connexion) {
+                if (connexion === false) {
+                    _this.connection = false;
+                    _this.findListPreanesthesieByNumeroDossierResponseOff(_this.pass.getdossier(), _this.codeClinique);
+                }
+                else {
+                    _this.connection = true;
+                }
+            });
         });
         this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
     }
@@ -52,6 +57,10 @@ var ListPreanesthesiePage = (function () {
             _this.histd = res.getdate();
         });
     };
+    ListPreanesthesiePage.prototype.findListPreanesthesieByNumeroDossierResponseOff = function (numDoss, codeClinique) {
+        this.ListePserv = new ListPreanesthesieService();
+        this.ListeP = this.ListePserv.getListPreanesthesies(this.ListeP, numDoss, codeClinique);
+    };
     return ListPreanesthesiePage;
 }());
 ListPreanesthesiePage = __decorate([
@@ -60,7 +69,7 @@ ListPreanesthesiePage = __decorate([
         templateUrl: 'list-preanesthesie.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform])
 ], ListPreanesthesiePage);
 export { ListPreanesthesiePage };
 //# sourceMappingURL=list-preanesthesie.js.map

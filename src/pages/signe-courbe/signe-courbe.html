@@ -1,0 +1,49 @@
+<ion-header >
+  <ion-navbar color="custom-color" hideBackButton="true">
+    <div id="wrap" *ngIf="langue==='arabe'" dir="rtl">
+
+      <div class="two">
+        <p>{{tabLangue.titreEnligne}} {{histc}}</p>
+      </div>
+      <div class="three" *ngIf="(connection===true)">
+
+        <p> <img src="/android_asset/www/assets/img/green.png" width="20" height="20"></p>
+      </div>
+      <div class="three" *ngIf="(connection===false)">
+
+        <p> <img src="/android_asset/www/assets/img/red.png" width="20" height="20"></p>
+      </div>
+
+    </div>
+
+    <div id="wrap2" *ngIf="(langue==='francais' || langue==='anglais')">
+      <div class="oneFRANG" *ngIf="(connection===false)">
+        <p> <img src="/android_asset/www/assets/img/red.png" width="20" height="20"></p>
+      </div>
+      <div class="oneFRANG" *ngIf="(connection===true)">
+        <p> <img src="/android_asset/www/assets/img/green.png" width="20" height="20"></p>
+      </div>
+      <div class="two" *ngIf="(connection===true)">
+        <p>{{tabLangue.titreEnligne}} {{histc}}</p>
+      </div>
+      <div class="two" *ngIf="(connection===false)">
+        <p>{{tabLangue.titreHorsLigne}} {{histc}}</p>
+      </div>
+
+    </div>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ul>
+    <li (click)="cPouls(courbePouls)">Pouls</li>
+    <li (click)="cPouls(courbeTA)">T.A</li>
+    <li (click)="cPouls(courbeTemp)">courbeTemp</li>
+    <li (click)="cPouls(courbeSaturation)">courbeSaturation</li>
+    <li (click)="cPouls(courbeFrq)">courbeFrq</li>
+
+  </ul>
+  <canvas #lineCanvas></canvas>
+
+</ion-content>

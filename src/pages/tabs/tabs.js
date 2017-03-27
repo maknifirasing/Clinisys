@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Component, Injectable } from '@angular/core';
 import { DossierPage } from "../dossier/dossier";
-import { NavParams } from 'ionic-angular';
+import { NavParams, Platform } from 'ionic-angular';
 import { ExamenRadioPage } from "../examen-radio/examen-radio";
 import { ListPreanesthesiePage } from "../list-preanesthesie/list-preanesthesie";
 import { ExamenLaboPage } from "../examen-labo/examen-labo";
@@ -27,10 +27,11 @@ import { ListPreanesthesie } from "../../models/ListPreanesthesie";
 import { ListPreanesthesieService } from "../../services/ListPreanesthesieService";
 import { tabBadgeListPreanesthesie } from "../../services/tabBadgeListPreanesthesie";
 var TabsPage = (function () {
-    function TabsPage(navParams, Url) {
+    function TabsPage(navParams, Url, platform) {
         var _this = this;
         this.navParams = navParams;
         this.Url = Url;
+        this.platform = platform;
         this.tab1Root = DossierPage;
         this.tab2Root = ExamenRadioPage;
         this.tab3Root = ListPreanesthesiePage;
@@ -65,20 +66,21 @@ var TabsPage = (function () {
             langue: this.langue,
             tabLangue: this.tabLangue, codeClinique: this.codeClinique
         };
-        console.log(this.tabLangue);
-        Variables.checconnection().then(function (connexion) {
-            if (connexion === false) {
-                _this.connection = false;
-                _this.findAllLaboByNumDossierOff(_this.pass.getdossier(), _this.codeClinique);
-                _this.GetExamenRadioByNumDossResponseOff(_this.pass.getdossier(), _this.codeClinique);
-                _this.findListPreanesthesieByNumeroDossierResponseOff(_this.ListeP, _this.pass.getdossier(), _this.codeClinique);
-            }
-            else {
-                _this.connection = true;
-                _this.findAllLaboByNumDossier(_this.pass.getdossier(), _this.codeClinique);
-                _this.GetExamenRadioByNumDossResponse(_this.pass.getdossier(), _this.codeClinique);
-                _this.findListPreanesthesieByNumeroDossierResponse(_this.pass.getdossier(), _this.codeClinique);
-            }
+        this.platform.ready().then(function () {
+            Variables.checconnection().then(function (connexion) {
+                if (connexion === false) {
+                    _this.connection = false;
+                    _this.findAllLaboByNumDossierOff(_this.pass.getdossier(), _this.codeClinique);
+                    _this.GetExamenRadioByNumDossResponseOff(_this.pass.getdossier(), _this.codeClinique);
+                    _this.findListPreanesthesieByNumeroDossierResponseOff(_this.pass.getdossier(), _this.codeClinique);
+                }
+                else {
+                    _this.connection = true;
+                    _this.findAllLaboByNumDossier(_this.pass.getdossier(), _this.codeClinique);
+                    _this.GetExamenRadioByNumDossResponse(_this.pass.getdossier(), _this.codeClinique);
+                    _this.findListPreanesthesieByNumeroDossierResponse(_this.pass.getdossier(), _this.codeClinique);
+                }
+            });
         });
     }
     TabsPage.prototype.ionViewDidLoad = function () {
@@ -201,10 +203,6 @@ var TabsPage = (function () {
     };
     TabsPage.prototype.GetExamenRadioByNumDossResponseOff = function (numDoss, codeClinique) {
         var _this = this;
-        this.RadiosTs = new ExamenRadioTService();
-        this.examenRT = this.RadiosTs.getExamenRadios(this.examenRT, numDoss, codeClinique);
-        this.RadiosFs = new ExamenRadioFService();
-        this.examenRF = this.RadiosFs.getExamenRadios(this.examenRF, numDoss, codeClinique);
         this.countDocs = new tabBadgeRadioService();
         this.countDocs.getTabBadgeRadio(this.tabgRadio, numDoss, codeClinique).then(function (res) {
             _this.coountexamenR = res.getFichier();
@@ -304,10 +302,6 @@ var TabsPage = (function () {
     };
     TabsPage.prototype.findAllLaboByNumDossierOff = function (numDoss, codeClinique) {
         var _this = this;
-        this.LabosFs = new LaboFService();
-        this.LabosF = this.LabosFs.getLabos(this.LabosF, numDoss, codeClinique);
-        this.LabosTs = new LaboTService();
-        this.LabosT = this.LabosTs.getLabos(this.LabosT, numDoss, codeClinique);
         this.countPdfs = new tabBadgeLaboService();
         this.countPdfs.getTabBadgeLabo(this.tabgLabo, numDoss, codeClinique).then(function (res) {
             _this.countPdf = res.getFichier();
@@ -408,10 +402,8 @@ var TabsPage = (function () {
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };
-    TabsPage.prototype.findListPreanesthesieByNumeroDossierResponseOff = function (ListeP, numDoss, codeClinique) {
+    TabsPage.prototype.findListPreanesthesieByNumeroDossierResponseOff = function (numDoss, codeClinique) {
         var _this = this;
-        this.ListePserv = new ListPreanesthesieService();
-        this.ListeP = this.ListePserv.getListPreanesthesies(ListeP, numDoss, codeClinique);
         this.countListPreanesthesiess = new tabBadgeListPreanesthesie();
         this.countListPreanesthesiess.getTabBadgeList(this.ListPreanesthesies, numDoss, codeClinique).then(function (res) {
             _this.coountListPreanesthesie = res.getFichier();
@@ -426,7 +418,7 @@ TabsPage = __decorate([
         providers: [Variables]
     }),
     Injectable(),
-    __metadata("design:paramtypes", [NavParams, Variables])
+    __metadata("design:paramtypes", [NavParams, Variables, Platform])
 ], TabsPage);
 export { TabsPage };
 //# sourceMappingURL=tabs.js.map
