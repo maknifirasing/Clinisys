@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {Client} from "../../models/Client";
 import {Variables} from "../../providers/variables";
 import {DetailPerPagePage} from "../detail-per-page/detail-per-page";
 import {SigneCourbe} from "../../models/SigneCourbe";
-
+import { Chart } from 'chart.js';
+import  {} from 'chartjs-plugin-zoom';
 /*
   Generated class for the ClientDetail page.
 
@@ -17,11 +18,146 @@ import {SigneCourbe} from "../../models/SigneCourbe";
   providers: [Variables]
 })
 export class ClientDetailPage {
+  @ViewChild('barCanvas') barCanvas;
+  @ViewChild('doughnutCanvas') doughnutCanvas;
+  @ViewChild('lineCanvas') lineCanvas;
+
+  barChart: any;
+  doughnutChart: any;
+  lineChart: any;
+
   test:string;
   courbePouls: Array<SigneCourbe> = [];
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
 this.getChartSurveillance("16002649");
   }
+
+  ionViewDidLoad() {
+    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
+
+      type: 'line',
+
+        data: {
+          labels: ["January", "February", "March", "April", "May", "June", "July"],
+          datasets: [
+            {
+              label: "My First dataset",
+              fill: false,
+              lineTension: 0.1,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data: [65, 59, 80, 81, 56, 55, 40],
+              spanGaps: false,
+            }
+          ],
+        },
+      options:{  pan: {
+        // Boolean to enable panning
+        enabled: true,
+
+        // Panning directions. Remove the appropriate direction to disable
+        // Eg. 'y' would only allow panning in the y direction
+        mode: 'xy'
+      },
+
+        // Container for zoom options
+        zoom: {
+          // Boolean to enable zooming
+          enabled: true,
+
+          // Zooming directions. Remove the appropriate direction to disable
+          // Eg. 'y' would only allow zooming in the y direction
+          mode: 'xy',
+        }}
+
+
+      });
+   /* this.lineChart = new Chart(this.lineCanvas.nativeElement, {
+
+      type: 'line',
+    "scale-x": {
+    "zooming":true,
+    "zoom-to":[0,50],
+    "item":{
+    "font-size":10
+    },
+    "scale-y": {
+    "zooming":true,
+    "zoom-to":[100,200],
+    "values": "50:350:50",
+    "guide":{
+    "line-style":"dotted"
+    },
+    "item":{
+    "font-size":10
+    }
+    },
+      data: {
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [
+          {
+            label: "My First dataset",
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgba(75,192,192,0.4)",
+            borderColor: "rgba(75,192,192,1)",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: [65, 59, 80, 81, 56, 55, 40],
+            spanGaps: false,
+          }
+        ],
+        options:{
+          scales: {
+            xAxes:[{
+              "zooming":true
+            }]
+          }
+        }
+      }
+
+    });*/
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   goToHomePage(){
 
     this.navCtrl.push(DetailPerPagePage);
