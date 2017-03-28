@@ -24,6 +24,8 @@ import {AntechService} from "../../services/AntechService";
 import {HistDossierService} from "../../services/HistDossierService";
 import {HistDossier} from "../../models/HistDossier";
 import {SigneCourbePage} from "../signe-courbe/signe-courbe";
+import {ClientDetailPage} from "../client-detail/client-detail";
+import {DetailPerPagePage} from "../detail-per-page/detail-per-page";
 
 @Component({
   selector: 'page-dossier',
@@ -356,6 +358,12 @@ export class DossierPage {
         this.Alerg = true;
       }
     });
+  }
+
+  PageDetail(patient){
+    console.log("aaaaaaaaa"+patient.getnom());
+    this.navCtrl.push(DetailPerPagePage, {image:patient.getimg(),nom:patient.getnom(),prenom:patient.getprenom(),age:patient.getage(),numDoss:patient.getdossier()});
+//this.navCtrl.push(DetailPerPagePage);
   }
 
   DeletegetAntecedentAllergieByIdentifiant(idpass, codeClinique) {

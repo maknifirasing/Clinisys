@@ -1,70 +1,36 @@
 <ion-header >
   <ion-navbar color="custom-color" hideBackButton="true">
-  <div id="wrap" *ngIf="langue==='arabe'" dir="rtl">
-    <div class="one">
-      <button md-icon-button [md-menu-trigger-for]="menu">
-        <ion-icon name="menu"></ion-icon>
-      </button>
-      <md-menu  #menu="mdMenu">
+    <div id="wrap" *ngIf="langue==='arabe'" dir="rtl">
+      <div class="one">
+        <button md-icon-button [md-menu-trigger-for]="menu">
+          <ion-icon name="menu"></ion-icon>
+        </button>
+        <md-menu  #menu="mdMenu">
 
-        <button md-menu-item style="text-align: center" >** {{nomClinique}} ** </button>
-        <button md-menu-item> {{tabLangue.titreSync}} </button>
+          <button md-menu-item style="text-align: center" >** {{nomClinique}} ** </button>
+          <button md-menu-item> {{tabLangue.titreSync}} </button>
 
-        <button md-menu-item> {{tabLangue.titreMod}} </button>
-        <button md-menu-item> {{tabLangue.titreChangClini}} </button>
-        <button menuClose md-menu-item (click)="changerlangue()"> {{tabLangue.titreChangLangue}} </button>
-        <button menuClose md-menu-item (click)="deconnexion()"> {{tabLangue.titreDeconnexion}} </button>
-      </md-menu>
-     <!-- <button ion-button menuToggle class="md-icon-buttonArr" #content>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-      <ion-menu side="right" [content]="content">
-        <ion-header>
-          <ion-toolbar>
-            <ion-title>Menu</ion-title>
-          </ion-toolbar>
-        </ion-header>
-        <ion-content>
+          <button md-menu-item> {{tabLangue.titreMod}} </button>
+          <button md-menu-item> {{tabLangue.titreChangClini}} </button>
+          <button menuClose md-menu-item (click)="changerlangue()"> {{tabLangue.titreChangLangue}} </button>
+          <button menuClose md-menu-item (click)="deconnexion()"> {{tabLangue.titreDeconnexion}} </button>
+        </md-menu>
+      </div>
+      <div class="two">
+        <p>{{tabLangue.titreEnligne}} {{histl}}</p>
+      </div>
+      <div class="three" *ngIf="(connection===true)">
 
-            <button menuClose md-menu-item style="text-align: center">** {{nomClinique}} ** </button>
-            <button menuClose md-menu-item> {{tabLangue.titreSync}} </button>
+        <p> <img src="/android_asset/www/assets/img/green.png" width="20" height="20"></p>
+      </div>
+      <div class="three" *ngIf="(connection===false)">
 
-            <button menuClose md-menu-item> {{tabLangue.titreMod}} </button>
-            <button menuClose md-menu-item> {{tabLangue.titreChangClini}} </button>
-            <button menuClose md-menu-item (click)="changerlangue()"> {{tabLangue.titreChangLangue}} </button>
-            <button menuClose md-menu-item (click)="deconnexion()"> {{tabLangue.titreDeconnexion}} </button>
+        <p> <img src="/android_asset/www/assets/img/red.png" width="20" height="20"></p>
+      </div>
 
-        </ion-content>
-      </ion-menu>-->
-   <!--   <md-menu  #menu="mdMenu">
 
-        <button md-menu-item style="text-align: center">** {{nomClinique}} ** </button>
-        <button md-menu-item> {{tabLangue.titreSync}} </button>
-
-        <button md-menu-item> {{tabLangue.titreMod}} </button>
-        <button md-menu-item> {{tabLangue.titreChangClini}} </button>
-        <button md-menu-item (click)="changerlangue()"> {{tabLangue.titreChangLangue}} </button>
-        <button md-menu-item (click)="deconnexion()"> {{tabLangue.titreDeconnexion}} </button>
-        <!-- <button md-menu-item> Help </button>
-         <button md-menu-item disabled> Sign Out </button>
-      </md-menu>-->
 
     </div>
-    <div class="two">
-      <p>{{tabLangue.titreEnligne}} {{histl}}</p>
-    </div>
-    <div class="three" *ngIf="(connection===true)">
-
-      <p> <img src="/android_asset/www/assets/img/green.png" width="20" height="20"></p>
-    </div>
-    <div class="three" *ngIf="(connection===false)">
-
-      <p> <img src="/android_asset/www/assets/img/red.png" width="20" height="20"></p>
-    </div>
-
-
-
-  </div>
 
     <div id="wrap2" *ngIf="(langue==='francais' || langue==='anglais')">
       <div class="oneFRANG" *ngIf="(connection===false)">
@@ -93,78 +59,13 @@
           <button md-menu-item> {{tabLangue.titreChangClini}} </button>
           <button menuClose md-menu-item (click)="changerlangue()"> {{tabLangue.titreChangLangue}} </button>
           <button menuClose md-menu-item (click)="deconnexion()"> {{tabLangue.titreDeconnexion}} </button>
-          <!-- <button md-menu-item> Help </button>
-           <button md-menu-item disabled> Sign Out </button>-->
+
         </md-menu>
 
 
 
       </div>
-         </div>
-<!--  <md-card class="md-card" *ngIf="langue==='arabe' && (connection===true)" dir="rtl"
-  >
-    <div>
-
-      <img md-card-sm-avatar src="/android_asset/www/assets/img/green.png" width="10" height="10">
-      <button md-icon-button [md-menu-trigger-for]="menu">
-        <ion-icon name="menu"></ion-icon>
-      </button>
-      <md-menu  #menu="mdMenu">
-        <button md-menu-item disabled> ** Csys Demo ** </button>
-        <button md-menu-item> Synchroniser </button>
-        <button md-menu-item> Modifier Mot de Passe </button>
-        <button md-menu-item> Changer Clinique </button>
-        <button md-menu-item> Deconnexion </button>
-        <!-- <button md-menu-item> Help </button>
-         <button md-menu-item disabled> Sign Out </button>-->
-   <!--   </md-menu>
-      {{tabLangue.titreEnligne}} {{histl}}
     </div>
-
-  </md-card>
-  <md-card class="md-card" *ngIf="langue==='arabe' && (connection===false)" dir="rtl"
-  >
-
-    <div>
-      <img md-card-sm-avatar src="/android_asset/www/assets/img/red.png" width="10" height="10">
-      <button md-icon-button [md-menu-trigger-for]="menu">
-        <ion-icon name="menu"></ion-icon>
-      </button>
-      <md-menu  #menu="mdMenu">
-        <button md-menu-item disabled> ** Csys Demo ** </button>
-        <button md-menu-item> Synchroniser </button>
-        <button md-menu-item> Modifier Mot de Passe </button>
-        <button md-menu-item> Changer Clinique </button>
-        <button md-menu-item> Deconnexion </button>
-        <!-- <button md-menu-item> Help </button>
-         <button md-menu-item disabled> Sign Out </button>-->
-     <!-- </md-menu>
-      {{tabLangue.titreHorsLigne}} {{histl}}
-    </div>
-  </md-card>-->
-
- <!-- <md-card class="md-card" *ngIf="(langue==='francais' || langue==='anglais') && (connection===true)"
-  >
-    <div>
-      <img md-card-sm-avatar src="/android_asset/www/assets/img/green.png" width="10" height="10">
-      <button ion-button menuToggle class="md-icon-button">
-        <ion-icon name="menu"></ion-icon>
-      </button>
-      {{tabLangue.titreEnligne}} {{histl}}
-    </div>
-
-  </md-card>
-  <md-card class="md-card" *ngIf="(langue==='francais' || langue==='anglais') && (connection===false)"
-  >
-
-    <div>
-      <img md-card-sm-avatar src="/android_asset/www/assets/img/red.png" width="10" height="10">
-      <button ion-button menuToggle class="md-icon-button">
-        <ion-icon name="menu"></ion-icon>
-      </button>
-      {{tabLangue.titreHorsLigne}} {{histl}}
-    </div>
-  </md-card>-->
   </ion-navbar>
   <ion-navbar *ngIf="langue==='arabe'" dir="rtl" hideBackButton="true">
 
@@ -182,6 +83,7 @@
     <p></p>
   </ion-navbar>
 </ion-header>
+
 <ion-content>
   <ion-refresher (ionRefresh)="doRefresh($event)" *ngIf="connection===true">
     <ion-refresher-content
@@ -233,3 +135,5 @@
       </div>
 
     </md-card-content>
+  </md-card>
+</ion-content>

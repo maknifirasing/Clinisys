@@ -178,7 +178,6 @@ export class ExamenRadioPage {
          subTitle: `${doc.getobserv()} was successfully downloaded to: ${entry.toURL()}`,
          buttons: ['Ok']
          });
-
          alertSuccess.present();
          */
       }, (error) => {
@@ -188,7 +187,6 @@ export class ExamenRadioPage {
          subTitle: `${doc.getobserv()} was not successfully downloaded. Error code: ${error.code}`,
          buttons: ['Ok']
          });
-
          alertFailure.present();
          */
       });
@@ -207,7 +205,6 @@ export class ExamenRadioPage {
          subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
          buttons: ['Ok']
          });
-
          return alertSuccess.present();
          */
       })
@@ -236,7 +233,6 @@ export class ExamenRadioPage {
          subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
          buttons: ['Ok']
          });
-
          return alertSuccess.present();
          */
       })

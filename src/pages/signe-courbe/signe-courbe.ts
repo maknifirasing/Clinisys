@@ -196,8 +196,6 @@ export class SigneCourbePage {
 
     this.sgcFserv = new SigneCourbeFrqService();
     this.courbeFrq = this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique);
-
-    this.cPouls(this.courbePouls);
   }
 
   cPouls(courbe) {
@@ -207,7 +205,7 @@ export class SigneCourbePage {
 
     for (var i = 0; i < courbe.length; i++) {
       labelcourbe.push((courbe[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbe[i].getdateHeurePrise()).substr(5, 2) + "-" + courbe[i].getheurePrise());
-      data.push(courbe[i].getquantite())
+      data.push(courbe[i].getquantite());
     }
 
 
@@ -245,11 +243,11 @@ export class SigneCourbePage {
           }
           ],
           xAxes: [{
-       //     scaleOverride: true,
-       //     scaleSteps: 3,
+            //     scaleOverride: true,
+            //     scaleSteps: 3,
             //     scaleStepWidth: Math.ceil(max / steps),
-            ticks: {min: data[0], max: data[data.length]},
-     //       scaleStartValue: data[data.length - 3]
+            ticks: {min: labelcourbe[0], max: labelcourbe[labelcourbe.length]},
+            //       scaleStartValue: data[data.length - 3]
           }]
         }
       }
@@ -328,7 +326,6 @@ export class SigneCourbePage {
     this.DeletegetChartSurveillance(this.pass.getdossier(), this.codeClinique);
     this.getChartSurveillance(this.pass.getdossier(), this.codeClinique);
     this.historique(this.pass.getdossier(), this.codeClinique);
-    this.cPouls(this.courbePouls);
   }
 
 

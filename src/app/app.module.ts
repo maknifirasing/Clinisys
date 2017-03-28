@@ -14,9 +14,11 @@ import {ListPreanesthesiePage} from "../pages/list-preanesthesie/list-preanesthe
 import {LanguesPage} from "../pages/langues/langues";
 import {ListeCliniquePage} from "../pages/liste-clinique/liste-clinique";
 import {MaterialModule} from "@angular/material";
-import {TryPage} from "../pages/try/try";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {SigneCourbePage} from "../pages/signe-courbe/signe-courbe";
+import {NotificationPage} from "../pages/notification/notification";
+import {ClientDetailPage} from "../pages/client-detail/client-detail";
+
 @NgModule({
   declarations: [
     MyApp,
@@ -32,8 +34,9 @@ import {SigneCourbePage} from "../pages/signe-courbe/signe-courbe";
     ListPreanesthesiePage,
     LanguesPage,
     ListeCliniquePage,
-    TryPage,
-    SigneCourbePage
+    SigneCourbePage,
+    NotificationPage,
+    ClientDetailPage
 
   ],
   imports: [
@@ -55,9 +58,9 @@ import {SigneCourbePage} from "../pages/signe-courbe/signe-courbe";
     ListPreanesthesiePage,
     LanguesPage,
     ListeCliniquePage,
-    TryPage,
-    SigneCourbePage
-
+    SigneCourbePage,
+    NotificationPage,
+    ClientDetailPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
