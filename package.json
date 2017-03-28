@@ -24,7 +24,7 @@
     "@ionic-native/core": "^3.1.1",
     "@ionic-native/file": "^3.2.1",
     "@ionic-native/file-opener": "^3.2.1",
-    "@ionic-native/screen-orientation": "^3.2.2",
+    "@ionic-native/screen-orientation": "^3.3.1",
     "@ionic-native/themeable-browser": "^3.1.1",
     "@ionic-native/transfer": "^3.1.0",
     "@ionic/storage": "2.0.0",
@@ -53,7 +53,8 @@
     "cordova-plugin-statusbar",
     "cordova-plugin-device",
     "cordova-plugin-splashscreen",
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard",
+    "cordova-plugin-screen-orientation"
   ],
   "cordovaPlatforms": [],
   "description": "Clinisys: An Ionic project"

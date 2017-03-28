@@ -137,7 +137,7 @@ export class UserService {
     }).then(() => {
       db.executeSql("delete from Users ", [])
         .then(() => {
-          alert("Suppression de table User est terminé avec succes");
+     //     alert("Suppression de table User est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);

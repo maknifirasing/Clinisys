@@ -20,7 +20,8 @@ export class HomePage {
   userserv: any;
   codeClinique: string;
   langue: any;
-  nomClinique:string;
+  nomClinique: string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.codeClinique = this.navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
@@ -82,7 +83,7 @@ export class HomePage {
                   tabLangue: this.tabLangue,
                   langue: this.langue,
                   codeClinique: this.codeClinique,
-                  nomClinique:this.nomClinique
+                  nomClinique: this.nomClinique
                 });
               }
               else {
@@ -102,29 +103,6 @@ export class HomePage {
     } catch (Error) {
       this.errConn = this.tabLangue.errConn;
     }
-  }
-
-  verifuser() {
-    this.userserv = new UserService();
-    alert("ee4 " + this.userserv.verifUser(this.codeClinique));
-  }
-
-
- /* checkNetwork() {
-    Variables.checconnection().then(connexion=> {
-   alert("connexion " +connexion);
-      });
-  }
-*/
-  checkNetwork() {
-    console.log("connexion " + Variables.checconnection());
-  //  alert("connexion " + Variables.checconnection());
-  }
-
-  doesConnectionExist() {
-    Variables.checservice().then(res => {
-      alert("serv " + res);
-    });
   }
 
   conn() {
