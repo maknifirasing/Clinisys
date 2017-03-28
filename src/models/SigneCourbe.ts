@@ -11,7 +11,7 @@ export class SigneCourbe {
 
   constructor() {
   }
-  
+
   getcodePosologie(): string {
     return this._codePosologie;
   }

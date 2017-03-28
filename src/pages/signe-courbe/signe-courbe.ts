@@ -1,18 +1,16 @@
 import {Component, ViewChild} from '@angular/core';
-import {NavController, NavParams, Platform} from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import {Chart} from 'chart.js';
 import {SigneCourbe} from "../../models/SigneCourbe";
 import {Variables} from "../../providers/variables";
-import {max} from "rxjs/operator/max";
-import {min} from "rxjs/operator/min";
 import {SigneCourbePoulsService} from "../../services/SigneCourbePoulsService";
-import {HistDossierService} from "../../services/HistDossierService";
 import {HistDossier} from "../../models/HistDossier";
 import {SigneCourbeFrqService} from "../../services/SigneCourbeFrqService";
 import {SigneCourbeSaturationService} from "../../services/SigneCourbeSaturationService";
 import {SigneCourbeTAService} from "../../services/SigneCourbeTAService";
 import {SigneCourbeTempService} from "../../services/SigneCourbeTempService";
 import {HistSigneCourbeService} from "../../services/HistSigneCourbeService";
+//import {ScreenOrientation} from '@ionic-native/screen-orientation';
 
 @Component({
   selector: 'page-signe-courbe',
@@ -43,7 +41,9 @@ export class SigneCourbePage {
   private sgcFserv: any;
   private langue: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+    //   this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.pass = navParams.get("pass");
@@ -52,18 +52,18 @@ export class SigneCourbePage {
       if (connexion === false) {
         this.connection = false;
         this.getChartSurveillanceOff(this.pass.getdossier(), this.codeClinique);
-        this.historiqueOff(this.histC, this.pass.getdossier(), this.codeClinique)
+        this.historiqueOff(this.histC, this.pass.getdossier(), this.codeClinique);
       }
       else {
         this.connection = true;
-
         this.update();
       }
     });
-
   }
 
   ionViewDidLoad() {
+
+
   }
 
   getChartSurveillance(numdoss, codeClinique) {
@@ -149,8 +149,7 @@ export class SigneCourbePage {
               this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique);
             }
           });
-
-
+          this.cPouls(this.courbePouls);
         }
       }
     }
@@ -198,6 +197,7 @@ export class SigneCourbePage {
     this.sgcFserv = new SigneCourbeFrqService();
     this.courbeFrq = this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique);
 
+    this.cPouls(this.courbePouls);
   }
 
   cPouls(courbe) {
@@ -245,10 +245,11 @@ export class SigneCourbePage {
           }
           ],
           xAxes: [{
-            scaleOverride: true,
-            scaleSteps: 3,
+       //     scaleOverride: true,
+       //     scaleSteps: 3,
             //     scaleStepWidth: Math.ceil(max / steps),
-            scaleStartValue: data[data.length - 3]
+            ticks: {min: data[0], max: data[data.length]},
+     //       scaleStartValue: data[data.length - 3]
           }]
         }
       }
@@ -327,6 +328,7 @@ export class SigneCourbePage {
     this.DeletegetChartSurveillance(this.pass.getdossier(), this.codeClinique);
     this.getChartSurveillance(this.pass.getdossier(), this.codeClinique);
     this.historique(this.pass.getdossier(), this.codeClinique);
+    this.cPouls(this.courbePouls);
   }
 
 

@@ -1,32 +1,55 @@
 page-examen-radio {
-  .size{
-    font-size: 80%;
+  #GlobalSigne{
+    margin-right:-50px;
+
+  }
+  #GlobalSigne #gaucheSigne {
+    float:left;
+    width:60%;
+  }
+  #GlobalSigne #droiteSigne {
+    margin-left:70%;
+
+  }
+  #GlobalTrait{
+    margin-right:-50px;
+
+  }
+  #GlobalTrait #gaucheTrait {
+    float:left;
+    width:60%;
+  }
+  #GlobalTrait #droiteTrait {
+    margin-left:70%;
+
+  }
+  .img{
+    font-size: 50px;
+  }
+  ion-scroll {
+    white-space: nowrap;
+    height: 100%;
+  }
+  .new-background {
+    background-color: red;
   }
 
+  .ion-navbar {
+    height: -10px;
+    background-color:#0277bd;
+  }
+
+  .td{
+    padding-left: 2%;
+  }
   .roundedImage{
     overflow:hidden;
     -webkit-border-radius:50px;
     -moz-border-radius:50px;
     border-radius:50px;
-    width:40px;
-    height:40px;
-  }
-  .md-icon-buttonArr{
-    float: left;
-    background-color: #0277bd;
-  }
-  .i{
-    float: left;
-  }
-  a { color: inherit;
-    text-decoration: none;}
-  .card{
-    overflow: hidden;
-  }
-  .firstArr {
-    width: 50px;
-    float:right; /* add this */
-    //  border: 1px solid red;
+    width:50px;
+    height:50px;
+    margin-top: 10px;
   }
   .first {
     width: 90px;
@@ -38,33 +61,21 @@ page-examen-radio {
     // border: 1px solid green;
     overflow: hidden; /* if you don't want #second to wrap below #first */
   }
-  .secondArr {
-    width: 200px;
 
-    //   border: 1px solid green;
-    overflow: hidden; /* if you don't want #second to wrap below #first */
+  .strong{
+    color: #0c60ee;
+    font-size: 15px;
+    line-height:5px;
   }
-  .ion-navbar{
-    height: 120px !important;
+
+  .strong2{
+    margin-top: 5px;
+    font-size: 15px;
   }
-  /*hr {
-    display: block;
-    clear: both;
-    height: 0;
-    margin: 10px 0 10px;
-    padding: 0;
-    border: 0;
-    font-family: arial;
-    text-align: center;
-    font-size: 10px;
-    line-height: 0;
+  .size{
+    font-size: 80%;
+    padding-left: 2%;
   }
-  hr:after {
-    content: "\273D \273D \273D";
-    height: 0;
-    letter-spacing: 0.5em;
-    color: #aaa;
-  }*/
   #wrap:after {
     display: block;
     height: 0px;
@@ -99,18 +110,35 @@ page-examen-radio {
   }
   .one {
     width: 40%;
-    // background-color: red;
+    background-color: red;
     direction: ltr;
     margin-top: 35px;
   }
   .two {
-    width: 45%;
+    width: 15%;
     color: white;
-    // background-color: yellow;
+    background-color: yellow;
   }
   .three {
-    width: 15%;
-    //  background-color: blue;
+    width: 45%;
+    background-color: blue;
+    margin-top: 5px;
+    margin-right:0px;
+  }
+  .p{
+    line-height:8px;
+  }
+  .md-card{
+    margin-top: 0px;
+    padding-top: 0px;
+    background-color: #0277bd;
+    height: 47px;
+  }
+  .md-card2 {
+    margin-top: 0px;
 
+    background-color: #0277bd;
+    opacity: 0.9;
+    height: 45px;
   }
 }
