@@ -5,6 +5,9 @@ import {ListPreanesthesie} from "../../models/ListPreanesthesie";
 import {HistDossier} from "../../models/HistDossier";
 import {HistDossierService} from "../../services/HistDossierService";
 import {ListPreanesthesieService} from "../../services/ListPreanesthesieService";
+import {ClientDetailPage} from "../client-detail/client-detail";
+import {DossierPage} from "../dossier/dossier";
+
 
 /*
  Generated class for the ListPreanesthesie page.
@@ -63,5 +66,16 @@ export class ListPreanesthesiePage {
   findListPreanesthesieByNumeroDossierResponseOff(numDoss, codeClinique) {
     this.ListePserv = new ListPreanesthesieService();
     this.ListeP = this.ListePserv.getListPreanesthesies(this.ListeP, numDoss, codeClinique);
+  }
+
+  goToInfPage(patient) {
+    this.navCtrl.push(ClientDetailPage,
+      {
+        patient: patient,
+        motif: DossierPage.motifhh,
+        tabLangue: this.tabLangue,
+        langue: this.langue,
+        codeClinique: this.codeClinique
+      });
   }
 }

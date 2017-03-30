@@ -7,6 +7,8 @@ import {HistDossier} from "../../models/HistDossier";
 import {HistDossierService} from "../../services/HistDossierService";
 import {LaboFService} from "../../services/LaboFService";
 import {LaboTService} from "../../services/LaboTService";
+import {ClientDetailPage} from "../client-detail/client-detail";
+import {DossierPage} from "../dossier/dossier";
 
 @Component({
   selector: 'page-examen-labo',
@@ -82,7 +84,8 @@ export class ExamenLaboPage {
   }
 
   gotPdf(pdf) {
-    this.navCtrl.push(PdfViewPage, {pdf: pdf.getpdf()});
+    this.navCtrl.push(PdfViewPage, {pdf: pdf.getpdf(),tabLangue: this.tabLangue,
+      langue: this.langue,codeClinique: this.codeClinique,pass:this.pass});
   }
 
   historiqueOff(hist, numDoss, codeClinique) {
@@ -98,5 +101,16 @@ export class ExamenLaboPage {
 
     this.LabosTs = new LaboTService();
     this.LabosT = this.LabosTs.getLabos(this.LabosT, numDoss, codeClinique);
+  }
+
+  goToInfPage(patient) {
+    this.navCtrl.push(ClientDetailPage,
+      {
+        patient: patient,
+        motif: DossierPage.motifhh,
+        tabLangue: this.tabLangue,
+        langue: this.langue,
+        codeClinique: this.codeClinique
+      });
   }
 }

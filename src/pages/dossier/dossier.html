@@ -4,7 +4,7 @@
     <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
-    <div fxFlex="13" style="margin-top: 0px;direction:rtl;"><img src="/android_asset/www/assets/img/i.jpg" class="roundedImage"/>
+    <div fxFlex="13" style="margin-top: 0px;direction:rtl;"><img src="/android_asset/www/assets/img/info.png" class="roundedImage" (click)="goToInfPage(pass)"/>
     </div>
   </div>
 
@@ -24,7 +24,7 @@
 
 
   <div fxLayout="row" fxLayoutWrap *ngIf="langue==='arabe'" class="md-card">
-    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/i.jpg" class="roundedImage"/></div>
+    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/info.png" class="roundedImage" (click)="goToInfPage(pass)"/></div>
     <div fxFlex="73" style="margin-top: 10px;direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
@@ -112,7 +112,7 @@
 
           </p>
         </div>
-        <div fxFlex="33" dir="ltr" (click)="gotoSigneCourbe()"><img md-card-sm-image src="/android_asset/www/assets/img/courbe.png"></div>
+        <div fxFlex="33" dir="ltr" (click)="gotoSigneCourbe()"><img md-card-sm-image src="/android_asset/www/assets/img/line.png"></div>
       </div>
 
 
@@ -144,7 +144,7 @@
 
           </p>
         </div>
-        <div fxFlex="33" dir="ltr"><img md-card-sm-image src="/android_asset/www/assets/img/courbe.png"></div>
+        <div fxFlex="33" dir="ltr"><img md-card-sm-image src="/android_asset/www/assets/img/line.png"></div>
       </div>
 
 
@@ -240,7 +240,7 @@
 
       <div *ngIf="Con===true" fxLayout="row" fxLayoutWrap>
         <div fxFlex="66" dir="rtl">
-          <strong>
+          <strong class="strong">
             {{tabLangue.titreConclu}}
           </strong>
           <p></p>
@@ -316,7 +316,7 @@
 
           </p>
         </div>
-        <div fxFlex="33" dir="rtl" (click)="gotoSigneCourbe()"><img md-card-sm-image src="/android_asset/www/assets/img/courbe.png"></div>
+        <div fxFlex="33" dir="rtl" (click)="gotoSigneCourbe()"><img md-card-sm-image src="/android_asset/www/assets/img/line.png"></div>
       </div>
 
 
@@ -348,7 +348,7 @@
 
           </p>
         </div>
-        <div fxFlex="33" dir="rtl"><img md-card-sm-image src="/android_asset/www/assets/img/courbe.png"></div>
+        <div fxFlex="33" dir="rtl"><img md-card-sm-image src="/android_asset/www/assets/img/line.png"></div>
       </div>
 
 
@@ -444,7 +444,7 @@
 
       <div *ngIf="Con===true" fxLayout="row" fxLayoutWrap>
         <div fxFlex="66">
-          <strong>
+          <strong class="strong">
             {{tabLangue.titreConclu}}
           </strong>
           <p></p>

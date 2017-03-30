@@ -3,6 +3,8 @@ import {NavController, NavParams, Platform, AlertController} from 'ionic-angular
 import {PdfViewerComponent} from 'ng2-pdf-viewer';
 import {File, Transfer} from 'ionic-native';
 import {Variables} from "../../providers/variables";
+import {HistDossier} from "../../models/HistDossier";
+import {HistPdfService} from "../../services/HistPdfService";
 
 declare var cordova: any;
 
@@ -17,9 +19,21 @@ export class PdfViewPage {
   storageDirectory: string = '';
   connection: boolean;
   pdf: any;
+  histC: Array<HistDossier> = [];
+  histp = new HistDossier();
+  histserv: any;
   tabBarElement: any;
+  codeClinique: any;
+  tabLangue: any;
+  pass: any;
+  langue: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private PdfViewerComponent: PdfViewerComponent, public platform: Platform, public alertCtrl: AlertController) {
-    this.pdf =  this.navParams.get("pdf");
+    this.codeClinique = navParams.get("codeClinique");
+    this.tabLangue = navParams.get("tabLangue");
+    this.pass = navParams.get("pass");
+    this.langue = navParams.get("langue");
+    this.pdf = this.navParams.get("pdf");
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.platform.ready().then(() => {
       // make sure this is on a device, not an emulation (e.g. chrome tools device mode)
@@ -37,16 +51,18 @@ export class PdfViewPage {
         // exit otherwise, but you could add further types here e.g. Windows
         return false;
       }
-      Variables.checconnection().then(connexion=> {
+      Variables.checconnection().then(connexion => {
         if (connexion === false) {
           this.connection = false;
           var fields = this.pdf.split('/');
           this.pdfSrc = this.storageDirectory + fields[5];
+          this.historiqueOff(this.histC, this.pass.getdossier(), this.codeClinique);
         }
         else {
           this.connection = true;
           this.pdfSrc = this.pdf;
           this.retrieveImage(this.pdfSrc);
+          this.historique(this.pass.getdossier(), this.codeClinique);
         }
       });
     });
@@ -61,31 +77,32 @@ export class PdfViewPage {
   ionViewWillLeave() {
     this.tabBarElement.style.display = 'flex';
   }
+
   downloadImage(file) {
 
     this.platform.ready().then(() => {
       const fileTransfer = new Transfer();
 
       fileTransfer.download(this.pdf, this.storageDirectory + file).then((entry) => {
-/*
-        const alertSuccess = this.alertCtrl.create({
-          title: `Download Succeeded!`,
-          subTitle: `${file} was successfully downloaded to: ${entry.toURL()}`,
-          buttons: ['Ok']
-        });
+        /*
+         const alertSuccess = this.alertCtrl.create({
+         title: `Download Succeeded!`,
+         subTitle: `${file} was successfully downloaded to: ${entry.toURL()}`,
+         buttons: ['Ok']
+         });
 
-        alertSuccess.present();
-        */
+         alertSuccess.present();
+         */
       }, (error) => {
-/*
-        const alertFailure = this.alertCtrl.create({
-          title: `Download Failed!`,
-          subTitle: `${file} was not successfully downloaded. Error code: ${error.code}`,
-          buttons: ['Ok']
-        });
+        /*
+         const alertFailure = this.alertCtrl.create({
+         title: `Download Failed!`,
+         subTitle: `${file} was not successfully downloaded. Error code: ${error.code}`,
+         buttons: ['Ok']
+         });
 
-        alertFailure.present();
-*/
+         alertFailure.present();
+         */
       });
 
     });
@@ -101,28 +118,57 @@ export class PdfViewPage {
       .then(() => {
 
 
-/*
-        const alertSuccess = this.alertCtrl.create({
-          title: `File retrieval Succeeded!`,
-          subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
-          buttons: ['Ok']
-        });
+        /*
+         const alertSuccess = this.alertCtrl.create({
+         title: `File retrieval Succeeded!`,
+         subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
+         buttons: ['Ok']
+         });
 
-        return alertSuccess.present();
-*/
+         return alertSuccess.present();
+         */
       })
       .catch((err) => {
 
-  /*      const alertFailure = this.alertCtrl.create({
-          title: `File retrieval Failed!`,
-          subTitle: `${file} was not successfully retrieved. Error Code: ${err.code}`,
-          buttons: ['Ok']
-        });
+        /*      const alertFailure = this.alertCtrl.create({
+         title: `File retrieval Failed!`,
+         subTitle: `${file} was not successfully retrieved. Error Code: ${err.code}`,
+         buttons: ['Ok']
+         });
 
-        return alertFailure.present(); */
+         return alertFailure.present(); */
         this.downloadImage(file);
       });
 
   }
 
+  historique(numDoss, codeClinique) {
+    this.histserv = new HistPdfService();
+    var h = new HistDossier();
+    var d = new Date();
+    h.setnumDoss(numDoss);
+    h.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+    h.setcodeClinique(codeClinique);
+    this.histC.push(h);
+    try {
+      this.histserv.deleteHistPdfs(numDoss, codeClinique);
+      this.histserv.getHistPdfs(this.histC, numDoss, codeClinique).then(res => {
+        this.histp = res.getdate();
+      });
+    }
+    catch (Error) {
+      this.histserv.getHistPdfs(this.histC, numDoss, codeClinique).then(res => {
+        this.histp = res.getdate();
+      });
+    }
+
+  }
+
+
+  historiqueOff(hist, numDoss, codeClinique) {
+    this.histserv = new HistPdfService();
+    this.histserv.getHistPdfs(hist, numDoss, codeClinique).then(res => {
+      this.histp = res.getdate();
+    });
+  }
 }

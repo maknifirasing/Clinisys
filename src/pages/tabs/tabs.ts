@@ -70,7 +70,7 @@ export class TabsPage {
   constructor(public navParams: NavParams, private Url: Variables, public platform: Platform) {
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("mypatient");
-    this.tabLangue=navParams.get("tabLangue");
+    this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
     this.coountexamenR = 0;
     this.coountexamenRT = 0;
@@ -89,20 +89,20 @@ export class TabsPage {
       tabLangue: this.tabLangue, codeClinique: this.codeClinique
     };
     this.platform.ready().then(() => {
-    Variables.checconnection().then(connexion=> {
-      if (connexion === false) {
-        this.connection = false;
-        this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
-        this.GetExamenRadioByNumDossResponseOff(this.pass.getdossier(), this.codeClinique);
-        this.findListPreanesthesieByNumeroDossierResponseOff(this.pass.getdossier(), this.codeClinique);
-      }
-      else {
-        this.connection = true;
-        this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
-        this.GetExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
-        this.findListPreanesthesieByNumeroDossierResponse(this.pass.getdossier(), this.codeClinique);
-      }
-    });
+      Variables.checconnection().then(connexion => {
+        if (connexion === false) {
+          this.connection = false;
+          this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
+          this.GetExamenRadioByNumDossResponseOff(this.pass.getdossier(), this.codeClinique);
+          this.findListPreanesthesieByNumeroDossierResponseOff(this.pass.getdossier(), this.codeClinique);
+        }
+        else {
+          this.connection = true;
+          this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
+          this.GetExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
+          this.findListPreanesthesieByNumeroDossierResponse(this.pass.getdossier(), this.codeClinique);
+        }
+      });
     });
 
   }
@@ -454,4 +454,5 @@ export class TabsPage {
       this.coountListPreanesthesie = res.getFichier();
     });
   }
+
 }

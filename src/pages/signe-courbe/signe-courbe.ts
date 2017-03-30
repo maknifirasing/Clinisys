@@ -10,7 +10,10 @@ import {SigneCourbeSaturationService} from "../../services/SigneCourbeSaturation
 import {SigneCourbeTAService} from "../../services/SigneCourbeTAService";
 import {SigneCourbeTempService} from "../../services/SigneCourbeTempService";
 import {HistSigneCourbeService} from "../../services/HistSigneCourbeService";
-import { ScreenOrientation } from '@ionic-native/screen-orientation';
+
+
+
+declare var jQuery:any;
 @Component({
   selector: 'page-signe-courbe',
   templateUrl: 'signe-courbe.html',
@@ -38,10 +41,10 @@ export class SigneCourbePage {
   private sgcTserv: any;
   private sgcSserv: any;
   private sgcFserv: any;
-  private langue: any;
+  langue: any;
   tabBarElement: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, platform: Platform,private screenOrientation: ScreenOrientation) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, platform: Platform) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 
     this.codeClinique = navParams.get("codeClinique");
@@ -62,11 +65,8 @@ export class SigneCourbePage {
   }
 
 
-
-
   ionViewDidLoad() {
     this.tabBarElement.style.display = 'none';
-    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
   }
 
   ionViewWillLeave() {
@@ -156,7 +156,7 @@ export class SigneCourbePage {
               this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique);
             }
           });
-          this.cPouls(this.courbePouls);
+          this.onecourbes(this.courbePouls);
         }
       }
     }
@@ -205,7 +205,7 @@ export class SigneCourbePage {
     this.courbeFrq = this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique);
   }
 
-  cPouls(courbe) {
+  onecourbes(courbe) {
     var labelcourbe: Array<string> = [];
 
     var data: Array<string> = [];
@@ -246,16 +246,104 @@ export class SigneCourbePage {
         }]
       },
       options: {
-        scaleShowVerticalLines: true,
+      //  scaleShowVerticalLines: true,
         responsive: true,
+      //  maintainAspectRatio: false,
         scales: {
           yAxes: [{
             ticks: {min: Number(courbe[0].getseuilMin()), max: Number(courbe[0].getseuilMax())}
           }
           ],
-          xAxes: [{
-            showXLabels: 2
+        /*  xAxes: [{
+            showXLabels: 1,
+            interval: 1,
+            scrollX: true
+          }]*/
+        }
+      }
+
+    });
+  }
+
+  doublecourbes(courbe) {
+    var labelcourbe: Array<string> = [];
+
+    var data1: Array<string> = [];
+    var data2: Array<string> = [];
+
+    for (var i = 0; i < courbe.length; i++) {
+      labelcourbe.push((courbe[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbe[i].getdateHeurePrise()).substr(5, 2) + "-" + courbe[i].getheurePrise());
+      data1.push(courbe[i].getquantite().split("/")[0]);
+      data2.push(courbe[i].getquantite().split("/")[1]);
+    }
+
+
+    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
+      type: 'line',
+      data: {
+        labels: labelcourbe,
+        datasets: [{
+          label: courbe[0].getdesignation(),
+          fill: false,
+          lineTension: 0.1,
+          backgroundColor: "rgb(" + courbe[0].getcolor() + ")",
+          borderColor: "rgb(" + courbe[0].getcolor() + ")",
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: "rgb(" + courbe[0].getcolor() + ")",
+          pointBackgroundColor: "rgb(" + courbe[0].getcolor() + ")",
+          pointBorderWidth: 1,
+          pointHoverRadius: 10,
+          pointHoverBackgroundColor: "rgb(" + courbe[0].getcolor() + ")",
+          pointHoverBorderColor: "rgb(" + courbe[0].getcolor() + ")",
+          pointHoverBorderWidth: 3,
+          pointRadius: 3,
+          pointHitRadius: 10,
+          data: data1,
+          spanGaps: true,
+          DatasetStrokeWidth: 10,
+          ScaleShowLabels: true
+        },
+          {
+            label: courbe[0].getdesignation(),
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgb(" + courbe[0].getcolor() + ")",
+            borderColor: "rgb(" + courbe[0].getcolor() + ")",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgb(" + courbe[0].getcolor() + ")",
+            pointBackgroundColor: "rgb(" + courbe[0].getcolor() + ")",
+            pointBorderWidth: 1,
+            pointHoverRadius: 10,
+            pointHoverBackgroundColor: "rgb(" + courbe[0].getcolor() + ")",
+            pointHoverBorderColor: "rgb(" + courbe[0].getcolor() + ")",
+            pointHoverBorderWidth: 3,
+            pointRadius: 3,
+            pointHitRadius: 10,
+            data: data2,
+            spanGaps: true,
+            DatasetStrokeWidth: 10,
+            ScaleShowLabels: true
           }]
+      },
+      options: {
+     //   scaleShowVerticalLines: true,
+        responsive: true,
+    //    maintainAspectRatio: false,
+        scales: {
+          yAxes: [{
+            ticks: {min: Number(courbe[0].getseuilMin()), max: Number(courbe[0].getseuilMax())}
+          }
+          ],
+      /*    xAxes: [{
+            showXLabels: 1,
+            interval: 1
+          }]*/
         }
       }
 
@@ -335,5 +423,12 @@ export class SigneCourbePage {
     this.historique(this.pass.getdossier(), this.codeClinique);
   }
 
-
+/*
+ ,
+ deferred: {           // enabled by default
+ xOffset: 150,     // defer until 150px of the canvas width are inside the viewport
+ yOffset: '50%',   // defer until 50% of the canvas height are inside the viewport
+ delay: 500        // delay of 500 ms after the canvas is considered inside the viewport
+ },
+ */
 }

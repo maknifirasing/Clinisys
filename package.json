@@ -38,11 +38,11 @@
     "ionic-native": "^2.9.0",
     "ionicons": "3.0.0",
     "moment": "^2.18.1",
-    "ng2-charts": "^1.5.0",
     "ng2-pdf-viewer": "^1.0.2",
     "rxjs": "5.0.1",
     "sqlite": "^2.3.0",
     "sw-toolbox": "3.4.0",
+    "typings": "^2.1.0",
     "zone.js": "0.7.2"
   },
   "devDependencies": {

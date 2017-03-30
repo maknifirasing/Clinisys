@@ -4,7 +4,7 @@
     <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
-    <div fxFlex="13" style="margin-top: 5px;direction:rtl;"><img src="/android_asset/www/assets/img/i.jpg" class="roundedImage"/>
+    <div fxFlex="13" style="margin-top: 0px;direction:rtl;"><img src="/android_asset/www/assets/img/info.png" class="roundedImage" (click)="goToInfPage(pass)"/>
     </div>
   </div>
 
@@ -24,7 +24,7 @@
 
 
   <div fxLayout="row" fxLayoutWrap *ngIf="langue==='arabe'" class="md-card">
-    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/i.jpg" class="roundedImage"/></div>
+    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/info.png" class="roundedImage" (click)="goToInfPage(pass)"/></div>
     <div fxFlex="73" style="margin-top: 10px;direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
@@ -48,6 +48,7 @@
 
 
 </ion-header>
+
 <ion-content>
 
 

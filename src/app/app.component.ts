@@ -2,11 +2,11 @@ import {Component, ViewChild} from '@angular/core';
 import {Platform, Nav} from 'ionic-angular';
 import {LanguesPage} from '../pages/langues/langues';
 import {StatusBar, Splashscreen, SQLite} from 'ionic-native';
-import {Users} from "../models/Users";
 import {LangueService} from "../services/LangueService";
 import {Langue} from "../models/Langue";
 import {Variables} from "../providers/variables";
 import {ListePage} from "../pages/liste/liste";
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -52,6 +52,8 @@ export class MyApp {
           db.executeSql('CREATE TABLE IF NOT EXISTS HistDossier(numDoss VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32))', {});
 
           db.executeSql('CREATE TABLE IF NOT EXISTS HistSigneCourbe(numDoss VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32))', {});
+
+          db.executeSql('CREATE TABLE IF NOT EXISTS HistPdf(numDoss VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32))', {});
 
           db.executeSql('CREATE TABLE IF NOT EXISTS Users(actif NUMERIC(10),chStat NUMERIC(10),codeMedecinInfirmier VARCHAR(32),codePin NUMERIC(10),' +
             'dateModPwd VARCHAR(32),dernierDateCnx VARCHAR(32),description VARCHAR(32),grp VARCHAR(32),matricule VARCHAR (32),natureUserDS VARCHAR (32),' +
@@ -131,6 +133,12 @@ export class MyApp {
             ',prenom VARCHAR(32),numeroDossier VARCHAR(32),codeClinique VARCHAR(32))', {});
 
           db.executeSql('CREATE TABLE IF NOT EXISTS Document (url VARCHAR(32),observ VARCHAR(32),codeClinique VARCHAR(32))', {});
+
+          db.executeSql('CREATE TABLE IF NOT EXISTS Client (adrCli VARCHAR(32),datNai VARCHAR(32),libNat VARCHAR(32)' +
+            ',numTel VARCHAR(32),etage VARCHAR(32),numCha VARCHAR(32),numdoss VARCHAR(32),identifiant VARCHAR(32),codeClinique VARCHAR(32),dateArr VARCHAR(32))', {});
+
+          db.executeSql('CREATE TABLE IF NOT EXISTS Medecin (codMed VARCHAR(32),nomMed VARCHAR(32),designationSpecialite VARCHAR(32)' +
+            ',codeClinique VARCHAR(32),numdoss VARCHAR(32))', {});
 
           db.executeSql('CREATE TABLE IF NOT EXISTS SigneCourbePouls (codePosologie VARCHAR(32),designation VARCHAR(32)' +
             ',seuilMin VARCHAR(32),seuilMax VARCHAR(32),color VARCHAR(32),unite VARCHAR(32),quantite VARCHAR(32),heurePrise VARCHAR(32),dateHeurePrise VARCHAR(32),codeClinique VARCHAR(32),numdoss VARCHAR(32))', {});
