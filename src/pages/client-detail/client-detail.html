@@ -1,222 +1,94 @@
-<!--<ion-menu [content]="content">
 
-  <ion-header>
-    <md-card class="headerBackgroundMenu">
-    <md-card-title class="headerTitleMenu">** Csys Demo **</md-card-title>
-    </md-card>
-  </ion-header>
-  <ion-content class="contentMenu">
-
-  <!-- ***************** menu francais *******-->
-  <!-- <div class="divFRANG">
-
-      <button menuClose ion-item class="buttonItem"><img src="../../assets/img/sync.ico" width="30" height="30"> Synchroniser </button>
-      <button  menuClose ion-item class="buttonItem" (click)="openPage(p)"> <img src="../../assets/img/modifIcon.png" width="30" height="30"> Modifier Mot de Passe </button>
-      <button  menuClose ion-item class="buttonItem" (click)="openListeCliniquePage()"> <img src="../../assets/img/clini.png" width="30" height="30">Changer Clinique </button>
-      <button  menuClose ion-item class="buttonItem" (click)="changerlangue()"><img src="../../assets/img/changeLang.png" width="30" height="30"> Changer Langue </button>
-      <button menuClose ion-item class="buttonItem" (click)="deconnexion()"><img src="../../assets/img/deconn.png" width="30" height="30"> Deconnexion </button>
-
-    </div>
-
-    <!--
-  ***************** menu Arabe *******
-   <div class="divAr">
-
-     <button menuClose ion-item class="buttonItem"><img src="../../assets/img/sync.ico" width="30" height="30"> Synchroniser </button>
-     <button  menuClose ion-item class="buttonItem" (click)="openPage(p)"> <img src="../../assets/img/modifIcon.png" width="30" height="30"> Modifier Mot de Passe </button>
-     <button  menuClose ion-item class="buttonItem" (click)="openListeCliniquePage()"> <img src="../../assets/img/clini.png" width="30" height="30">Changer Clinique </button>
-     <button  menuClose ion-item class="buttonItem" (click)="changerlangue()"><img src="../../assets/img/changeLang.png" width="30" height="30"> Changer Langue </button>
-     <button menuClose ion-item class="buttonItem" (click)="deconnexion()"><img src="../../assets/img/deconn.png" width="30" height="30"> Deconnexion </button>
-
-   </div>-->
-
-<!-- </ion-content>
-
-</ion-menu>
-
-<ion-header style="height: 95px;color: white" #content>
-
-
-<!-- ***************** header francais *******-->
-
-<!--<md-card class="md-card">
-  <div fxLayout="row" fxLayoutWrap>
-    <div fxFlex="13" dir="ltr"><img src="../../assets/img/i.jpg" class="roundedImage"/></div>
-    <div fxFlex="73" style="margin-top: 10px;direction:rtl;"><strong>nommmmmmmmmmmmmm</strong> <br/>
-      <strong>age: </strong>21<strong>ch: </strong>211
-    </div>
-    <div fxFlex="13" style="margin-top: 5px;direction:rtl;"><img src="../../assets/img/babyboy.png" width="40"
-                                                                 height="40"></div>
-  </div>
-</md-card>
-  <md-card class="md-card2">
-    <div fxLayout="row" fxLayoutWrap>
-
-      <div fxFlex="86" style="margin-top: -10px;font-size:10px;direction:rtl;"><strong>fhgfhgfhdgfhgfh</strong>
-        20/20/19666 4:25:10
-      </div>
-      <div fxFlex="13"  style="margin-top:-15px;direction:rtl;"><img
-        src="../../assets/img/green.png" width="30" height="30"></div>
-
-    </div>
-
-
-  </md-card>
-
-  <!--
-  ************** header arabe************
-
-  <md-card class="md-cardAr">
-      <md-card-header class="md-card-header">
-        <img md-card-avatar src="../../assets/img/babyboy.png">
-
-        <md-card-title>basma hammami hammami</md-card-title>
-        <md-card-subtitle class="p">age : 21 ans ch : 211</md-card-subtitle>
-
-        <img src="../../assets/img/i.jpg" class="roundedImage">
-
-      </md-card-header>
-      <md-card-header>
-        <p style="margin-top: 0px">En ligne: 20/20/2016 21:20:21</p>
-
-        <md-card-subtitle class="md-card-subtitle"><img src="../../assets/img/green.png" width="30" height="30"></md-card-subtitle>
-
-      </md-card-header>
-    </md-card>
-
-
-  </ion-header>
-<!--
-********** header liste ***********
-
-<ion-header class="headerListe" #content>
-<md-card class="md-cardListe">
-
-  <md-card-header >
-    <p style="margin-top: 17px;font-size: 10px"><strong>En ligne:il de modification</strong> 20/20/2016 21:20:21</p>
-
-    <md-card-subtitle class="md-card-subtitleListe"><img src="../../assets/img/green.png" width="30" height="30"></md-card-subtitle>
-    <img src="../../assets/img/menu.png" class="menuImg" menuToggle>
-  </md-card-header>
-</md-card>
-</ion-header>
-
-  <ion-content padding>
-    <div id="Global">
-      <div id="gauche"> Ici le bloc de texte de gauche </div>
-      <div id="droite"><img src="../../assets/img/courbe.png" width="50" height="50"> </div>
-    </div>
-  <!--
-
-    <div id="wrap">
-      <div class="oneFRANG">
-
-        <p> <strong>aaaaaaaaaaaaaaaaaavvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-          bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-          bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-          bbbbbbbbbbbbbbbbbbbbbbb</strong> </p>
-
-
-      </div>
-
-      <div class="two"> <p></p>
-      </div>
-
-
-      <div class="threeFRANG">
-        <img src="../../assets/img/i.jpg" width="40" height="40" class="roundedImage">
-      </div>
-
-
-
-
-    </div>
-
-   <!-- <div style="width: 200px">
-      <strong>
-       aaaaaaaaa
-      </strong>
-      <p>
-
-        <strong>aaaaaaaaaaaaaaaaaavvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
-        bbbbbbbbbbbbbbbbbbbbbbb</strong>
-
-      </p>
-
-    </div>
-</ion-content>
-<ion-footer>
-
-  <md-tab-group style="background-color: #2ec95c" class="fond">
-
-    <md-tab tabBadge="2">  <template md-tab-label>
-      <img md-card-avatar src="../../assets/img/bloc.png" (click)="goToHomePage()" tabBadge="2">
-  </template>
- <!--   <h1>Terrible sushi restaurants</h1>
-    <p>...</p>
-    </md-tab>
-    <md-tab><md-icon md-svg-icon="home"></md-icon></md-tab>
-    <md-tab label="Tab #3"></md-tab>
-
-  </md-tab-group>
-</ion-footer>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<ion-header>
-  <ion-navbar color="danger">
-    <ion-title>
-      Charts in Ionic 2
-    </ion-title>
+<ion-header *ngFor="let cl of clientList " style="background-color:whitesmoke">
+
+  <IMG src="/android_asset/www/assets/img/profil.jpg" height="85" width="5000">
+  <IMG src="/android_asset/www/assets/img/{{image}}" class="img">
+
+  <ion-navbar *ngIf="langue==='francais' || langue==='anglais'">
+    <p></p>
+    <p style="text-align:center;color: black;"><strong>{{nom}} {{prenom}} ({{age}} {{tabLangue.titreAns}})</strong></p>
+    <p style="text-align:center;color: black;"><strong>{{tabLangue.titreDateNaiss}}: </strong>{{cl.getdatNai()}}
+      <strong>{{tabLangue.titreNationalite}}: </strong>{{cl.getlibNat()}}</p>
+    <p style="text-align:center;color: black;"><strong>{{tabLangue.titreAdr}}: </strong>{{cl.getadrCli()}}
+      <strong>{{tabLangue.titreTel}}: </strong>{{cl.getnumTel()}}</p>
+  </ion-navbar>
+  <ion-navbar *ngIf="langue==='arabe'" dir="rtl">
+    <p></p>
+    <p style="text-align:center;color: black;"><strong>{{nom}} {{prenom}} ({{age}} ans)</strong></p>
+    <p style="text-align:center;color: black;"><strong>{{tabLangue.titreDateNaiss}}: </strong>{{cl.getdatNai()}}
+      <strong>{{tabLangue.titreNationalite}}: </strong>{{cl.getlibNat()}}</p>
+    <p style="text-align:center;color: black;"><strong>{{tabLangue.titreAdr}}: </strong>{{cl.getadrCli()}}
+      <strong>{{tabLangue.titreTel}}: </strong>{{cl.getnumTel()}}</p>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+
+<ion-content padding *ngIf="langue==='arabe'" dir="rtl">
+  <ion-list *ngFor="let cl of clientList " style="margin-top:100px; background-color:whitesmoke;">
+    <p><img src="/android_asset/www/assets/img/chamb.png" width="15" height="15">
+      <strong style="color: #0D47A1">{{tabLangue.titreChambre}}:</strong><strong> {{cl.getnumCha()}}</strong></p>
+    <p><img src="/android_asset/www/assets/img/etage.png" width="15" height="15">
+      <strong style="color: #0D47A1">{{tabLangue.titreEtage}}: </strong><strong>{{cl.getetage()}}</strong></p>
+    <p><img src="/android_asset/www/assets/img/calendarin.png" width="15" height="15">
+      <strong style="color: #0D47A1">{{tabLangue.titreDateAdmission}}: </strong><strong></strong></p>
+    <p><img src="/android_asset/www/assets/img/numdoss.png" width="15" height="15">
+      <strong style="color: #0D47A1">{{tabLangue.titreNumDoss}}: </strong><strong>{{cl.getnumdoss()}}</strong></p>
+    <p><img src="/android_asset/www/assets/img/idcard.png" width="15" height="15">
+      <strong style="color: #0D47A1">{{tabLangue.titreIdentifiant}}: </strong><strong>{{cl.getidentifiant()}}</strong></p>
+  </ion-list>
+  <ion-list>
+    <ion-item>
+
+    </ion-item>
+  </ion-list>
+<ion-list *ngFor="let moti of motif ">
+<p><img src="/android_asset/www/assets/img/sang.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titreGroupeSanguim}}: </strong>{{moti.getgroupeSang()}} </p>
+<p><img src="/android_asset/www/assets/img/poid.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titrePoid}}: </strong>{{moti.getpoid()}} </p>
+<p><img src="/android_asset/www/assets/img/taille.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titreTaille}}: </strong>{{moti.gettaille()}} </p>
+</ion-list>
+  <ion-list style="background-color:whitesmoke;">
+
+    <p><img src="/android_asset/www/assets/img/doc.png" width="15" height="15">
+      <strong style="color: #0D47A1">{{tabLangue.titleMed}}: </strong></p>
+    <div *ngFor="let med of medecinList ">
+      <p><img src="/android_asset/www/assets/img/doc.png" width="15" height="15">
+        <strong>{{med.getnomMed().substr(7,(med.getnomMed().length))}}</strong> {{med.getdesignationSpecialite()}}
+      </p>
+    </div>
+  </ion-list>
 
 
-  <ion-card>
-    <ion-card-header>
-      Line Chart
-    </ion-card-header>
-    <ion-card-content>
-      <canvas #lineCanvas width="500" height="500"></canvas>
 
-    </ion-card-content>
-  </ion-card>
+</ion-content>
+<ion-content padding *ngIf="langue==='francais' || langue==='anglais'">
+  <ion-list *ngFor="let cl of clientList " style="margin-top:100px; background-color:whitesmoke;">
+    <p><img src="/android_asset/www/assets/img/chamb.png" width="15" height="15">
+      <strong style="color: #0D47A1">{{tabLangue.titreChambre}}:</strong><strong> {{cl.getnumCha()}}</strong></p>
+    <p><img src="/android_asset/www/assets/img/etage.png" width="15" height="15">
+      <strong style="color: #0D47A1">{{tabLangue.titreEtage}}: </strong><strong>{{cl.getetage()}}</strong></p>
+    <p><img src="/android_asset/www/assets/img/calendarin.png" width="15" height="15">
+      <strong style="color: #0D47A1">{{tabLangue.titreDateAdmission}}: </strong><strong></strong></p>
+    <p><img src="/android_asset/www/assets/img/numdoss.png" width="15" height="15">
+      <strong style="color: #0D47A1">{{tabLangue.titreNumDoss}}: </strong><strong>{{cl.getnumdoss()}}</strong></p>
+    <p><img src="/android_asset/www/assets/img/idcard.png" width="15" height="15">
+      <strong style="color: #0D47A1">{{tabLangue.titreIdentifiant}}: </strong><strong>{{cl.getidentifiant()}}</strong></p>
+  </ion-list>
+  <ion-list *ngFor="let moti of motif ">
+    <p><img src="/android_asset/www/assets/img/sang.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titreGroupeSanguim}}: </strong>{{moti.getgroupeSang()}} </p>
+    <p><img src="/android_asset/www/assets/img/poid.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titrePoid}}: </strong>{{moti.getpoid()}} </p>
+    <p><img src="/android_asset/www/assets/img/taille.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titreTaille}}: </strong>{{moti.gettaille()}} </p>
+  </ion-list>
+  <ion-list style="background-color:whitesmoke;">
+
+    <p><img src="/android_asset/www/assets/img/doc.png" width="15" height="15">
+      <strong style="color: #0D47A1">{{tabLangue.titleMed}}: </strong></p>
+    <div *ngFor="let med of medecinList ">
+      <p><img src="/android_asset/www/assets/img/doc.png" width="15" height="15">
+        <strong>{{med.getnomMed().substr(7,(med.getnomMed().length))}}</strong> {{med.getdesignationSpecialite()}}
+      </p>
+    </div>
+  </ion-list>
+
+
 
 </ion-content>

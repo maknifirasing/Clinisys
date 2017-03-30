@@ -42,7 +42,7 @@ export class LanguesPage {
     else if (lang === "anglais") {
       this.tabLangue = Variables.anglais;
     }
-    var l = new Langue();
+  /*  var l = new Langue();
     l.setlangue(lang);
     this.langes.push(l);
     this.langserv = new LangueService();
@@ -69,6 +69,7 @@ export class LanguesPage {
       } else {
         this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
       }
-    });
+    });*/
+    this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
   }
 }

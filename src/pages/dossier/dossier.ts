@@ -360,10 +360,18 @@ export class DossierPage {
     });
   }
 
-  PageDetail(patient){
-    console.log("aaaaaaaaa"+patient.getnom());
-    this.navCtrl.push(DetailPerPagePage, {image:patient.getimg(),nom:patient.getnom(),prenom:patient.getprenom(),age:patient.getage(),numDoss:patient.getdossier()});
-//this.navCtrl.push(DetailPerPagePage);
+  goToInfPage(patient) {
+    this.navCtrl.push(ClientDetailPage,
+      {
+        image: patient.getimg(),
+        nom: patient.getnom(),
+        prenom: patient.getprenom(),
+        age: patient.getage(),
+        numDoss: patient.getdossier(),
+        motif: this.motifh,
+        tabLangue: this.tabLangue,
+        langue: this.langue
+      });
   }
 
   DeletegetAntecedentAllergieByIdentifiant(idpass, codeClinique) {

@@ -53,7 +53,20 @@ export class Variables {
     titreDateAct: "تاريخ الحدث",
     titreHeureDeb: "وقت البدء",
     titreHeureF: "نهاية الوقت",
-    titleMed: "الطبيب"
+    titleMed: "الطبيب",
+    titreChambre:"غرفة",
+    titreEtage:"الطابق",
+    titreDateAdmission:"قبول التسجيل",
+    titreNumDoss:"رقم الملف",
+    titreIdentifiant:"الهوية",
+    titreDateNaiss:"تاريخ الميلاد",
+    titreNationalite:"الجنسية",
+    titreTel:"الهاتف",
+    titreAdr:"العنوان",
+    titreAns:"سنة",
+    titreGroupeSanguim:"فصيلة الدم",
+    titrePoid:"الوزن",
+    titreTaille:"الحجم"
   }
 
   static francais: any = {
@@ -102,7 +115,20 @@ export class Variables {
     titreDateAct: "Date Acte",
     titreHeureDeb: "Heure Début",
     titreHeureF: "Heure Fin",
-    titleMed: "Medecin"
+    titleMed: "Medecin",
+    titreChambre:"Chambre",
+    titreEtage:"Etage",
+    titreDateAdmission:"Date Admission",
+    titreNumDoss:"Numéro Dossier",
+    titreIdentifiant:"Identifiant",
+    titreDateNaiss:"Date de Naissance",
+    titreNationalite:"Nationalité",
+    titreTel:"Tel",
+    titreAdr:"Adresse",
+    titreAns:"ans",
+    titreGroupeSanguim:"Groupe Sanguim",
+    titrePoid:"Poids",
+    titreTaille:"Taille"
   }
 
   static anglais: any = {
@@ -151,7 +177,20 @@ export class Variables {
     titreDateAct: "Act date",
     titreHeureDeb: "Start Time",
     titreHeureF: "Time End",
-    titleMed: "Doctor"
+    titleMed: "Doctor",
+    titreChambre:"Room",
+    titreEtage:"Floor",
+    titreDateAdmission:"Date Admission",
+    titreNumDoss:"Folder Number",
+    titreIdentifiant:"Identifier",
+    titreDateNaiss:"Birth date",
+    titreNationalite:"Nationality",
+    titreTel:"Phone",
+    titreAdr:"Adress",
+    titreAns:"year(s)",
+    titreGroupeSanguim:"Blood group",
+    titrePoid:"Weight",
+    titreTaille:"Size"
   }
 
   url: string = "";

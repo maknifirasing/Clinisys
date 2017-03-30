@@ -8,6 +8,7 @@ import {LangueService} from "../services/LangueService";
 import {Langue} from "../models/Langue";
 import {Variables} from "../providers/variables";
 import {ListePage} from "../pages/liste/liste";
+import {ClientDetailPage} from "../pages/client-detail/client-detail";
 @Component({
   templateUrl: 'app.html'
 })
@@ -155,7 +156,7 @@ export class MyApp {
           alert('Error opening database  ' + error);
         });
 
-      this.userserv = new UserService();
+   /*   this.userserv = new UserService();
       this.userserv.verifUser().then(res => {
         if (res === true) {
           this.userserv.getUser(this.users).then(user => {
@@ -184,8 +185,8 @@ export class MyApp {
         } else {
           this.nav.setRoot(LanguesPage);
         }
-      });
-
+      });*/
+      this.nav.setRoot(LanguesPage);
       StatusBar.styleDefault();
       Splashscreen.hide();
     });
