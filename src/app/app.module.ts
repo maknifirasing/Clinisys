@@ -18,6 +18,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {SigneCourbePage} from "../pages/signe-courbe/signe-courbe";
 import {NotificationPage} from "../pages/notification/notification";
 import {ClientDetailPage} from "../pages/client-detail/client-detail";
+import { ChartModule } from 'angular2-highcharts';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import {ClientDetailPage} from "../pages/client-detail/client-detail";
   imports: [
     IonicModule.forRoot(MyApp),
     FlexLayoutModule,
-    MaterialModule
+    MaterialModule,
+    ChartModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

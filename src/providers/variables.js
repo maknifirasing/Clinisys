@@ -1,16 +1,13 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
-import { NavController } from "ionic-angular";
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+require("rxjs/add/operator/map");
 var Variables = Variables_1 = (function () {
     function Variables(http, navCtrl) {
         this.http = http;
@@ -51,35 +48,6 @@ var Variables = Variables_1 = (function () {
             return _this;
         });
     };
-    /*
-      public static checconnection() {
-        var states = {};
-        var networkState = navigator.connection.type;
-    
-        states[Connection.UNKNOWN] = 'Unknown connection';
-        states[Connection.ETHERNET] = 'Ethernet connection';
-        states[Connection.WIFI] = 'WiFi connection';
-        states[Connection.CELL_2G] = 'Cell 2G connection';
-        states[Connection.CELL_3G] = 'Cell 3G connection';
-        states[Connection.CELL_4G] = 'Cell 4G connection';
-        states[Connection.CELL] = 'Cell generic connection';
-        states[Connection.NONE] = 'No network connection';
-        if (states[networkState]!=="No network connection") {
-          Variables.checservice().then(res => {
-            if (res === false) {
-    
-              return "No network connection";
-            }
-            else {
-              return "No network connection";
-            }
-          });
-        }else {
-          return states[networkState];
-        }
-    
-      }
-    */
     Variables.checservice = function () {
         var _this = this;
         return new Promise(function (resolve) {
@@ -151,7 +119,20 @@ Variables.arabe = {
     titreDateAct: "تاريخ الحدث",
     titreHeureDeb: "وقت البدء",
     titreHeureF: "نهاية الوقت",
-    titleMed: "الطبيب"
+    titleMed: "الطبيب",
+    titreChambre: "غرفة",
+    titreEtage: "الطابق",
+    titreDateAdmission: "قبول التسجيل",
+    titreNumDoss: "رقم الملف",
+    titreIdentifiant: "الهوية",
+    titreDateNaiss: "تاريخ الميلاد",
+    titreNationalite: "الجنسية",
+    titreTel: "الهاتف",
+    titreAdr: "العنوان",
+    titreAns: "سنة",
+    titreGroupeSanguim: "فصيلة الدم",
+    titrePoid: "الوزن",
+    titreTaille: "الحجم"
 };
 Variables.francais = {
     titreSync: "Synchroniser",
@@ -199,7 +180,20 @@ Variables.francais = {
     titreDateAct: "Date Acte",
     titreHeureDeb: "Heure Début",
     titreHeureF: "Heure Fin",
-    titleMed: "Medecin"
+    titleMed: "Medecin",
+    titreChambre: "Chambre",
+    titreEtage: "Etage",
+    titreDateAdmission: "Date Admission",
+    titreNumDoss: "Numéro Dossier",
+    titreIdentifiant: "Identifiant",
+    titreDateNaiss: "Date de Naissance",
+    titreNationalite: "Nationalité",
+    titreTel: "Tel",
+    titreAdr: "Adresse",
+    titreAns: "ans",
+    titreGroupeSanguim: "Groupe Sanguim",
+    titrePoid: "Poids",
+    titreTaille: "Taille"
 };
 Variables.anglais = {
     titreSync: "Synchronize",
@@ -247,13 +241,24 @@ Variables.anglais = {
     titreDateAct: "Act date",
     titreHeureDeb: "Start Time",
     titreHeureF: "Time End",
-    titleMed: "Doctor"
+    titleMed: "Doctor",
+    titreChambre: "Room",
+    titreEtage: "Floor",
+    titreDateAdmission: "Date Admission",
+    titreNumDoss: "Folder Number",
+    titreIdentifiant: "Identifier",
+    titreDateNaiss: "Birth date",
+    titreNationalite: "Nationality",
+    titreTel: "Phone",
+    titreAdr: "Adress",
+    titreAns: "year(s)",
+    titreGroupeSanguim: "Blood group",
+    titrePoid: "Weight",
+    titreTaille: "Size"
 };
 Variables.uRL = "";
 Variables = Variables_1 = __decorate([
-    Injectable(),
-    __metadata("design:paramtypes", [Http, NavController])
+    core_1.Injectable()
 ], Variables);
-export { Variables };
+exports.Variables = Variables;
 var Variables_1;
-//# sourceMappingURL=variables.js.map

@@ -8,31 +8,31 @@ export class LangueService {
   constructor() {
   }
 
-  public verifLangue() : Promise<boolean> {
+  public verifLangue(): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select count(*) as sum from Langue ", [])
-        .then(result => {
-          if (result.rows.item(0).sum > 0) {
-            resolve(true);
-            return true;
-          }
-          else {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("select count(*) as sum from Langue ", [])
+          .then(result => {
+            if (result.rows.item(0).sum > 0) {
+              resolve(true);
+              return true;
+            }
+            else {
+              resolve(false);
+              return false;
+            }
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 0 Langue  ' + error);
             resolve(false);
             return false;
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 0 Langue  ' + error);
-          resolve(false);
-          return false;
-        })
-    });
+          })
+      });
       db.close();
       return this;
     })
@@ -40,31 +40,34 @@ export class LangueService {
 
   public getLangues(langues: any): Promise<Langue> {
     return new Promise<Langue>(resolve => {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from Langue ", [])
-        .then(result => {
-          if (result.rows.length === 0) {
-            this._insertLangues(langues);
-            resolve(langues[0]);
-          } else {
-            var l;
-            for (var i = 0; i < result.rows.length; i++) {
-              l = new Langue();
-              l.setlangue(result.rows.item(i).langue);
-              this.langue.push(l);
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("select * from Langue ", [])
+          .then(result => {
+            if (result.rows.length === 0) {
+              this._insertLangues(langues);
+              resolve(langues[0]);
+            } else {
+              var l;
+              for (var i = 0; i < result.rows.length; i++) {
+                l = new Langue();
+                l.setlangue(result.rows.item(i).langue);
+                l.setmatricule(result.rows.item(i).matricule);
+                l.setcodeClinique(result.rows.item(i).codeClinique);
+                l.setnomClinique(result.rows.item(i).nomClinique);
+                this.langue.push(l);
+              }
+              resolve(this.langue[0]);
             }
-            resolve(this.langue[0]);
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 Langue  ' + error);
-        })
-    });
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 1 Langue  ' + error);
+          })
+      });
       db.close();
       return this;
     });
@@ -81,8 +84,11 @@ export class LangueService {
           continue;
         }
         let langue = langues[key];
-        db.executeSql('insert into Langue (langue) values (?)', [
-          langue.getlangue()
+        db.executeSql('insert into Langue (langue,matricule,codeClinique,nomClinique) values (?,?,?,?)', [
+          langue.getlangue(),
+          langue.getmatricule(),
+          langue.getcodeClinique(),
+          langue.getnomClinique()
         ]);
       }
     }).catch(error => {
@@ -92,22 +98,28 @@ export class LangueService {
     db.close();
   }
 
-  public deleteLangues() {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("delete from Langue ", [])
-        .then(() => {
-      //    alert("Suppression de table Aleg est terminé avec succes");
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 Langue  ' + error);
-        })
+  public deleteLangues(): Promise<boolean> {
+    return new Promise<boolean>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("delete from Langue ", [])
+          .then(() => {
+         //   alert("Suppression de table Aleg est terminé avec succes");
+            resolve(true);
+            return true;
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 3 Langue  ' + error);
+            resolve(false);
+            return false;
+          })
+      });
+      db.close();
+      return this;
     });
-    db.close();
-    return this.langue;
   }
 }
