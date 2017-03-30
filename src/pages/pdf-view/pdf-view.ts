@@ -17,10 +17,10 @@ export class PdfViewPage {
   storageDirectory: string = '';
   connection: boolean;
   pdf: any;
-
+  tabBarElement: any;
   constructor(public navCtrl: NavController, public navParams: NavParams, private PdfViewerComponent: PdfViewerComponent, public platform: Platform, public alertCtrl: AlertController) {
     this.pdf =  this.navParams.get("pdf");
-
+    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.platform.ready().then(() => {
       // make sure this is on a device, not an emulation (e.g. chrome tools device mode)
       if (!this.platform.is('cordova')) {
@@ -55,8 +55,12 @@ export class PdfViewPage {
   }
 
   ionViewDidLoad() {
+    this.tabBarElement.style.display = 'none';
   }
 
+  ionViewWillLeave() {
+    this.tabBarElement.style.display = 'flex';
+  }
   downloadImage(file) {
 
     this.platform.ready().then(() => {

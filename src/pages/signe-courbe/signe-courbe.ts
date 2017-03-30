@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams, Platform} from 'ionic-angular';
 import {Chart} from 'chart.js';
 import {SigneCourbe} from "../../models/SigneCourbe";
 import {Variables} from "../../providers/variables";
@@ -10,8 +10,7 @@ import {SigneCourbeSaturationService} from "../../services/SigneCourbeSaturation
 import {SigneCourbeTAService} from "../../services/SigneCourbeTAService";
 import {SigneCourbeTempService} from "../../services/SigneCourbeTempService";
 import {HistSigneCourbeService} from "../../services/HistSigneCourbeService";
-//import {ScreenOrientation} from '@ionic-native/screen-orientation';
-
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 @Component({
   selector: 'page-signe-courbe',
   templateUrl: 'signe-courbe.html',
@@ -40,9 +39,10 @@ export class SigneCourbePage {
   private sgcSserv: any;
   private sgcFserv: any;
   private langue: any;
+  tabBarElement: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-    //   this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, platform: Platform,private screenOrientation: ScreenOrientation) {
+    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
@@ -61,9 +61,16 @@ export class SigneCourbePage {
     });
   }
 
+
+
+
   ionViewDidLoad() {
+    this.tabBarElement.style.display = 'none';
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+  }
 
-
+  ionViewWillLeave() {
+    this.tabBarElement.style.display = 'flex';
   }
 
   getChartSurveillance(numdoss, codeClinique) {
@@ -229,25 +236,25 @@ export class SigneCourbePage {
           pointHoverRadius: 10,
           pointHoverBackgroundColor: "rgb(" + courbe[0].getcolor() + ")",
           pointHoverBorderColor: "rgb(" + courbe[0].getcolor() + ")",
-          pointHoverBorderWidth: 2,
-          pointRadius: 1,
+          pointHoverBorderWidth: 3,
+          pointRadius: 3,
           pointHitRadius: 10,
           data: data,
-          spanGaps: true
+          spanGaps: true,
+          DatasetStrokeWidth: 10,
+          ScaleShowLabels: true
         }]
       },
       options: {
+        scaleShowVerticalLines: true,
+        responsive: true,
         scales: {
           yAxes: [{
-            ticks: {min: Number(courbe[0].getseuilMin()), max: Number(courbe[0].getseuilMax())},
+            ticks: {min: Number(courbe[0].getseuilMin()), max: Number(courbe[0].getseuilMax())}
           }
           ],
           xAxes: [{
-            //     scaleOverride: true,
-            //     scaleSteps: 3,
-            //     scaleStepWidth: Math.ceil(max / steps),
-            ticks: {min: labelcourbe[0], max: labelcourbe[labelcourbe.length]},
-            //       scaleStartValue: data[data.length - 3]
+            showXLabels: 2
           }]
         }
       }
