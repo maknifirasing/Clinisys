@@ -47,7 +47,7 @@ export class HistPdfService {
         db.executeSql("select * from HistPdf where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and nom like '" + file + "'", [])
           .then(result => {
             if (result.rows.length === 0) {
-              this._insertHistSigneCourbes(histDossiers);
+              this._insertHistPdfs(histDossiers);
               resolve(histDossiers[0]);
             } else {
               this.histSigneCourbe.pop();
@@ -75,7 +75,7 @@ export class HistPdfService {
     });
   }
 
-  private _insertHistSigneCourbes(histDossiers: Array<HistDoc>): void {
+  private _insertHistPdfs(histDossiers: Array<HistDoc>): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',

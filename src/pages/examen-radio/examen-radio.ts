@@ -45,7 +45,7 @@ export class ExamenRadioPage {
   RadiosTs: any;
   RadiosFs: any;
   private histDoc: Array<HistDoc> = [];
-  private histdoc: any;
+  private histdoc = new HistDoc();
   private histdocserv: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private themeableBrowser: ThemeableBrowser, public alertCtrl: AlertController) {
@@ -91,8 +91,8 @@ export class ExamenRadioPage {
       }
       Variables.checconnection().then(connexion => {
         if (connexion === false) {
-          this.historiqueDocOff(this.histDoc, this.pass.getdossier(),observ, this.codeClinique);
           this.connection = false;
+          this.historiqueDocOff(this.histDoc, this.pass.getdossier(), observ, this.codeClinique);
           this.docserv = new DocumentService();
           this.docserv.getDocuments(this.document, observ, this.codeClinique).then(res => {
             this.retrieveImageOff(res);
@@ -105,7 +105,7 @@ export class ExamenRadioPage {
           d.setobserv(observ);
           d.setcodeClinique(this.codeClinique);
           this.document.push(d);
-          this.historiqueDoc(this.pass.getdossier(),observ, this.codeClinique);
+          this.historiqueDoc(this.pass.getdossier(), observ, this.codeClinique);
           this.docserv = new DocumentService();
           this.docserv.verifDocument(this.document, observ, this.codeClinique).then(res => {
             if (res === false) {
@@ -141,37 +141,11 @@ export class ExamenRadioPage {
       },
       title: {
         color: '#003264ff',
-        staticText: "Doc",
+        staticText: this.tabLangue.titreHorsLigne+" "+this.histdoc,
         showPageTitle: false
-      },
-      backButton: {
-        image: 'back',
-        imagePressed: 'back_pressed',
-        align: 'left',
-        event: 'backPressed'
-      },
-      forwardButton: {
-        image: 'forward',
-        imagePressed: 'forward_pressed',
-        align: 'left',
-        event: 'forwardPressed'
-      },
-      closeButton: {
-        image: 'close',
-        imagePressed: 'close_pressed',
-        align: 'left',
-        event: 'closePressed'
-      },
-      customButtons: [
-        {
-          image: 'share',
-          imagePressed: 'share_pressed',
-          align: 'right',
-          event: 'sharePressed'
-        }
-      ],
+      }
 
-      backButtonCanClose: true
+
     };
     const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_blank', options);
   }
@@ -278,34 +252,33 @@ export class ExamenRadioPage {
       });
   }
 
-  historiqueDoc(numDoss,file ,codeClinique) {
-    this.histserv = new HistDocService();
-    var h = new HistDoc();
+  historiqueDoc(numDoss, file, codeClinique) {
+    this.histdocserv = new HistDocService();
+    var hi  = new HistDoc();
     var d = new Date();
-    h.setnumDoss(numDoss);
-    h.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
-    h.setcodeClinique(codeClinique);
-    h.setnom(file);
-    this.histDoc.push(h);
+    hi.setnumDoss(numDoss);
+    hi.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+    hi.setcodeClinique(codeClinique);
+    hi.setnom(file);
+    this.histDoc.push(hi);
     try {
-      this.histdocserv.deleteHistDocs(numDoss, codeClinique,file);
-      this.histdocserv.getHistPdfs(this.histDoc, numDoss, codeClinique,file).then(res => {
-        this.histdoc = res.getdate();
+      this.histdocserv.deleteHistDocs(numDoss, codeClinique, file);
+      this.histdocserv.getHistDocs(this.histDoc, numDoss, codeClinique, file).then(result => {
+        this.histdoc = result.getdate();
       });
     }
     catch (Error) {
-      this.histdocserv.getHistDocs(this.histD, numDoss, codeClinique,file).then(res => {
-        this.histdoc = res.getdate();
+      this.histdocserv.getHistDocs(this.histDoc, numDoss, codeClinique, file).then(result => {
+        this.histdoc = result.getdate();
       });
     }
 
   }
 
-
-  historiqueDocOff(hist, numDoss,file, codeClinique) {
+  historiqueDocOff(hist, numDoss, file, codeClinique) {
     this.histdocserv = new HistDocService();
-    this.histdocserv.getHistDocs(hist, numDoss, codeClinique,file).then(res => {
-      this.histdoc = res.getdate();
+    this.histdocserv.getHistDocs(hist, numDoss, codeClinique, file).then(result => {
+      this.histdoc = result.getdate();
     });
   }
 }
