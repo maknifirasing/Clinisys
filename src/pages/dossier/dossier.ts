@@ -90,6 +90,7 @@ export class DossierPage {
   pass: any;
   dateFeuille: any;
   langue: any;
+  static motifhh: Array<MotifHospitalisation> = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform) {
     this.codeClinique = navParams.get("codeClinique");
@@ -110,7 +111,6 @@ export class DossierPage {
       Variables.checconnection().then(res => {
         if (res === false) {
           this.connection = false;
-          //    alert("dossier " + this.pass.getdossier() + " date" + this.dateFeuille + " nature " + this.pass.getnature());
           this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
           this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
           this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
@@ -124,15 +124,6 @@ export class DossierPage {
         else {
           this.connection = true;
           this.historique(this.pass.getdossier(), this.codeClinique);
-          /*
-           this.GetAllMotifHospitalisationByNumDoss(this.pass.getdossier());
-           this.getAntecedentAllergieByIdentifiant(this.pass.getid());
-           this.GetAlerteSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature());
-           this.GetTraitements(this.pass.getdossier(), this.dateFeuille);
-           this.GetEvenementByDossier(this.pass.getdossier());
-           this.GetListRegime(this.pass.getdossier(), this.dateFeuille, this.pass.getnature());
-           this.GetSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeType, this.codeTypeOf);
-           */
           this.update();
         }
       });
@@ -360,16 +351,6 @@ export class DossierPage {
     });
   }
 
-  goToInfPage(patient) {
-    this.navCtrl.push(ClientDetailPage,
-      {
-        patient: patient,
-        motif: this.motifh,
-        tabLangue: this.tabLangue,
-        langue: this.langue
-      });
-  }
-
   DeletegetAntecedentAllergieByIdentifiant(idpass, codeClinique) {
     this.antecserv = new AntechService();
     this.antecserv.deleteAntecs(idpass, codeClinique);
@@ -383,7 +364,6 @@ export class DossierPage {
     this.motifh = [];
     this.motifh.length = 0;
     this.test = false;
-    ;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
@@ -447,6 +427,7 @@ export class DossierPage {
               a.setutilisateurMotif(x[0].children[15].textContent);
               this.motifh.push(a);
             }
+            DossierPage.motifhh = this.motifh;
             if (this.motifh.length === 0) {
               this.test = false;
             }
@@ -474,6 +455,7 @@ export class DossierPage {
     this.mserv.verifmotifHospitalisation(motif, numdoss, codeClinique).then(res => {
       if (res === true) {
         this.motifh = this.mserv.getmotifHospitalisations(motif, numdoss, codeClinique);
+        DossierPage.motifhh = this.motifh;
         this.test = true;
       }
     });
@@ -1040,6 +1022,17 @@ export class DossierPage {
     this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(res => {
       this.histd = res.getdate();
     });
+  }
+
+  goToInfPage(patient) {
+    this.navCtrl.push(ClientDetailPage,
+      {
+        patient: patient,
+        motif: this.motifh,
+        tabLangue: this.tabLangue,
+        langue: this.langue,
+        codeClinique: this.codeClinique
+      });
   }
 
   gotoSigneCourbe() {

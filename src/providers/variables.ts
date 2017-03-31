@@ -54,19 +54,19 @@ export class Variables {
     titreHeureDeb: "وقت البدء",
     titreHeureF: "نهاية الوقت",
     titleMed: "الطبيب",
-    titreChambre:"غرفة",
-    titreEtage:"الطابق",
-    titreDateAdmission:"قبول التسجيل",
-    titreNumDoss:"رقم الملف",
-    titreIdentifiant:"الهوية",
-    titreDateNaiss:"تاريخ الميلاد",
-    titreNationalite:"الجنسية",
-    titreTel:"الهاتف",
-    titreAdr:"العنوان",
-    titreAns:"سنة",
-    titreGroupeSanguim:"فصيلة الدم",
-    titrePoid:"الوزن",
-    titreTaille:"الحجم"
+    titreChambre: "غرفة",
+    titreEtage: "الطابق",
+    titreDateAdmission: "قبول التسجيل",
+    titreNumDoss: "رقم الملف",
+    titreIdentifiant: "الهوية",
+    titreDateNaiss: "تاريخ الميلاد",
+    titreNationalite: "الجنسية",
+    titreTel: "الهاتف",
+    titreAdr: "العنوان",
+    titreAns: "سنة",
+    titreGroupeSanguim: "فصيلة الدم",
+    titrePoid: "الوزن",
+    titreTaille: "الحجم"
   }
 
   static francais: any = {
@@ -116,19 +116,19 @@ export class Variables {
     titreHeureDeb: "Heure Début",
     titreHeureF: "Heure Fin",
     titleMed: "Medecin",
-    titreChambre:"Chambre",
-    titreEtage:"Etage",
-    titreDateAdmission:"Date Admission",
-    titreNumDoss:"Numéro Dossier",
-    titreIdentifiant:"Identifiant",
-    titreDateNaiss:"Date de Naissance",
-    titreNationalite:"Nationalité",
-    titreTel:"Tel",
-    titreAdr:"Adresse",
-    titreAns:"ans",
-    titreGroupeSanguim:"Groupe Sanguim",
-    titrePoid:"Poids",
-    titreTaille:"Taille"
+    titreChambre: "Chambre",
+    titreEtage: "Etage",
+    titreDateAdmission: "Date Admission",
+    titreNumDoss: "Numéro Dossier",
+    titreIdentifiant: "Identifiant",
+    titreDateNaiss: "Date de Naissance",
+    titreNationalite: "Nationalité",
+    titreTel: "Tel",
+    titreAdr: "Adresse",
+    titreAns: "ans",
+    titreGroupeSanguim: "Groupe Sanguim",
+    titrePoid: "Poids",
+    titreTaille: "Taille"
   }
 
   static anglais: any = {
@@ -178,19 +178,19 @@ export class Variables {
     titreHeureDeb: "Start Time",
     titreHeureF: "Time End",
     titleMed: "Doctor",
-    titreChambre:"Room",
-    titreEtage:"Floor",
-    titreDateAdmission:"Date Admission",
-    titreNumDoss:"Folder Number",
-    titreIdentifiant:"Identifier",
-    titreDateNaiss:"Birth date",
-    titreNationalite:"Nationality",
-    titreTel:"Phone",
-    titreAdr:"Adress",
-    titreAns:"year(s)",
-    titreGroupeSanguim:"Blood group",
-    titrePoid:"Weight",
-    titreTaille:"Size"
+    titreChambre: "Room",
+    titreEtage: "Floor",
+    titreDateAdmission: "Date Admission",
+    titreNumDoss: "Folder Number",
+    titreIdentifiant: "Identifier",
+    titreDateNaiss: "Birth date",
+    titreNationalite: "Nationality",
+    titreTel: "Phone",
+    titreAdr: "Adress",
+    titreAns: "year(s)",
+    titreGroupeSanguim: "Blood group",
+    titrePoid: "Weight",
+    titreTaille: "Size"
   }
 
   url: string = "";
@@ -202,67 +202,37 @@ export class Variables {
   }
 
 
-
   public static checconnection(): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-    var states = {};
-    var networkState = navigator.connection.type;
-    states[Connection.UNKNOWN] = 'Unknown connection';
-    states[Connection.ETHERNET] = 'Ethernet connection';
-    states[Connection.WIFI] = 'WiFi connection';
-    states[Connection.CELL_2G] = 'Cell 2G connection';
-    states[Connection.CELL_3G] = 'Cell 3G connection';
-    states[Connection.CELL_4G] = 'Cell 4G connection';
-    states[Connection.CELL] = 'Cell generic connection';
-    states[Connection.NONE] = 'No network connection';
-    if (states[networkState]!=="No network connection") {
-      Variables.checservice().then(res => {
-        if (res === false) {
-          resolve(false);
-          return false;
-        }
-        else
-        {
-          resolve(true);
-          return true;
-        }
-      });
-    } else {
-      resolve(false);
-      return false;
-    }
+      var states = {};
+      var networkState = navigator.connection.type;
+      states[Connection.UNKNOWN] = 'Unknown connection';
+      states[Connection.ETHERNET] = 'Ethernet connection';
+      states[Connection.WIFI] = 'WiFi connection';
+      states[Connection.CELL_2G] = 'Cell 2G connection';
+      states[Connection.CELL_3G] = 'Cell 3G connection';
+      states[Connection.CELL_4G] = 'Cell 4G connection';
+      states[Connection.CELL] = 'Cell generic connection';
+      states[Connection.NONE] = 'No network connection';
+      if (states[networkState] !== "No network connection") {
+        Variables.checservice().then(res => {
+          if (res === false) {
+            resolve(false);
+            return false;
+          }
+          else {
+            resolve(true);
+            return true;
+          }
+        });
+      } else {
+        resolve(false);
+        return false;
+      }
       return this;
     });
   }
-/*
-  public static checconnection() {
-    var states = {};
-    var networkState = navigator.connection.type;
 
-    states[Connection.UNKNOWN] = 'Unknown connection';
-    states[Connection.ETHERNET] = 'Ethernet connection';
-    states[Connection.WIFI] = 'WiFi connection';
-    states[Connection.CELL_2G] = 'Cell 2G connection';
-    states[Connection.CELL_3G] = 'Cell 3G connection';
-    states[Connection.CELL_4G] = 'Cell 4G connection';
-    states[Connection.CELL] = 'Cell generic connection';
-    states[Connection.NONE] = 'No network connection';
-    if (states[networkState]!=="No network connection") {
-      Variables.checservice().then(res => {
-        if (res === false) {
-
-          return "No network connection";
-        }
-        else {
-          return "No network connection";
-        }
-      });
-    }else {
-      return states[networkState];
-    }
-
-  }
-*/
   public static  checservice(): Promise<boolean> {
 
     return new Promise<boolean>(resolve => {

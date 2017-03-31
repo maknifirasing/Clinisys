@@ -31,7 +31,8 @@
     <p><img src="/android_asset/www/assets/img/etage.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titreEtage}}: </strong><strong>{{cl.getetage()}}</strong></p>
     <p><img src="/android_asset/www/assets/img/calendarin.png" width="15" height="15">
-      <strong style="color: #0D47A1">{{tabLangue.titreDateAdmission}}: </strong><strong>{{cl.getdateArr()}}</strong></p>
+      <strong style="color: #0D47A1 ">{{tabLangue.titreDateAdmission}}: </strong><strong>{{cl.getdateArr()}}</strong>
+    </p>
     <p><img src="/android_asset/www/assets/img/numdoss.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titreNumDoss}}: </strong><strong>{{cl.getnumdoss()}}</strong></p>
     <p><img src="/android_asset/www/assets/img/idcard.png" width="15" height="15">
@@ -65,13 +66,14 @@
 
 </ion-content>
 <ion-content padding *ngIf="langue==='francais' || langue==='anglais'">
-  <ion-list *ngFor="let cl of clientList " style="margin-top:150px; background-color:whitesmoke;">
+  <ion-list *ngFor="let cl of clientList " style="margin-top:200px; background-color:whitesmoke;">
     <p><img src="/android_asset/www/assets/img/chamb.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titreChambre}}:</strong><strong> {{cl.getnumCha()}}</strong></p>
     <p><img src="/android_asset/www/assets/img/etage.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titreEtage}}: </strong><strong>{{cl.getetage()}}</strong></p>
     <p><img src="/android_asset/www/assets/img/calendarin.png" width="15" height="15">
-      <strong style="color: #0D47A1">{{tabLangue.titreDateAdmission}}: </strong><strong>{{cl.getdateArr()}}</strong></p>
+      <strong style="color: #0D47A1 ">{{tabLangue.titreDateAdmission}}: </strong><strong>{{cl.getdateArr()}}</strong>
+    </p>
     <p><img src="/android_asset/www/assets/img/numdoss.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titreNumDoss}}: </strong><strong>{{cl.getnumdoss()}}</strong></p>
     <p><img src="/android_asset/www/assets/img/idcard.png" width="15" height="15">

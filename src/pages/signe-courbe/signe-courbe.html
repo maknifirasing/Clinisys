@@ -18,19 +18,22 @@
 
   </md-card>
 
+
 </ion-header>
 
 
 <ion-content padding>
   <ion-scroll scrollY="true" scrollX="true">
-  <ul>
-    <li (click)="cPouls(courbePouls)">Pouls</li>
-    <li (click)="cPouls(courbeTA)">T.A</li>
-    <li (click)="cPouls(courbeTemp)">courbeTemp</li>
-    <li (click)="cPouls(courbeSaturation)">courbeSaturation</li>
-    <li (click)="cPouls(courbeFrq)">courbeFrq</li>
+    <ul>
+      <li (click)="onecourbes(courbePouls)">Pouls</li>
+      <li (click)="doublecourbes(courbeTA)">T.A</li>
+      <li (click)="onecourbes(courbeTemp)">courbeTemp</li>
+      <li (click)="onecourbes(courbeSaturation)">courbeSaturation</li>
+      <li (click)="onecourbes(courbeFrq)">courbeFrq</li>
 
-  </ul>
-  <canvas #lineCanvas></canvas>
+    </ul>
+
+  <canvas #lineCanvas ></canvas>
+
   </ion-scroll>
 </ion-content>

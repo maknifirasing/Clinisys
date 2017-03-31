@@ -4,6 +4,8 @@ import {Users} from '../../models/Users';
 import {ListePage} from "../liste/liste";
 import {Variables} from "../../providers/variables";
 import {UserService} from "../../services/UserService";
+import {Langue} from "../../models/Langue";
+import {LangueService} from "../../services/LangueService";
 
 
 @Component({
@@ -21,6 +23,8 @@ export class HomePage {
   codeClinique: string;
   langue: any;
   nomClinique: string;
+  langserv: any;
+  langes: Array<Langue> = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     this.codeClinique = this.navParams.get("codeClinique");
@@ -72,18 +76,36 @@ export class HomePage {
               this.users.push(user);
               if (this.users.length > 0) {
                 this.userserv = new UserService();
-                //   this.userserv.verifUser(userName, passWord, this.codeClinique).then(res => {
-                this.userserv.verifUser().then(res => {
+                this.userserv.verifUser(this.codeClinique).then(res => {
                   if (res === false) {
-                    //       this.userserv.getUser(this.users, userName, passWord, this.codeClinique);
-                    this.userserv.getUser(this.users);
+                    this.userserv.getUser(this.users, this.codeClinique);
                   }
                 });
-                this.navCtrl.setRoot(ListePage, {
-                  tabLangue: this.tabLangue,
-                  langue: this.langue,
-                  codeClinique: this.codeClinique,
-                  nomClinique: this.nomClinique
+                this.langserv = new LangueService();
+                this.langserv.verifLangue().then(result => {
+                  var l = new Langue();
+                  l.setlangue(this.langue);
+                  l.setmatricule(user.getmatricule());
+                  l.setcodeClinique(this.codeClinique);
+                  l.setnomClinique(this.nomClinique);
+                  this.langes.push(l);
+                  if (result === true) {
+                    this.langserv.getLangues(this.langes).then(lg => {
+                      this.langserv.deleteLangues().then(delet => {
+                        if (delet === true) {
+                          this.langserv._insertLangues(this.langes);
+                        }
+                      });
+                    });
+                  } else {
+                    this.langserv.getLangues(this.langes);
+                  }
+                  this.navCtrl.setRoot(ListePage, {
+                    tabLangue: this.tabLangue,
+                    langue: this.langue,
+                    codeClinique: this.codeClinique,
+                    nomClinique: this.nomClinique
+                  });
                 });
               }
               else {
@@ -109,7 +131,8 @@ export class HomePage {
     this.navCtrl.push(ListePage, {
       tabLangue: this.tabLangue,
       langue: this.langue,
-      codeClinique: this.codeClinique
+      codeClinique: this.codeClinique,
+      nomClinique: this.nomClinique
     });
   }
 

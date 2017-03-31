@@ -1,67 +1,62 @@
-var SigCourbe = (function () {
-    function SigCourbe() {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var SigneCourbe = (function () {
+    function SigneCourbe() {
     }
-    SigCourbe.prototype.getcode = function () {
-        return this._code;
-    };
-    SigCourbe.prototype.setcode = function (value) {
-        this._code = value;
-    };
-    SigCourbe.prototype.getcodePosologie = function () {
+    SigneCourbe.prototype.getcodePosologie = function () {
         return this._codePosologie;
     };
-    SigCourbe.prototype.setcodePosologie = function (value) {
+    SigneCourbe.prototype.setcodePosologie = function (value) {
         this._codePosologie = value;
     };
-    SigCourbe.prototype.getdesignation = function () {
+    SigneCourbe.prototype.getdesignation = function () {
         return this._designation;
     };
-    SigCourbe.prototype.setdesignation = function (value) {
+    SigneCourbe.prototype.setdesignation = function (value) {
         this._designation = value;
     };
-    SigCourbe.prototype.getseuilMin = function () {
+    SigneCourbe.prototype.getseuilMin = function () {
         return this._seuilMin;
     };
-    SigCourbe.prototype.setseuilMin = function (value) {
+    SigneCourbe.prototype.setseuilMin = function (value) {
         this._seuilMin = value;
     };
-    SigCourbe.prototype.getseuilMax = function () {
+    SigneCourbe.prototype.getseuilMax = function () {
         return this._seuilMax;
     };
-    SigCourbe.prototype.setseuilMax = function (value) {
+    SigneCourbe.prototype.setseuilMax = function (value) {
         this._seuilMax = value;
     };
-    SigCourbe.prototype.getcolor = function () {
+    SigneCourbe.prototype.getcolor = function () {
         return this._color;
     };
-    SigCourbe.prototype.setcolor = function (value) {
+    SigneCourbe.prototype.setcolor = function (value) {
         this._color = value;
     };
-    SigCourbe.prototype.getunite = function () {
+    SigneCourbe.prototype.getunite = function () {
         return this._unite;
     };
-    SigCourbe.prototype.setunite = function (value) {
+    SigneCourbe.prototype.setunite = function (value) {
         this._unite = value;
     };
-    SigCourbe.prototype.getquantite = function () {
+    SigneCourbe.prototype.getquantite = function () {
         return this._quantite;
     };
-    SigCourbe.prototype.setquantite = function (value) {
+    SigneCourbe.prototype.setquantite = function (value) {
         this._quantite = value;
     };
-    SigCourbe.prototype.getheurePrise = function () {
+    SigneCourbe.prototype.getheurePrise = function () {
         return this._heurePrise;
     };
-    SigCourbe.prototype.setheurePrise = function (value) {
+    SigneCourbe.prototype.setheurePrise = function (value) {
         this._heurePrise = value;
     };
-    SigCourbe.prototype.getdateHeurePrise = function () {
+    SigneCourbe.prototype.getdateHeurePrise = function () {
         return this._dateHeurePrise;
     };
-    SigCourbe.prototype.setdateHeurePrise = function (value) {
+    SigneCourbe.prototype.setdateHeurePrise = function (value) {
         this._dateHeurePrise = value;
     };
-    return SigCourbe;
+    return SigneCourbe;
 }());
-export { SigCourbe };
-//# sourceMappingURL=SigCourbe.js.map
+exports.SigneCourbe = SigneCourbe;

@@ -8,6 +8,7 @@ import {HistDossierService} from "../../services/HistDossierService";
 import {LaboFService} from "../../services/LaboFService";
 import {LaboTService} from "../../services/LaboTService";
 import {ClientDetailPage} from "../client-detail/client-detail";
+import {DossierPage} from "../dossier/dossier";
 
 @Component({
   selector: 'page-examen-labo',
@@ -28,7 +29,6 @@ export class ExamenLaboPage {
   langue: any;
   LabosFs: any;
   LabosTs: any;
-  dossier:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,public platform: Platform) {
     this.tabLangue = navParams.get("tabLangue");
@@ -84,7 +84,8 @@ export class ExamenLaboPage {
   }
 
   gotPdf(pdf) {
-    this.navCtrl.push(PdfViewPage, {pdf: pdf.getpdf()});
+    this.navCtrl.push(PdfViewPage, {pdf: pdf.getpdf(),tabLangue: this.tabLangue,
+      langue: this.langue,codeClinique: this.codeClinique,pass:this.pass});
   }
 
   historiqueOff(hist, numDoss, codeClinique) {
@@ -106,9 +107,10 @@ export class ExamenLaboPage {
     this.navCtrl.push(ClientDetailPage,
       {
         patient: patient,
-        motif: this.motifh,
+        motif: DossierPage.motifhh,
         tabLangue: this.tabLangue,
-        langue: this.langue
+        langue: this.langue,
+        codeClinique: this.codeClinique
       });
   }
 }

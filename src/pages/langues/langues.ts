@@ -18,10 +18,8 @@ export class LanguesPage {
   tabLangue: any;
   langserv: any;
   langes: Array<Langue> = [];
-  users: Array<Users> = [];
-  private codeClinique: string;
+  codeClinique: string;
   langue: string;
-  private userserv: UserService;
 
 
   constructor(public navCtrl: NavController) {
@@ -42,34 +40,32 @@ export class LanguesPage {
     else if (lang === "anglais") {
       this.tabLangue = Variables.anglais;
     }
-  /*  var l = new Langue();
-    l.setlangue(lang);
-    this.langes.push(l);
-    this.langserv = new LangueService();
-    try {
-      this.langserv.deleteLangues();
-      this.langserv.getLangues(this.langes);
-    }
-    catch (Error) {
-      this.langserv.getLangues(this.langes);
-    }
-    this.langserv.getLangues(this.langes);
 
-    this.userserv = new UserService();
-    this.userserv.verifUser().then(res => {
+    this.langserv = new LangueService();
+    this.langserv.verifLangue().then(res => {
       if (res === true) {
-        this.userserv.getUser(this.users).then(user => {
-          this.codeClinique = user.getcodeClinique();
-          this.navCtrl.push(ListePage, {
-            tabLangue: this.tabLangue,
-            langue: lang,
-            codeClinique: this.codeClinique
-          });
+        this.langserv.getLangues(this.langes).then(lg => {
+          var l = new Langue();
+          l.setlangue(lang);
+          l.setmatricule(lg.getmatricule());
+          l.setcodeClinique(lg.getcodeClinique());
+          l.setnomClinique(lg.getnomClinique());
+          this.langes.push(l);
+          this.langserv.deleteLangues().then(delet=>{
+            if(delet===true) {
+              this.langserv.getLangues(this.langes);
+              this.navCtrl.setRoot(ListePage, {
+                tabLangue: this.tabLangue,
+                langue: lang,
+                codeClinique: lg.getcodeClinique(),
+                nomClinique: lg.getnomClinique()
+              });
+            }});
         });
+
       } else {
         this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
       }
-    });*/
-    this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
+    });
   }
 }

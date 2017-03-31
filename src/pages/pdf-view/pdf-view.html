@@ -1,11 +1,25 @@
-<ion-header>
+<ion-header class="headerListe">
+  <md-card class="md-cardListe">
+    <div fxLayout="row" fxLayoutWrap *ngIf="langue==='arabe'">
 
-  <ion-navbar>
-    <ion-title>PdfView</ion-title>
-  </ion-navbar>
+      <div fxFlex="86" style="margin-top: 10px;direction:rtl;" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histp}}</div>
+      <div fxFlex="86" style="margin-top: 10px;direction:rtl;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histp}}</div>
+      <div fxFlex="13" style="margin-top: 10px;direction:rtl;" *ngIf="connection===true"><img src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>
+      <div fxFlex="13" style="margin-top: 10px;direction:rtl;" *ngIf="connection===false"><img src="/android_asset/www/assets/img/red.png" width="30" height="30"></div>
+    </div>
+    <div fxLayout="row" fxLayoutWrap *ngIf="langue==='francais' || langue==='anglais'">
+      <div fxFlex="13" style="margin-top: 10px;" *ngIf="connection===true"><img src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>
+      <div fxFlex="13" style="margin-top: 10px;" *ngIf="connection===false"><img src="/android_asset/www/assets/img/red.png" width="30" height="30"></div>
+      <div fxFlex="86" style="margin-top: 10px;" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histp}}</div>
+      <div fxFlex="86" style="margin-top: 10px;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histp}}</div>
+
+
+    </div>
+
+  </md-card>
+
 
 </ion-header>
-
 
 <ion-content padding>
   <ion-scroll scrollY="true" scrollX="true">

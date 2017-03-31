@@ -14,6 +14,9 @@ import {DocumentService} from "../../services/DocumentService";
 import {DocViewPage} from "../doc-view/doc-view";
 import {ExamenRadioTService} from "../../services/ExamenRadioTService";
 import {ExamenRadioFService} from "../../services/ExamenRadioFService";
+import {ClientDetailPage} from "../client-detail/client-detail";
+import {DossierPage} from "../dossier/dossier";
+
 declare var cordova: any;
 @Component({
   selector: 'page-examen-radio',
@@ -255,5 +258,16 @@ export class ExamenRadioPage {
 
     this.RadiosFs = new ExamenRadioFService();
     this.examenRF = this.RadiosFs.getExamenRadios(this.examenRF, numDoss, codeClinique);
+  }
+
+  goToInfPage(patient) {
+    this.navCtrl.push(ClientDetailPage,
+      {
+        patient: patient,
+        motif: DossierPage.motifhh,
+        tabLangue: this.tabLangue,
+        langue: this.langue,
+        codeClinique: this.codeClinique
+      });
   }
 }
