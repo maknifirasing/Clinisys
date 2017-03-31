@@ -16,6 +16,8 @@ import {ExamenRadioTService} from "../../services/ExamenRadioTService";
 import {ExamenRadioFService} from "../../services/ExamenRadioFService";
 import {ClientDetailPage} from "../client-detail/client-detail";
 import {DossierPage} from "../dossier/dossier";
+import {HistDoc} from "../../models/HistDoc";
+import {HistDocService} from "../../services/HistDocService";
 
 declare var cordova: any;
 @Component({
@@ -42,6 +44,9 @@ export class ExamenRadioPage {
   storageDirectory: string = '';
   RadiosTs: any;
   RadiosFs: any;
+  private histDoc: Array<HistDoc> = [];
+  private histdoc: any;
+  private histdocserv: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private themeableBrowser: ThemeableBrowser, public alertCtrl: AlertController) {
     this.tabLangue = navParams.get("tabLangue");
@@ -86,6 +91,7 @@ export class ExamenRadioPage {
       }
       Variables.checconnection().then(connexion => {
         if (connexion === false) {
+          this.historiqueDocOff(this.histDoc, this.pass.getdossier(),observ, this.codeClinique);
           this.connection = false;
           this.docserv = new DocumentService();
           this.docserv.getDocuments(this.document, observ, this.codeClinique).then(res => {
@@ -99,6 +105,7 @@ export class ExamenRadioPage {
           d.setobserv(observ);
           d.setcodeClinique(this.codeClinique);
           this.document.push(d);
+          this.historiqueDoc(this.pass.getdossier(),observ, this.codeClinique);
           this.docserv = new DocumentService();
           this.docserv.verifDocument(this.document, observ, this.codeClinique).then(res => {
             if (res === false) {
@@ -269,5 +276,36 @@ export class ExamenRadioPage {
         langue: this.langue,
         codeClinique: this.codeClinique
       });
+  }
+
+  historiqueDoc(numDoss,file ,codeClinique) {
+    this.histserv = new HistDocService();
+    var h = new HistDoc();
+    var d = new Date();
+    h.setnumDoss(numDoss);
+    h.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+    h.setcodeClinique(codeClinique);
+    h.setnom(file);
+    this.histDoc.push(h);
+    try {
+      this.histdocserv.deleteHistDocs(numDoss, codeClinique,file);
+      this.histdocserv.getHistPdfs(this.histDoc, numDoss, codeClinique,file).then(res => {
+        this.histdoc = res.getdate();
+      });
+    }
+    catch (Error) {
+      this.histdocserv.getHistDocs(this.histD, numDoss, codeClinique,file).then(res => {
+        this.histdoc = res.getdate();
+      });
+    }
+
+  }
+
+
+  historiqueDocOff(hist, numDoss,file, codeClinique) {
+    this.histdocserv = new HistDocService();
+    this.histdocserv.getHistDocs(hist, numDoss, codeClinique,file).then(res => {
+      this.histdoc = res.getdate();
+    });
   }
 }
