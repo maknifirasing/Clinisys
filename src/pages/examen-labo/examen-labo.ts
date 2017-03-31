@@ -7,6 +7,7 @@ import {HistDossier} from "../../models/HistDossier";
 import {HistDossierService} from "../../services/HistDossierService";
 import {LaboFService} from "../../services/LaboFService";
 import {LaboTService} from "../../services/LaboTService";
+import {ClientDetailPage} from "../client-detail/client-detail";
 
 @Component({
   selector: 'page-examen-labo',
@@ -27,6 +28,7 @@ export class ExamenLaboPage {
   langue: any;
   LabosFs: any;
   LabosTs: any;
+  dossier:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,public platform: Platform) {
     this.tabLangue = navParams.get("tabLangue");
@@ -98,5 +100,15 @@ export class ExamenLaboPage {
 
     this.LabosTs = new LaboTService();
     this.LabosT = this.LabosTs.getLabos(this.LabosT, numDoss, codeClinique);
+  }
+
+  goToInfPage(patient) {
+    this.navCtrl.push(ClientDetailPage,
+      {
+        patient: patient,
+        motif: this.motifh,
+        tabLangue: this.tabLangue,
+        langue: this.langue
+      });
   }
 }

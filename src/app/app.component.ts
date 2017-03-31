@@ -150,42 +150,48 @@ export class MyApp {
           db.executeSql('CREATE TABLE IF NOT EXISTS SigneCourbeTemp (codePosologie VARCHAR(32),designation VARCHAR(32)' +
             ',seuilMin VARCHAR(32),seuilMax VARCHAR(32),color VARCHAR(32),unite VARCHAR(32),quantite VARCHAR(32),heurePrise VARCHAR(32),dateHeurePrise VARCHAR(32),codeClinique VARCHAR(32),numdoss VARCHAR(32))', {});
 
+          db.executeSql('CREATE TABLE IF NOT EXISTS Medecin (codMed VARCHAR(32),nomMed VARCHAR(32),designationSpecialite VARCHAR(32)' +
+            ',codeClinique VARCHAR(32),numdoss VARCHAR(32))', {});
+
+          db.executeSql('CREATE TABLE IF NOT EXISTS Client (adrCli VARCHAR(32),datNai VARCHAR(32),libNat VARCHAR(32)' +
+            ',numTel VARCHAR(32),etage VARCHAR(32),numCha VARCHAR(32),numdoss VARCHAR(32),identifiant VARCHAR(32),codeClinique VARCHAR(32))', {});
+
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error opening database  ' + error);
         });
 
-   /*   this.userserv = new UserService();
-      this.userserv.verifUser().then(res => {
-        if (res === true) {
-          this.userserv.getUser(this.users).then(user => {
-            this.codeClinique = user.getcodeClinique();
+      /*   this.userserv = new UserService();
+       this.userserv.verifUser().then(res => {
+       if (res === true) {
+       this.userserv.getUser(this.users).then(user => {
+       this.codeClinique = user.getcodeClinique();
 
 
-            this.langserv = new LangueService();
-            this.langserv.getLangues(this.langes).then(lang => {
-              this.langue = lang.getlangue();
-              if (this.langue === "arabe") {
-                this.tabLangue = Variables.arabe;
-              }
-              else if (this.langue === "francais") {
-                this.tabLangue = Variables.francais;
-              }
-              else if (this.langue === "anglais") {
-                this.tabLangue = Variables.anglais;
-              }
-              this.nav.setRoot(ListePage, {
-                tabLangue: this.tabLangue,
-                langue: this.langue,
-                codeClinique: this.codeClinique
-              });
-            });
-          });
-        } else {
-          this.nav.setRoot(LanguesPage);
-        }
-      });*/
+       this.langserv = new LangueService();
+       this.langserv.getLangues(this.langes).then(lang => {
+       this.langue = lang.getlangue();
+       if (this.langue === "arabe") {
+       this.tabLangue = Variables.arabe;
+       }
+       else if (this.langue === "francais") {
+       this.tabLangue = Variables.francais;
+       }
+       else if (this.langue === "anglais") {
+       this.tabLangue = Variables.anglais;
+       }
+       this.nav.setRoot(ListePage, {
+       tabLangue: this.tabLangue,
+       langue: this.langue,
+       codeClinique: this.codeClinique
+       });
+       });
+       });
+       } else {
+       this.nav.setRoot(LanguesPage);
+       }
+       });*/
       this.nav.setRoot(LanguesPage);
       StatusBar.styleDefault();
       Splashscreen.hide();

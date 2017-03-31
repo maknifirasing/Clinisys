@@ -7,10 +7,19 @@ export class Client {
   private _numCha: string;
   private _numdoss: string;
   private _identifiant: string;
+  private _codeClinique:string;
+  private _dateArr:string;
 
   constructor() {
   }
 
+  getcodeClinique(): string {
+    return this._codeClinique;
+  }
+
+  setcodeClinique(value: string) {
+    this._codeClinique = value;
+  }
 
   getadrCli(): string {
     return this._adrCli;
@@ -74,5 +83,13 @@ export class Client {
 
   setidentifiant(value: string) {
     this._identifiant = value;
+  }
+
+  getdateArr(): string {
+    return this._dateArr;
+  }
+
+  setdateArr(value: string) {
+    this._dateArr = value;
   }
 }

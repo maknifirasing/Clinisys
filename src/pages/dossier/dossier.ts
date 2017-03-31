@@ -363,11 +363,7 @@ export class DossierPage {
   goToInfPage(patient) {
     this.navCtrl.push(ClientDetailPage,
       {
-        image: patient.getimg(),
-        nom: patient.getnom(),
-        prenom: patient.getprenom(),
-        age: patient.getage(),
-        numDoss: patient.getdossier(),
+        patient: patient,
         motif: this.motifh,
         tabLangue: this.tabLangue,
         langue: this.langue

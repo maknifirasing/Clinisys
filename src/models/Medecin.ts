@@ -1,7 +1,8 @@
 export class Medecin {
   private _codMed: string;
   private _nomMed: string;
-  private _designationSpecialite:string;
+  private _designationSpecialite: string;
+  private _codeClinique: string;
 
   constructor() {
   }
@@ -28,5 +29,13 @@ export class Medecin {
 
   setdesignationSpecialite(value: string) {
     this._designationSpecialite = value;
+  }
+
+  getcodeClinique(): string {
+    return this._codeClinique;
+  }
+
+  setcodeClinique(value: string) {
+    this._codeClinique = value;
   }
 }

@@ -21,23 +21,16 @@ import {Medecin} from "../../models/Medecin";
 export class ClientDetailPage {
   clientList: Array<Client> = [];
   medecinList: Array<Medecin> = [];
-  image: string;
-  nom: string;
-  prenom: string;
-  age: any;
-  numDoss: any;
+  patient: any;
   motif: any;
   tabLangue: any;
-  langue:string;
+  langue: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-    this.image = navParams.get("image");
-    this.nom = navParams.get("nom");
-    this.prenom = navParams.get("prenom");
-    this.age = navParams.get("age");
+    this.patient = navParams.get("patient");
     this.motif = navParams.get("motif");
     this.tabLangue = navParams.get("tabLangue");
-    this.langue=navParams.get("langue");
+    this.langue = navParams.get("langue");
     this.GetClientByNumDoss(navParams.get("numDoss"));
     this.findMedIntervenatByNumDoss(navParams.get("numDoss"));
   }
@@ -66,7 +59,9 @@ export class ClientDetailPage {
           x = xml.getElementsByTagName("return");
           var client;
           var d;
+          var d2;
           d = new Date();
+          d2 = new Date();
           for (i = 0; i < x.length; i++) {
             client = new Client();
             client.setadrCli(x[i].children[0].textContent);
@@ -78,6 +73,8 @@ export class ClientDetailPage {
             client.setnumCha(x[i].children[76].children[2].textContent);
             client.setnumdoss(x[i].children[77].textContent);
             client.setidentifiant(x[i].children[18].textContent);
+            d2 = (x[i].children[4].textContent).substr(0, 9);
+            client.setdateArr(d2);
             this.clientList.push(client);
           }
         }
