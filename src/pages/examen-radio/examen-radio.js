@@ -18,6 +18,10 @@ import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 import { DocumentService } from "../../services/DocumentService";
 import { ExamenRadioTService } from "../../services/ExamenRadioTService";
 import { ExamenRadioFService } from "../../services/ExamenRadioFService";
+import { ClientDetailPage } from "../client-detail/client-detail";
+import { DossierPage } from "../dossier/dossier";
+import { HistDoc } from "../../models/HistDoc";
+import { HistDocService } from "../../services/HistDocService";
 var ExamenRadioPage = (function () {
     function ExamenRadioPage(navCtrl, navParams, Url, platform, themeableBrowser, alertCtrl) {
         var _this = this;
@@ -34,6 +38,8 @@ var ExamenRadioPage = (function () {
         this.histD = [];
         this.histd = new HistDossier();
         this.storageDirectory = '';
+        this.histDoc = [];
+        this.histdoc = new HistDoc();
         this.tabLangue = navParams.get("tabLangue");
         this.pass = navParams.get("pass");
         this.examenRF = navParams.get("examenRF");
@@ -74,6 +80,7 @@ var ExamenRadioPage = (function () {
             Variables.checconnection().then(function (connexion) {
                 if (connexion === false) {
                     _this.connection = false;
+                    _this.historiqueDocOff(_this.histDoc, _this.pass.getdossier(), observ, _this.codeClinique);
                     _this.docserv = new DocumentService();
                     _this.docserv.getDocuments(_this.document, observ, _this.codeClinique).then(function (res) {
                         _this.retrieveImageOff(res);
@@ -86,6 +93,7 @@ var ExamenRadioPage = (function () {
                     d.setobserv(observ);
                     d.setcodeClinique(_this.codeClinique);
                     _this.document.push(d);
+                    _this.historiqueDoc(_this.pass.getdossier(), observ, _this.codeClinique);
                     _this.docserv = new DocumentService();
                     _this.docserv.verifDocument(_this.document, observ, _this.codeClinique).then(function (res) {
                         if (res === false) {
@@ -109,47 +117,53 @@ var ExamenRadioPage = (function () {
     ExamenRadioPage.prototype.open = function (url) {
         var options = {
             statusbar: {
-                color: '#ffffffff'
+                color: '#0277bd',
             },
             toolbar: {
                 height: 44,
-                color: '#f0f0f0ff'
+                color: '#0277bd'
+                //   image: url("/android_asset/www/assets/img/green.png"),
             },
             title: {
-                color: '#003264ff',
-                staticText: "Doc",
-                showPageTitle: false
-            },
-            backButton: {
-                image: 'back',
-                imagePressed: 'back_pressed',
-                align: 'left',
-                event: 'backPressed'
-            },
-            forwardButton: {
-                image: 'forward',
-                imagePressed: 'forward_pressed',
-                align: 'left',
-                event: 'forwardPressed'
-            },
-            closeButton: {
-                image: 'close',
-                imagePressed: 'close_pressed',
-                align: 'left',
-                event: 'closePressed'
-            },
-            customButtons: [
-                {
-                    image: 'share',
-                    imagePressed: 'share_pressed',
-                    align: 'right',
-                    event: 'sharePressed'
-                }
-            ],
-            backButtonCanClose: true
+                color: '#FFFFFF',
+                staticText: this.histdoc + " " + this.tabLangue.titreEnligne,
+                showPageTitle: false,
+            }
+            /* backButton: {
+             image: 'back',
+    
+             align: 'left',
+             //  event: 'backPressed'
+             }*/
         };
         var browser = this.themeableBrowser.create(url, '_blank', options);
     };
+    /*  if ((!this.connection)&&((this.langue==="francais")||(this.langue==="anglais"))) {
+        const options: ThemeableBrowserOptions = {
+          statusbar: {
+            color: '#0277bd',
+          },
+          toolbar: {
+            height: 44,
+            color: '#0277bd'
+            //   image: url("/android_asset/www/assets/img/green.png"),
+          },
+          title: {
+            color: '#FFFFFF',
+            staticText: this.tabLangue.titreHorsLigne + " " + this.histdoc,
+            showPageTitle: false,
+  
+          }
+          /* backButton: {
+           image: 'back',
+  
+           align: 'left',
+           //  event: 'backPressed'
+           }*/
+    /*    };
+  
+        const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_blank', options);
+      }*/
     ExamenRadioPage.prototype.downloadImage = function (url, doc) {
         var _this = this;
         this.platform.ready().then(function () {
@@ -160,7 +174,6 @@ var ExamenRadioPage = (function () {
                  subTitle: `${doc.getobserv()} was successfully downloaded to: ${entry.toURL()}`,
                  buttons: ['Ok']
                  });
-        
                  alertSuccess.present();
                  */
             }, function (error) {
@@ -170,7 +183,6 @@ var ExamenRadioPage = (function () {
                  subTitle: `${doc.getobserv()} was not successfully downloaded. Error code: ${error.code}`,
                  buttons: ['Ok']
                  });
-        
                  alertFailure.present();
                  */
             });
@@ -186,7 +198,6 @@ var ExamenRadioPage = (function () {
              subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
              buttons: ['Ok']
              });
-    
              return alertSuccess.present();
              */
         })
@@ -213,7 +224,6 @@ var ExamenRadioPage = (function () {
              subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
              buttons: ['Ok']
              });
-    
              return alertSuccess.present();
              */
         })
@@ -232,6 +242,44 @@ var ExamenRadioPage = (function () {
         this.examenRT = this.RadiosTs.getExamenRadios(this.examenRT, numDoss, codeClinique);
         this.RadiosFs = new ExamenRadioFService();
         this.examenRF = this.RadiosFs.getExamenRadios(this.examenRF, numDoss, codeClinique);
+    };
+    ExamenRadioPage.prototype.goToInfPage = function (patient) {
+        this.navCtrl.push(ClientDetailPage, {
+            patient: patient,
+            motif: DossierPage.motifhh,
+            tabLangue: this.tabLangue,
+            langue: this.langue,
+            codeClinique: this.codeClinique
+        });
+    };
+    ExamenRadioPage.prototype.historiqueDoc = function (numDoss, file, codeClinique) {
+        var _this = this;
+        this.histdocserv = new HistDocService();
+        var hi = new HistDoc();
+        var d = new Date();
+        hi.setnumDoss(numDoss);
+        hi.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+        hi.setcodeClinique(codeClinique);
+        hi.setnom(file);
+        this.histDoc.push(hi);
+        try {
+            this.histdocserv.deleteHistDocs(numDoss, codeClinique, file);
+            this.histdocserv.getHistDocs(this.histDoc, numDoss, codeClinique, file).then(function (result) {
+                _this.histdoc = result.getdate();
+            });
+        }
+        catch (Error) {
+            this.histdocserv.getHistDocs(this.histDoc, numDoss, codeClinique, file).then(function (result) {
+                _this.histdoc = result.getdate();
+            });
+        }
+    };
+    ExamenRadioPage.prototype.historiqueDocOff = function (hist, numDoss, file, codeClinique) {
+        var _this = this;
+        this.histdocserv = new HistDocService();
+        this.histdocserv.getHistDocs(hist, numDoss, codeClinique, file).then(function (result) {
+            _this.histdoc = result.getdate();
+        });
     };
     return ExamenRadioPage;
 }());

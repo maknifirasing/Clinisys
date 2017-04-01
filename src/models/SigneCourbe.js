@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var SigneCourbe = (function () {
     function SigneCourbe() {
     }
@@ -59,4 +57,5 @@ var SigneCourbe = (function () {
     };
     return SigneCourbe;
 }());
-exports.SigneCourbe = SigneCourbe;
+export { SigneCourbe };
+//# sourceMappingURL=SigneCourbe.js.map

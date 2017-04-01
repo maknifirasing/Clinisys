@@ -50,168 +50,61 @@
 </ion-header>
 
 <ion-content>
-  <md-card padding-top="100" *ngIf="langue==='arabe'" dir="rtl">
+  <ion-navbar padding-top="100" *ngIf="langue==='arabe'" dir="rtl">
+    <div *ngFor="let labt of LabosT "  (click)="gotPdf(labt)" fxLayout="row" fxLayoutWrap>
 
-    <md-card-header *ngFor="let labt of LabosT "  (click)="gotPdf(labt)" >
+      <div fxFlex="86" dir="rtl">
+        <p><strong>{{tabLangue.titleMed}}:</strong>{{ labt.getmedecinTraitant() }}</p>
+        <p style="color: #0c60ee"> <strong>{{tabLangue.titreExamen}} :</strong>{{ labt.getcodeDemande()}}</p>
+        <p style="color: #0c60ee"><strong>{{tabLangue.titreDemande}}</strong> {{labt.getdateDemande()}}</p>
+      </div>
+      <div fxFlex="13" dir="rtl" style="margin-top: 20px;">
+        <img src="/android_asset/www/assets/img/pdf.png" width="40" height="40">
+      </div>
+    </div>
 
-      <img md-card-avatar src="/android_asset/www/assets/img/pdf.png">
-      <md-card-subtitle><strong>{{tabLangue.titleMed}}:</strong>{{ labt.getmedecinTraitant() }}</md-card-subtitle>
-      <md-card-subtitle style="color: #0c60ee">  <strong>{{tabLangue.titreExamen}} :</strong>{{ labt.getcodeDemande().substr(0, 17)}}
-        <br/>{{ labt.getcodeDemande().substr(17, 31)}}
-        <br/>{{ labt.getcodeDemande().substr(31, labt.getcodeDemande().length)}}</md-card-subtitle>
+    <div *ngFor="let labtf of LabosF "  (click)="gotPdf(labtf)" fxLayout="row" fxLayoutWrap>
 
-    </md-card-header>
+      <div fxFlex="86" dir="rtl">
+        <p><strong>{{tabLangue.titleMed}}:</strong>{{ labtf.getmedecinTraitant() }}</p>
+        <p style="color: #0c60ee"> <strong>{{tabLangue.titreExamen}} :</strong>{{ labtf.getcodeDemande()}}</p>
+        <p style="color: #0c60ee"><strong>{{tabLangue.titreDemande}}</strong> {{labtf.getdateDemande()}}</p>
+      </div>
+      <div fxFlex="13" dir="rtl">
+        <img src="/android_asset/www/assets/img/pdfoff.png" width="40" height="40">
+      </div>
+    </div>
 
-    <md-card-header *ngFor="let labt of LabosF " (click)="gotPdf(labt)">
-
-      <img md-card-avatar src="/android_asset/www/assets/img/pdfoff.png">
-      <md-card-subtitle><strong>{{tabLangue.titleMed}}:</strong>{{ labt.getmedecinTraitant() }}</md-card-subtitle>
-      <md-card-subtitle style="color: #0c60ee">  <strong>{{tabLangue.titreExamen}} :</strong>{{ labt.getcodeDemande().substr(0, 17)}}
-        <br/>{{ labt.getcodeDemande().substr(17, 31)}}
-        <br/>{{ labt.getcodeDemande().substr(31, labt.getcodeDemande().length)}}</md-card-subtitle>
-    </md-card-header>
-  </md-card>
-
-  <md-card padding-top="100" *ngIf="langue==='francais' || langue==='anglais'">
-
-    <md-card-header *ngFor="let labt of LabosT "  (click)="gotPdf(labt)" >
-
-      <img md-card-avatar src="/android_asset/www/assets/img/pdf.png">
-      <md-card-subtitle><strong>{{tabLangue.titleMed}}:</strong>{{ labt.getmedecinTraitant() }}</md-card-subtitle>
-      <md-card-subtitle style="color: #0c60ee">
-        <strong>{{tabLangue.titreExamen}} :</strong>{{ labt.getcodeDemande().substr(0, 17)}}
-        <br/>{{ labt.getcodeDemande().substr(17, 31)}}
-        <br/>{{ labt.getcodeDemande().substr(31, labt.getcodeDemande().length)}}
-      </md-card-subtitle>
-
-    </md-card-header>
-
-    <md-card-header *ngFor="let labt of LabosF " (click)="gotPdf(labt)">
-
-      <img md-card-avatar src="/android_asset/www/assets/img/pdfoff.png">
-      <md-card-subtitle>
-        <strong>{{tabLangue.titleMed}}:</strong>{{ labt.getmedecinTraitant() }}
-      </md-card-subtitle>
-      <md-card-subtitle style="color: #0c60ee">
-        <strong>{{tabLangue.titreExamen}} :</strong>{{ labt.getcodeDemande().substr(0, 17)}}
-        <br/>{{ labt.getcodeDemande().substr(17, 31)}}
-        <br/>{{ labt.getcodeDemande().substr(31, labt.getcodeDemande().length)}}
-      </md-card-subtitle>
-    </md-card-header>
-  </md-card>
-
-
-
-
-
-
-  <!--<ion-navbar *ngIf="langue==='arabe'"
-              dir="rtl">
-    <table border="0" *ngFor="let labt of LabosT ">
-      <tr (click)="gotPdf(labt)">
-        <td rowspan="3">
-          <img src='/android_asset/www/assets/img/pdf.png' class="roundedImage">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-        <td class="size">
-          <strong>{{tabLangue.titleMed}}:</strong>{{ labt.getmedecinTraitant() }}
-        </td>
-      </tr>
-      <tr (click)="gotPdf(labt)">
-        <td class="size">
-          <strong>{{tabLangue.titreExamen}} :</strong>{{ labt.getcodeDemande().substr(0, 17)}}
-          <br/>{{ labt.getcodeDemande().substr(17, 31)}}
-          <br/>{{ labt.getcodeDemande().substr(31, labt.getcodeDemande().length)}}
-        </td>
-      </tr>
-      <tr (click)="gotPdf(labt)">
-        <td class="size">
-          <strong>{{tabLangue.titreDemande}} </strong>{{ labt.getdateDemande() }}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          &nbsp;
-        </td>
-      </tr>
-    </table>
-    <table border="0" *ngFor="let labt of LabosF ">
-      <tr (click)="gotPdf(labt)">
-        <td rowspan="3">
-          <img src='/android_asset/www/assets/img/pdfoff.png' class="roundedImage">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-        <td class="size">
-          <strong>{{navParams.data.titleMed}}:</strong>{{ labt.getmedecinTraitant() }}
-        </td>
-      </tr>
-      <tr (click)="gotPdf(labt)">
-        <td class="size">
-          <strong>{{navParams.data.titreExamen}} :</strong> <br/>{{ labt.getcodeDemande() }}
-        </td>
-      </tr>
-      <tr (click)="gotPdf(labt)">
-        <td class="size">
-          <strong>{{navParams.data.titreDemande}} </strong>{{ labt.getdateDemande() }}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          &nbsp;
-        </td>
-      </tr>
-    </table>
   </ion-navbar>
-  <ion-navbar *ngIf="langue==='francais' || langue==='anglais'">
-    <table border="0" *ngFor="let labt of LabosT ">
-      <tr (click)="gotPdf(labt)">
-        <td rowspan="3">
-          <img src='/android_asset/www/assets/img/pdf.png' class="roundedImage">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-        <td class="size">
-          <strong>{{tabLangue.titleMed}}:</strong>{{ labt.getmedecinTraitant() }}
-        </td>
-      </tr>
-      <tr (click)="gotPdf(labt)">
-        <td class="size">
-          <strong>{{tabLangue.titreExamen}} :</strong>{{ labt.getcodeDemande().substr(0, 17)}}
-          <br/>{{ labt.getcodeDemande().substr(17, 31)}}
-          <br/>{{ labt.getcodeDemande().substr(31, labt.getcodeDemande().length)}}
-        </td>
-      </tr>
-      <tr (click)="gotPdf(labt)">
-        <td class="size">
-          <strong>{{tabLangue.titreDemande}} </strong>{{ labt.getdateDemande() }}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          &nbsp;
-        </td>
-      </tr>
-    </table>
-    <table border="0" *ngFor="let labt of LabosF ">
-      <tr (click)="gotPdf(labt)">
-        <td rowspan="3">
-          <img src='/android_asset/www/assets/img/pdfoff.png' class="roundedImage">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-        <td class="size">
-          <strong>{{navParams.data.titleMed}}:</strong>{{ labt.getmedecinTraitant() }}
-        </td>
-      </tr>
-      <tr (click)="gotPdf(labt)">
-        <td class="size">
-          <strong>{{navParams.data.titreExamen}} :</strong> <br/>{{ labt.getcodeDemande() }}
-        </td>
-      </tr>
-      <tr (click)="gotPdf(labt)">
-        <td class="size">
-          <strong>{{navParams.data.titreDemande}} </strong>{{ labt.getdateDemande() }}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          &nbsp;
-        </td>
-      </tr>
-    </table>
-  </ion-navbar>-->
+
+
+  <ion-navbar padding-top="100" *ngIf="langue==='francais' || langue==='anglais'">
+    <div *ngFor="let labt of LabosT "  (click)="gotPdf(labt)" fxLayout="row" fxLayoutWrap>
+
+
+      <div fxFlex="13" style="margin-top: 20px;">
+        <img src="/android_asset/www/assets/img/pdf.png" width="40" height="40">
+      </div>
+      <div fxFlex="86">
+        <p><strong>{{tabLangue.titleMed}}:</strong>{{ labt.getmedecinTraitant() }}</p>
+        <p style="color: #0c60ee"> <strong>{{tabLangue.titreExamen}} :</strong>{{ labt.getcodeDemande()}}</p>
+        <p style="color: #0c60ee"><strong>{{tabLangue.titreDemande}}</strong> {{labt.getdateDemande()}}</p>
+      </div>
+    </div>
+
+    <div *ngFor="let labtf of LabosF "  (click)="gotPdf(labtf)" fxLayout="row" fxLayoutWrap>
+
+
+      <div fxFlex="13">
+        <img src="/android_asset/www/assets/img/pdfoff.png" width="40" height="40">
+      </div>
+      <div fxFlex="86">
+        <p><strong>{{tabLangue.titleMed}}:</strong>{{ labtf.getmedecinTraitant() }}</p>
+        <p style="color: #0c60ee"> <strong>{{tabLangue.titreExamen}} :</strong>{{ labtf.getcodeDemande()}}</p>
+        <p style="color: #0c60ee"><strong>{{tabLangue.titreDemande}}</strong> {{labtf.getdateDemande()}}</p>
+      </div>
+    </div>
+
+  </ion-navbar>
+
 </ion-content>

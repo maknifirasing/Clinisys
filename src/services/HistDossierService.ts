@@ -14,7 +14,7 @@ export class HistDossierService {
         name: 'clinisys.db',
         location: 'default' // the location field is required
       }).then(() => {
-        db.executeSql("select count(*) as sum from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
+        db.executeSql("select count(*) as sum from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
               resolve(true);
@@ -44,7 +44,7 @@ export class HistDossierService {
         name: 'clinisys.db',
         location: 'default' // the location field is required
       }).then(() => {
-        db.executeSql("select * from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
+        db.executeSql("select * from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.length === 0) {
               this._insertHistPatients(histDossiers);
@@ -105,7 +105,7 @@ export class HistDossierService {
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      db.executeSql("delete from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
+      db.executeSql("delete from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           //  alert("Suppression de table Patient est terminé avec succes");
         })

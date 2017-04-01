@@ -121,7 +121,7 @@
 
       <div *ngFor="let pas of patientliste " fxLayout="row" fxLayoutWrap>
 
-        <div (click)="goToDossierPage(pas)" fxFlex="66" dir="rtl">
+        <div (click)="goToDossierPage(pas)" fxFlex="76" style="margin-top:15px; direction:rtl;">
 
           <strong class="p2">{{ pas.getnom() }}</strong>
           <p class="p"><strong>{{tabLangue.age}} :</strong> {{ pas.getage() }}
@@ -129,7 +129,7 @@
           <p class="p">{{ pas.getmedecin() }}</p>
 
         </div>
-        <div fxFlex="33" dir="rtl">
+        <div fxFlex="23" dir="rtl">
           <img src='/android_asset/www/assets/img/{{pas.getimg()}}' md-card-avatar class="list">
 
         </div>
@@ -140,11 +140,11 @@
     <md-card-content *ngIf="(langue==='francais' || langue==='anglais')">
 
       <div *ngFor="let pas of patientliste " fxLayout="row" fxLayoutWrap>
-        <div fxFlex="33" dir="ltr">
+        <div fxFlex="23" dir="ltr">
           <img src='/android_asset/www/assets/img/{{pas.getimg()}}' md-card-avatar class="list">
 
         </div>
-        <div (click)="goToDossierPage(pas)" fxFlex="66">
+        <div (click)="goToDossierPage(pas)" fxFlex="76" style="margin-top:15px">
 
           <strong class="p2">{{ pas.getnom() }}</strong>
           <p class="p"><strong>{{tabLangue.age}} :</strong> {{ pas.getage() }}

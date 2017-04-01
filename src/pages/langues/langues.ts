@@ -5,9 +5,7 @@ import {NativeStorage} from "ionic-native";
 import {ListeCliniquePage} from "../liste-clinique/liste-clinique";
 import {Langue} from "../../models/Langue";
 import {LangueService} from "../../services/LangueService";
-import {UserService} from "../../services/UserService";
 import {ListePage} from "../liste/liste";
-import {Users} from "../../models/Users";
 
 @Component({
   selector: 'page-langues',

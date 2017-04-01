@@ -37,41 +37,44 @@ export class SigneCourbeTempService {
     });
   }
 
-  public getSigneCourbes(signeCourbes: any, numdoss, codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from SigneCourbeTemp where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.length === 0) {
-            this._insertSigneCourbes(signeCourbes, numdoss, codeClinique);
-          } else {
-            var signeCourbe;
-            for (var i = 0; i < result.rows.length; i++) {
-              signeCourbe = new SigneCourbe();
-              signeCourbe.setcodePosologie(result.rows.item(i).codePosologie);
-              signeCourbe.setdesignation(result.rows.item(i).designation);
-              signeCourbe.setseuilMin(result.rows.item(i).seuilMin);
-              signeCourbe.setseuilMax(result.rows.item(i).seuilMax);
-              signeCourbe.setcolor(result.rows.item(i).color);
-              signeCourbe.setunite(result.rows.item(i).unite);
-              signeCourbe.setquantite(result.rows.item(i).quantite);
-              signeCourbe.setheurePrise(result.rows.item(i).heurePrise);
-              signeCourbe.setdateHeurePrise(result.rows.item(i).dateHeurePrise);
+  public getSigneCourbes(signeCourbes: any, numdoss, codeClinique): Promise<SigneCourbe[]> {
+    return new Promise<SigneCourbe[]>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("select * from SigneCourbeTemp where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.length === 0) {
+              this._insertSigneCourbes(signeCourbes, numdoss, codeClinique);
+            } else {
+              var signeCourbe;
+              for (var i = 0; i < result.rows.length; i++) {
+                signeCourbe = new SigneCourbe();
+                signeCourbe.setcodePosologie(result.rows.item(i).codePosologie);
+                signeCourbe.setdesignation(result.rows.item(i).designation);
+                signeCourbe.setseuilMin(result.rows.item(i).seuilMin);
+                signeCourbe.setseuilMax(result.rows.item(i).seuilMax);
+                signeCourbe.setcolor(result.rows.item(i).color);
+                signeCourbe.setunite(result.rows.item(i).unite);
+                signeCourbe.setquantite(result.rows.item(i).quantite);
+                signeCourbe.setheurePrise(result.rows.item(i).heurePrise);
+                signeCourbe.setdateHeurePrise(result.rows.item(i).dateHeurePrise);
 
-              this.signeCourbe.push(signeCourbe);
+                this.signeCourbe.push(signeCourbe);
+              }
+              resolve(this.signeCourbe);
             }
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 SigneCourbeTemp  ' + error);
-        })
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 1 SigneCourbeTemp  ' + error);
+          })
+      });
+      db.close();
+      return this;
     });
-    db.close();
-    return this.signeCourbe;
   }
 
   private _insertSigneCourbes(signeCourbes: Array<SigneCourbe>, numdoss, codeClinique): void {
@@ -116,7 +119,7 @@ export class SigneCourbeTempService {
     }).then(() => {
       db.executeSql("delete from SigneCourbeTemp where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-      //    alert("Suppression de table signeCourbe est terminé avec succes");
+          //    alert("Suppression de table signeCourbe est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);

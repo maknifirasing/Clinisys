@@ -33,7 +33,8 @@ import { AntechService } from "../../services/AntechService";
 import { HistDossierService } from "../../services/HistDossierService";
 import { HistDossier } from "../../models/HistDossier";
 import { SigneCourbePage } from "../signe-courbe/signe-courbe";
-var DossierPage = (function () {
+import { ClientDetailPage } from "../client-detail/client-detail";
+var DossierPage = DossierPage_1 = (function () {
     function DossierPage(navCtrl, navParams, Url, platform) {
         var _this = this;
         this.navCtrl = navCtrl;
@@ -80,7 +81,6 @@ var DossierPage = (function () {
             Variables.checconnection().then(function (res) {
                 if (res === false) {
                     _this.connection = false;
-                    //    alert("dossier " + this.pass.getdossier() + " date" + this.dateFeuille + " nature " + this.pass.getnature());
                     _this.historiqueOff(_this.histD, _this.pass.getdossier(), _this.codeClinique);
                     _this.GetAllMotifHospitalisationByNumDossOff(_this.motifh, _this.pass.getdossier(), _this.codeClinique);
                     _this.getAntecedentAllergieByIdentifiantOff(_this.antechl, _this.alechl, _this.pass.getid(), _this.codeClinique);
@@ -93,15 +93,6 @@ var DossierPage = (function () {
                 else {
                     _this.connection = true;
                     _this.historique(_this.pass.getdossier(), _this.codeClinique);
-                    /*
-                     this.GetAllMotifHospitalisationByNumDoss(this.pass.getdossier());
-                     this.getAntecedentAllergieByIdentifiant(this.pass.getid());
-                     this.GetAlerteSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature());
-                     this.GetTraitements(this.pass.getdossier(), this.dateFeuille);
-                     this.GetEvenementByDossier(this.pass.getdossier());
-                     this.GetListRegime(this.pass.getdossier(), this.dateFeuille, this.pass.getnature());
-                     this.GetSigneClinique(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeType, this.codeTypeOf);
-                     */
                     _this.update();
                 }
             });
@@ -317,7 +308,6 @@ var DossierPage = (function () {
         this.motifh = [];
         this.motifh.length = 0;
         this.test = false;
-        ;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
@@ -379,6 +369,7 @@ var DossierPage = (function () {
                             a.setutilisateurMotif(x[0].children[15].textContent);
                             _this.motifh.push(a);
                         }
+                        DossierPage_1.motifhh = _this.motifh;
                         if (_this.motifh.length === 0) {
                             _this.test = false;
                         }
@@ -406,6 +397,7 @@ var DossierPage = (function () {
         this.mserv.verifmotifHospitalisation(motif, numdoss, codeClinique).then(function (res) {
             if (res === true) {
                 _this.motifh = _this.mserv.getmotifHospitalisations(motif, numdoss, codeClinique);
+                DossierPage_1.motifhh = _this.motifh;
                 _this.test = true;
             }
         });
@@ -936,12 +928,27 @@ var DossierPage = (function () {
             _this.histd = res.getdate();
         });
     };
-    DossierPage.prototype.gotolinechart = function () {
-        this.navCtrl.push(SigneCourbePage, { codeClinique: this.codeClinique, tabLangue: this.tabLangue, pass: this.pass });
+    DossierPage.prototype.goToInfPage = function (patient) {
+        this.navCtrl.push(ClientDetailPage, {
+            patient: patient,
+            motif: this.motifh,
+            tabLangue: this.tabLangue,
+            langue: this.langue,
+            codeClinique: this.codeClinique
+        });
+    };
+    DossierPage.prototype.gotoSigneCourbe = function () {
+        this.navCtrl.push(SigneCourbePage, {
+            codeClinique: this.codeClinique,
+            tabLangue: this.tabLangue,
+            pass: this.pass,
+            langue: this.langue
+        });
     };
     return DossierPage;
 }());
-DossierPage = __decorate([
+DossierPage.motifhh = [];
+DossierPage = DossierPage_1 = __decorate([
     Component({
         selector: 'page-dossier',
         templateUrl: 'dossier.html',
@@ -950,4 +957,5 @@ DossierPage = __decorate([
     __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform])
 ], DossierPage);
 export { DossierPage };
+var DossierPage_1;
 //# sourceMappingURL=dossier.js.map

@@ -15,6 +15,8 @@ import { HistDossier } from "../../models/HistDossier";
 import { HistDossierService } from "../../services/HistDossierService";
 import { LaboFService } from "../../services/LaboFService";
 import { LaboTService } from "../../services/LaboTService";
+import { ClientDetailPage } from "../client-detail/client-detail";
+import { DossierPage } from "../dossier/dossier";
 var ExamenLaboPage = (function () {
     function ExamenLaboPage(navCtrl, navParams, Url, platform) {
         var _this = this;
@@ -79,7 +81,8 @@ var ExamenLaboPage = (function () {
         xmlhttp.send(sr);
     };
     ExamenLaboPage.prototype.gotPdf = function (pdf) {
-        this.navCtrl.push(PdfViewPage, { pdf: pdf.getpdf() });
+        this.navCtrl.push(PdfViewPage, { pdf: pdf.getpdf(), tabLangue: this.tabLangue,
+            langue: this.langue, codeClinique: this.codeClinique, pass: this.pass });
     };
     ExamenLaboPage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
         var _this = this;
@@ -93,6 +96,15 @@ var ExamenLaboPage = (function () {
         this.LabosF = this.LabosFs.getLabos(this.LabosF, numDoss, codeClinique);
         this.LabosTs = new LaboTService();
         this.LabosT = this.LabosTs.getLabos(this.LabosT, numDoss, codeClinique);
+    };
+    ExamenLaboPage.prototype.goToInfPage = function (patient) {
+        this.navCtrl.push(ClientDetailPage, {
+            patient: patient,
+            motif: DossierPage.motifhh,
+            tabLangue: this.tabLangue,
+            langue: this.langue,
+            codeClinique: this.codeClinique
+        });
     };
     return ExamenLaboPage;
 }());

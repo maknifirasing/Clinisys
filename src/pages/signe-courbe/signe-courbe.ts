@@ -12,8 +12,7 @@ import {SigneCourbeTempService} from "../../services/SigneCourbeTempService";
 import {HistSigneCourbeService} from "../../services/HistSigneCourbeService";
 
 
-
-declare var jQuery:any;
+declare var jQuery: any;
 @Component({
   selector: 'page-signe-courbe',
   templateUrl: 'signe-courbe.html',
@@ -156,7 +155,7 @@ export class SigneCourbePage {
               this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique);
             }
           });
-          this.onecourbes(this.courbePouls);
+          this.doublecourbes(this.courbePouls, this.courbeTA, this.courbeTemp, this.courbeSaturation, this.courbeFrq);
         }
       }
     }
@@ -187,22 +186,31 @@ export class SigneCourbePage {
 
   getChartSurveillanceOff(numdoss, codeClinique) {
     this.sgcPserv = new SigneCourbePoulsService();
-    this.courbePouls = this.sgcPserv.getSigneCourbes(this.courbePouls, numdoss, codeClinique);
+    this.sgcPserv.getSigneCourbes(this.courbePouls, numdoss, codeClinique).then(resp => {
+      this.courbePouls = resp;
 
-    this.sgcTAserv = new SigneCourbeTAService();
-    this.courbeTA = this.sgcTAserv.getSigneCourbes(this.courbeTA, numdoss, codeClinique);
+      this.sgcTAserv = new SigneCourbeTAService();
+      this.sgcTAserv.getSigneCourbes(this.courbeTA, numdoss, codeClinique).then(resta => {
+        this.courbeTA = resta;
 
+        this.sgcTserv = new SigneCourbeTempService();
+        this.sgcTserv.getSigneCourbes(this.courbeTemp, numdoss, codeClinique).then(rest => {
+          this.courbeTemp = rest;
 
-    this.sgcTserv = new SigneCourbeTempService();
-    this.courbeTemp = this.sgcTserv.getSigneCourbes(this.courbeTemp, numdoss, codeClinique);
+          this.sgcSserv = new SigneCourbeSaturationService();
+          this.sgcSserv.getSigneCourbes(this.courbeSaturation, numdoss, codeClinique).then(ress => {
+            this.courbeSaturation = ress;
 
+            this.sgcFserv = new SigneCourbeFrqService();
+            this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique).then(resf => {
+              this.courbeFrq = resf;
 
-    this.sgcSserv = new SigneCourbeSaturationService();
-    this.courbeSaturation = this.sgcSserv.getSigneCourbes(this.courbeSaturation, numdoss, codeClinique);
-
-
-    this.sgcFserv = new SigneCourbeFrqService();
-    this.courbeFrq = this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique);
+              this.doublecourbes(this.courbePouls, this.courbeTA, this.courbeTemp, this.courbeSaturation, this.courbeFrq);
+            });
+          });
+        });
+      });
+    });
   }
 
   onecourbes(courbe) {
@@ -246,104 +254,239 @@ export class SigneCourbePage {
         }]
       },
       options: {
-      //  scaleShowVerticalLines: true,
+        //  scaleShowVerticalLines: true,
         responsive: true,
-      //  maintainAspectRatio: false,
+        //  maintainAspectRatio: false,
         scales: {
           yAxes: [{
             ticks: {min: Number(courbe[0].getseuilMin()), max: Number(courbe[0].getseuilMax())}
           }
           ],
-        /*  xAxes: [{
-            showXLabels: 1,
-            interval: 1,
-            scrollX: true
-          }]*/
+          /*  xAxes: [{
+           showXLabels: 1,
+           interval: 1,
+           scrollX: true
+           }]*/
         }
       }
 
     });
   }
 
-  doublecourbes(courbe) {
-    var labelcourbe: Array<string> = [];
+  doublecourbes(courbePouls, courbeTA, courbeTemp, courbeSaturation, courbeFrq) {
+    var labelcourbePouls: Array<string> = [];
+    var labelcourbeTA: Array<string> = [];
+    var labelcourbeTemp: Array<string> = [];
+    var labelcourbeSaturation: Array<string> = [];
+    var labelcourbeFrq: Array<string> = [];
 
-    var data1: Array<string> = [];
-    var data2: Array<string> = [];
+    var dataPouls: Array<string> = [];
+    var dataTA1: Array<string> = [];
+    var dataTA2: Array<string> = [];
+    var dataTemp: Array<string> = [];
+    var dataSaturation: Array<string> = [];
+    var dataFrq: Array<string> = [];
 
-    for (var i = 0; i < courbe.length; i++) {
-      labelcourbe.push((courbe[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbe[i].getdateHeurePrise()).substr(5, 2) + "-" + courbe[i].getheurePrise());
-      data1.push(courbe[i].getquantite().split("/")[0]);
-      data2.push(courbe[i].getquantite().split("/")[1]);
+    for (var i = 0; i < courbePouls.length; i++) {
+      labelcourbePouls.push((courbePouls[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbePouls[i].getdateHeurePrise()).substr(5, 2) + "-" + courbePouls[i].getheurePrise());
+      dataPouls.push(courbePouls[i].getquantite());
+    }
+
+    for (var i = 0; i < courbeTA.length; i++) {
+      labelcourbeTA.push((courbeTA[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeTA[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeTA[i].getheurePrise());
+      dataTA1.push(courbeTA[i].getquantite().split("/")[0]);
+      dataTA2.push(courbeTA[i].getquantite().split("/")[1]);
+    }
+
+    for (var i = 0; i < courbeTemp.length; i++) {
+      labelcourbeTemp.push((courbeTemp[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeTemp[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeTemp[i].getheurePrise());
+      dataTemp.push(courbeTemp[i].getquantite());
+    }
+
+    for (var i = 0; i < courbeSaturation.length; i++) {
+      labelcourbeSaturation.push((courbeSaturation[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeSaturation[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeSaturation[i].getheurePrise());
+      dataSaturation.push(courbeSaturation[i].getquantite());
+    }
+
+    for (var i = 0; i < courbeFrq.length; i++) {
+      labelcourbeFrq.push((courbeFrq[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeFrq[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeFrq[i].getheurePrise());
+      dataFrq.push(courbeFrq[i].getquantite());
     }
 
 
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: 'line',
       data: {
-        labels: labelcourbe,
+        labels: labelcourbePouls,
         datasets: [{
-          label: courbe[0].getdesignation(),
+          label: courbePouls[0].getdesignation(),
           fill: false,
           lineTension: 0.1,
-          backgroundColor: "rgb(" + courbe[0].getcolor() + ")",
-          borderColor: "rgb(" + courbe[0].getcolor() + ")",
+          backgroundColor: "rgb(" + courbePouls[0].getcolor() + ")",
+          borderColor: "rgb(" + courbePouls[0].getcolor() + ")",
           borderCapStyle: 'butt',
           borderDash: [],
           borderDashOffset: 0.0,
           borderJoinStyle: 'miter',
-          pointBorderColor: "rgb(" + courbe[0].getcolor() + ")",
-          pointBackgroundColor: "rgb(" + courbe[0].getcolor() + ")",
+          pointBorderColor: "rgb(" + courbePouls[0].getcolor() + ")",
+          pointBackgroundColor: "rgb(" + courbePouls[0].getcolor() + ")",
           pointBorderWidth: 1,
           pointHoverRadius: 10,
-          pointHoverBackgroundColor: "rgb(" + courbe[0].getcolor() + ")",
-          pointHoverBorderColor: "rgb(" + courbe[0].getcolor() + ")",
+          pointHoverBackgroundColor: "rgb(" + courbePouls[0].getcolor() + ")",
+          pointHoverBorderColor: "rgb(" + courbePouls[0].getcolor() + ")",
           pointHoverBorderWidth: 3,
           pointRadius: 3,
           pointHitRadius: 10,
-          data: data1,
+          data: dataPouls,
           spanGaps: true,
           DatasetStrokeWidth: 10,
           ScaleShowLabels: true
         },
           {
-            label: courbe[0].getdesignation(),
+            label: courbeTA[0].getdesignation() + " max",
             fill: false,
             lineTension: 0.1,
-            backgroundColor: "rgb(" + courbe[0].getcolor() + ")",
-            borderColor: "rgb(" + courbe[0].getcolor() + ")",
+            backgroundColor: "rgb(" + courbeTA[0].getcolor() + ")",
+            borderColor: "rgb(" + courbeTA[0].getcolor() + ")",
             borderCapStyle: 'butt',
             borderDash: [],
             borderDashOffset: 0.0,
             borderJoinStyle: 'miter',
-            pointBorderColor: "rgb(" + courbe[0].getcolor() + ")",
-            pointBackgroundColor: "rgb(" + courbe[0].getcolor() + ")",
+            pointBorderColor: "rgb(" + courbeTA[0].getcolor() + ")",
+            pointBackgroundColor: "rgb(" + courbeTA[0].getcolor() + ")",
             pointBorderWidth: 1,
             pointHoverRadius: 10,
-            pointHoverBackgroundColor: "rgb(" + courbe[0].getcolor() + ")",
-            pointHoverBorderColor: "rgb(" + courbe[0].getcolor() + ")",
+            pointHoverBackgroundColor: "rgb(" + courbeTA[0].getcolor() + ")",
+            pointHoverBorderColor: "rgb(" + courbeTA[0].getcolor() + ")",
             pointHoverBorderWidth: 3,
             pointRadius: 3,
             pointHitRadius: 10,
-            data: data2,
+            data: dataTA1,
             spanGaps: true,
             DatasetStrokeWidth: 10,
             ScaleShowLabels: true
-          }]
+          },
+          {
+            label: courbeTA[0].getdesignation() + " min",
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgb(" + courbeTA[0].getcolor() + ")",
+            borderColor: "rgb(" + courbeTA[0].getcolor() + ")",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgb(" + courbeTA[0].getcolor() + ")",
+            pointBackgroundColor: "rgb(" + courbeTA[0].getcolor() + ")",
+            pointBorderWidth: 1,
+            pointHoverRadius: 10,
+            pointHoverBackgroundColor: "rgb(" + courbeTA[0].getcolor() + ")",
+            pointHoverBorderColor: "rgb(" + courbeTA[0].getcolor() + ")",
+            pointHoverBorderWidth: 3,
+            pointRadius: 3,
+            pointHitRadius: 10,
+            data: dataTA2,
+            spanGaps: true,
+            DatasetStrokeWidth: 10,
+            ScaleShowLabels: true
+          },
+          {
+            label: courbeTemp[0].getdesignation(),
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgb(" + courbeTemp[0].getcolor() + ")",
+            borderColor: "rgb(" + courbeTemp[0].getcolor() + ")",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgb(" + courbeTemp[0].getcolor() + ")",
+            pointBackgroundColor: "rgb(" + courbeTemp[0].getcolor() + ")",
+            pointBorderWidth: 1,
+            pointHoverRadius: 10,
+            pointHoverBackgroundColor: "rgb(" + courbeTemp[0].getcolor() + ")",
+            pointHoverBorderColor: "rgb(" + courbeTemp[0].getcolor() + ")",
+            pointHoverBorderWidth: 3,
+            pointRadius: 3,
+            pointHitRadius: 10,
+            data: dataTemp,
+            spanGaps: true,
+            DatasetStrokeWidth: 10,
+            ScaleShowLabels: true
+          },
+          {
+            label: courbeSaturation[0].getdesignation(),
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgb(" + courbeSaturation[0].getcolor() + ")",
+            borderColor: "rgb(" + courbeSaturation[0].getcolor() + ")",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgb(" + courbeSaturation[0].getcolor() + ")",
+            pointBackgroundColor: "rgb(" + courbeSaturation[0].getcolor() + ")",
+            pointBorderWidth: 1,
+            pointHoverRadius: 10,
+            pointHoverBackgroundColor: "rgb(" + courbeSaturation[0].getcolor() + ")",
+            pointHoverBorderColor: "rgb(" + courbeSaturation[0].getcolor() + ")",
+            pointHoverBorderWidth: 3,
+            pointRadius: 3,
+            pointHitRadius: 10,
+            data: dataSaturation,
+            spanGaps: true,
+            DatasetStrokeWidth: 10,
+            ScaleShowLabels: true
+          },
+          {
+            label: courbeFrq[0].getdesignation(),
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgb(" + courbeFrq[0].getcolor() + ")",
+            borderColor: "rgb(" + courbeFrq[0].getcolor() + ")",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgb(" + courbeFrq[0].getcolor() + ")",
+            pointBackgroundColor: "rgb(" + courbeFrq[0].getcolor() + ")",
+            pointBorderWidth: 1,
+            pointHoverRadius: 10,
+            pointHoverBackgroundColor: "rgb(" + courbeFrq[0].getcolor() + ")",
+            pointHoverBorderColor: "rgb(" + courbeFrq[0].getcolor() + ")",
+            pointHoverBorderWidth: 3,
+            pointRadius: 3,
+            pointHitRadius: 10,
+            data: dataFrq,
+            spanGaps: true,
+            DatasetStrokeWidth: 10,
+            ScaleShowLabels: true
+          }
+        ]
       },
       options: {
-     //   scaleShowVerticalLines: true,
         responsive: true,
-    //    maintainAspectRatio: false,
         scales: {
-          yAxes: [{
-            ticks: {min: Number(courbe[0].getseuilMin()), max: Number(courbe[0].getseuilMax())}
-          }
-          ],
-      /*    xAxes: [{
-            showXLabels: 1,
-            interval: 1
-          }]*/
+          /*        yAxes: [{
+           ticks: {min: Number(courbePouls[0].getseuilMin()), max: Number(courbePouls[0].getseuilMax())}
+           },
+           {
+           ticks: {min: Number(courbeTA[0].getseuilMin()), max: Number(courbeTA[0].getseuilMax())}
+           },
+           {
+           ticks: {min: Number(courbeTA[0].getseuilMin()), max: Number(courbeTA[0].getseuilMax())}
+           },
+           {
+           ticks: {min: Number(courbeTemp[0].getseuilMin()), max: Number(courbeTemp[0].getseuilMax())}
+           },
+           {
+           ticks: {min: Number(courbeSaturation[0].getseuilMin()), max: Number(courbeSaturation[0].getseuilMax())}
+           },
+           {
+           ticks: {min: Number(courbeFrq[0].getseuilMin()), max: Number(courbeFrq[0].getseuilMax())}
+           }
+
+           ]*/
         }
       }
 
@@ -423,12 +566,12 @@ export class SigneCourbePage {
     this.historique(this.pass.getdossier(), this.codeClinique);
   }
 
-/*
- ,
- deferred: {           // enabled by default
- xOffset: 150,     // defer until 150px of the canvas width are inside the viewport
- yOffset: '50%',   // defer until 50% of the canvas height are inside the viewport
- delay: 500        // delay of 500 ms after the canvas is considered inside the viewport
- },
- */
+  /*
+   ,
+   deferred: {           // enabled by default
+   xOffset: 150,     // defer until 150px of the canvas width are inside the viewport
+   yOffset: '50%',   // defer until 50% of the canvas height are inside the viewport
+   delay: 500        // delay of 500 ms after the canvas is considered inside the viewport
+   },
+   */
 }

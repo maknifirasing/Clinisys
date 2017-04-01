@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var ionic_native_1 = require("ionic-native");
-var Client_1 = require("../models/Client");
+import { SQLite } from 'ionic-native';
+import { Client } from "../models/Client";
 var ClientService = (function () {
     function ClientService() {
         this.client = [];
@@ -9,7 +7,7 @@ var ClientService = (function () {
     ClientService.prototype.verifClient = function (clients, numdoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new ionic_native_1.SQLite();
+            var db = new SQLite();
             db.openDatabase({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
@@ -38,7 +36,7 @@ var ClientService = (function () {
     };
     ClientService.prototype.getClients = function (clients, numdoss, codeClinique) {
         var _this = this;
-        var db = new ionic_native_1.SQLite();
+        var db = new SQLite();
         db.openDatabase({
             name: 'clinisys.db',
             location: 'default' // the location field is required
@@ -51,7 +49,7 @@ var ClientService = (function () {
                 else {
                     var c;
                     for (var i = 0; i < result.rows.length; i++) {
-                        c = new Client_1.Client();
+                        c = new Client();
                         c.setadrCli(result.rows.item(i).adrCli);
                         c.setdatNai(result.rows.item(i).datNai);
                         c.setlibNat(result.rows.item(i).libNat);
@@ -61,6 +59,7 @@ var ClientService = (function () {
                         c.setnumdoss(result.rows.item(i).numdoss);
                         c.setidentifiant(result.rows.item(i).identifiant);
                         c.setcodeClinique(result.rows.item(i).codeClinique);
+                        c.setdateArr(result.rows.item(i).dateArr);
                         _this.client.push(c);
                     }
                 }
@@ -74,7 +73,7 @@ var ClientService = (function () {
         return this.client;
     };
     ClientService.prototype._insertClients = function (clients) {
-        var db = new ionic_native_1.SQLite();
+        var db = new SQLite();
         db.openDatabase({
             name: 'clinisys.db',
             location: 'default' // the location field is required
@@ -85,7 +84,7 @@ var ClientService = (function () {
                 }
                 var client = clients[key];
                 db.executeSql('insert into Client (adrCli,datNai,libNat' +
-                    ',numTel,etage,numCha,numdoss,identifiant,codeClinique) values (?,?,?,?,?,?,?,?,?)', [
+                    ',numTel,etage,numCha,numdoss,identifiant,codeClinique,dateArr) values (?,?,?,?,?,?,?,?,?,?)', [
                     client.getadrCli(),
                     client.getdatNai(),
                     client.getlibNat(),
@@ -94,7 +93,8 @@ var ClientService = (function () {
                     client.getnumCha(),
                     client.getnumdoss(),
                     client.getidentifiant(),
-                    client.getcodeClinique()
+                    client.getcodeClinique(),
+                    client.getdateArr()
                 ]);
             }
         }).catch(function (error) {
@@ -104,7 +104,7 @@ var ClientService = (function () {
         db.close();
     };
     ClientService.prototype.deleteClients = function (numdoss, codeClinique) {
-        var db = new ionic_native_1.SQLite();
+        var db = new SQLite();
         db.openDatabase({
             name: 'clinisys.db',
             location: 'default' // the location field is required
@@ -123,4 +123,5 @@ var ClientService = (function () {
     };
     return ClientService;
 }());
-exports.ClientService = ClientService;
+export { ClientService };
+//# sourceMappingURL=ClientService.js.map

@@ -21,6 +21,7 @@ import { UserService } from "../../services/UserService";
 import { LanguesPage } from "../langues/langues";
 import { MenuController } from 'ionic-angular';
 import { MdMenuTrigger } from "@angular/material";
+import { ListeCliniquePage } from "../liste-clinique/liste-clinique";
 var ListePage = (function () {
     function ListePage(navCtrl, navParams, Url, menuCtrl, platform) {
         var _this = this;
@@ -281,11 +282,14 @@ var ListePage = (function () {
     };
     ListePage.prototype.deconnexion = function () {
         this.userserv = new UserService();
-        this.userserv.deleteUsers();
-        this.navCtrl.push(LanguesPage);
+        this.userserv.deleteUsers(this.codeClinique);
+        this.navCtrl.setRoot(ListeCliniquePage, { tabLangue: this.tabLangue, langue: this.langue });
     };
     ListePage.prototype.changerlangue = function () {
-        this.navCtrl.push(LanguesPage);
+        this.navCtrl.setRoot(LanguesPage);
+    };
+    ListePage.prototype.openListeCliniquePage = function () {
+        this.navCtrl.setRoot(ListeCliniquePage, { tabLangue: this.tabLangue, langue: this.langue });
     };
     return ListePage;
 }());

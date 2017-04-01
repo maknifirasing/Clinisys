@@ -12,7 +12,7 @@ var HistDossierService = (function () {
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
             }).then(function () {
-                db.executeSql("select count(*) as sum from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
+                db.executeSql("select count(*) as sum from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
                         resolve(true);
@@ -42,7 +42,7 @@ var HistDossierService = (function () {
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
             }).then(function () {
-                db.executeSql("select * from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
+                db.executeSql("select * from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.length === 0) {
                         _this._insertHistPatients(histDossiers);
@@ -101,7 +101,7 @@ var HistDossierService = (function () {
             name: 'clinisys.db',
             location: 'default' // the location field is required
         }).then(function () {
-            db.executeSql("delete from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
+            db.executeSql("delete from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //  alert("Suppression de table Patient est terminé avec succes");
             })
