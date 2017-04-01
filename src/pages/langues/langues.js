@@ -14,16 +14,17 @@ import { NativeStorage } from "ionic-native";
 import { ListeCliniquePage } from "../liste-clinique/liste-clinique";
 import { Langue } from "../../models/Langue";
 import { LangueService } from "../../services/LangueService";
+import { ListePage } from "../liste/liste";
 var LanguesPage = (function () {
     function LanguesPage(navCtrl) {
         this.navCtrl = navCtrl;
         this.langes = [];
-        this.users = [];
         NativeStorage.setItem("name", "basma");
     }
     LanguesPage.prototype.ionViewDidLoad = function () {
     };
     LanguesPage.prototype.choixLang = function (lang) {
+        var _this = this;
         if (lang === "arabe") {
             this.tabLangue = Variables.arabe;
         }
@@ -33,36 +34,33 @@ var LanguesPage = (function () {
         else if (lang === "anglais") {
             this.tabLangue = Variables.anglais;
         }
-        var l = new Langue();
-        l.setlangue(lang);
-        this.langes.push(l);
         this.langserv = new LangueService();
-        try {
-            this.langserv.deleteLangues();
-            this.langserv.getLangues(this.langes);
-        }
-        catch (Error) {
-            this.langserv.getLangues(this.langes);
-        }
-        this.langserv.getLangues(this.langes);
-        /*
-            this.userserv = new UserService();
-            this.userserv.verifUser().then(res => {
-              if (res === true) {
-                this.userserv.getUser(this.users).then(user => {
-                  this.codeClinique = user.getcodeClinique();
-                  this.navCtrl.push(ListePage, {
-                    tabLangue: this.tabLangue,
-                    langue: lang,
-                    codeClinique: this.codeClinique
-                  });
+        this.langserv.verifLangue().then(function (res) {
+            if (res === true) {
+                _this.langserv.getLangues(_this.langes).then(function (lg) {
+                    var l = new Langue();
+                    l.setlangue(lang);
+                    l.setmatricule(lg.getmatricule());
+                    l.setcodeClinique(lg.getcodeClinique());
+                    l.setnomClinique(lg.getnomClinique());
+                    _this.langes.push(l);
+                    _this.langserv.deleteLangues().then(function (delet) {
+                        if (delet === true) {
+                            _this.langserv.getLangues(_this.langes);
+                            _this.navCtrl.setRoot(ListePage, {
+                                tabLangue: _this.tabLangue,
+                                langue: lang,
+                                codeClinique: lg.getcodeClinique(),
+                                nomClinique: lg.getnomClinique()
+                            });
+                        }
+                    });
                 });
-              } else {
-                this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
-              }
-            });
-        */
-        this.navCtrl.push(ListeCliniquePage, { tabLangue: this.tabLangue, langue: lang });
+            }
+            else {
+                _this.navCtrl.push(ListeCliniquePage, { tabLangue: _this.tabLangue, langue: lang });
+            }
+        });
     };
     return LanguesPage;
 }());

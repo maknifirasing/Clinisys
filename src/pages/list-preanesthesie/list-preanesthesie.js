@@ -13,6 +13,8 @@ import { Variables } from "../../providers/variables";
 import { HistDossier } from "../../models/HistDossier";
 import { HistDossierService } from "../../services/HistDossierService";
 import { ListPreanesthesieService } from "../../services/ListPreanesthesieService";
+import { ClientDetailPage } from "../client-detail/client-detail";
+import { DossierPage } from "../dossier/dossier";
 /*
  Generated class for the ListPreanesthesie page.
 
@@ -60,6 +62,15 @@ var ListPreanesthesiePage = (function () {
     ListPreanesthesiePage.prototype.findListPreanesthesieByNumeroDossierResponseOff = function (numDoss, codeClinique) {
         this.ListePserv = new ListPreanesthesieService();
         this.ListeP = this.ListePserv.getListPreanesthesies(this.ListeP, numDoss, codeClinique);
+    };
+    ListPreanesthesiePage.prototype.goToInfPage = function (patient) {
+        this.navCtrl.push(ClientDetailPage, {
+            patient: patient,
+            motif: DossierPage.motifhh,
+            tabLangue: this.tabLangue,
+            langue: this.langue,
+            codeClinique: this.codeClinique
+        });
     };
     return ListPreanesthesiePage;
 }());

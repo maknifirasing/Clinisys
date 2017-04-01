@@ -37,7 +37,8 @@ export class SigneCourbeFrqService {
     });
   }
 
-  public getSigneCourbes(signeCourbes: any, numdoss, codeClinique) {
+  public getSigneCourbes(signeCourbes: any, numdoss, codeClinique): Promise<SigneCourbe[]> {
+    return new Promise<SigneCourbe[]>(resolve => {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -63,6 +64,7 @@ export class SigneCourbeFrqService {
 
               this.signeCourbe.push(signeCourbe);
             }
+            resolve(this.signeCourbe);
           }
         })
         .catch(error => {
@@ -70,8 +72,9 @@ export class SigneCourbeFrqService {
           alert('Error 1 SigneCourbeFrq  ' + error);
         })
     });
-    db.close();
-    return this.signeCourbe;
+      db.close();
+      return this;
+    });
   }
 
   private _insertSigneCourbes(signeCourbes: Array<SigneCourbe>, numdoss, codeClinique): void {

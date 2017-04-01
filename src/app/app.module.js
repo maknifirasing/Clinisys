@@ -20,9 +20,10 @@ import { ListPreanesthesiePage } from "../pages/list-preanesthesie/list-preanest
 import { LanguesPage } from "../pages/langues/langues";
 import { ListeCliniquePage } from "../pages/liste-clinique/liste-clinique";
 import { MaterialModule } from "@angular/material";
-import { TryPage } from "../pages/try/try";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { SigneCourbePage } from "../pages/signe-courbe/signe-courbe";
+import { NotificationPage } from "../pages/notification/notification";
+import { ClientDetailPage } from "../pages/client-detail/client-detail";
 var AppModule = (function () {
     function AppModule() {
     }
@@ -44,8 +45,9 @@ AppModule = __decorate([
             ListPreanesthesiePage,
             LanguesPage,
             ListeCliniquePage,
-            TryPage,
-            SigneCourbePage
+            SigneCourbePage,
+            NotificationPage,
+            ClientDetailPage
         ],
         imports: [
             IonicModule.forRoot(MyApp),
@@ -66,8 +68,9 @@ AppModule = __decorate([
             ListPreanesthesiePage,
             LanguesPage,
             ListeCliniquePage,
-            TryPage,
-            SigneCourbePage
+            SigneCourbePage,
+            NotificationPage,
+            ClientDetailPage
         ],
         providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }]
     })

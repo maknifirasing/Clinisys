@@ -53,6 +53,9 @@ var LangueService = (function () {
                         for (var i = 0; i < result.rows.length; i++) {
                             l = new Langue();
                             l.setlangue(result.rows.item(i).langue);
+                            l.setmatricule(result.rows.item(i).matricule);
+                            l.setcodeClinique(result.rows.item(i).codeClinique);
+                            l.setnomClinique(result.rows.item(i).nomClinique);
                             _this.langue.push(l);
                         }
                         resolve(_this.langue[0]);
@@ -78,8 +81,11 @@ var LangueService = (function () {
                     continue;
                 }
                 var langue = langues[key];
-                db.executeSql('insert into Langue (langue) values (?)', [
-                    langue.getlangue()
+                db.executeSql('insert into Langue (langue,matricule,codeClinique,nomClinique) values (?,?,?,?)', [
+                    langue.getlangue(),
+                    langue.getmatricule(),
+                    langue.getcodeClinique(),
+                    langue.getnomClinique()
                 ]);
             }
         }).catch(function (error) {
@@ -89,22 +95,29 @@ var LangueService = (function () {
         db.close();
     };
     LangueService.prototype.deleteLangues = function () {
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("delete from Langue ", [])
-                .then(function () {
-                //    alert("Suppression de table Aleg est terminé avec succes");
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 Langue  ' + error);
+        var _this = this;
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                db.executeSql("delete from Langue ", [])
+                    .then(function () {
+                    //   alert("Suppression de table Aleg est terminé avec succes");
+                    resolve(true);
+                    return true;
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    alert('Error 3 Langue  ' + error);
+                    resolve(false);
+                    return false;
+                });
             });
+            db.close();
+            return _this;
         });
-        db.close();
-        return this.langue;
     };
     return LangueService;
 }());

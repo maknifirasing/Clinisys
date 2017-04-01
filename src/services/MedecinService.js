@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var ionic_native_1 = require("ionic-native");
-var Medecin_1 = require("../models/Medecin");
+import { SQLite } from 'ionic-native';
+import { Medecin } from "../models/Medecin";
 var MedecinService = (function () {
     function MedecinService() {
         this.medecin = [];
@@ -9,7 +7,7 @@ var MedecinService = (function () {
     MedecinService.prototype.verifMedecin = function (medecins, numdoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new ionic_native_1.SQLite();
+            var db = new SQLite();
             db.openDatabase({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
@@ -38,7 +36,7 @@ var MedecinService = (function () {
     };
     MedecinService.prototype.getMedecins = function (medecins, numdoss, codeClinique) {
         var _this = this;
-        var db = new ionic_native_1.SQLite();
+        var db = new SQLite();
         db.openDatabase({
             name: 'clinisys.db',
             location: 'default' // the location field is required
@@ -51,7 +49,7 @@ var MedecinService = (function () {
                 else {
                     var med;
                     for (var i = 0; i < result.rows.length; i++) {
-                        med = new Medecin_1.Medecin();
+                        med = new Medecin();
                         med.setcodMed(result.rows.item(i).codMed);
                         med.setnomMed(result.rows.item(i).nomMed);
                         med.setdesignationSpecialite(result.rows.item(i).designationSpecialite);
@@ -69,7 +67,7 @@ var MedecinService = (function () {
         return this.medecin;
     };
     MedecinService.prototype._insertMedecins = function (medecins, numdoss) {
-        var db = new ionic_native_1.SQLite();
+        var db = new SQLite();
         db.openDatabase({
             name: 'clinisys.db',
             location: 'default' // the location field is required
@@ -95,7 +93,7 @@ var MedecinService = (function () {
         db.close();
     };
     MedecinService.prototype.deleteMedecins = function (numdoss, codeClinique) {
-        var db = new ionic_native_1.SQLite();
+        var db = new SQLite();
         db.openDatabase({
             name: 'clinisys.db',
             location: 'default' // the location field is required
@@ -114,4 +112,5 @@ var MedecinService = (function () {
     };
     return MedecinService;
 }());
-exports.MedecinService = MedecinService;
+export { MedecinService };
+//# sourceMappingURL=MedecinService.js.map

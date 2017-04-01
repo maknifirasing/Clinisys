@@ -4,8 +4,9 @@ var UserService = (function () {
     function UserService() {
         this.users = [];
     }
-    //verifUser(codeClinique,userName,passWord): Promise<boolean> {
-    UserService.prototype.verifUser = function () {
+    //verifUser(): Promise<boolean> {
+    //  verifUser(codeClinique, userName, passWord): Promise<boolean> {
+    UserService.prototype.verifUser = function (codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
             var db = new SQLite();
@@ -13,8 +14,9 @@ var UserService = (function () {
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
             }).then(function () {
-                //    db.executeSql("select count(*) as sum from Users where userName like '" + userName + "' and passWord like '" + passWord + "'and codeClinique like '" + codeClinique + "'", []).then(result => {
-                db.executeSql("select count(*) as sum from Users ", []).then(function (result) {
+                db.executeSql("select count(*) as sum from Users where codeClinique like '" + codeClinique + "'", []).then(function (result) {
+                    //    db.executeSql("select count(*) as sum from Users where userName like '" + userName + "' and passWord like '" + passWord + "'and codeClinique like '" + codeClinique + "'", []).then(result => {
+                    //   db.executeSql("select count(*) as sum from Users ", []).then(result => {
                     if (result.rows.item(0).sum > 0) {
                         resolve(true);
                         return true;
@@ -35,8 +37,9 @@ var UserService = (function () {
             return _this;
         });
     };
-    // public getUser(users: any,userName, passWord,codeClinique) {
-    UserService.prototype.getUser = function (users) {
+    //verifUser(): Promise<boolean> {
+    // public getUser(users: any, userName, passWord, codeClinique) {
+    UserService.prototype.getUser = function (users, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
             var db = new SQLite();
@@ -44,8 +47,9 @@ var UserService = (function () {
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
             }).then(function () {
-                //   db.executeSql("select * from Users where userName like '" + userName + "' and passWord like '" + passWord + "'and codeClinique like '" + codeClinique + "'", []).then(result => {
-                db.executeSql("select * from Users ", []).then(function (result) {
+                db.executeSql("select * from Users where codeClinique like '" + codeClinique + "'", []).then(function (result) {
+                    //  db.executeSql("select * from Users where userName like '" + userName + "' and passWord like '" + passWord + "'and codeClinique like '" + codeClinique + "'", []).then(result => {
+                    //  db.executeSql("select * from Users ", []).then(result => {
                     if (result.rows.length === 0) {
                         _this._insertUser(users);
                         resolve(users[0]);
@@ -121,15 +125,15 @@ var UserService = (function () {
         });
         db.close();
     };
-    UserService.prototype.deleteUsers = function () {
+    UserService.prototype.deleteUsers = function (codeClinique) {
         var db = new SQLite();
         db.openDatabase({
             name: 'clinisys.db',
             location: 'default' // the location field is required
         }).then(function () {
-            db.executeSql("delete from Users ", [])
+            db.executeSql("delete from Users where codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                alert("Suppression de table User est terminé avec succes");
+                //     alert("Suppression de table User est terminé avec succes");
             })
                 .catch(function (error) {
                 console.error('Error opening database', error);

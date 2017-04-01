@@ -54,7 +54,7 @@
 
   <md-card padding-top="100" *ngIf="langue==='arabe'" dir="rtl">
 
-    <md-card-header *ngFor="let ExRad of examenRT " (click)="getdocumentById2('http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc='+observ.value)"  >
+    <md-card-header *ngFor="let ExRad of examenRT " (click)="getdocumentById(observ.value)"  >
       <input type="hidden" #observ value="{{ExRad.getobserv()}}">
       <img md-card-avatar src="/android_asset/www/assets/img/word.png">
       <md-card-subtitle><strong>{{tabLangue.titreDemande}}:</strong> {{ExRad.getdateExamen()}}</md-card-subtitle>

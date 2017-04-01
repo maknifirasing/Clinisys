@@ -13,12 +13,15 @@ import { Users } from '../../models/Users';
 import { ListePage } from "../liste/liste";
 import { Variables } from "../../providers/variables";
 import { UserService } from "../../services/UserService";
+import { Langue } from "../../models/Langue";
+import { LangueService } from "../../services/LangueService";
 var HomePage = (function () {
     function HomePage(navCtrl, navParams, Url) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
         this.users = [];
+        this.langes = [];
         this.codeClinique = this.navParams.get("codeClinique");
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
@@ -65,18 +68,37 @@ var HomePage = (function () {
                             _this.users.push(user);
                             if (_this.users.length > 0) {
                                 _this.userserv = new UserService();
-                                //   this.userserv.verifUser(userName, passWord, this.codeClinique).then(res => {
-                                _this.userserv.verifUser().then(function (res) {
+                                _this.userserv.verifUser(_this.codeClinique).then(function (res) {
                                     if (res === false) {
-                                        //       this.userserv.getUser(this.users, userName, passWord, this.codeClinique);
-                                        _this.userserv.getUser(_this.users);
+                                        _this.userserv.getUser(_this.users, _this.codeClinique);
                                     }
                                 });
-                                _this.navCtrl.setRoot(ListePage, {
-                                    tabLangue: _this.tabLangue,
-                                    langue: _this.langue,
-                                    codeClinique: _this.codeClinique,
-                                    nomClinique: _this.nomClinique
+                                _this.langserv = new LangueService();
+                                _this.langserv.verifLangue().then(function (result) {
+                                    var l = new Langue();
+                                    l.setlangue(_this.langue);
+                                    l.setmatricule(user.getmatricule());
+                                    l.setcodeClinique(_this.codeClinique);
+                                    l.setnomClinique(_this.nomClinique);
+                                    _this.langes.push(l);
+                                    if (result === true) {
+                                        _this.langserv.getLangues(_this.langes).then(function (lg) {
+                                            _this.langserv.deleteLangues().then(function (delet) {
+                                                if (delet === true) {
+                                                    _this.langserv._insertLangues(_this.langes);
+                                                }
+                                            });
+                                        });
+                                    }
+                                    else {
+                                        _this.langserv.getLangues(_this.langes);
+                                    }
+                                    _this.navCtrl.setRoot(ListePage, {
+                                        tabLangue: _this.tabLangue,
+                                        langue: _this.langue,
+                                        codeClinique: _this.codeClinique,
+                                        nomClinique: _this.nomClinique
+                                    });
                                 });
                             }
                             else {
@@ -97,30 +119,12 @@ var HomePage = (function () {
             this.errConn = this.tabLangue.errConn;
         }
     };
-    HomePage.prototype.verifuser = function () {
-        this.userserv = new UserService();
-        alert("ee4 " + this.userserv.verifUser(this.codeClinique));
-    };
-    /* checkNetwork() {
-       Variables.checconnection().then(connexion=> {
-      alert("connexion " +connexion);
-         });
-     }
-   */
-    HomePage.prototype.checkNetwork = function () {
-        console.log("connexion " + Variables.checconnection());
-        //  alert("connexion " + Variables.checconnection());
-    };
-    HomePage.prototype.doesConnectionExist = function () {
-        Variables.checservice().then(function (res) {
-            alert("serv " + res);
-        });
-    };
     HomePage.prototype.conn = function () {
         this.navCtrl.push(ListePage, {
             tabLangue: this.tabLangue,
             langue: this.langue,
-            codeClinique: this.codeClinique
+            codeClinique: this.codeClinique,
+            nomClinique: this.nomClinique
         });
     };
     return HomePage;
