@@ -11,8 +11,6 @@ import {SigneCourbeTAService} from "../../services/SigneCourbeTAService";
 import {SigneCourbeTempService} from "../../services/SigneCourbeTempService";
 import {HistSigneCourbeService} from "../../services/HistSigneCourbeService";
 
-
-declare var jQuery: any;
 @Component({
   selector: 'page-signe-courbe',
   templateUrl: 'signe-courbe.html',
