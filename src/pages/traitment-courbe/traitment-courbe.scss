@@ -1,0 +1,26 @@
+page-traitment-courbe {
+  .scroll-content {
+    background-color: map-get($colors, light);
+  }
+
+  ion-card-header {
+    font-weight: bold;
+  }
+
+  .headerListe {
+    height: 45px;
+    color: white;
+  }
+  .md-cardListe {
+    margin-top: 0px;
+    padding-top: 0px;
+    background-color: #0277bd;
+    height: 50px;
+  }
+  .menuImg {
+    width: 30px;
+    height: 30px;
+    margin-top: 10px;
+    margin-left: 20px;
+  }
+}
