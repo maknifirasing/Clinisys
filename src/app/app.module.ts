@@ -18,7 +18,6 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {SigneCourbePage} from "../pages/signe-courbe/signe-courbe";
 import {NotificationPage} from "../pages/notification/notification";
 import {ClientDetailPage} from "../pages/client-detail/client-detail";
-import {TraitCourbe} from "../models/TraitCourbe";
 import {TraitmentCourbe} from "../pages/traitment-courbe/traitment-courbe";
 
 @NgModule({

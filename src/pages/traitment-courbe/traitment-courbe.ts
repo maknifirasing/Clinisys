@@ -7,18 +7,14 @@ import {HistTraitCourbeService} from "../../services/HistTraitCourbeService";
 import {HistDossier} from "../../models/HistDossier";
 import {TraitCourbeService} from "../../services/TraitCourbeService";
 
-
-declare var jQuery: any;
 @Component({
   selector: 'page-traitment-courbe',
   templateUrl: 'traitment-courbe.html',
   providers: [Variables]
 })
 export class TraitmentCourbe {
-
   @ViewChild('lineCanvas') lineCanvas;
   lineChart: any;
-
   codeClinique: any;
   tabLangue: any;
   pass: any;
@@ -33,7 +29,6 @@ export class TraitmentCourbe {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, platform: Platform) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
-
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.pass = navParams.get("pass");
@@ -50,7 +45,6 @@ export class TraitmentCourbe {
       }
     });
   }
-
 
   ionViewDidLoad() {
     this.tabBarElement.style.display = 'none';
@@ -72,11 +66,9 @@ export class TraitmentCourbe {
       '</ser:getListeTraitementSureveillanceRegimePancarte>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
-
     xmlhttp.onreadystatechange = () => {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
-
           var xml = xmlhttp.responseXML;
           var x;
           x = xml.getElementsByTagName("return");
@@ -96,7 +88,6 @@ export class TraitmentCourbe {
             courbe.setrow(x[i].children[10].textContent);
             courbe.setnumDoss(numdoss);
             courbe.setcodeClinique(codeClinique);
-
             this.traitcourbe.push(courbe);
           }
           this.traitserv = new TraitCourbeService();
@@ -119,8 +110,6 @@ export class TraitmentCourbe {
     this.traitserv.getTraitCourbes(traitcourbe, numdoss, codeClinique).then(res => {
       this.onecourbes(res);
     });
-
-
   }
 
   DeletegetChartSurveillance(numdoss, codeClinique) {
@@ -128,8 +117,7 @@ export class TraitmentCourbe {
     this.traitserv.deleteTraitCourbes(numdoss, codeClinique);
   }
 
-
-  exist(t, ch): Number {
+  exist(t, ch): number {
     for (var i = 0; i < t.length; i++) {
       if (t[i] === ch) {
         return i;
@@ -140,38 +128,62 @@ export class TraitmentCourbe {
 
   onecourbes(courbe) {
     var labelcourbe: Array<string> = [];
-
+    var designation: Array<string> = [];
     var data: Array<object> = [];
     var nomcourbe: Array<string> = [];
     var dataset: Array<object> = [];
+
     var x;
     for (var i = 0; i < courbe.length; i++) {
       x = (courbe[i].getrow()).substr(0, 2) + "/" + (courbe[i].getrow()).substr(3, 2);
-      //x = new Date((courbe[i].getrow()).substr(6, 4), (courbe[i].getrow()).substr(3, 2), (courbe[i].getrow()).substr(0, 2));
       if (this.exist(labelcourbe, x) === -1) {
         labelcourbe.push(x);
       }
       if (this.exist(nomcourbe, courbe[i].getcodePosologie()) === -1) {
         nomcourbe.push(courbe[i].getcodePosologie());
+        designation.push(courbe[i].getdesignation());
       }
     }
-
+    var c;
+    var b;
     for (var j = 0; j < nomcourbe.length; j++) {
       data = [];
+      b = false;
+      c = 0;
       for (var i = 0; i < courbe.length; i++) {
         if (courbe[i].getcodePosologie() === nomcourbe[j]) {
+          x = (courbe[i].getrow()).substr(0, 2) + "/" + (courbe[i].getrow()).substr(3, 2);
+          if (b === false) {
+            c = this.exist(labelcourbe, x);
+            b = true;
+          }
+          while (c > 0) {
+            data.push(
+              {
+                x: null,
+                y: null,
+                titre: null
+              });
+            c--;
+          }
           data.push(
             {
-              x: new Date((courbe[i].getrow()).substr(6, 4), (courbe[i].getrow()).substr(3, 2), (courbe[i].getrow()).substr(0, 2)),
-              y: j + 1
+              x: x,
+              y: j + 1,
+              titre: designation[j]
             }
           );
+
         }
       }
-      console.log("data");
-      console.log(data);
-
-
+      while (data.length < labelcourbe.length + 1) {
+        data.push(
+          {
+            x: null,
+            y: null,
+            titre: null
+          });
+      }
       dataset.push({
         label: nomcourbe[j],
         fill: false,
@@ -192,9 +204,10 @@ export class TraitmentCourbe {
         pointRadius: 1,
         pointHitRadius: 10,
         data: data,
-        spanGaps: false,
-        DatasetStrokeWidth: 10,
-        ScaleShowLabels: true
+        spanGaps: true,
+        radius: 3,
+        DatasetStrokeWidth: 20,
+        ScaleShowLabels: true,
       });
     }
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
@@ -204,18 +217,21 @@ export class TraitmentCourbe {
         datasets: dataset
       },
       options: {
-        //  scaleShowVerticalLines: true,
         responsive: true,
-        //  maintainAspectRatio: false,
+        /*  title: {
+         display: true,
+         text: 'Custom Chart Title'
+         },
+         */
         scales: {
           yAxes: [{
-            ticks: {min: 0, max: nomcourbe.length}
+            ticks: {min: 0, max: nomcourbe.length + 1}
           }
           ],
           xAxes: [{
             xValueType: "dateTime",
             title: "timeline",
-            gridThickness: 2
+            gridThickness: 5
           }]
         },
         legend: {
@@ -225,9 +241,35 @@ export class TraitmentCourbe {
         tooltips: {
           callbacks: {
             label: function (tooltipItem) {
-              console.log(tooltipItem)
+              //   console.log(tooltipItem)
               return tooltipItem.yLabel;
             }
+          }
+        },
+        animation: {
+          onComplete: function () {
+            var ctx = this.chart.ctx;
+            ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+            ctx.fillStyle = "black";
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+
+            this.data.datasets.forEach(function (dataset) {
+              for (var i = 0; i < dataset.data.length; i++) {
+                for (var key in dataset._meta) {
+                  var model = dataset._meta[key].data[i]._model;
+                  try {
+                    if (dataset.data[i + 1].titre === null) {
+                      ctx.fillText(dataset.data[i].titre, model.x - ((dataset.data[i].titre).length), model.y);
+                    } else {
+                      ctx.fillText("", model.x, model.y - 5);
+                    }
+                  } catch (Err) {
+                    ctx.fillText("", model.x, model.y - 5);
+                  }
+                }
+              }
+            });
           }
         },
         zoom: true
@@ -236,43 +278,6 @@ export class TraitmentCourbe {
     });
 
   }
-
-
-  exmp() {
-
-
-    var myConfig = {"type": "line", "series": [{"values": [20, 40, null, 50, 15, null, 33, 34]}]};
-
-    this.lineChart.render({
-      id: this.lineCanvas.nativeElement,
-      data: myConfig,
-      height: "100%",
-      width: "100%"
-    });
-
-
-    var c = [
-      ['Year', 'Sales', 'Expenses'],
-      ['2004', 1000, 400],
-      ['2005', 1170, 460],
-      ['2006', 660, 1120],
-      ['2007', 1030, 540]];
-
-    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-
-
-      //    labels: ["January", "February", "March", "April", "May", "June", "July"],
-
-
-      "type": "line",
-      "series": [
-        {"values": [20, 40, null, 50, 15, null, 33, 34]} /* Plot indices 2 and 5 are unavailable */
-      ]
-
-
-    });
-  }
-
 
   historique(numDoss, codeClinique) {
     this.histserv = new HistTraitCourbeService();
@@ -295,7 +300,6 @@ export class TraitmentCourbe {
     }
   }
 
-
   historiqueOff(hist, numDoss, codeClinique) {
     this.histserv = new HistTraitCourbeService();
     this.histserv.getHistTraitCourbes(hist, numDoss, codeClinique).then(res => {
@@ -307,15 +311,6 @@ export class TraitmentCourbe {
     this.DeletegetChartSurveillance(this.pass.getdossier(), this.codeClinique);
     this.getChartSurveillance(this.pass.getdossier(), this.codeClinique);
     this.historique(this.pass.getdossier(), this.codeClinique);
-    //  this.exmp();
   }
 
-  /*
-   ,
-   deferred: {           // enabled by default
-   xOffset: 150,     // defer until 150px of the canvas width are inside the viewport
-   yOffset: '50%',   // defer until 50% of the canvas height are inside the viewport
-   delay: 500        // delay of 500 ms after the canvas is considered inside the viewport
-   },
-   */
 }

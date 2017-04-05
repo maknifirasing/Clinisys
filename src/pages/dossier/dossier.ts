@@ -25,7 +25,6 @@ import {HistDossierService} from "../../services/HistDossierService";
 import {HistDossier} from "../../models/HistDossier";
 import {SigneCourbePage} from "../signe-courbe/signe-courbe";
 import {ClientDetailPage} from "../client-detail/client-detail";
-import {DetailPerPagePage} from "../detail-per-page/detail-per-page";
 import {TraitmentCourbe} from "../traitment-courbe/traitment-courbe";
 
 @Component({

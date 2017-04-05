@@ -175,55 +175,6 @@ var SigneCourbePage = (function () {
             });
         });
     };
-    SigneCourbePage.prototype.onecourbes = function (courbe) {
-        var labelcourbe = [];
-        var data = [];
-        for (var i = 0; i < courbe.length; i++) {
-            labelcourbe.push((courbe[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbe[i].getdateHeurePrise()).substr(5, 2) + "-" + courbe[i].getheurePrise());
-            data.push(courbe[i].getquantite());
-        }
-        this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-            type: 'line',
-            data: {
-                labels: labelcourbe,
-                datasets: [{
-                        label: courbe[0].getdesignation(),
-                        fill: false,
-                        lineTension: 0.1,
-                        backgroundColor: "rgb(" + courbe[0].getcolor() + ")",
-                        borderColor: "rgb(" + courbe[0].getcolor() + ")",
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: "rgb(" + courbe[0].getcolor() + ")",
-                        pointBackgroundColor: "rgb(" + courbe[0].getcolor() + ")",
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 10,
-                        pointHoverBackgroundColor: "rgb(" + courbe[0].getcolor() + ")",
-                        pointHoverBorderColor: "rgb(" + courbe[0].getcolor() + ")",
-                        pointHoverBorderWidth: 3,
-                        pointRadius: 3,
-                        pointHitRadius: 10,
-                        data: data,
-                        spanGaps: true,
-                        DatasetStrokeWidth: 10,
-                        ScaleShowLabels: true
-                    }]
-            },
-            options: {
-                //  scaleShowVerticalLines: true,
-                responsive: true,
-                //  maintainAspectRatio: false,
-                scales: {
-                    yAxes: [{
-                            ticks: { min: Number(courbe[0].getseuilMin()), max: Number(courbe[0].getseuilMax()) }
-                        }
-                    ],
-                }
-            }
-        });
-    };
     SigneCourbePage.prototype.doublecourbes = function (courbePouls, courbeTA, courbeTemp, courbeSaturation, courbeFrq) {
         var labelcourbePouls = [];
         var labelcourbeTA = [];
@@ -260,6 +211,7 @@ var SigneCourbePage = (function () {
         this.lineChart = new Chart(this.lineCanvas.nativeElement, {
             type: 'line',
             data: {
+                plugins: ["chartjs-plugin-zoom.js"],
                 labels: labelcourbePouls,
                 datasets: [{
                         label: courbePouls[0].getdesignation(),
@@ -403,45 +355,52 @@ var SigneCourbePage = (function () {
                         data: dataFrq,
                         spanGaps: true,
                         DatasetStrokeWidth: 10,
-                        ScaleShowLabels: true
+                        ScaleShowLabels: true,
+                        zoom: {
+                            enabled: true
+                        }
                     }
                 ]
             },
             options: {
                 responsive: true,
-                scales: {}
-            }
-        });
-    };
-    SigneCourbePage.prototype.exmp = function () {
-        this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-            type: 'line',
-            data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
-                datasets: [
-                    {
-                        label: "My First dataset",
-                        fill: false,
-                        lineTension: 0.1,
-                        backgroundColor: "rgba(75,192,192,0.4)",
-                        borderColor: "rgba(75,192,192,1)",
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: "rgba(75,192,192,1)",
-                        pointBackgroundColor: "#fff",
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                        pointHoverBorderColor: "rgba(220,220,220,1)",
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 1,
-                        pointHitRadius: 10,
-                        data: [65, 59, 80, 81, 56, 55, 40],
-                        spanGaps: false,
+                scales: {
+                    yAxes: [{
+                            ticks: {
+                                //      min: Number(courbePouls[0].getseuilMin()), max: Number(courbePouls[0].getseuilMax()),
+                                beginAtZero: true
+                            }
+                        }]
+                },
+                pan: {
+                    enabled: true,
+                    mode: 'y'
+                },
+                zoom: {
+                    enabled: true,
+                    mode: 'y',
+                    limits: {
+                        max: 10,
+                        min: 0.5
                     }
-                ]
+                },
+                animation: {
+                    onComplete: function () {
+                        var ctx = this.chart.ctx;
+                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+                        ctx.fillStyle = "black";
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+                        this.data.datasets.forEach(function (dataset) {
+                            for (var i = 0; i < dataset.data.length; i++) {
+                                for (var key in dataset._meta) {
+                                    var model = dataset._meta[key].data[i]._model;
+                                    ctx.fillText(dataset.data[i], model.x, model.y - 5);
+                                }
+                            }
+                        });
+                    }
+                }
             }
         });
     };

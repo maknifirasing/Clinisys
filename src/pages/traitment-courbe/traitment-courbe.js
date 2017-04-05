@@ -14,6 +14,7 @@ import { Variables } from "../../providers/variables";
 import { TraitCourbe } from "../../models/TraitCourbe";
 import { HistTraitCourbeService } from "../../services/HistTraitCourbeService";
 import { HistDossier } from "../../models/HistDossier";
+import { TraitCourbeService } from "../../services/TraitCourbeService";
 var TraitmentCourbe = (function () {
     function TraitmentCourbe(navCtrl, navParams, Url, platform) {
         var _this = this;
@@ -31,7 +32,7 @@ var TraitmentCourbe = (function () {
         Variables.checconnection().then(function (connexion) {
             if (connexion === false) {
                 _this.connection = false;
-                //    this.getChartSurveillanceOff(this.pass.getdossier(), this.codeClinique);
+                _this.getChartSurveillanceOff(_this.traitcourbe, _this.pass.getdossier(), _this.codeClinique);
                 _this.historiqueOff(_this.histC, _this.pass.getdossier(), _this.codeClinique);
             }
             else {
@@ -82,6 +83,12 @@ var TraitmentCourbe = (function () {
                         courbe.setcodeClinique(codeClinique);
                         _this.traitcourbe.push(courbe);
                     }
+                    _this.traitserv = new TraitCourbeService();
+                    _this.traitserv.verifTraitCourbe(_this.traitcourbe, numdoss, codeClinique).then(function (res) {
+                        if (res === false) {
+                            _this.traitserv.getTraitCourbes(_this.traitcourbe, numdoss, codeClinique);
+                        }
+                    });
                     _this.onecourbes(_this.traitcourbe);
                 }
             }
@@ -89,6 +96,17 @@ var TraitmentCourbe = (function () {
         xmlhttp.setRequestHeader('Content-Type', 'text/xml');
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
+    };
+    TraitmentCourbe.prototype.getChartSurveillanceOff = function (traitcourbe, numdoss, codeClinique) {
+        var _this = this;
+        this.traitserv = new TraitCourbeService();
+        this.traitserv.getTraitCourbes(traitcourbe, numdoss, codeClinique).then(function (res) {
+            _this.onecourbes(res);
+        });
+    };
+    TraitmentCourbe.prototype.DeletegetChartSurveillance = function (numdoss, codeClinique) {
+        this.traitserv = new TraitCourbeService();
+        this.traitserv.deleteTraitCourbes(numdoss, codeClinique);
     };
     TraitmentCourbe.prototype.exist = function (t, ch) {
         for (var i = 0; i < t.length; i++) {
@@ -100,32 +118,56 @@ var TraitmentCourbe = (function () {
     };
     TraitmentCourbe.prototype.onecourbes = function (courbe) {
         var labelcourbe = [];
+        var designation = [];
         var data = [];
         var nomcourbe = [];
         var dataset = [];
         var x;
         for (var i = 0; i < courbe.length; i++) {
             x = (courbe[i].getrow()).substr(0, 2) + "/" + (courbe[i].getrow()).substr(3, 2);
-            //x = new Date((courbe[i].getrow()).substr(6, 4), (courbe[i].getrow()).substr(3, 2), (courbe[i].getrow()).substr(0, 2));
             if (this.exist(labelcourbe, x) === -1) {
                 labelcourbe.push(x);
             }
             if (this.exist(nomcourbe, courbe[i].getcodePosologie()) === -1) {
                 nomcourbe.push(courbe[i].getcodePosologie());
+                designation.push(courbe[i].getdesignation());
             }
         }
+        var c;
+        var b;
         for (var j = 0; j < nomcourbe.length; j++) {
             data = [];
+            b = false;
+            c = 0;
             for (var i = 0; i < courbe.length; i++) {
                 if (courbe[i].getcodePosologie() === nomcourbe[j]) {
+                    x = (courbe[i].getrow()).substr(0, 2) + "/" + (courbe[i].getrow()).substr(3, 2);
+                    if (b === false) {
+                        c = this.exist(labelcourbe, x);
+                        b = true;
+                    }
+                    while (c > 0) {
+                        data.push({
+                            x: null,
+                            y: null,
+                            titre: null
+                        });
+                        c--;
+                    }
                     data.push({
-                        x: new Date((courbe[i].getrow()).substr(6, 4), (courbe[i].getrow()).substr(3, 2), (courbe[i].getrow()).substr(0, 2)),
-                        y: j + 1
+                        x: x,
+                        y: j + 1,
+                        titre: designation[j]
                     });
                 }
             }
-            console.log("data");
-            console.log(data);
+            while (data.length < labelcourbe.length + 1) {
+                data.push({
+                    x: null,
+                    y: null,
+                    titre: null
+                });
+            }
             dataset.push({
                 label: nomcourbe[j],
                 fill: false,
@@ -146,9 +188,10 @@ var TraitmentCourbe = (function () {
                 pointRadius: 1,
                 pointHitRadius: 10,
                 data: data,
-                spanGaps: false,
-                DatasetStrokeWidth: 10,
-                ScaleShowLabels: true
+                spanGaps: true,
+                radius: 3,
+                DatasetStrokeWidth: 20,
+                ScaleShowLabels: true,
             });
         }
         this.lineChart = new Chart(this.lineCanvas.nativeElement, {
@@ -158,18 +201,21 @@ var TraitmentCourbe = (function () {
                 datasets: dataset
             },
             options: {
-                //  scaleShowVerticalLines: true,
                 responsive: true,
-                //  maintainAspectRatio: false,
+                /*  title: {
+                 display: true,
+                 text: 'Custom Chart Title'
+                 },
+                 */
                 scales: {
                     yAxes: [{
-                            ticks: { min: 0, max: nomcourbe.length }
+                            ticks: { min: 0, max: nomcourbe.length + 1 }
                         }
                     ],
                     xAxes: [{
                             xValueType: "dateTime",
                             title: "timeline",
-                            gridThickness: 2
+                            gridThickness: 5
                         }]
                 },
                 legend: {
@@ -179,36 +225,44 @@ var TraitmentCourbe = (function () {
                 tooltips: {
                     callbacks: {
                         label: function (tooltipItem) {
-                            console.log(tooltipItem);
+                            //   console.log(tooltipItem)
                             return tooltipItem.yLabel;
                         }
                     }
                 },
+                animation: {
+                    onComplete: function () {
+                        var ctx = this.chart.ctx;
+                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+                        ctx.fillStyle = "black";
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+                        this.data.datasets.forEach(function (dataset) {
+                            for (var i = 0; i < dataset.data.length; i++) {
+                                for (var key in dataset._meta) {
+                                    var model = dataset._meta[key].data[i]._model;
+                                    try {
+                                        if (dataset.data[i + 1].titre === null) {
+                                            ctx.fillText(dataset.data[i].titre, model.x - (((dataset.data[i].titre).length) * 3), model.y);
+                                        }
+                                        else {
+                                            ctx.fillText("", model.x, model.y - 5);
+                                        }
+                                    }
+                                    catch (Err) {
+                                        ctx.fillText("", model.x, model.y - 5);
+                                    }
+                                    console.log(" key " + key);
+                                    console.log(dataset.data[key]);
+                                    console.log(" i " + i);
+                                    console.log(dataset.data[i]);
+                                }
+                            }
+                        });
+                    }
+                },
                 zoom: true
             }
-        });
-    };
-    TraitmentCourbe.prototype.exmp = function () {
-        var myConfig = { "type": "line", "series": [{ "values": [20, 40, null, 50, 15, null, 33, 34] }] };
-        this.lineChart.render({
-            id: this.lineCanvas.nativeElement,
-            data: myConfig,
-            height: "100%",
-            width: "100%"
-        });
-        var c = [
-            ['Year', 'Sales', 'Expenses'],
-            ['2004', 1000, 400],
-            ['2005', 1170, 460],
-            ['2006', 660, 1120],
-            ['2007', 1030, 540]
-        ];
-        this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-            //    labels: ["January", "February", "March", "April", "May", "June", "July"],
-            "type": "line",
-            "series": [
-                { "values": [20, 40, null, 50, 15, null, 33, 34] } /* Plot indices 2 and 5 are unavailable */
-            ]
         });
     };
     TraitmentCourbe.prototype.historique = function (numDoss, codeClinique) {
@@ -221,13 +275,13 @@ var TraitmentCourbe = (function () {
         h.setcodeClinique(codeClinique);
         this.histC.push(h);
         try {
-            this.histserv.deleteHistSigneCourbes(numDoss, codeClinique);
-            this.histserv.getHistSigneCourbes(this.histC, numDoss, codeClinique).then(function (res) {
+            this.histserv.deleteHistTraitCourbes(numDoss, codeClinique);
+            this.histserv.getHistTraitCourbes(this.histC, numDoss, codeClinique).then(function (res) {
                 _this.histc = res.getdate();
             });
         }
         catch (Error) {
-            this.histserv.getHistSigneCourbes(this.histC, numDoss, codeClinique).then(function (res) {
+            this.histserv.getHistTraitCourbes(this.histC, numDoss, codeClinique).then(function (res) {
                 _this.histc = res.getdate();
             });
         }
@@ -235,15 +289,14 @@ var TraitmentCourbe = (function () {
     TraitmentCourbe.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
         var _this = this;
         this.histserv = new HistTraitCourbeService();
-        this.histserv.getHistSigneCourbes(hist, numDoss, codeClinique).then(function (res) {
+        this.histserv.getHistTraitCourbes(hist, numDoss, codeClinique).then(function (res) {
             _this.histc = res.getdate();
         });
     };
     TraitmentCourbe.prototype.update = function () {
-        // this.DeletegetChartSurveillance(this.pass.getdossier(), this.codeClinique);
+        this.DeletegetChartSurveillance(this.pass.getdossier(), this.codeClinique);
         this.getChartSurveillance(this.pass.getdossier(), this.codeClinique);
-        //   this.historique(this.pass.getdossier(), this.codeClinique);
-        //  this.exmp();
+        this.historique(this.pass.getdossier(), this.codeClinique);
     };
     return TraitmentCourbe;
 }());
