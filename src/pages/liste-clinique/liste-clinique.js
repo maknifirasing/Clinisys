@@ -13,10 +13,6 @@ import { Variables } from "../../providers/variables";
 import { Clinique } from "../../models/Clinique";
 import { HomePage } from "../home/home";
 import { CliniqueService } from "../../services/CliniqueService";
-import { UserService } from "../../services/UserService";
-import { ListePage } from "../liste/liste";
-import { Langue } from "../../models/Langue";
-import { LangueService } from "../../services/LangueService";
 var ListeCliniquePage = (function () {
     function ListeCliniquePage(navCtrl, navParams, Url, viewCtrl, platform) {
         var _this = this;
@@ -82,43 +78,50 @@ var ListeCliniquePage = (function () {
         this.clinique = this.clinserv.getCliniques(cliniques);
     };
     ListeCliniquePage.prototype.goToHomePage = function (codeC) {
-        var _this = this;
+        /*
         this.userserv = new UserService();
-        this.userserv.verifUser(codeC.getcode()).then(function (user) {
-            if (user === false) {
-                _this.navCtrl.push(HomePage, {
-                    tabLangue: _this.tabLangue,
-                    langue: _this.langue,
-                    codeClinique: codeC.getcode(),
-                    nomClinique: codeC.getnom()
-                });
-            }
-            else {
-                _this.langserv = new LangueService();
-                _this.langserv.verifLangue().then(function (res) {
-                    if (res === true) {
-                        _this.langserv.getLangues(_this.langes).then(function (lg) {
-                            var l = new Langue();
-                            l.setlangue(lg.getlangue());
-                            l.setmatricule(lg.getmatricule());
-                            l.setcodeClinique(codeC.getcode());
-                            l.setnomClinique(codeC.getnom());
-                            _this.langes.push(l);
-                            _this.langserv.deleteLangues().then(function (delet) {
-                                if (delet === true) {
-                                    _this.langserv._insertLangues(_this.langes);
-                                }
-                            });
-                        });
+        this.userserv.verifUser(codeC.getcode()).then(user => {
+          if (user === false) {
+            this.navCtrl.push(HomePage, {
+              tabLangue: this.tabLangue,
+              langue: this.langue,
+              codeClinique: codeC.getcode(),
+              nomClinique: codeC.getnom()
+            });
+          } else {
+            this.langserv = new LangueService();
+            this.langserv.verifLangue().then(res => {
+              if (res === true) {
+                this.langserv.getLangues(this.langes).then(lg => {
+                  var l = new Langue();
+                  l.setlangue(lg.getlangue());
+                  l.setmatricule(lg.getmatricule());
+                  l.setcodeClinique(codeC.getcode());
+                  l.setnomClinique(codeC.getnom());
+                  this.langes.push(l);
+                  this.langserv.deleteLangues().then(delet => {
+                    if (delet === true) {
+                      this.langserv._insertLangues(this.langes);
                     }
-                    _this.navCtrl.setRoot(ListePage, {
-                        tabLangue: _this.tabLangue,
-                        langue: _this.langue,
-                        codeClinique: codeC.getcode(),
-                        nomClinique: codeC.getnom()
-                    });
+                  });
+    
                 });
-            }
+              }
+              this.navCtrl.setRoot(ListePage, {
+                tabLangue: this.tabLangue,
+                langue: this.langue,
+                codeClinique: codeC.getcode(),
+                nomClinique: codeC.getnom()
+              });
+            });
+          }
+        });
+        */
+        this.navCtrl.push(HomePage, {
+            tabLangue: this.tabLangue,
+            langue: this.langue,
+            codeClinique: codeC.getcode(),
+            nomClinique: codeC.getnom()
         });
     };
     return ListeCliniquePage;

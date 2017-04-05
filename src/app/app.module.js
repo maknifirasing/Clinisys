@@ -24,6 +24,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { SigneCourbePage } from "../pages/signe-courbe/signe-courbe";
 import { NotificationPage } from "../pages/notification/notification";
 import { ClientDetailPage } from "../pages/client-detail/client-detail";
+import { TraitmentCourbe } from "../pages/traitment-courbe/traitment-courbe";
 var AppModule = (function () {
     function AppModule() {
     }
@@ -47,7 +48,8 @@ AppModule = __decorate([
             ListeCliniquePage,
             SigneCourbePage,
             NotificationPage,
-            ClientDetailPage
+            ClientDetailPage,
+            TraitmentCourbe
         ],
         imports: [
             IonicModule.forRoot(MyApp),
@@ -70,7 +72,8 @@ AppModule = __decorate([
             ListeCliniquePage,
             SigneCourbePage,
             NotificationPage,
-            ClientDetailPage
+            ClientDetailPage,
+            TraitmentCourbe
         ],
         providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }]
     })

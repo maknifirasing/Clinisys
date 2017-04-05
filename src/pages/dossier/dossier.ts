@@ -25,7 +25,7 @@ import {HistDossierService} from "../../services/HistDossierService";
 import {HistDossier} from "../../models/HistDossier";
 import {SigneCourbePage} from "../signe-courbe/signe-courbe";
 import {ClientDetailPage} from "../client-detail/client-detail";
-import {DetailPerPagePage} from "../detail-per-page/detail-per-page";
+import {TraitmentCourbe} from "../traitment-courbe/traitment-courbe";
 
 @Component({
   selector: 'page-dossier',
@@ -1037,6 +1037,14 @@ export class DossierPage {
 
   gotoSigneCourbe() {
     this.navCtrl.push(SigneCourbePage, {
+      codeClinique: this.codeClinique,
+      tabLangue: this.tabLangue,
+      pass: this.pass,
+      langue: this.langue
+    });
+  }
+  gotoTraitementCourbe() {
+    this.navCtrl.push(TraitmentCourbe, {
       codeClinique: this.codeClinique,
       tabLangue: this.tabLangue,
       pass: this.pass,

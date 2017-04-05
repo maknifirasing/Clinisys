@@ -11,7 +11,6 @@ import {
   ThemeableBrowserButton
 } from '@ionic-native/themeable-browser';
 import {DocumentService} from "../../services/DocumentService";
-import {DocViewPage} from "../doc-view/doc-view";
 import {ExamenRadioTService} from "../../services/ExamenRadioTService";
 import {ExamenRadioFService} from "../../services/ExamenRadioFService";
 import {ClientDetailPage} from "../client-detail/client-detail";

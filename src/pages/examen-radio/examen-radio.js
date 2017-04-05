@@ -115,55 +115,91 @@ var ExamenRadioPage = (function () {
         });
     };
     ExamenRadioPage.prototype.open = function (url) {
-        var options = {
-            statusbar: {
-                color: '#0277bd',
-            },
-            toolbar: {
-                height: 44,
-                color: '#0277bd'
-                //   image: url("/android_asset/www/assets/img/green.png"),
-            },
-            title: {
-                color: '#FFFFFF',
-                staticText: this.histdoc + " " + this.tabLangue.titreEnligne,
-                showPageTitle: false,
-            }
-            /* backButton: {
-             image: 'back',
-    
-             align: 'left',
-             //  event: 'backPressed'
-             }*/
-        };
-        var browser = this.themeableBrowser.create(url, '_blank', options);
+        if (((this.langue === "francais") || (this.langue === "anglais")) && (this.connection)) {
+            var options = {
+                statusbar: {
+                    color: '#0277bd',
+                },
+                toolbar: {
+                    height: 44,
+                    color: '#0277bd'
+                },
+                title: {
+                    color: '#FFFFFF',
+                    staticText: this.tabLangue.titreEnligne + " " + this.histdoc,
+                    showPageTitle: false
+                },
+                backButton: {
+                    wwwImage: '/android_asset/www/assets/img/green.png',
+                    align: 'left'
+                }
+            };
+            var browser = this.themeableBrowser.create(url, '_blank', options);
+        }
+        if (((this.langue === "francais") || (this.langue === "anglais")) && (!this.connection)) {
+            var options = {
+                statusbar: {
+                    color: '#0277bd',
+                },
+                toolbar: {
+                    height: 44,
+                    color: '#0277bd'
+                },
+                title: {
+                    color: '#FFFFFF',
+                    staticText: this.tabLangue.titreHorsLigne + " " + this.histdoc,
+                    showPageTitle: false
+                },
+                backButton: {
+                    wwwImage: '/android_asset/www/assets/img/red.png',
+                    align: 'left'
+                }
+            };
+            var browser = this.themeableBrowser.create(url, '_blank', options);
+        }
+        if ((this.langue === "arabe") && (this.connection)) {
+            var options = {
+                statusbar: {
+                    color: '#0277bd',
+                },
+                toolbar: {
+                    height: 44,
+                    color: '#0277bd'
+                },
+                title: {
+                    color: '#FFFFFF',
+                    staticText: this.histdoc + " " + this.tabLangue.titreEnligne,
+                    showPageTitle: false,
+                },
+                backButton: {
+                    wwwImage: '/android_asset/www/assets/img/green.png',
+                    align: 'left'
+                }
+            };
+            var browser = this.themeableBrowser.create(url, '_blank', options);
+        }
+        if ((this.langue === "arabe") && (!this.connection)) {
+            var options = {
+                statusbar: {
+                    color: '#0277bd',
+                },
+                toolbar: {
+                    height: 44,
+                    color: '#0277bd'
+                },
+                title: {
+                    color: '#FFFFFF',
+                    staticText: this.histdoc + " " + this.tabLangue.titreHorsLigne,
+                    showPageTitle: false
+                },
+                backButton: {
+                    wwwImage: '/android_asset/www/assets/img/red.png',
+                    align: 'left'
+                }
+            };
+            var browser = this.themeableBrowser.create(url, '_blank', options);
+        }
     };
-    /*  if ((!this.connection)&&((this.langue==="francais")||(this.langue==="anglais"))) {
-        const options: ThemeableBrowserOptions = {
-          statusbar: {
-            color: '#0277bd',
-          },
-          toolbar: {
-            height: 44,
-            color: '#0277bd'
-            //   image: url("/android_asset/www/assets/img/green.png"),
-          },
-          title: {
-            color: '#FFFFFF',
-            staticText: this.tabLangue.titreHorsLigne + " " + this.histdoc,
-            showPageTitle: false,
-  
-          }
-          /* backButton: {
-           image: 'back',
-  
-           align: 'left',
-           //  event: 'backPressed'
-           }*/
-    /*    };
-  
-        const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_blank', options);
-      }*/
     ExamenRadioPage.prototype.downloadImage = function (url, doc) {
         var _this = this;
         this.platform.ready().then(function () {

@@ -36,40 +36,43 @@ var SigneCourbeTAService = (function () {
     };
     SigneCourbeTAService.prototype.getSigneCourbes = function (signeCourbes, numdoss, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("select * from SigneCourbeTA where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
-                .then(function (result) {
-                if (result.rows.length === 0) {
-                    _this._insertSigneCourbes(signeCourbes, numdoss, codeClinique);
-                }
-                else {
-                    var signeCourbe;
-                    for (var i = 0; i < result.rows.length; i++) {
-                        signeCourbe = new SigneCourbe();
-                        signeCourbe.setcodePosologie(result.rows.item(i).codePosologie);
-                        signeCourbe.setdesignation(result.rows.item(i).designation);
-                        signeCourbe.setseuilMin(result.rows.item(i).seuilMin);
-                        signeCourbe.setseuilMax(result.rows.item(i).seuilMax);
-                        signeCourbe.setcolor(result.rows.item(i).color);
-                        signeCourbe.setunite(result.rows.item(i).unite);
-                        signeCourbe.setquantite(result.rows.item(i).quantite);
-                        signeCourbe.setheurePrise(result.rows.item(i).heurePrise);
-                        signeCourbe.setdateHeurePrise(result.rows.item(i).dateHeurePrise);
-                        _this.signeCourbe.push(signeCourbe);
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                db.executeSql("select * from SigneCourbeTA where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
+                    .then(function (result) {
+                    if (result.rows.length === 0) {
+                        _this._insertSigneCourbes(signeCourbes, numdoss, codeClinique);
                     }
-                }
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 SigneCourbeTA  ' + error);
+                    else {
+                        var signeCourbe;
+                        for (var i = 0; i < result.rows.length; i++) {
+                            signeCourbe = new SigneCourbe();
+                            signeCourbe.setcodePosologie(result.rows.item(i).codePosologie);
+                            signeCourbe.setdesignation(result.rows.item(i).designation);
+                            signeCourbe.setseuilMin(result.rows.item(i).seuilMin);
+                            signeCourbe.setseuilMax(result.rows.item(i).seuilMax);
+                            signeCourbe.setcolor(result.rows.item(i).color);
+                            signeCourbe.setunite(result.rows.item(i).unite);
+                            signeCourbe.setquantite(result.rows.item(i).quantite);
+                            signeCourbe.setheurePrise(result.rows.item(i).heurePrise);
+                            signeCourbe.setdateHeurePrise(result.rows.item(i).dateHeurePrise);
+                            _this.signeCourbe.push(signeCourbe);
+                        }
+                        resolve(_this.signeCourbe);
+                    }
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    alert('Error 1 SigneCourbeTA  ' + error);
+                });
             });
+            db.close();
+            return _this;
         });
-        db.close();
-        return this.signeCourbe;
     };
     SigneCourbeTAService.prototype._insertSigneCourbes = function (signeCourbes, numdoss, codeClinique) {
         var db = new SQLite();

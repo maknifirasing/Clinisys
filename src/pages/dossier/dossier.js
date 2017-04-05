@@ -34,6 +34,7 @@ import { HistDossierService } from "../../services/HistDossierService";
 import { HistDossier } from "../../models/HistDossier";
 import { SigneCourbePage } from "../signe-courbe/signe-courbe";
 import { ClientDetailPage } from "../client-detail/client-detail";
+import { TraitmentCourbe } from "../traitment-courbe/traitment-courbe";
 var DossierPage = DossierPage_1 = (function () {
     function DossierPage(navCtrl, navParams, Url, platform) {
         var _this = this;
@@ -939,6 +940,14 @@ var DossierPage = DossierPage_1 = (function () {
     };
     DossierPage.prototype.gotoSigneCourbe = function () {
         this.navCtrl.push(SigneCourbePage, {
+            codeClinique: this.codeClinique,
+            tabLangue: this.tabLangue,
+            pass: this.pass,
+            langue: this.langue
+        });
+    };
+    DossierPage.prototype.gotoTraitementCourbe = function () {
+        this.navCtrl.push(TraitmentCourbe, {
             codeClinique: this.codeClinique,
             tabLangue: this.tabLangue,
             pass: this.pass,
