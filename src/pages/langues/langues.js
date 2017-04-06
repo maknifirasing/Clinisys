@@ -10,13 +10,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
-import { NativeStorage } from "ionic-native";
 import { ListeCliniquePage } from "../liste-clinique/liste-clinique";
 var LanguesPage = (function () {
-    function LanguesPage(navCtrl) {
+    function LanguesPage(navCtrl, Url) {
         this.navCtrl = navCtrl;
+        this.Url = Url;
         this.langes = [];
-        NativeStorage.setItem("name", "basma");
+        Variables.auth();
     }
     LanguesPage.prototype.ionViewDidLoad = function () {
     };
@@ -65,9 +65,10 @@ var LanguesPage = (function () {
 LanguesPage = __decorate([
     Component({
         selector: 'page-langues',
-        templateUrl: 'langues.html'
+        templateUrl: 'langues.html',
+        providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController])
+    __metadata("design:paramtypes", [NavController, Variables])
 ], LanguesPage);
 export { LanguesPage };
 //# sourceMappingURL=langues.js.map

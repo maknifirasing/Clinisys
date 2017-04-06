@@ -37,13 +37,13 @@ export class MyApp {
 
           db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeListPreanesthesie(codeClinique VARCHAR(32),numDoss VARCHAR(32),ListPreanesthesie VARCHAR(32))', {});
 
+          db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeConsigne(codeClinique VARCHAR(32),numDoss VARCHAR(32),consigneT VARCHAR(32),consignes VARCHAR(32))', {});
+
           db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeLabo(codeClinique VARCHAR(32),numDoss VARCHAR(32),LabosT VARCHAR(32),Labos VARCHAR(32))', {});
 
           db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeRadio(codeClinique VARCHAR(32),numDoss VARCHAR(32),RadioT VARCHAR(32),Radio VARCHAR(32))', {});
 
           db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeActe(codeClinique VARCHAR(32),numDoss VARCHAR(32),ActeT VARCHAR(32),Acte VARCHAR(32))', {});
-
-          db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeConsigne(codeClinique VARCHAR(32),numDoss VARCHAR(32),ConsigneT VARCHAR(32),Consigne VARCHAR(32))', {});
 
           db.executeSql('CREATE TABLE IF NOT EXISTS Clinique(code VARCHAR(32),id VARCHAR(32),nom VARCHAR(32),url VARCHAR(32))', {});
 
@@ -89,9 +89,6 @@ export class MyApp {
           db.executeSql('CREATE TABLE IF NOT EXISTS Alegc(idpass VARCHAR(32),ch VARCHAR(32),codeClinique VARCHAR(32))', {});
 
           db.executeSql('CREATE TABLE IF NOT EXISTS Antech(idpass VARCHAR(32),ch VARCHAR(32),codeClinique VARCHAR(32))', {});
-
-          db.executeSql('CREATE TABLE IF NOT EXISTS Consigne(type VARCHAR(32),datetache VARCHAR(32),date VARCHAR(32),' +
-            'heurtache VARCHAR(32),details VARCHAR(32),userCreate VARCHAR(32),id VARCHAR(32),listCode VARCHAR(32),NumeroDossier VARCHAR(32),codeMedecin VARCHAR(32),etat VARCHAR(32),codeClinique VARCHAR(32))', {});
 
           db.executeSql('CREATE TABLE IF NOT EXISTS motifHospitalisation(conclusion VARCHAR(32),dateRdv VARCHAR(32),dateSortie VARCHAR(32)' +
             ',groupeSang VARCHAR(32),heureRdv VARCHAR(32),heureSortie VARCHAR(32),histoiremaladie VARCHAR(32),motifhospitalisation VARCHAR(32),' +
@@ -163,12 +160,17 @@ export class MyApp {
             ',heurePrise VARCHAR(32),heureRealisation VARCHAR(32),' +
             'numTraitement VARCHAR(32),ordre VARCHAR(32),quantite VARCHAR(32),retourn VARCHAR(32),row VARCHAR(32),numDoss VARCHAR(32),codeClinique VARCHAR(32))', {});
 
+          db.executeSql('CREATE TABLE IF NOT EXISTS Consigne (codeExamen VARCHAR(32),codeMedecin VARCHAR(32),codeinf VARCHAR(32),date VARCHAR(32)' +
+            ',dateDelete VARCHAR(32),dateRealisation VARCHAR(32),' +
+            'datetache VARCHAR(32),details VARCHAR(255),etat VARCHAR(32),heurtache VARCHAR(32),id VARCHAR(32),listCode VARCHAR(32),nomMed VARCHAR(32)' +
+            ',numeroDossier VARCHAR(32),observation VARCHAR(32),type VARCHAR(32),userCreate VARCHAR(32),userDelete VARCHAR(32),userRealise VARCHAR(32),codeClinique VARCHAR(32),typeget VARCHAR(32),etatget VARCHAR(32))', {});
+
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error opening database  ' + error);
         });
-
+/*
       this.langserv = new LangueService();
       this.langserv.verifLangue().then(res => {
         if (res === true) {
@@ -196,7 +198,7 @@ export class MyApp {
           this.nav.setRoot(LanguesPage);
         }
       });
-
+*/this.nav.setRoot(LanguesPage);
       StatusBar.styleDefault();
       Splashscreen.hide();
     });

@@ -223,9 +223,16 @@ export class TraitmentCourbe {
          text: 'Custom Chart Title'
          },
          */
+        scaleOverride: true,
+
+        scaleSteps: 10,
+        scaleStepWidth: 20,
         scales: {
           yAxes: [{
-            ticks: {min: 0, max: nomcourbe.length + 1}
+            ticks: {min: 0, max: nomcourbe.length + 1},
+            barPercentage: 9.0,
+            height:10
+
           }
           ],
           xAxes: [{
@@ -249,10 +256,12 @@ export class TraitmentCourbe {
         animation: {
           onComplete: function () {
             var ctx = this.chart.ctx;
-            ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+   //         ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+            ctx.font = "6px Arial gras";
             ctx.fillStyle = "black";
             ctx.textAlign = 'center';
             ctx.textBaseline = 'bottom';
+            ctx.frontz = 'bottom';
 
             this.data.datasets.forEach(function (dataset) {
               for (var i = 0; i < dataset.data.length; i++) {

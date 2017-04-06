@@ -124,7 +124,7 @@ var LaboFService = (function () {
         }).then(function () {
             db.executeSql("delete from LaboF where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                alert("Suppression de table Labo est terminé avec succes");
+                //       alert("Suppression de table Labo est terminé avec succes");
             })
                 .catch(function (error) {
                 console.error('Error opening database', error);

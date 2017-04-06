@@ -18,6 +18,10 @@ import {tabBadgeRadioService} from "../../services/tabBadgeRadioService";
 import {ListPreanesthesie} from "../../models/ListPreanesthesie";
 import {ListPreanesthesieService} from "../../services/ListPreanesthesieService";
 import {tabBadgeListPreanesthesie} from "../../services/tabBadgeListPreanesthesie";
+import {ConsignePage} from "../consigne/consigne";
+import {Consigne} from "../../models/Consigne";
+import {ConsigneService} from "../../services/ConsigneService";
+import {tabBadgeConsigneService} from "../../services/tabBadgeConsigneService";
 
 @Component({
   selector: 'page-tabs',
@@ -26,10 +30,13 @@ import {tabBadgeListPreanesthesie} from "../../services/tabBadgeListPreanesthesi
 })
 @Injectable()
 export class TabsPage {
+  consigneserv: any;
+  coountConsigne: number;
   tab1Root: any = DossierPage;
   tab2Root: any = ExamenRadioPage;
   tab3Root: any = ListPreanesthesiePage;
   tab4Root: any = ExamenLaboPage;
+  tab5Root: any = ConsignePage;
   pass: Patient;
   pdf: string;
   dateFeuille: string;
@@ -41,6 +48,7 @@ export class TabsPage {
   countDocs: any;
   public navCtrl: NavController;
   tabgLabo: Array<tabBadge> = [];
+  tabgConsigne: Array<tabBadge> = [];
   tabgRadio: Array<tabBadge> = [];
   ListPreanesthesies: Array<tabBadge> = [];
   LabosT: Array<Labo> = [];
@@ -56,16 +64,15 @@ export class TabsPage {
   coountexamenRT: number;
   coountexamenR: number;
   coountListPreanesthesie: number;
-  tab1: string;
-  tab2: string;
-  tab3: string;
-  tab4: string;
   codeClinique: string;
   connection: boolean;
   ListPreanesthesieByNumeroDossierTest: boolean = false;
   ListeP: Array<ListPreanesthesie> = [];
   ListePserv: any;
   langue: any;
+  private consigne: Array<Consigne> = [];
+  private coountConsigneT: number;
+  private countConsigneserv: any;
 
   constructor(public navParams: NavParams, private Url: Variables, public platform: Platform) {
     this.codeClinique = navParams.get("codeClinique");
@@ -74,6 +81,8 @@ export class TabsPage {
     this.langue = navParams.get("langue");
     this.coountexamenR = 0;
     this.coountexamenRT = 0;
+    this.coountConsigne = 0;
+    this.coountConsigneT = 0;
     this.coountListPreanesthesie = 0;
     this.countPdfT = 0;
     this.countPdf = 0;
@@ -85,8 +94,11 @@ export class TabsPage {
       ListeP: this.ListeP,
       examenRT: this.examenRT,
       examenRF: this.examenRF,
+      consigne: this.consigne,
       langue: this.langue,
-      tabLangue: this.tabLangue, codeClinique: this.codeClinique
+      tabLangue: this.tabLangue, codeClinique: this.codeClinique,
+      typeconsigne: "all",
+      etatconsigne: "all"
     };
     this.platform.ready().then(() => {
       Variables.checconnection().then(connexion => {
@@ -95,12 +107,11 @@ export class TabsPage {
           this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
           this.GetExamenRadioByNumDossResponseOff(this.pass.getdossier(), this.codeClinique);
           this.findListPreanesthesieByNumeroDossierResponseOff(this.pass.getdossier(), this.codeClinique);
+          this.getPlanificationTacheInfirmierByNumDossAndTypeOff(this.pass.getdossier(), this.codeClinique);
         }
         else {
           this.connection = true;
-          this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
-          this.GetExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
-          this.findListPreanesthesieByNumeroDossierResponse(this.pass.getdossier(), this.codeClinique);
+          this.update();
         }
       });
     });
@@ -243,6 +254,17 @@ export class TabsPage {
 
   }
 
+  deleteExamenRadioByNumDossResponse(numDoss, codeClinique) {
+    this.countDocs = new tabBadgeRadioService();
+    this.countDocs.deletetabBadgeRadios(numDoss, codeClinique);
+
+    this.RadiosFs = new ExamenRadioFService();
+    this.RadiosFs.deleteExamenRadios(numDoss, codeClinique);
+
+    this.RadiosTs = new ExamenRadioTService();
+    this.RadiosTs.deleteExamenRadios(numDoss, codeClinique);
+  }
+
   findAllLaboByNumDossier(numDoss, codeClinique) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
@@ -347,6 +369,17 @@ export class TabsPage {
       this.countPdf = res.getFichier();
       this.countPdfT = res.getFichierT();
     });
+  }
+
+  deleteAllLaboByNumDossier(numDoss, codeClinique) {
+    this.countPdfs = new tabBadgeLaboService();
+    this.countPdfs.deletetabBadgeLabos(numDoss, codeClinique);
+
+    this.LabosFs = new LaboFService();
+    this.LabosFs.deleteLabos(numDoss, codeClinique);
+
+    this.LabosTs = new LaboTService();
+    this.LabosTs.deleteLabos(numDoss, codeClinique);
   }
 
   findListPreanesthesieByNumeroDossierResponse(numDoss, codeClinique) {
@@ -455,4 +488,149 @@ export class TabsPage {
     });
   }
 
+  deleteListPreanesthesieByNumeroDossierResponser(numDoss, codeClinique) {
+    this.countListPreanesthesiess = new tabBadgeListPreanesthesie();
+    this.countListPreanesthesiess.deletetabBadgeLists(numDoss, codeClinique);
+
+    this.ListePserv = new ListPreanesthesieService();
+    this.ListePserv.deleteListPreanesthesies(numDoss, codeClinique);
+  }
+
+  getPlanificationTacheInfirmierByNumDossAndType(numDoss, type, etat, codeClinique) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:getPlanificationTacheInfirmierByNumDossAndType>' +
+      '<numDoss>' + numDoss + '</numDoss>' +
+      '<type>' + type + '</type>' +
+      '<etat>' + etat + '</etat>' +
+      '</ser:getPlanificationTacheInfirmierByNumDossAndType>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          var xml;
+          xml = xmlhttp.responseXML;
+          var x, i;
+          x = xml.getElementsByTagName("return");
+
+          var c;
+          var tempsEnMs = new Date().getFullYear();
+          var d;
+          for (i = 0; i < x.length; i++) {
+            c = new Consigne();
+            if (x[i].childElementCount === 19) {
+              c.setcodeExamen(x[i].children[0].textContent);
+              c.setcodeMedecin(x[i].children[1].textContent);
+              c.setcodeinf(x[i].children[2].textContent);
+              c.setdate(x[i].children[3].textContent);
+              c.setdateDelete(x[i].children[4].textContent);
+              c.setdateRealisation(x[i].children[5].textContent);
+              c.setdatetache(x[i].children[6].textContent);
+              c.setdetails(x[i].children[7].textContent);
+              c.setetat(x[i].children[8].textContent);
+              c.setheurtache(x[i].children[9].textContent);
+              c.setid(x[i].children[10].textContent);
+              c.setlistCode(x[i].children[11].textContent);
+              c.setnomMed(x[i].children[12].textContent);
+              c.setnumeroDossier(x[i].children[13].textContent);
+              c.setobservation(x[i].children[14].textContent);
+              c.settype(x[i].children[15].textContent);
+              c.setuserCreate(x[i].children[16].textContent);
+              c.setuserDelete(x[i].children[17].textContent);
+              c.setuserRealise(x[i].children[18].textContent);
+              c.setcodeClinique(codeClinique);
+            }
+            else if (x[i].childElementCount === 18) {
+              c.setcodeExamen(x[i].children[0].textContent);
+              c.setcodeMedecin(x[i].children[1].textContent);
+              c.setcodeinf(x[i].children[2].textContent);
+              c.setdate(x[i].children[3].textContent);
+              c.setdateDelete(x[i].children[4].textContent);
+              c.setdateRealisation(x[i].children[5].textContent);
+              c.setdatetache(x[i].children[6].textContent);
+              c.setdetails(x[i].children[7].textContent);
+              c.setetat(x[i].children[8].textContent);
+              c.setheurtache(x[i].children[9].textContent);
+              c.setid(x[i].children[10].textContent);
+              c.setlistCode(x[i].children[11].textContent);
+              c.setnomMed("");
+              c.setnumeroDossier(x[i].children[12].textContent);
+              c.setobservation(x[i].children[13].textContent);
+              c.settype(x[i].children[14].textContent);
+              c.setuserCreate(x[i].children[15].textContent);
+              c.setuserDelete(x[i].children[16].textContent);
+              c.setuserRealise(x[i].children[17].textContent);
+              c.setcodeClinique(codeClinique);
+              c.settypeget(type);
+              c.setetatget(etat);
+            }
+            this.consigne.push(c);
+            if (c.getetat() === "F") {
+              this.coountConsigneT++;
+            }
+          }
+          this.coountConsigne = this.consigne.length;
+
+          this.consigneserv = new ConsigneService();
+          this.consigneserv.verifConsigne(this.consigne, numDoss, codeClinique, type, etat).then(res => {
+            if (res === false) {
+              this.consigneserv.getConsignes(this.consigne, numDoss, codeClinique, type, etat);
+            }
+          });
+
+          var tConsigne = new tabBadge();
+          tConsigne.setnumDoss(numDoss);
+          tConsigne.setFichier(this.coountConsigne);
+          tConsigne.setFichierT(this.coountConsigneT);
+          tConsigne.setcodeClinique(codeClinique);
+          this.tabgConsigne.push(tConsigne);
+
+          this.countConsigneserv = new tabBadgeConsigneService();
+          this.countConsigneserv.verifTabBadgeConsigne(numDoss, codeClinique).then(res => {
+            if (res === false) {
+              this.countConsigneserv.getTabBadgeConsigne(this.tabgConsigne, numDoss, codeClinique);
+            }
+          });
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+  getPlanificationTacheInfirmierByNumDossAndTypeOff(numDoss, codeClinique) {
+    this.countConsigneserv = new tabBadgeConsigneService();
+    this.countConsigneserv.getTabBadgeConsigne(this.tabgConsigne, numDoss, codeClinique).then(res => {
+      this.coountConsigne = res.getFichier();
+      this.coountConsigneT = res.getFichierT();
+    });
+  }
+
+  deletePlanificationTacheInfirmierByNumDossAndType(numDoss, type, etat, codeClinique) {
+    this.countConsigneserv = new tabBadgeConsigneService();
+    this.countConsigneserv.deletetabBadgeConsignes(numDoss, codeClinique);
+
+    this.consigneserv = new ConsigneService();
+    this.consigneserv.deleteConsignes(numDoss, codeClinique);
+  }
+
+  update() {
+    this.deleteAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
+    this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
+
+    this.deleteExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
+    this.GetExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
+
+    this.deleteListPreanesthesieByNumeroDossierResponser(this.pass.getdossier(), this.codeClinique);
+    this.findListPreanesthesieByNumeroDossierResponse(this.pass.getdossier(), this.codeClinique);
+
+    this.deletePlanificationTacheInfirmierByNumDossAndType(this.pass.getdossier(), "all", "all", this.codeClinique)
+    this.getPlanificationTacheInfirmierByNumDossAndType(this.pass.getdossier(), "all", "all", this.codeClinique);
+  }
 }

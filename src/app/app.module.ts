@@ -19,6 +19,7 @@ import {SigneCourbePage} from "../pages/signe-courbe/signe-courbe";
 import {NotificationPage} from "../pages/notification/notification";
 import {ClientDetailPage} from "../pages/client-detail/client-detail";
 import {TraitmentCourbe} from "../pages/traitment-courbe/traitment-courbe";
+import {ConsignePage} from "../pages/consigne/consigne";
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import {TraitmentCourbe} from "../pages/traitment-courbe/traitment-courbe";
     SigneCourbePage,
     NotificationPage,
     ClientDetailPage,
-    TraitmentCourbe
+    TraitmentCourbe,
+    ConsignePage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -62,7 +64,8 @@ import {TraitmentCourbe} from "../pages/traitment-courbe/traitment-courbe";
     SigneCourbePage,
     NotificationPage,
     ClientDetailPage,
-    TraitmentCourbe
+    TraitmentCourbe,
+    ConsignePage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

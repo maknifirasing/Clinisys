@@ -123,7 +123,7 @@ var TraitCourbeService = (function () {
             })
                 .catch(function (error) {
                 console.error('Error opening database', error);
-                alert('Error 1 TraitCourbe  ' + error);
+                alert('Error 3 TraitCourbe  ' + error);
             });
         });
         db.close();

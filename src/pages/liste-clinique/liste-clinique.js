@@ -79,44 +79,43 @@ var ListeCliniquePage = (function () {
     };
     ListeCliniquePage.prototype.goToHomePage = function (codeC) {
         /*
-        this.userserv = new UserService();
-        this.userserv.verifUser(codeC.getcode()).then(user => {
-          if (user === false) {
-            this.navCtrl.push(HomePage, {
-              tabLangue: this.tabLangue,
-              langue: this.langue,
-              codeClinique: codeC.getcode(),
-              nomClinique: codeC.getnom()
-            });
-          } else {
-            this.langserv = new LangueService();
-            this.langserv.verifLangue().then(res => {
-              if (res === true) {
-                this.langserv.getLangues(this.langes).then(lg => {
-                  var l = new Langue();
-                  l.setlangue(lg.getlangue());
-                  l.setmatricule(lg.getmatricule());
-                  l.setcodeClinique(codeC.getcode());
-                  l.setnomClinique(codeC.getnom());
-                  this.langes.push(l);
-                  this.langserv.deleteLangues().then(delet => {
-                    if (delet === true) {
-                      this.langserv._insertLangues(this.langes);
-                    }
-                  });
-    
-                });
-              }
-              this.navCtrl.setRoot(ListePage, {
-                tabLangue: this.tabLangue,
-                langue: this.langue,
-                codeClinique: codeC.getcode(),
-                nomClinique: codeC.getnom()
-              });
-            });
-          }
-        });
-        */
+           this.userserv = new UserService();
+           this.userserv.verifUser(codeC.getcode()).then(user => {
+             if (user === false) {
+               this.navCtrl.push(HomePage, {
+                 tabLangue: this.tabLangue,
+                 langue: this.langue,
+                 codeClinique: codeC.getcode(),
+                 nomClinique: codeC.getnom()
+               });
+             } else {
+               this.langserv = new LangueService();
+               this.langserv.verifLangue().then(res => {
+                 if (res === true) {
+                   this.langserv.getLangues(this.langes).then(lg => {
+                     var l = new Langue();
+                     l.setlangue(lg.getlangue());
+                     l.setmatricule(lg.getmatricule());
+                     l.setcodeClinique(codeC.getcode());
+                     l.setnomClinique(codeC.getnom());
+                     this.langes.push(l);
+                     this.langserv.deleteLangues().then(delet => {
+                       if (delet === true) {
+                         this.langserv._insertLangues(this.langes);
+                       }
+                     });
+       
+                   });
+                 }
+                 this.navCtrl.setRoot(ListePage, {
+                   tabLangue: this.tabLangue,
+                   langue: this.langue,
+                   codeClinique: codeC.getcode(),
+                   nomClinique: codeC.getnom()
+                 });
+               });
+             }
+           });*/
         this.navCtrl.push(HomePage, {
             tabLangue: this.tabLangue,
             langue: this.langue,

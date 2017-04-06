@@ -128,7 +128,7 @@ export class LaboTService {
     }).then(() => {
       db.executeSql("delete from LaboT where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          alert("Suppression de table Labo est terminé avec succes");
+     //     alert("Suppression de table Labo est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);

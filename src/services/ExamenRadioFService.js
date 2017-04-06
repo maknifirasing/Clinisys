@@ -120,7 +120,7 @@ var ExamenRadioFService = (function () {
         }).then(function () {
             db.executeSql("delete from ExamenRadioF where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                alert("Suppression de table ExamenRadioF est terminé avec succes");
+                //   alert("Suppression de table ExamenRadioF est terminé avec succes");
             })
                 .catch(function (error) {
                 console.error('Error opening database', error);

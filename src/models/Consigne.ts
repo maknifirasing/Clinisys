@@ -1,33 +1,52 @@
 export class Consigne{
-  private _type: string;
-  private _datetache: string;
+  private _codeExamen: string;
+  private _codeMedecin: string;
+  private _codeinf: string;
   private _date: string;
-  private _heurtache: string;
+  private _dateDelete: string;
+  private _dateRealisation: string;
+  private _datetache: string;
   private _details: string;
-  private _userCreate: string;
+  private _etat: string;
+  private _heurtache: string;
   private _id: string;
   private _listCode: string;
-  private _NumeroDossier: string;
-  private _codeMedecin: string;
-  private _etat: string;
+  private _nomMed: string;
+  private _numeroDossier: string;
+  private _observation: string;
+  private _type: string;
+  private _userCreate: string;
+  private _userDelete: string;
+  private _userRealise: string;
+  private _codeClinique: string;
+  private _typeget: string;
+  private _etatget: string;
 
   constructor() {
   }
 
-  gettype(): string {
-    return this._type;
+  getcodeExamen(): string {
+    return this._codeExamen;
   }
 
-  settype(value: string) {
-    this._type = value;
+  setcodeExamen(value: string) {
+    this._codeExamen = value;
   }
 
-  getdatetache(): string {
-    return this._datetache;
+  getcodeMedecin(): string {
+    return this._codeMedecin;
   }
 
-  setdatetache(value: string) {
-    this._datetache = value;
+  setcodeMedecin(value: string) {
+    this._codeMedecin = value;
+  }
+
+  getcodeinf(): string {
+    return this._codeinf;
+  }
+
+  setcodeinf(value: string) {
+    this._codeinf = value;
   }
 
   getdate(): string {
@@ -38,12 +57,28 @@ export class Consigne{
     this._date = value;
   }
 
-  getheurtache(): string {
-    return this._heurtache;
+  getdateDelete(): string {
+    return this._dateDelete;
   }
 
-  setheurtache(value: string) {
-    this._heurtache = value;
+  setdateDelete(value: string) {
+    this._dateDelete = value;
+  }
+
+  getdateRealisation(): string {
+    return this._dateRealisation;
+  }
+
+  setdateRealisation(value: string) {
+    this._dateRealisation = value;
+  }
+
+  getdatetache(): string {
+    return this._datetache;
+  }
+
+  setdatetache(value: string) {
+    this._datetache = value;
   }
 
   getdetails(): string {
@@ -54,12 +89,20 @@ export class Consigne{
     this._details = value;
   }
 
-  getuserCreate(): string {
-    return this._userCreate;
+  getetat(): string {
+    return this._etat;
   }
 
-  setuserCreate(value: string) {
-    this._userCreate = value;
+  setetat(value: string) {
+    this._etat = value;
+  }
+
+  getheurtache(): string {
+    return this._heurtache;
+  }
+
+  setheurtache(value: string) {
+    this._heurtache = value;
   }
 
   getid(): string {
@@ -78,27 +121,83 @@ export class Consigne{
     this._listCode = value;
   }
 
-  getNumeroDossier(): string {
-    return this._NumeroDossier;
+  getnomMed(): string {
+    return this._nomMed;
   }
 
-  setNumeroDossier(value: string) {
-    this._NumeroDossier = value;
+  setnomMed(value: string) {
+    this._nomMed = value;
   }
 
-  getcodeMedecin(): string {
-    return this._codeMedecin;
+  getnumeroDossier(): string {
+    return this._numeroDossier;
   }
 
-  setcodeMedecin(value: string) {
-    this._codeMedecin = value;
+  setnumeroDossier(value: string) {
+    this._numeroDossier = value;
   }
 
-  getetat(): string {
-    return this._etat;
+  getobservation(): string {
+    return this._observation;
   }
 
-  setetat(value: string) {
-    this._etat = value;
+  setobservation(value: string) {
+    this._observation = value;
+  }
+
+  gettype(): string {
+    return this._type;
+  }
+
+  settype(value: string) {
+    this._type = value;
+  }
+
+  getuserCreate(): string {
+    return this._userCreate;
+  }
+
+  setuserCreate(value: string) {
+    this._userCreate = value;
+  }
+
+  getuserDelete(): string {
+    return this._userDelete;
+  }
+
+  setuserDelete(value: string) {
+    this._userDelete = value;
+  }
+
+  getuserRealise(): string {
+    return this._userRealise;
+  }
+
+  setuserRealise(value: string) {
+    this._userRealise = value;
+  }
+
+  getcodeClinique(): string {
+    return this._codeClinique;
+  }
+
+  setcodeClinique(value: string) {
+    this._codeClinique = value;
+  }
+
+  gettypeget(): string {
+    return this._typeget;
+  }
+
+  settypeget(value: string) {
+    this._typeget = value;
+  }
+
+  getetatget(): string {
+    return this._etatget;
+  }
+
+  setetatget(value: string) {
+    this._etatget = value;
   }
 }

@@ -125,7 +125,7 @@ export class ExamenRadioFService {
     }).then(() => {
       db.executeSql("delete from ExamenRadioF where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          alert("Suppression de table ExamenRadioF est terminé avec succes");
+       //   alert("Suppression de table ExamenRadioF est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
