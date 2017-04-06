@@ -5,6 +5,7 @@ import {File, Transfer} from 'ionic-native';
 import {Variables} from "../../providers/variables";
 import {HistDossier} from "../../models/HistDossier";
 import {HistPdfService} from "../../services/HistPdfService";
+import {HistDoc} from "../../models/HistDoc";
 
 declare var cordova: any;
 
@@ -19,7 +20,7 @@ export class PdfViewPage {
   storageDirectory: string = '';
   connection: boolean;
   pdf: any;
-  histC: Array<HistDossier> = [];
+  histC: Array<HistDoc> = [];
   histp = new HistDossier();
   histserv: any;
   tabBarElement: any;
@@ -51,18 +52,18 @@ export class PdfViewPage {
         // exit otherwise, but you could add further types here e.g. Windows
         return false;
       }
+      var fields = this.pdf.split('/');
       Variables.checconnection().then(connexion => {
         if (connexion === false) {
           this.connection = false;
-          var fields = this.pdf.split('/');
           this.pdfSrc = this.storageDirectory + fields[5];
-          this.historiqueOff(this.histC, this.pass.getdossier(), this.codeClinique);
+          this.historiqueOff(this.histC, this.pass.getdossier(),fields[5] ,this.codeClinique);
         }
         else {
           this.connection = true;
           this.pdfSrc = this.pdf;
           this.retrieveImage(this.pdfSrc);
-          this.historique(this.pass.getdossier(), this.codeClinique);
+          this.historique(this.pass.getdossier(),fields[5], this.codeClinique);
         }
       });
     });
@@ -142,22 +143,23 @@ export class PdfViewPage {
 
   }
 
-  historique(numDoss, codeClinique) {
+  historique(numDoss,file ,codeClinique) {
     this.histserv = new HistPdfService();
-    var h = new HistDossier();
+    var h = new HistDoc();
     var d = new Date();
     h.setnumDoss(numDoss);
     h.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
     h.setcodeClinique(codeClinique);
+    h.setnom(file);
     this.histC.push(h);
     try {
-      this.histserv.deleteHistPdfs(numDoss, codeClinique);
-      this.histserv.getHistPdfs(this.histC, numDoss, codeClinique).then(res => {
+      this.histserv.deleteHistPdfs(numDoss, codeClinique,file);
+      this.histserv.getHistPdfs(this.histC, numDoss, codeClinique,file).then(res => {
         this.histp = res.getdate();
       });
     }
     catch (Error) {
-      this.histserv.getHistPdfs(this.histC, numDoss, codeClinique).then(res => {
+      this.histserv.getHistPdfs(this.histC, numDoss, codeClinique,file).then(res => {
         this.histp = res.getdate();
       });
     }
@@ -165,9 +167,9 @@ export class PdfViewPage {
   }
 
 
-  historiqueOff(hist, numDoss, codeClinique) {
+  historiqueOff(hist, numDoss,file, codeClinique) {
     this.histserv = new HistPdfService();
-    this.histserv.getHistPdfs(hist, numDoss, codeClinique).then(res => {
+    this.histserv.getHistPdfs(hist, numDoss, codeClinique,file).then(res => {
       this.histp = res.getdate();
     });
   }

@@ -18,7 +18,9 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {SigneCourbePage} from "../pages/signe-courbe/signe-courbe";
 import {NotificationPage} from "../pages/notification/notification";
 import {ClientDetailPage} from "../pages/client-detail/client-detail";
-import { ChartModule } from 'angular2-highcharts';
+import {TryPage} from "../pages/try/try";
+import {ConsignePage} from "../pages/consigne/consigne";
+
 
 @NgModule({
   declarations: [
@@ -37,14 +39,15 @@ import { ChartModule } from 'angular2-highcharts';
     ListeCliniquePage,
     SigneCourbePage,
     NotificationPage,
-    ClientDetailPage
+    ClientDetailPage,
+    TryPage,
+    ConsignePage
 
   ],
   imports: [
     IonicModule.forRoot(MyApp),
     FlexLayoutModule,
-    MaterialModule,
-    ChartModule
+    MaterialModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -62,7 +65,9 @@ import { ChartModule } from 'angular2-highcharts';
     ListeCliniquePage,
     SigneCourbePage,
     NotificationPage,
-    ClientDetailPage
+    ClientDetailPage,
+    TryPage,
+    ConsignePage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

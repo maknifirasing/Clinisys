@@ -6,13 +6,90 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Consigne</ion-title>
-  </ion-navbar>
+
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+<div *ngFor="let con of consigne ">
+  <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='NL') || (con.getetat()==='AF')">
+
+    <div fxFlex="99" dir="ltr">
+      <img src="/android_asset/www/assets/img/uncheck.png" width="20" height="20">
+      <strong  style="color: #ac2925">
+        {{con.getuserCreate()}}
+      </strong>
+     <br/>
+    </div>
+    <div fxFlex="97">
+      <div class="left">
+        {{con.getdetails()}}
+      </div>
+
+    </div>
+    <div fxFlex="2">
+<p></p>
+    </div>
+  </div>
+
+    <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='F')" dir="rtl">
+
+    <div fxFlex="99">
+      <img src="/android_asset/www/assets/img/check.png" width="20" height="20">
+
+      <strong style="color: #ac2925">
+        {{con.getuserCreate()}}
+      </strong>
+      <br/>
+    </div>
+
+      <div fxFlex="97">
+        <div class="right">
+          {{con.getdetails()}}
+        </div>
+
+      </div>
+      <div fxFlex="2">
+        <p></p>
+      </div>
+
+  </div>
+
+</div>
+
+  <!--
+
+  <div *ngIf="(test)==='F'" class="chatlogsrtl">
+
+    <div class="chat friend"  *ngFor="let con of consigne ">
+      <img src="../../assets/img/check.png" width="30" height="30">{{con.getuserCreate()}}
+     <!-- <div class="user-photo"></div>-->
+   <!--   <p class="chat-message">{{con.getdetails()}}</p>
+    </div>
+
+  </div>
+
+  <div class="chat-form">
+    <textarea></textarea>
+    <button><img src="../../assets/img/send.png"></button>
+  </div>
+-->
 
 </ion-content>
+
+<ion-footer>
+
+  <div fxLayout="row" fxLayoutWrap style="background-color: #1ddced;">
+    <div fxFlex="2" style="background-color:#1ddced;">
+
+    </div>
+    <div fxFlex="82" style="background-color:#1ddced;">
+      <input type="text" placeHolder="Ecrire ici ...">
+    </div>
+
+    <div fxFlex="15" style="background-color: #1ddced; direction: rtl;">
+      <button><img src="../../assets/img/send.png" class="img"></button>
+    </div>
+  </div>
+</ion-footer>

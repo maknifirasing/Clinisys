@@ -1044,4 +1044,3 @@ export class DossierPage {
     });
   }
 }
-

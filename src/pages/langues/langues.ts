@@ -5,9 +5,7 @@ import {NativeStorage} from "ionic-native";
 import {ListeCliniquePage} from "../liste-clinique/liste-clinique";
 import {Langue} from "../../models/Langue";
 import {LangueService} from "../../services/LangueService";
-import {UserService} from "../../services/UserService";
 import {ListePage} from "../liste/liste";
-import {Users} from "../../models/Users";
 
 @Component({
   selector: 'page-langues',
@@ -41,7 +39,7 @@ export class LanguesPage {
       this.tabLangue = Variables.anglais;
     }
 
-    this.langserv = new LangueService();
+ /*  this.langserv = new LangueService();
     this.langserv.verifLangue().then(res => {
       if (res === true) {
         this.langserv.getLangues(this.langes).then(lg => {
@@ -66,6 +64,7 @@ export class LanguesPage {
       } else {
         this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
       }
-    });
+    });*/
+    this.navCtrl.push(ListePage, {tabLangue: this.tabLangue, langue: lang});
   }
 }

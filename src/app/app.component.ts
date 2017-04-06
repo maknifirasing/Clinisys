@@ -6,6 +6,8 @@ import {LangueService} from "../services/LangueService";
 import {Langue} from "../models/Langue";
 import {Variables} from "../providers/variables";
 import {ListePage} from "../pages/liste/liste";
+import {TryPage} from "../pages/try/try";
+import {ConsignePage} from "../pages/consigne/consigne";
 
 @Component({
   templateUrl: 'app.html'
@@ -53,7 +55,9 @@ export class MyApp {
 
           db.executeSql('CREATE TABLE IF NOT EXISTS HistSigneCourbe(numDoss VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32))', {});
 
-          db.executeSql('CREATE TABLE IF NOT EXISTS HistPdf(numDoss VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32))', {});
+          db.executeSql('CREATE TABLE IF NOT EXISTS HistPdf(numDoss VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32),nom VARCHAR(32))', {});
+
+          db.executeSql('CREATE TABLE IF NOT EXISTS HistDoc(numDoss VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32),nom VARCHAR(32))', {});
 
           db.executeSql('CREATE TABLE IF NOT EXISTS Users(actif NUMERIC(10),chStat NUMERIC(10),codeMedecinInfirmier VARCHAR(32),codePin NUMERIC(10),' +
             'dateModPwd VARCHAR(32),dernierDateCnx VARCHAR(32),description VARCHAR(32),grp VARCHAR(32),matricule VARCHAR (32),natureUserDS VARCHAR (32),' +
@@ -155,40 +159,44 @@ export class MyApp {
           db.executeSql('CREATE TABLE IF NOT EXISTS SigneCourbeTemp (codePosologie VARCHAR(32),designation VARCHAR(32)' +
             ',seuilMin VARCHAR(32),seuilMax VARCHAR(32),color VARCHAR(32),unite VARCHAR(32),quantite VARCHAR(32),heurePrise VARCHAR(32),dateHeurePrise VARCHAR(32),codeClinique VARCHAR(32),numdoss VARCHAR(32))', {});
 
+          db.executeSql('CREATE TABLE IF NOT EXISTS TraitCourbe (codePosologie VARCHAR(32),codeType VARCHAR(32),date VARCHAR(32),designation VARCHAR(32)' +
+            ',heurePrise VARCHAR(32),heureRealisation VARCHAR(32),' +
+            'numTraitement VARCHAR(32),ordre VARCHAR(32),quantite VARCHAR(32),retourn VARCHAR(32),row VARCHAR(32),numDoss VARCHAR(32),codeClinique VARCHAR(32))', {});
+
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error opening database  ' + error);
         });
 
-      this.langserv = new LangueService();
-      this.langserv.verifLangue().then(res => {
-        if (res === true) {
-          this.langserv.getLangues(this.langes).then(lang => {
-            this.codeClinique = lang.getcodeClinique();
-            this.nomClinique = lang.getnomClinique();
-            this.langue = lang.getlangue();
-            if (this.langue === "arabe") {
-              this.tabLangue = Variables.arabe;
-            }
-            else if (this.langue === "francais") {
-              this.tabLangue = Variables.francais;
-            }
-            else if (this.langue === "anglais") {
-              this.tabLangue = Variables.anglais;
-            }
-            this.nav.setRoot(ListePage, {
-              tabLangue: this.tabLangue,
-              langue: this.langue,
-              codeClinique: this.codeClinique,
-              nomClinique: this.nomClinique
-            });
-          });
-        } else {
-          this.nav.setRoot(LanguesPage);
-        }
-      });
-
+      /*  this.langserv = new LangueService();
+       this.langserv.verifLangue().then(res => {
+       if (res === true) {
+       this.langserv.getLangues(this.langes).then(lang => {
+       this.codeClinique = lang.getcodeClinique();
+       this.nomClinique = lang.getnomClinique();
+       this.langue = lang.getlangue();
+       if (this.langue === "arabe") {
+       this.tabLangue = Variables.arabe;
+       }
+       else if (this.langue === "francais") {
+       this.tabLangue = Variables.francais;
+       }
+       else if (this.langue === "anglais") {
+       this.tabLangue = Variables.anglais;
+       }
+       this.nav.setRoot(ListePage, {
+       tabLangue: this.tabLangue,
+       langue: this.langue,
+       codeClinique: this.codeClinique,
+       nomClinique: this.nomClinique
+       });
+       });
+       } else {
+       this.nav.setRoot(LanguesPage);
+       }
+       });*/
+      this.nav.setRoot(ConsignePage);
       StatusBar.styleDefault();
       Splashscreen.hide();
     });
