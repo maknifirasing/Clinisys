@@ -109,8 +109,9 @@ export class ConsignePage {
           xml = xmlhttp.responseXML;
           var x, i;
           x = xml.getElementsByTagName("return");
-          alert(x);
+          console.log(xml);
           console.log(x);
+
         }
       }
     }

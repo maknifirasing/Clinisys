@@ -16,7 +16,7 @@ var LanguesPage = (function () {
         this.navCtrl = navCtrl;
         this.Url = Url;
         this.langes = [];
-        Variables.auth();
+        //  Variables.auth();
     }
     LanguesPage.prototype.ionViewDidLoad = function () {
     };

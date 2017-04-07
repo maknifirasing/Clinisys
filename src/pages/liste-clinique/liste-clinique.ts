@@ -76,7 +76,6 @@ export class ListeCliniquePage {
         }
       }
     }
-
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
@@ -88,7 +87,7 @@ export class ListeCliniquePage {
   }
 
   goToHomePage(codeC) {
- /*
+
     this.userserv = new UserService();
     this.userserv.verifUser(codeC.getcode()).then(user => {
       if (user === false) {
@@ -125,12 +124,6 @@ export class ListeCliniquePage {
           });
         });
       }
-    });*/
-    this.navCtrl.push(HomePage, {
-      tabLangue: this.tabLangue,
-      langue: this.langue,
-      codeClinique: codeC.getcode(),
-      nomClinique: codeC.getnom()
     });
   }
 }

@@ -22,7 +22,7 @@ export class LanguesPage {
 
 
   constructor(public navCtrl: NavController,private Url: Variables) {
-    Variables.auth();
+  //  Variables.auth();
   }
 
   ionViewDidLoad() {
@@ -39,7 +39,7 @@ export class LanguesPage {
     else if (lang === "anglais") {
       this.tabLangue = Variables.anglais;
     }
-/*
+
     this.langserv = new LangueService();
     this.langserv.verifLangue().then(res => {
       if (res === true) {
@@ -66,7 +66,6 @@ export class LanguesPage {
         this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
       }
     });
-    */
-    this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
+
   }
 }

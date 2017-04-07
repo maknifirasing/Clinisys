@@ -5,7 +5,6 @@ import {HomePage} from '../pages/home/home';
 import {TabsPage} from '../pages/tabs/tabs';
 import {ListePage} from '../pages/liste/liste';
 import {DossierPage} from '../pages/dossier/dossier';
-import {DetailPerPagePage} from '../pages/detail-per-page/detail-per-page';
 import {ExamenRadioPage} from "../pages/examen-radio/examen-radio";
 import {ExamenLaboPage} from "../pages/examen-labo/examen-labo";
 import {PdfViewerComponent} from 'ng2-pdf-viewer';
@@ -28,7 +27,6 @@ import {ConsignePage} from "../pages/consigne/consigne";
     TabsPage,
     ListePage,
     DossierPage,
-    DetailPerPagePage,
     ExamenRadioPage,
     ExamenLaboPage,
     PdfViewPage,
@@ -54,7 +52,6 @@ import {ConsignePage} from "../pages/consigne/consigne";
     TabsPage,
     ListePage,
     DossierPage,
-    DetailPerPagePage,
     ExamenRadioPage,
     ExamenLaboPage,
     PdfViewPage,

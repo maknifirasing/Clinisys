@@ -43,7 +43,7 @@ var ListeCliniquePage = (function () {
     ListeCliniquePage.prototype.ListClinique = function () {
         var _this = this;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+        xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', false);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -70,6 +70,7 @@ var ListeCliniquePage = (function () {
             }
         };
         xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+        xmlhttp.setRequestHeader("Authorization", "Basic " + btoa('adminWS' + ":" + 'pom'));
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };

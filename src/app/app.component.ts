@@ -170,7 +170,7 @@ export class MyApp {
           console.error('Error opening database', error);
           alert('Error opening database  ' + error);
         });
-/*
+
       this.langserv = new LangueService();
       this.langserv.verifLangue().then(res => {
         if (res === true) {
@@ -198,7 +198,7 @@ export class MyApp {
           this.nav.setRoot(LanguesPage);
         }
       });
-*/this.nav.setRoot(LanguesPage);
+
       StatusBar.styleDefault();
       Splashscreen.hide();
     });
