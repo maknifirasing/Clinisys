@@ -86,9 +86,9 @@ export class ClientDetailPage {
             client.setdatNai(d);
             client.setlibNat(x[i].children[67].children[1].textContent);
             client.setnumTel(x[i].children[78].textContent);
-            client.setetage(x[i].children[76].children[0].children[3].textContent);
-            client.setnumCha(x[i].children[76].children[2].textContent);
-            client.setnumdoss(x[i].children[77].textContent);
+            client.setetage(x[i].children[83].children[0].children[3].textContent);
+            client.setnumCha(x[i].children[83].children[2].textContent);
+            client.setnumdoss(x[i].children[6].children[8].textContent);
             client.setidentifiant(x[i].children[18].textContent);
             d2 = (x[i].children[4].textContent).substr(0, 9);
             client.setdateArr(d2);
@@ -112,7 +112,7 @@ export class ClientDetailPage {
 
   GetClientByNumDossOff(clientList, numDoss) {
     this.clientserv = new ClientService();
-    this.clientList = this.clientserv.getClients(this.clientList, numDoss, this.codeClinique);
+    this.clientList = this.clientserv.getClients(clientList, numDoss, this.codeClinique);
   }
 
   findMedIntervenatByNumDoss(numDoss) {

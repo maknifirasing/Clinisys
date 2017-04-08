@@ -58,9 +58,6 @@ var ListePage = (function () {
             });
         });
     }
-    ListePage.prototype.someMethod = function () {
-        this.trigger.openMenu();
-    };
     ListePage.prototype.liste = function (user, searchText, etage, codeClinique) {
         var _this = this;
         this.patient.pop();
@@ -275,10 +272,6 @@ var ListePage = (function () {
         this.histserv.getHistPatients(hist, user, searchText, etage, codeClinique).then(function (res) {
             _this.histl = res.getdate();
         });
-    };
-    ListePage.prototype.openMenu = function () {
-        console.log("open");
-        this.menuCtrl.open();
     };
     ListePage.prototype.deconnexion = function () {
         this.userserv = new UserService();

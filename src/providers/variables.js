@@ -75,6 +75,24 @@ var Variables = Variables_1 = (function () {
             return _this;
         });
     };
+    Variables.auth = function () {
+        var url = 'http://192.168.0.5:8084/dmi-core/DossierSoinWSService?wsdl';
+        var xhr = new XMLHttpRequest();
+        xhr.timeout = 200;
+        xhr.open('HEAD', url, true, "adminWS", "pom");
+        xhr.send();
+        xhr.addEventListener("readystatechange", processRequest, false);
+        function processRequest(e) {
+            if (xhr.readyState == 4) {
+                if (xhr.status >= 200 && xhr.status < 304) {
+                    alert("ok");
+                }
+                else {
+                    alert("no");
+                }
+            }
+        }
+    };
     return Variables;
 }());
 Variables.arabe = {
@@ -135,7 +153,8 @@ Variables.arabe = {
     titreAns: "سنة",
     titreGroupeSanguim: "فصيلة الدم",
     titrePoid: "الوزن",
-    titreTaille: "الحجم"
+    titreTaille: "الحجم",
+    titreecrireICI: "أكتب هنا ..."
 };
 Variables.francais = {
     titreSync: "Synchroniser",
@@ -196,7 +215,8 @@ Variables.francais = {
     titreAns: "ans",
     titreGroupeSanguim: "Groupe Sanguim",
     titrePoid: "Poids",
-    titreTaille: "Taille"
+    titreTaille: "Taille",
+    titreecrireICI: "Ecrire ici ..."
 };
 Variables.anglais = {
     titreSync: "Synchronize",
@@ -257,7 +277,8 @@ Variables.anglais = {
     titreAns: "year(s)",
     titreGroupeSanguim: "Blood group",
     titrePoid: "Weight",
-    titreTaille: "Size"
+    titreTaille: "Size",
+    titreecrireICI: "Write Here ..."
 };
 Variables.uRL = "";
 Variables = Variables_1 = __decorate([

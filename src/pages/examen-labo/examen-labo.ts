@@ -3,12 +3,11 @@ import {NavController, NavParams, Platform} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {Labo} from "../../models/Labo";
 import {PdfViewPage} from "../pdf-view/pdf-view";
-import {HistDossier} from "../../models/HistDossier";
-import {HistDossierService} from "../../services/HistDossierService";
 import {LaboFService} from "../../services/LaboFService";
 import {LaboTService} from "../../services/LaboTService";
 import {ClientDetailPage} from "../client-detail/client-detail";
 import {DossierPage} from "../dossier/dossier";
+import {TabsPage} from "../tabs/tabs";
 
 @Component({
   selector: 'page-examen-labo',
@@ -19,9 +18,7 @@ export class ExamenLaboPage {
   LabosT: Array<Labo> = [];
   LabosF: Array<Labo> = [];
   pdf: string;
-  histD: Array<HistDossier> = [];
-  histd = new HistDossier();
-  histserv: any;
+  histd :any;
   connection: boolean;
   tabLangue: any;
   pass: any;
@@ -47,7 +44,7 @@ export class ExamenLaboPage {
         }
       });
     });
-    this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique)
+    this.histd=DossierPage.hist;
   }
 
   openURL(numAdmission) {
@@ -86,13 +83,6 @@ export class ExamenLaboPage {
   gotPdf(pdf) {
     this.navCtrl.push(PdfViewPage, {pdf: pdf.getpdf(),tabLangue: this.tabLangue,
       langue: this.langue,codeClinique: this.codeClinique,pass:this.pass});
-  }
-
-  historiqueOff(hist, numDoss, codeClinique) {
-    this.histserv = new HistDossierService();
-    this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(res => {
-      this.histd = res.getdate();
-    });
   }
 
   findAllLaboByNumDossierOff(numDoss, codeClinique) {

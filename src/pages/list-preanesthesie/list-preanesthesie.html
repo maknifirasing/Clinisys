@@ -50,146 +50,41 @@
 </ion-header>
 
 <ion-content>
-  <md-card padding-top="100" *ngIf="langue==='arabe'" dir="rtl">
+  <div fxLayout="row" fxLayoutWrap *ngFor="let LP of ListeP ">
+    <div fxFlex="5" *ngIf="langue==='francais' || langue==='anglais'" margin-top="10">
+      <img src="/android_asset/www/assets/img/valid.png" width="20" height="20">
 
-    <md-card-header *ngFor="let LP of ListeP ">
+    </div>
+    <div fxFlex="94" *ngIf="langue==='francais' || langue==='anglais'" margin-top="10">
+      <strong style="color: #0f7ec0 ">{{tabLangue.titreAct}}: </strong> {{LP.getacte()}}<br/>
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreChi}}:</strong> {{LP.getchirurgien()}}<br/>
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreDateAct}}: </strong>{{LP.getdateacte()}}<br/>
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreHeureDeb}}:</strong> {{LP.getheureDebut()}}
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreHeureF}}:</strong> {{LP.getheureFin()}}<br/>
 
-      <img md-card-avatar src="/android_asset/www/assets/img/valid.png">
-      <md-card-subtitle ><strong>{{tabLangue.titreAct}}: </strong> {{LP.getacte()}}</md-card-subtitle>
-      <md-card-subtitle ><strong> {{tabLangue.titreChi}}:</strong> {{LP.getchirurgien()}}</md-card-subtitle>
-      <md-card-subtitle > <strong> {{tabLangue.titreDateAct}}: </strong>{{LP.getdateacte()}}</md-card-subtitle>
-      <md-card-subtitle > <strong> {{tabLangue.titreHeureDeb}}:</strong> {{LP.getheureDebut()}}</md-card-subtitle>
-      <md-card-subtitle >  <strong> {{tabLangue.titreHeureF}}:</strong> {{LP.getheureFin()}}</md-card-subtitle>
-      <md-card-subtitle >   <strong> KC:</strong> {{LP.getkc()}}</md-card-subtitle>
-      <!--  <button ion-button menuToggle class="md-icon-buttonArr">
-        <img md-card-avatar src="/android_asset/www/assets/img/green.png" width="15" height="15">
-      </button>-->
-    </md-card-header>
+      <strong style="color: #0f7ec0 "> KC:</strong> {{LP.getkc()}}<br/>
 
-  </md-card>
+    </div>
 
-  <md-card padding-top="100" *ngIf="langue==='francais' || langue==='anglais'">
+  </div>
 
-    <md-card-header *ngFor="let LP of ListeP ">
+  <div fxLayout="row" fxLayoutWrap *ngFor="let LP of ListeP ">
+    <div fxFlex="5" *ngIf="langue==='arabe'" dir="rtl" margin-top="10">
+      <img  src="/android_asset/www/assets/img/valid.png" width="20" height="20">
 
-      <img md-card-avatar src="/android_asset/www/assets/img/valid.png">
-      <md-card-subtitle ><strong style="color: #0c60ee">{{tabLangue.titreAct}}: </strong> {{LP.getacte()}}</md-card-subtitle>
-      <md-card-subtitle ><strong style="color: #0c60ee"> {{tabLangue.titreChi}}:</strong> {{LP.getchirurgien()}}</md-card-subtitle>
-      <md-card-subtitle > <strong style="color: #0c60ee"> {{tabLangue.titreDateAct}}: </strong>{{LP.getdateacte()}}</md-card-subtitle>
-      <md-card-subtitle > <strong style="color: #0c60ee"> {{tabLangue.titreHeureDeb}}:</strong> {{LP.getheureDebut()}}
-        <strong style="color: #0c60ee"> {{tabLangue.titreHeureF}}:</strong> {{LP.getheureFin()}}</md-card-subtitle>
-      <md-card-subtitle >   <strong style="color: #0c60ee"> KC:</strong> {{LP.getkc()}}</md-card-subtitle>
-      <!--  <button ion-button menuToggle class="md-icon-buttonArr">
-        <img md-card-avatar src="/android_asset/www/assets/img/green.png" width="15" height="15">
-      </button>-->
-    </md-card-header>
+    </div>
+    <div fxFlex="94" *ngIf="langue==='arabe'" dir="rtl" margin-top="10">
+      <strong style="color: #0f7ec0 ">{{tabLangue.titreAct}}: </strong> {{LP.getacte()}}<br/>
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreChi}}:</strong> {{LP.getchirurgien()}}<br/>
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreDateAct}}: </strong>{{LP.getdateacte()}}<br/>
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreHeureDeb}}:</strong> {{LP.getheureDebut()}}
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreHeureF}}:</strong> {{LP.getheureFin()}}<br/>
 
-  </md-card>
+      <strong style="color: #0f7ec0 "> KC:</strong> {{LP.getkc()}}<br/>
 
+    </div>
 
+  </div>
 
 
-
-
-
-
-
-
-
-
-  <!--  <ion-navbar *ngIf="langue==='arabe'"
-    dir="rtl">
-      <table border="0" *ngFor="let LP of ListeP ">
-        <tr (click)="openURL(labt.getnumAdmission())">
-          <td>
-            <img src='/android_asset/www/assets/img/valid.png' class="roundedImage">
-          </td>
-          <td class="size">
-            <strong>{{tabLangue.titreAct}}: </strong> {{LP.getacte()}}
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td class="size">
-            <strong> {{tabLangue.titreChi}}:</strong> {{LP.getchirurgien()}}
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td class="size">
-            <strong> {{tabLangue.titreDateAct}}: </strong>{{LP.getdateacte()}}
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td class="size">
-            <strong> {{tabLangue.titreHeureDeb}}:</strong> {{LP.getheureDebut()}}
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td class="size">
-            <strong> {{tabLangue.titreHeureF}}:</strong> {{LP.getheureFin()}}
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td class="size">
-            <strong> KC:</strong> {{LP.getkc()}}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            &nbsp;
-          </td>
-        </tr>
-      </table>
-    </ion-navbar>
-    <ion-navbar *ngIf="langue==='francais' || langue==='anglais'">
-      <table border="0" *ngFor="let LP of ListeP ">
-        <tr (click)="openURL(labt.getnumAdmission())">
-          <td>
-            <img src='/android_asset/www/assets/img/valid.png' class="roundedImage">
-          </td>
-          <td class="size">
-            <strong>{{tabLangue.titreAct}}: </strong> {{LP.getacte()}}
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td class="size">
-            <strong> {{tabLangue.titreChi}}:</strong> {{LP.getchirurgien()}}
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td class="size">
-            <strong> {{tabLangue.titreDateAct}}: </strong>{{LP.getdateacte()}}
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td class="size">
-            <strong> {{tabLangue.titreHeureDeb}}:</strong> {{LP.getheureDebut()}}
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td class="size">
-            <strong> {{tabLangue.titreHeureF}}:</strong> {{LP.getheureFin()}}
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td class="size">
-            <strong> KC:</strong> {{LP.getkc()}}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            &nbsp;
-          </td>
-        </tr>
-      </table>
-    </ion-navbar>-->
 </ion-content>

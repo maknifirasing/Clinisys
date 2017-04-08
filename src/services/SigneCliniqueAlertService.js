@@ -52,7 +52,6 @@ var SigneCliniqueAlertService = (function () {
                     var s;
                     for (var i = 0; i < result.rows.length; i++) {
                         s = new SigneClinique();
-                        s.setcodeType(result.rows.item(i).codeType);
                         s.setdate(result.rows.item(i).date);
                         s.setdesignation(result.rows.item(i).designation);
                         s.setquantite(result.rows.item(i).quantite);
@@ -79,8 +78,7 @@ var SigneCliniqueAlertService = (function () {
                     continue;
                 }
                 var s = signeCliniques[key];
-                db.executeSql('insert into SigneCliniqueAlert (codeType ,date ,designation ,quantite ,numDoss ,dateFeuille ,nature,codeClinique) values (?,?,?,?,?,?,?,?)', [
-                    s.getcodeType(),
+                db.executeSql('insert into SigneCliniqueAlert (date ,designation ,quantite ,numDoss ,dateFeuille ,nature,codeClinique) values (?,?,?,?,?,?,?)', [
                     s.getdate(),
                     s.getdesignation(),
                     s.getquantite(),

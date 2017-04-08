@@ -57,21 +57,9 @@ export class HomePage {
               var x, user;
               x = this.xml.getElementsByTagName("return");
               user = new Users();
-              user.setactif(x[0].children[0].textContent);
-              user.setchStat(x[0].children[1].textContent);
-              user.setcodeMedecinInfirmier(x[0].children[2].textContent);
-              user.setcodePin(x[0].children[3].textContent);
-              user.setdateModPwd(x[0].children[4].textContent);
-              user.setdernierDateCnx(x[0].children[5].textContent);
-              user.setdescription(x[0].children[6].textContent);
-              user.setgrp(x[0].children[7].textContent);
               user.setmatricule(x[0].children[8].textContent);
-              user.setnatureUserDS(x[0].children[9].textContent);
-              user.setoldGrp(x[0].children[10].textContent);
               user.setpassWord(x[0].children[11].textContent);
               user.setuserName(x[0].children[12].textContent);
-              user.setvalidCptRend(x[0].children[13].textContent);
-              user.setvalidPHNuit(x[0].children[14].textContent);
               user.setcodeClinique(this.codeClinique);
               this.users.push(user);
               if (this.users.length > 0) {

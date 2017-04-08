@@ -3,6 +3,7 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {NavController} from "ionic-angular";
 
+declare var ajax: any;
 declare var navigator: any;
 declare var Connection: any;
 @Injectable()
@@ -66,7 +67,8 @@ export class Variables {
     titreAns: "سنة",
     titreGroupeSanguim: "فصيلة الدم",
     titrePoid: "الوزن",
-    titreTaille: "الحجم"
+    titreTaille: "الحجم",
+    titreecrireICI: "أكتب هنا ..."
   }
 
   static francais: any = {
@@ -128,7 +130,8 @@ export class Variables {
     titreAns: "ans",
     titreGroupeSanguim: "Groupe Sanguim",
     titrePoid: "Poids",
-    titreTaille: "Taille"
+    titreTaille: "Taille",
+    titreecrireICI: "Ecrire ici ..."
   }
 
   static anglais: any = {
@@ -190,7 +193,8 @@ export class Variables {
     titreAns: "year(s)",
     titreGroupeSanguim: "Blood group",
     titrePoid: "Weight",
-    titreTaille: "Size"
+    titreTaille: "Size",
+    titreecrireICI: "Write Here ..."
   }
 
   url: string = "";
@@ -258,6 +262,28 @@ export class Variables {
 
       return this;
     });
+  }
+
+
+  public static auth() {
+    var url = 'http://192.168.0.5:8084/dmi-core/DossierSoinWSService?wsdl';
+    var xhr = new XMLHttpRequest();
+    xhr.timeout = 200;
+    xhr.open('HEAD', url, true, "adminWS", "pom");
+    xhr.send();
+    xhr.addEventListener("readystatechange", processRequest, false);
+
+    function processRequest(e) {
+      if (xhr.readyState == 4) {
+        if (xhr.status >= 200 && xhr.status < 304) {
+
+          alert("ok");
+        } else {
+
+          alert("no");
+        }
+      }
+    }
   }
 
 

@@ -51,9 +51,7 @@ var CliniqueService = (function () {
                     for (var i = 0; i < result.rows.length; i++) {
                         c = new Clinique();
                         c.setcode(result.rows.item(i).code);
-                        c.setid(result.rows.item(i).id);
                         c.setnom(result.rows.item(i).nom);
-                        c.seturl(result.rows.item(i).url);
                         _this.clinique.push(c);
                     }
                 }
@@ -77,11 +75,9 @@ var CliniqueService = (function () {
                     continue;
                 }
                 var clinique = cliniques[key];
-                db.executeSql('insert into Clinique (code ,id ,nom ,url) values (?,?,?,?)', [
+                db.executeSql('insert into Clinique (code,nom) values (?,?)', [
                     clinique.getcode(),
-                    clinique.getid(),
-                    clinique.getnom(),
-                    clinique.geturl()
+                    clinique.getnom()
                 ]);
             }
         }).catch(function (error) {

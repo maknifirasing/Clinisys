@@ -37,44 +37,44 @@ export class TraitCourbeService {
     });
   }
 
-  public getTraitCourbes(traitCourbes: any, numDoss, codeClinique) : Promise<TraitCourbe[]> {
+  public getTraitCourbes(traitCourbes: any, numDoss, codeClinique): Promise<TraitCourbe[]> {
     return new Promise<TraitCourbe[]>(resolve => {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from TraitCourbe where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.length === 0) {
-            this._insertTraitCourbes(traitCourbes);
-          } else {
-            var t;
-            for (var i = 0; i < result.rows.length; i++) {
-              t = new TraitCourbe();
-              t.setcodePosologie(result.rows.item(i).codePosologie);
-              t.setcodeType(result.rows.item(i).codeType);
-              t.setdate(result.rows.item(i).date);
-              t.setdesignation(result.rows.item(i).designation);
-              t.setheurePrise(result.rows.item(i).heurePrise);
-              t.setheureRealisation(result.rows.item(i).heureRealisation);
-              t.setnumTraitement(result.rows.item(i).numTraitement);
-              t.setordre(result.rows.item(i).ordre);
-              t.setquantite(result.rows.item(i).quantite);
-              t.setretourn(result.rows.item(i).retourn);
-              t.setrow(result.rows.item(i).row);
-              t.setnumDoss(result.rows.item(i).numDoss);
-              t.setcodeClinique(result.rows.item(i).codeClinique);
-              this.traitCourbe.push(t);
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("select * from TraitCourbe where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.length === 0) {
+              this._insertTraitCourbes(traitCourbes);
+            } else {
+              var t;
+              for (var i = 0; i < result.rows.length; i++) {
+                t = new TraitCourbe();
+                t.setcodePosologie(result.rows.item(i).codePosologie);
+                t.setcodeType(result.rows.item(i).codeType);
+                t.setdate(result.rows.item(i).date);
+                t.setdesignation(result.rows.item(i).designation);
+                t.setheurePrise(result.rows.item(i).heurePrise);
+                t.setheureRealisation(result.rows.item(i).heureRealisation);
+                t.setnumTraitement(result.rows.item(i).numTraitement);
+                t.setordre(result.rows.item(i).ordre);
+                t.setquantite(result.rows.item(i).quantite);
+                t.setretourn(result.rows.item(i).retourn);
+                t.setrow(result.rows.item(i).row);
+                t.setnumDoss(result.rows.item(i).numDoss);
+                t.setcodeClinique(result.rows.item(i).codeClinique);
+                this.traitCourbe.push(t);
+              }
+              resolve(this.traitCourbe);
             }
-            resolve(this.traitCourbe);
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 TraitCourbe  ' + error);
-        })
-    });
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 1 TraitCourbe  ' + error);
+          })
+      });
       db.close();
       return this;
     });
@@ -93,18 +93,18 @@ export class TraitCourbeService {
         let traitCourbe = traitCourbes[key];
         db.executeSql('insert into TraitCourbe (codePosologie ,codeType ,date ,designation ,heurePrise ,heureRealisation ,numTraitement ,ordre ,quantite ,retourn ,row ,numDoss ,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?)', [
           traitCourbe.getcodePosologie(),
-        traitCourbe.getcodeType(),
-        traitCourbe.getdate(),
-        traitCourbe.getdesignation(),
-        traitCourbe.getheurePrise(),
-        traitCourbe.getheureRealisation(),
-        traitCourbe.getnumTraitement(),
-        traitCourbe.getordre(),
-        traitCourbe.getquantite(),
-        traitCourbe.getretourn(),
-        traitCourbe.getrow(),
-        traitCourbe.getnumDoss(),
-        traitCourbe.getcodeClinique()
+          traitCourbe.getcodeType(),
+          traitCourbe.getdate(),
+          traitCourbe.getdesignation(),
+          traitCourbe.getheurePrise(),
+          traitCourbe.getheureRealisation(),
+          traitCourbe.getnumTraitement(),
+          traitCourbe.getordre(),
+          traitCourbe.getquantite(),
+          traitCourbe.getretourn(),
+          traitCourbe.getrow(),
+          traitCourbe.getnumDoss(),
+          traitCourbe.getcodeClinique()
         ]);
       }
     }).catch(error => {
@@ -114,8 +114,7 @@ export class TraitCourbeService {
     db.close();
   }
 
-  public deleteTraitCourbes(numDoss,codeClinique) {
-
+  public deleteTraitCourbes(numDoss, codeClinique) {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
@@ -127,7 +126,7 @@ export class TraitCourbeService {
         })
         .catch(error => {
           console.error('Error opening database', error);
-          alert('Error 1 TraitCourbe  ' + error);
+          alert('Error 3 TraitCourbe  ' + error);
         })
     });
     db.close();

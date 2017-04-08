@@ -11,7 +11,6 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { ListePage } from '../pages/liste/liste';
 import { DossierPage } from '../pages/dossier/dossier';
-import { DetailPerPagePage } from '../pages/detail-per-page/detail-per-page';
 import { ExamenRadioPage } from "../pages/examen-radio/examen-radio";
 import { ExamenLaboPage } from "../pages/examen-labo/examen-labo";
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
@@ -25,6 +24,7 @@ import { SigneCourbePage } from "../pages/signe-courbe/signe-courbe";
 import { NotificationPage } from "../pages/notification/notification";
 import { ClientDetailPage } from "../pages/client-detail/client-detail";
 import { TraitmentCourbe } from "../pages/traitment-courbe/traitment-courbe";
+import { ConsignePage } from "../pages/consigne/consigne";
 var AppModule = (function () {
     function AppModule() {
     }
@@ -38,7 +38,6 @@ AppModule = __decorate([
             TabsPage,
             ListePage,
             DossierPage,
-            DetailPerPagePage,
             ExamenRadioPage,
             ExamenLaboPage,
             PdfViewPage,
@@ -49,7 +48,8 @@ AppModule = __decorate([
             SigneCourbePage,
             NotificationPage,
             ClientDetailPage,
-            TraitmentCourbe
+            TraitmentCourbe,
+            ConsignePage
         ],
         imports: [
             IonicModule.forRoot(MyApp),
@@ -63,7 +63,6 @@ AppModule = __decorate([
             TabsPage,
             ListePage,
             DossierPage,
-            DetailPerPagePage,
             ExamenRadioPage,
             ExamenLaboPage,
             PdfViewPage,
@@ -73,7 +72,8 @@ AppModule = __decorate([
             SigneCourbePage,
             NotificationPage,
             ClientDetailPage,
-            TraitmentCourbe
+            TraitmentCourbe,
+            ConsignePage
         ],
         providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }]
     })

@@ -59,9 +59,7 @@ var ListeCliniquePage = (function () {
                     for (i = 0; i < x.length; i++) {
                         _this.c = new Clinique();
                         _this.c.setcode(x[i].children[0].textContent);
-                        _this.c.setid(x[i].children[1].textContent);
                         _this.c.setnom(x[i].children[2].textContent);
-                        _this.c.seturl(x[i].children[3].textContent);
                         _this.clinique.push(_this.c);
                     }
                     _this.clinserv = new CliniqueService();
@@ -79,44 +77,44 @@ var ListeCliniquePage = (function () {
     };
     ListeCliniquePage.prototype.goToHomePage = function (codeC) {
         /*
-        this.userserv = new UserService();
-        this.userserv.verifUser(codeC.getcode()).then(user => {
-          if (user === false) {
-            this.navCtrl.push(HomePage, {
-              tabLangue: this.tabLangue,
-              langue: this.langue,
-              codeClinique: codeC.getcode(),
-              nomClinique: codeC.getnom()
-            });
-          } else {
-            this.langserv = new LangueService();
-            this.langserv.verifLangue().then(res => {
-              if (res === true) {
-                this.langserv.getLangues(this.langes).then(lg => {
-                  var l = new Langue();
-                  l.setlangue(lg.getlangue());
-                  l.setmatricule(lg.getmatricule());
-                  l.setcodeClinique(codeC.getcode());
-                  l.setnomClinique(codeC.getnom());
-                  this.langes.push(l);
-                  this.langserv.deleteLangues().then(delet => {
-                    if (delet === true) {
-                      this.langserv._insertLangues(this.langes);
-                    }
+            this.userserv = new UserService();
+            this.userserv.verifUser(codeC.getcode()).then(user => {
+              if (user === false) {
+                this.navCtrl.push(HomePage, {
+                  tabLangue: this.tabLangue,
+                  langue: this.langue,
+                  codeClinique: codeC.getcode(),
+                  nomClinique: codeC.getnom()
+                });
+              } else {
+                this.langserv = new LangueService();
+                this.langserv.verifLangue().then(res => {
+                  if (res === true) {
+                    this.langserv.getLangues(this.langes).then(lg => {
+                      var l = new Langue();
+                      l.setlangue(lg.getlangue());
+                      l.setmatricule(lg.getmatricule());
+                      l.setcodeClinique(codeC.getcode());
+                      l.setnomClinique(codeC.getnom());
+                      this.langes.push(l);
+                      this.langserv.deleteLangues().then(delet => {
+                        if (delet === true) {
+                          this.langserv._insertLangues(this.langes);
+                        }
+                      });
+        
+                    });
+                  }
+                  this.navCtrl.setRoot(ListePage, {
+                    tabLangue: this.tabLangue,
+                    langue: this.langue,
+                    codeClinique: codeC.getcode(),
+                    nomClinique: codeC.getnom()
                   });
-    
                 });
               }
-              this.navCtrl.setRoot(ListePage, {
-                tabLangue: this.tabLangue,
-                langue: this.langue,
-                codeClinique: codeC.getcode(),
-                nomClinique: codeC.getnom()
-              });
             });
-          }
-        });
-        */
+            */
         this.navCtrl.push(HomePage, {
             tabLangue: this.tabLangue,
             langue: this.langue,

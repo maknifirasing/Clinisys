@@ -127,7 +127,6 @@ var DossierPage = DossierPage_1 = (function () {
                         var s;
                         for (i = 0; i < x.length; i++) {
                             s = new SigneClinique();
-                            s.setcodeType(x[i].children[0].textContent);
                             s.setdate(x[i].children[1].textContent);
                             s.setdesignation(x[i].children[2].textContent);
                             s.setquantite(x[i].children[3].textContent);
@@ -325,56 +324,22 @@ var DossierPage = DossierPage_1 = (function () {
                     try {
                         _this.test = true;
                         var xml = xmlhttp.responseXML;
-                        var x, i, drdv, dsortie, hrdv, hsortie;
-                        var day = "";
-                        var month = "";
-                        var year = "";
-                        var minu = "";
-                        var second = "";
-                        var hour = "";
+                        var x, i;
                         x = xml.getElementsByTagName("return");
                         var a;
                         for (i = 0; i < x.length; i++) {
                             a = new MotifHospitalisation();
-                            a.setconclusion(x[0].children[0].textContent);
-                            drdv = new Date(x[0].children[1].textContent);
-                            day = drdv.getDate();
-                            month = drdv.getMonth() + 1;
-                            year = drdv.getFullYear();
-                            a.setdateRdv(day + "/" + month + "/" + year);
-                            dsortie = new Date(x[0].children[2].textContent);
-                            day = dsortie.getDate();
-                            month = dsortie.getMonth() + 1;
-                            year = dsortie.getFullYear();
-                            a.setdateSortie(day + "/" + month + "/" + year);
                             a.setgroupeSang(x[0].children[3].textContent);
-                            hrdv = new Date(x[0].children[4].textContent);
-                            minu = hrdv.getMinutes();
-                            hour = hrdv.getHours();
-                            second = hrdv.getSeconds();
-                            a.setheureRdv(hour + " : " + minu + " : " + second);
-                            hsortie = new Date(x[0].children[5].textContent);
-                            minu = hrdv.getMinutes();
-                            hour = hrdv.getHours();
-                            second = hrdv.getSeconds();
-                            a.setheureSortie(hour + " : " + minu + " : " + second);
-                            a.sethistoiremaladie(x[0].children[6].textContent);
                             a.setmotifhospitalisation(x[0].children[7].textContent);
                             a.setnumdoss(x[0].children[8].textContent);
-                            a.setobservationSejour(x[0].children[9].textContent);
                             a.setpoid(x[0].children[10].textContent);
                             a.settaille(x[0].children[11].textContent);
-                            a.settraitementHabituelle(x[0].children[12].textContent);
-                            a.settraitementSejour(x[0].children[13].textContent);
-                            a.settraitementSortie(x[0].children[14].textContent);
-                            a.setutilisateurMotif(x[0].children[15].textContent);
                             _this.motifh.push(a);
                         }
                         DossierPage_1.motifhh = _this.motifh;
                         if (_this.motifh.length === 0) {
                             _this.test = false;
                         }
-                        //  return this.m;
                         _this.mserv = new motifHospitalisationService();
                         _this.mserv.verifmotifHospitalisation(_this.motifh, numDoss, codeClinique).then(function (res) {
                             if (res === false) {
@@ -435,48 +400,14 @@ var DossierPage = DossierPage_1 = (function () {
                         for (i = 0; i < x.length; i++) {
                             t = new Traitement();
                             if (x[i].childElementCount === 20) {
-                                t.setcodePosologie(x[i].children[0].textContent);
-                                t.setdate(x[i].children[1].textContent);
-                                t.setdateFinTrait(x[i].children[2].textContent);
-                                t.setdci(x[i].children[3].textContent);
                                 t.setdesignation(x[i].children[4].textContent);
-                                t.setdureEnJour(x[i].children[5].textContent);
-                                t.setheure(x[i].children[6].textContent);
-                                t.setheureDebut(x[i].children[7].textContent);
                                 t.setjour(x[i].children[8].textContent);
-                                t.setnbFois(x[i].children[9].textContent);
-                                t.setnumDoss(x[i].children[10].textContent);
-                                t.setnumTraitement(x[i].children[11].textContent);
-                                t.setnumbon(x[i].children[12].textContent);
                                 t.setposologie(x[i].children[13].textContent);
-                                t.setprescripteur(x[i].children[14].textContent);
-                                t.setquantite(x[i].children[15].textContent);
-                                t.setunite(x[i].children[16].textContent);
-                                t.setvitesse(x[i].children[17].textContent);
-                                t.setvoie(x[i].children[18].textContent);
-                                t.setvolume(x[i].children[19].textContent);
                             }
                             else if (x[i].childElementCount === 19) {
-                                t.setcodePosologie(x[i].children[0].textContent);
-                                t.setdate(x[i].children[1].textContent);
-                                t.setdateFinTrait(x[i].children[2].textContent);
-                                t.setdci("");
-                                t.setdesignation(x[i].children[3].textContent);
-                                t.setdureEnJour(x[i].children[4].textContent);
-                                t.setheure(x[i].children[5].textContent);
-                                t.setheureDebut(x[i].children[6].textContent);
-                                t.setjour(x[i].children[7].textContent);
-                                t.setnbFois(x[i].children[8].textContent);
-                                t.setnumDoss(x[i].children[9].textContent);
-                                t.setnumTraitement(x[i].children[10].textContent);
-                                t.setnumbon(x[i].children[11].textContent);
-                                t.setposologie(x[i].children[12].textContent);
-                                t.setprescripteur(x[i].children[13].textContent);
-                                t.setquantite(x[i].children[14].textContent);
-                                t.setunite(x[i].children[15].textContent);
-                                t.setvitesse(x[i].children[16].textContent);
-                                t.setvoie(x[i].children[17].textContent);
-                                t.setvolume(x[i].children[18].textContent);
+                                t.setdesignation(x[i].children[4].textContent);
+                                t.setjour(x[i].children[8].textContent);
+                                t.setposologie(x[i].children[13].textContent);
                             }
                             _this.traitement.push(t);
                         }
@@ -914,11 +845,13 @@ var DossierPage = DossierPage_1 = (function () {
             this.histserv.deleteHistDossiers(numDoss, codeClinique);
             this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(function (res) {
                 _this.histd = res.getdate();
+                DossierPage_1.hist = res.getdate();
             });
         }
         catch (Error) {
             this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(function (res) {
                 _this.histd = res.getdate();
+                DossierPage_1.hist = res.getdate();
             });
         }
     };
@@ -927,6 +860,7 @@ var DossierPage = DossierPage_1 = (function () {
         this.histserv = new HistDossierService();
         this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(function (res) {
             _this.histd = res.getdate();
+            DossierPage_1.hist = res.getdate();
         });
     };
     DossierPage.prototype.goToInfPage = function (patient) {

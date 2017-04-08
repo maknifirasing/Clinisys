@@ -207,9 +207,14 @@ var TraitmentCourbe = (function () {
                  text: 'Custom Chart Title'
                  },
                  */
+                scaleOverride: true,
+                scaleSteps: 10,
+                scaleStepWidth: 20,
                 scales: {
                     yAxes: [{
-                            ticks: { min: 0, max: nomcourbe.length + 1 }
+                            ticks: { min: 0, max: nomcourbe.length + 1 },
+                            barPercentage: 9.0,
+                            height: 10
                         }
                     ],
                     xAxes: [{
@@ -233,17 +238,19 @@ var TraitmentCourbe = (function () {
                 animation: {
                     onComplete: function () {
                         var ctx = this.chart.ctx;
-                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+                        //         ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+                        ctx.font = "6px Arial gras";
                         ctx.fillStyle = "black";
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'bottom';
+                        ctx.frontz = 'bottom';
                         this.data.datasets.forEach(function (dataset) {
                             for (var i = 0; i < dataset.data.length; i++) {
                                 for (var key in dataset._meta) {
                                     var model = dataset._meta[key].data[i]._model;
                                     try {
                                         if (dataset.data[i + 1].titre === null) {
-                                            ctx.fillText(dataset.data[i].titre, model.x - (((dataset.data[i].titre).length) * 3), model.y);
+                                            ctx.fillText(dataset.data[i].titre, model.x - ((dataset.data[i].titre).length), model.y);
                                         }
                                         else {
                                             ctx.fillText("", model.x, model.y - 5);
@@ -252,10 +259,6 @@ var TraitmentCourbe = (function () {
                                     catch (Err) {
                                         ctx.fillText("", model.x, model.y - 5);
                                     }
-                                    console.log(" key " + key);
-                                    console.log(dataset.data[key]);
-                                    console.log(" i " + i);
-                                    console.log(dataset.data[i]);
                                 }
                             }
                         });

@@ -9,7 +9,8 @@ import {ListePage} from "../liste/liste";
 
 @Component({
   selector: 'page-langues',
-  templateUrl: 'langues.html'
+  templateUrl: 'langues.html',
+  providers: [Variables]
 })
 export class LanguesPage {
   la: string;
@@ -20,8 +21,8 @@ export class LanguesPage {
   langue: string;
 
 
-  constructor(public navCtrl: NavController) {
-    NativeStorage.setItem("name", "basma");
+  constructor(public navCtrl: NavController,private Url: Variables) {
+  //  Variables.auth();
   }
 
   ionViewDidLoad() {
@@ -65,5 +66,6 @@ export class LanguesPage {
         this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
       }
     });
+
   }
 }

@@ -37,8 +37,6 @@ var UserService = (function () {
             return _this;
         });
     };
-    //verifUser(): Promise<boolean> {
-    // public getUser(users: any, userName, passWord, codeClinique) {
     UserService.prototype.getUser = function (users, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
@@ -48,8 +46,6 @@ var UserService = (function () {
                 location: 'default' // the location field is required
             }).then(function () {
                 db.executeSql("select * from Users where codeClinique like '" + codeClinique + "'", []).then(function (result) {
-                    //  db.executeSql("select * from Users where userName like '" + userName + "' and passWord like '" + passWord + "'and codeClinique like '" + codeClinique + "'", []).then(result => {
-                    //  db.executeSql("select * from Users ", []).then(result => {
                     if (result.rows.length === 0) {
                         _this._insertUser(users);
                         resolve(users[0]);
@@ -58,21 +54,9 @@ var UserService = (function () {
                         var user;
                         for (var i = 0; i < result.rows.length; i++) {
                             user = new Users();
-                            user.setactif(result.rows.item(0).actif);
-                            user.setchStat(result.rows.item(0).chStat);
-                            user.setcodeMedecinInfirmier(result.rows.item(0).codeMedecinInfirmier);
-                            user.setcodePin(result.rows.item(0).codePin);
-                            user.setdateModPwd(result.rows.item(0).dateModPwd);
-                            user.setdernierDateCnx(result.rows.item(0).dernierDateCnx);
-                            user.setdescription(result.rows.item(0).description);
-                            user.setgrp(result.rows.item(0).grp);
                             user.setmatricule(result.rows.item(0).matricule);
-                            user.setnatureUserDS(result.rows.item(0).natureUserDS);
-                            user.setoldGrp(result.rows.item(0).oldGrp);
                             user.setpassWord(result.rows.item(0).passWord);
                             user.setuserName(result.rows.item(0).userName);
-                            user.setvalidCptRend(result.rows.item(0).validCptRend);
-                            user.setvalidPHNuit(result.rows.item(0).validPHNuit);
                             user.setcodeClinique(result.rows.item(0).codeClinique);
                             _this.users.push(user);
                         }
@@ -99,23 +83,10 @@ var UserService = (function () {
                     continue;
                 }
                 var user = users[key];
-                db.executeSql('insert into Users (actif ,chStat ,codeMedecinInfirmier ,codePin ,dateModPwd ,dernierDateCnx ,description ,grp ,matricule ,natureUserDS ,' +
-                    'oldGrp ,passWord ,userName ,validCptRend ,validPHNuit,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
-                    user.getactif(),
-                    user.getchStat(),
-                    user.getcodeMedecinInfirmier(),
-                    user.getcodePin(),
-                    user.getdateModPwd(),
-                    user.getdernierDateCnx(),
-                    user.getdescription(),
-                    user.getgrp(),
+                db.executeSql('insert into Users (matricule ,passWord ,userName ,codeClinique) values (?,?,?,?)', [
                     user.getmatricule(),
-                    user.getnatureUserDS(),
-                    user.getoldGrp(),
                     user.getpassWord(),
                     user.getuserName(),
-                    user.getvalidCptRend(),
-                    user.getvalidPHNuit(),
                     user.getcodeClinique()
                 ]);
             }

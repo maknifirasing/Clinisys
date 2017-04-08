@@ -3,8 +3,6 @@ import {NavController, NavParams, AlertController, Platform} from 'ionic-angular
 import {Variables} from "../../providers/variables";
 import {ExamenRadio} from "../../models/ExamenRadio";
 import {Document} from "../../models/Document";
-import {HistDossier} from "../../models/HistDossier";
-import {HistDossierService} from "../../services/HistDossierService";
 import {File, Transfer} from 'ionic-native';
 import {
   ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject,
@@ -17,6 +15,7 @@ import {ClientDetailPage} from "../client-detail/client-detail";
 import {DossierPage} from "../dossier/dossier";
 import {HistDoc} from "../../models/HistDoc";
 import {HistDocService} from "../../services/HistDocService";
+import {TabsPage} from "../tabs/tabs";
 
 declare var cordova: any;
 @Component({
@@ -31,9 +30,7 @@ export class ExamenRadioPage {
   examenRF: Array<ExamenRadio> = [];
   document: Array<Document> = [];
   url: string;
-  histD: Array<HistDossier> = [];
-  histd = new HistDossier();
-  histserv: any;
+  histd :any;
   connection: boolean;
   pass: any;
   codeClinique: any;
@@ -63,7 +60,7 @@ export class ExamenRadioPage {
         this.connection = true;
       }
     });
-    this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
+    this.histd=DossierPage.hist;
   }
 
   ionViewDidLoad() {
@@ -120,13 +117,6 @@ export class ExamenRadioPage {
       });
     });
 
-  }
-
-  historiqueOff(hist, numDoss, codeClinique) {
-    this.histserv = new HistDossierService();
-    this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(res => {
-      this.histd = res.getdate();
-    });
   }
 
   open(url) {

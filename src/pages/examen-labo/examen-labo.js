@@ -11,8 +11,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, Platform } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
 import { PdfViewPage } from "../pdf-view/pdf-view";
-import { HistDossier } from "../../models/HistDossier";
-import { HistDossierService } from "../../services/HistDossierService";
 import { LaboFService } from "../../services/LaboFService";
 import { LaboTService } from "../../services/LaboTService";
 import { ClientDetailPage } from "../client-detail/client-detail";
@@ -26,8 +24,6 @@ var ExamenLaboPage = (function () {
         this.platform = platform;
         this.LabosT = [];
         this.LabosF = [];
-        this.histD = [];
-        this.histd = new HistDossier();
         this.tabLangue = navParams.get("tabLangue");
         this.codeClinique = navParams.get("codeClinique");
         this.pass = navParams.get("pass");
@@ -45,7 +41,7 @@ var ExamenLaboPage = (function () {
                 }
             });
         });
-        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
+        this.histd = DossierPage.hist;
     }
     ExamenLaboPage.prototype.openURL = function (numAdmission) {
         var _this = this;
@@ -83,13 +79,6 @@ var ExamenLaboPage = (function () {
     ExamenLaboPage.prototype.gotPdf = function (pdf) {
         this.navCtrl.push(PdfViewPage, { pdf: pdf.getpdf(), tabLangue: this.tabLangue,
             langue: this.langue, codeClinique: this.codeClinique, pass: this.pass });
-    };
-    ExamenLaboPage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
-        var _this = this;
-        this.histserv = new HistDossierService();
-        this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(function (res) {
-            _this.histd = res.getdate();
-        });
     };
     ExamenLaboPage.prototype.findAllLaboByNumDossierOff = function (numDoss, codeClinique) {
         this.LabosFs = new LaboFService();

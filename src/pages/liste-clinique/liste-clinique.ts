@@ -66,9 +66,7 @@ export class ListeCliniquePage {
           for (i = 0; i < x.length; i++) {
             this.c = new Clinique();
             this.c.setcode(x[i].children[0].textContent);
-            this.c.setid(x[i].children[1].textContent);
             this.c.setnom(x[i].children[2].textContent);
-            this.c.seturl(x[i].children[3].textContent);
             this.clinique.push(this.c);
           }
           this.clinserv = new CliniqueService();
@@ -76,7 +74,6 @@ export class ListeCliniquePage {
         }
       }
     }
-
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
@@ -88,6 +85,7 @@ export class ListeCliniquePage {
   }
 
   goToHomePage(codeC) {
+
     this.userserv = new UserService();
     this.userserv.verifUser(codeC.getcode()).then(user => {
       if (user === false) {
@@ -125,5 +123,6 @@ export class ListeCliniquePage {
         });
       }
     });
+
   }
 }

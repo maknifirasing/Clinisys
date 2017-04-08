@@ -1,32 +1,19 @@
 export class Evenement{
-  private _access: number;
-  private _code: string;
-  private _evenements: string;
-  private _orderEvenement: number;
-  private _visible: string;
   private _date: string;
   private _detail: string;
-  private _IDEvenement: number;
-  private _numdoss: string;
   private _userCreat: string;
+  private _evenements: string;
+  private _numdoss: string;
 
   constructor() {
   }
 
-  getaccess(): number {
-    return this._access;
+  getnumdoss(): string {
+    return this._numdoss;
   }
 
-  setaccess(value: number) {
-    this._access = value;
-  }
-
-  getcode(): string {
-    return this._code;
-  }
-
-  setcode(value: string) {
-    this._code = value;
+  setnumdoss(value: string) {
+    this._numdoss = value;
   }
 
   getevenements(): string {
@@ -35,22 +22,6 @@ export class Evenement{
 
   setevenements(value: string) {
     this._evenements = value;
-  }
-
-  getorderEvenement(): number {
-    return this._orderEvenement;
-  }
-
-  setorderEvenement(value: number) {
-    this._orderEvenement = value;
-  }
-
-  getvisible(): string {
-    return this._visible;
-  }
-
-  setvisible(value: string) {
-    this._visible = value;
   }
 
   getdate(): string {
@@ -67,22 +38,6 @@ export class Evenement{
 
   setdetail(value: string) {
     this._detail = value;
-  }
-
-  getIDEvenement(): number {
-    return this._IDEvenement;
-  }
-
-  setIDEvenement(value: number) {
-    this._IDEvenement = value;
-  }
-
-  getnumdoss(): string {
-    return this._numdoss;
-  }
-
-  setnumdoss(value: string) {
-    this._numdoss = value;
   }
 
   getuserCreat(): string {
