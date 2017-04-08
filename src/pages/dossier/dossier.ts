@@ -1,7 +1,6 @@
 import {Component} from "@angular/core";
 import {NavController, NavParams, Platform} from "ionic-angular";
 import {MotifHospitalisation} from "../../models/motifHospitalisation";
-import {Antec} from "../../models/Antec";
 import {SigneClinique} from "../../models/SigneClinique";
 import {Traitement} from "../../models/Traitement";
 import {Evenement} from "../../models/Evenement";
@@ -36,8 +35,6 @@ import {TraitmentCourbe} from "../traitment-courbe/traitment-courbe";
 export class DossierPage {
   motifh: Array<MotifHospitalisation> = [];
   mserv: any;
-  antec: Array<Antec> = [];
-  aleg: Array<Antec> = [];
   alechl: Array<AntecCh> = [];
   antechl: Array<AntecCh> = [];
   antecserv: any;
@@ -85,6 +82,7 @@ export class DossierPage {
   histserv: any;
   histD: Array<HistDossier> = [];
   histd = new HistDossier();
+  static hist: any;
   codeClinique: any;
   tabLangue: any;
   pass: any;
@@ -205,15 +203,9 @@ export class DossierPage {
   getAntecedentAllergieByIdentifiant(idpass, codeClinique) {
     this.stringAlerg = "";
     this.stringAntec = "";
-    this.aleg.pop();
-    this.aleg = [];
-    this.aleg.length = 0;
     this.alechl.pop();
     this.alechl = [];
     this.alechl.length = 0;
-    this.antec.pop();
-    this.antec = [];
-    this.antec.length = 0;
     this.antechl.pop();
     this.antechl = [];
     this.antechl.length = 0;
@@ -240,58 +232,35 @@ export class DossierPage {
             x = xml.getElementsByTagName("return");
             var a;
             for (i = 0; i < x.length; i++) {
-              a = new Antec();
-              a.setcodeAntecedent(x[i].children[0].children[0].textContent);
-              a.setcodeFamille(x[i].children[0].children[1].textContent);
-              a.setdesignation(x[i].children[0].children[2].textContent);
-              a.setidDetailAntec(x[i].children[0].children[3].textContent);
-              a.setordre(x[i].children[0].children[4].textContent);
-              a.setvisiblePreAnes(x[i].children[0].children[5].textContent);
-              a.setid(x[i].children[1].textContent);
-              a.setidentifiant(x[i].children[2].textContent);
-              a.setnumeroDossier(x[i].children[3].textContent);
-              a.setobservation(x[i].children[4].textContent);
-              a.setutilisateurAnt(x[i].children[5].textContent);
-
-              /* if (i === x.length - 1)
-               this.disig += a.getdesignation();
-               else
-               this.disig += a.getdesignation() + ", ";*/
-
-              if (!(a.getcodeAntecedent() === ("A000")) && (!(a.getcodeAntecedent() === ("A255")))) {
-                if (a.getcodeFamille() === ("FA02")) // Allergie
+              if (!((x[i].children[0].children[0].textContent) === ("A000")) && (!((x[i].children[0].children[0].textContent) === ("A255")))) {
+                if ((x[i].children[0].children[1].textContent) === ("FA02")) // Allergie
                 {
-                  if (a.getcodeAntecedent().toUpperCase() === ("ALER")) {
-                    this.stringAlerg += a.getobservation() + ", ";
+                  if ((x[i].children[0].children[0].textContent).toUpperCase() === ("ALER")) {
+                    this.stringAlerg += (x[i].children[4].textContent) + ", ";
                     this.Alerg = true;
 
                   }
                   else {
-                    this.stringAlerg += a.getdesignation() + ", ";
+                    this.stringAlerg += (x[i].children[0].children[2].textContent) + ", ";
                     this.Alerg = true;
                   }
-                  this.aleg.push(a);
                 }
                 else // Antécédent
                 {
-                  if (a.getcodeFamille().toUpperCase() === ("AUTR")) {
-                    this.stringAntec += a.getobservation() + ", ";
+                  if ((x[i].children[0].children[1].textContent).toUpperCase() === ("AUTR")) {
+                    this.stringAntec += (x[i].children[4].textContent) + ", ";
                     this.Ante = true;
                   }
                   else {
-                    this.stringAntec += a.getdesignation() + ", ";
+                    this.stringAntec += (x[i].children[0].children[2].textContent) + ", ";
                     this.Ante = true;
                   }
                 }
-                this.antec.push(a);
+
               }
 
 
             }
-            if (this.antec.length === 0) {
-              this.AntecedentAllergieTest = false;
-            }
-
 
             var antech = new AntecCh();
 
@@ -322,7 +291,7 @@ export class DossierPage {
             });
 
           } catch (Error) {
-            this.AntecedentAllergieTest = false;
+
           }
         }
       }
@@ -333,7 +302,6 @@ export class DossierPage {
   }
 
   getAntecedentAllergieByIdentifiantOff(antec, aleg, idpass, codeClinique) {
-    this.AntecedentAllergieTest = true;
     this.antecserv = new AntechService();
     this.antecserv.verifAntec(this.antechl, idpass, codeClinique).then(res => {
       if (res === true) {
@@ -382,56 +350,22 @@ export class DossierPage {
           try {
             this.test = true;
             var xml = xmlhttp.responseXML;
-            var x, i, drdv, dsortie, hrdv, hsortie;
-            var day = "";
-            var month = "";
-            var year = "";
-            var minu = "";
-            var second = "";
-            var hour = "";
+            var x, i;
             x = xml.getElementsByTagName("return");
             var a;
             for (i = 0; i < x.length; i++) {
               a = new MotifHospitalisation();
-              a.setconclusion(x[0].children[0].textContent);
-              drdv = new Date(x[0].children[1].textContent);
-              day = drdv.getDate();
-              month = drdv.getMonth() + 1;
-              year = drdv.getFullYear();
-              a.setdateRdv(day + "/" + month + "/" + year);
-              dsortie = new Date(x[0].children[2].textContent);
-              day = dsortie.getDate();
-              month = dsortie.getMonth() + 1;
-              year = dsortie.getFullYear();
-              a.setdateSortie(day + "/" + month + "/" + year);
               a.setgroupeSang(x[0].children[3].textContent);
-              hrdv = new Date(x[0].children[4].textContent);
-              minu = hrdv.getMinutes();
-              hour = hrdv.getHours();
-              second = hrdv.getSeconds();
-              a.setheureRdv(hour + " : " + minu + " : " + second);
-              hsortie = new Date(x[0].children[5].textContent);
-              minu = hrdv.getMinutes();
-              hour = hrdv.getHours();
-              second = hrdv.getSeconds();
-              a.setheureSortie(hour + " : " + minu + " : " + second);
-              a.sethistoiremaladie(x[0].children[6].textContent);
               a.setmotifhospitalisation(x[0].children[7].textContent);
               a.setnumdoss(x[0].children[8].textContent);
-              a.setobservationSejour(x[0].children[9].textContent);
               a.setpoid(x[0].children[10].textContent);
               a.settaille(x[0].children[11].textContent);
-              a.settraitementHabituelle(x[0].children[12].textContent);
-              a.settraitementSejour(x[0].children[13].textContent);
-              a.settraitementSortie(x[0].children[14].textContent);
-              a.setutilisateurMotif(x[0].children[15].textContent);
               this.motifh.push(a);
             }
             DossierPage.motifhh = this.motifh;
             if (this.motifh.length === 0) {
               this.test = false;
             }
-            //  return this.m;
             this.mserv = new motifHospitalisationService();
             this.mserv.verifmotifHospitalisation(this.motifh, numDoss, codeClinique).then(res => {
               if (res === false) {
@@ -497,49 +431,16 @@ export class DossierPage {
             for (i = 0; i < x.length; i++) {
               t = new Traitement();
               if (x[i].childElementCount === 20) {
-                t.setcodePosologie(x[i].children[0].textContent);
-                t.setdate(x[i].children[1].textContent);
-                t.setdateFinTrait(x[i].children[2].textContent);
-                t.setdci(x[i].children[3].textContent);
                 t.setdesignation(x[i].children[4].textContent);
-                t.setdureEnJour(x[i].children[5].textContent);
-                t.setheure(x[i].children[6].textContent);
-                t.setheureDebut(x[i].children[7].textContent);
                 t.setjour(x[i].children[8].textContent);
-                t.setnbFois(x[i].children[9].textContent);
                 t.setnumDoss(x[i].children[10].textContent);
-                t.setnumTraitement(x[i].children[11].textContent);
-                t.setnumbon(x[i].children[12].textContent);
                 t.setposologie(x[i].children[13].textContent);
-                t.setprescripteur(x[i].children[14].textContent);
-                t.setquantite(x[i].children[15].textContent);
-                t.setunite(x[i].children[16].textContent);
-                t.setvitesse(x[i].children[17].textContent);
-                t.setvoie(x[i].children[18].textContent);
-                t.setvolume(x[i].children[19].textContent);
               }
               else if (x[i].childElementCount === 19) {
-                t.setcodePosologie(x[i].children[0].textContent);
-                t.setdate(x[i].children[1].textContent);
-                t.setdateFinTrait(x[i].children[2].textContent);
-                t.setdci("");
-                t.setdesignation(x[i].children[3].textContent);
-                t.setdureEnJour(x[i].children[4].textContent);
-                t.setheure(x[i].children[5].textContent);
-                t.setheureDebut(x[i].children[6].textContent);
-                t.setjour(x[i].children[7].textContent);
-                t.setnbFois(x[i].children[8].textContent);
+                t.setdesignation(x[i].children[4].textContent);
+                t.setjour(x[i].children[8].textContent);
                 t.setnumDoss(x[i].children[9].textContent);
-                t.setnumTraitement(x[i].children[10].textContent);
-                t.setnumbon(x[i].children[11].textContent);
-                t.setposologie(x[i].children[12].textContent);
-                t.setprescripteur(x[i].children[13].textContent);
-                t.setquantite(x[i].children[14].textContent);
-                t.setunite(x[i].children[15].textContent);
-                t.setvitesse(x[i].children[16].textContent);
-                t.setvoie(x[i].children[17].textContent);
-                t.setvolume(x[i].children[18].textContent);
-
+                t.setposologie(x[i].children[13].textContent);
               }
               this.traitement.push(t);
             }
@@ -630,11 +531,7 @@ export class DossierPage {
             var hour = "";
             for (i = 0; i < x.length; i++) {
               e = new Evenement();
-              e.setaccess(x[i].children[0].textContent);
-              e.setcode(x[i].children[1].children[0].textContent);
               e.setevenements(x[i].children[1].children[1].textContent);
-              e.setorderEvenement(x[i].children[1].children[2].textContent);
-              e.setvisible(x[i].children[1].children[3].textContent);
               drdv = new Date(x[i].children[2].textContent);
               day = drdv.getDay();
               month = drdv.getMonth();
@@ -643,9 +540,8 @@ export class DossierPage {
               hour = drdv.getHours();
               e.setdate(day + "/" + month + "/" + year + " - " + hour + ":" + minu);
               e.setdetail(this.convertHTMLtoRTF(x[i].children[3].textContent));
-              e.setIDEvenement(x[i].children[4].textContent);
-              e.setnumdoss(x[i].children[5].textContent);
               e.setuserCreat(x[i].children[6].textContent);
+              e.setnumdoss(x[i].children[5].textContent);
               if (e.getevenements() === "Evolution") {
                 this.Evolution.push(e);
                 this.Evo = true;
@@ -791,7 +687,6 @@ export class DossierPage {
             x = xml.getElementsByTagName("return");
             for (i = 0; i < x.length; i++) {
               r = new Rigime();
-              r.setcodeRegime(x[0].children[0].textContent);
               r.setdesignation(x[0].children[1].textContent);
               this.rigime.push(r);
             }
@@ -1007,11 +902,13 @@ export class DossierPage {
       this.histserv.deleteHistDossiers(numDoss, codeClinique);
       this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(res => {
         this.histd = res.getdate();
+        DossierPage.hist = res.getdate();
       });
     }
     catch (Error) {
       this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(res => {
         this.histd = res.getdate();
+        DossierPage.hist = res.getdate();
       });
     }
 
@@ -1021,6 +918,7 @@ export class DossierPage {
     this.histserv = new HistDossierService();
     this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(res => {
       this.histd = res.getdate();
+      DossierPage.hist = res.getdate();
     });
   }
 
@@ -1043,6 +941,7 @@ export class DossierPage {
       langue: this.langue
     });
   }
+
   gotoTraitementCourbe() {
     this.navCtrl.push(TraitmentCourbe, {
       codeClinique: this.codeClinique,

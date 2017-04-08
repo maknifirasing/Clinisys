@@ -82,8 +82,7 @@ export class SigneCliniqueAlertService {
           continue;
         }
         let s = signeCliniques[key];
-        db.executeSql('insert into SigneCliniqueAlert (codeType ,date ,designation ,quantite ,numDoss ,dateFeuille ,nature,codeClinique) values (?,?,?,?,?,?,?,?)', [
-
+        db.executeSql('insert into SigneCliniqueAlert (codeType,date ,designation ,quantite ,numDoss ,dateFeuille ,nature,codeClinique) values (?,?,?,?,?,?,?,?)', [
           s.getcodeType(),
           s.getdate(),
           s.getdesignation(),

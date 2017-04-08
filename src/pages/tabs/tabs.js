@@ -114,57 +114,29 @@ var TabsPage = (function () {
                     try {
                         _this.GetExamenRadioByNumDossResponseTest = true;
                         var xml = xmlhttp.responseXML;
-                        var x, i, dE, dP, drdv, hP;
+                        var x, i, dE;
                         x = xml.getElementsByTagName("return");
                         var ex;
                         var day = "";
                         var month = "";
                         var year = "";
-                        var minu = "";
-                        var second = "";
-                        var hour = "";
                         _this.coountexamenR = x.length;
                         for (i = 0; i < x.length; i++) {
                             ex = new ExamenRadio();
-                            ex.setcodeExamen(x[i].children[0].textContent);
                             ex.setcompterendu(x[i].children[1].textContent);
                             dE = new Date(x[i].children[2].textContent);
                             day = dE.getDate();
                             month = dE.getMonth() + 1;
                             year = dE.getFullYear();
                             ex.setdateExamen(day + "/" + month + "/" + year);
-                            dP = new Date(x[i].children[3].textContent);
-                            day = dP.getDate();
-                            month = dP.getMonth() + 1;
-                            year = dP.getFullYear();
-                            ex.setdatePrevu(day + "/" + month + "/" + year);
-                            drdv = new Date(x[i].children[4].textContent);
-                            day = drdv.getDate();
-                            month = drdv.getMonth() + 1;
-                            year = drdv.getFullYear();
-                            ex.setdate_RDV(day + "/" + month + "/" + year);
                             ex.setdesignationExamen(x[i].children[5].textContent);
-                            hP = new Date(x[i].children[6].textContent);
-                            minu = hP.getMinutes();
-                            hour = hP.getHours();
-                            second = hP.getSeconds();
-                            ex.setheurePrevu(hour + " : " + minu + " : " + second);
-                            ex.setidres(x[i].children[7].textContent);
                             if (x[i].childElementCount === 14) {
-                                ex.setmedecin(x[i].children[8].textContent);
-                                ex.setnature(x[i].children[9].textContent);
                                 ex.setnumeroDossier(x[i].children[10].textContent);
-                                ex.setnumeroExamen(x[i].children[11].textContent);
                                 ex.setobserv(x[i].children[12].textContent);
-                                ex.setresultat(x[i].children[13].textContent);
                             }
                             else if (x[i].childElementCount === 13) {
-                                ex.setmedecin(null);
-                                ex.setnature(x[i].children[8].textContent);
                                 ex.setnumeroDossier(x[i].children[9].textContent);
-                                ex.setnumeroExamen(x[i].children[10].textContent);
                                 ex.setobserv(x[i].children[11].textContent);
-                                ex.setresultat(x[i].children[12].textContent);
                             }
                             if (ex.getcompterendu() === "true") {
                                 _this.examenRT.push(ex);
@@ -260,22 +232,9 @@ var TabsPage = (function () {
                             month = drdv.getMonth() + 1;
                             year = drdv.getFullYear();
                             l.setdateDemande(day + "/" + month + "/" + year);
-                            drdv = new Date(x[i].children[3].textContent);
-                            day = drdv.getDate();
-                            month = drdv.getMonth() + 1;
-                            year = drdv.getFullYear();
-                            l.setdateRealisation(day + "/" + month + "/" + year);
-                            l.setdesignation(x[i].children[4].textContent);
-                            l.setetatExamen(x[i].children[5].textContent);
-                            l.setid(x[i].children[6].textContent);
                             l.setmedecinTraitant(x[i].children[7].textContent);
-                            l.setnomLabo(x[i].children[8].textContent);
                             l.setnumAdmission(x[i].children[9].textContent);
                             l.setnumDossier(x[i].children[10].textContent);
-                            l.setpatient(x[i].children[11].textContent);
-                            l.setstate(x[i].children[12].textContent);
-                            l.setuserName(x[i].children[13].textContent);
-                            l.setvalidation(x[i].children[14].textContent);
                             l.setpdf(_this.Url.url + "dmi-web/LaboPDF/" + l.getnumAdmission() + "0.pdf");
                             if (l.getcontenuePDF() === "true") {
                                 _this.LabosT.push(l);
@@ -363,18 +322,7 @@ var TabsPage = (function () {
                             LP = new ListPreanesthesie();
                             LP.setacte(x[i].children[0].textContent);
                             LP.setchirurgien(x[i].children[1].textContent);
-                            LP.setcodeActe(x[i].children[2].textContent);
-                            LP.setcodeExamen(x[i].children[3].textContent);
-                            LP.setcodeMedecinReanimateur(x[i].children[4].textContent);
-                            LP.setcodeMedecinchirurgi(x[i].children[5].textContent);
-                            LP.setcodeMedecinchirurgien(x[i].children[6].textContent);
-                            LP.setcodePostop(x[i].children[7].textContent);
                             LP.setdateacte(x[0].children[8].textContent);
-                            LP.setdatedemande(x[0].children[8].textContent);
-                            LP.setetatReservationBloc(x[i].children[10].textContent);
-                            LP.sethasAnesth(x[i].children[11].textContent);
-                            LP.sethasPost(x[i].children[12].textContent);
-                            LP.sethasPre(x[i].children[13].textContent);
                             hdebut = new Date(x[0].children[14].textContent);
                             minu = hdebut.getMinutes();
                             hour = hdebut.getHours();
@@ -385,13 +333,8 @@ var TabsPage = (function () {
                             hour = hfin.getHours();
                             second = hfin.getSeconds();
                             LP.setheureFin(hour + " : " + minu + " : " + second);
-                            LP.setid(x[i].children[16].textContent);
-                            LP.setidentifiant(x[i].children[17].textContent);
                             LP.setkc(x[i].children[18].textContent);
-                            LP.setnom(x[i].children[19].textContent);
-                            LP.setnomReanimateur(x[i].children[20].textContent);
                             LP.setnumeroDossier(x[i].children[21].textContent);
-                            LP.setprenom(x[i].children[22].textContent);
                             _this.coountListPreanesthesie++;
                             _this.ListeP.push(LP);
                         }
@@ -469,50 +412,24 @@ var TabsPage = (function () {
                     for (i = 0; i < x.length; i++) {
                         c = new Consigne();
                         if (x[i].childElementCount === 19) {
-                            c.setcodeExamen(x[i].children[0].textContent);
                             c.setcodeMedecin(x[i].children[1].textContent);
-                            c.setcodeinf(x[i].children[2].textContent);
-                            c.setdate(x[i].children[3].textContent);
-                            c.setdateDelete(x[i].children[4].textContent);
-                            c.setdateRealisation(x[i].children[5].textContent);
                             c.setdatetache(x[i].children[6].textContent);
                             c.setdetails(x[i].children[7].textContent);
                             c.setetat(x[i].children[8].textContent);
                             c.setheurtache(x[i].children[9].textContent);
-                            c.setid(x[i].children[10].textContent);
-                            c.setlistCode(x[i].children[11].textContent);
-                            c.setnomMed(x[i].children[12].textContent);
                             c.setnumeroDossier(x[i].children[13].textContent);
-                            c.setobservation(x[i].children[14].textContent);
-                            c.settype(x[i].children[15].textContent);
                             c.setuserCreate(x[i].children[16].textContent);
-                            c.setuserDelete(x[i].children[17].textContent);
-                            c.setuserRealise(x[i].children[18].textContent);
                             c.setcodeClinique(codeClinique);
                         }
                         else if (x[i].childElementCount === 18) {
-                            c.setcodeExamen(x[i].children[0].textContent);
                             c.setcodeMedecin(x[i].children[1].textContent);
-                            c.setcodeinf(x[i].children[2].textContent);
-                            c.setdate(x[i].children[3].textContent);
-                            c.setdateDelete(x[i].children[4].textContent);
-                            c.setdateRealisation(x[i].children[5].textContent);
                             c.setdatetache(x[i].children[6].textContent);
                             c.setdetails(x[i].children[7].textContent);
                             c.setetat(x[i].children[8].textContent);
                             c.setheurtache(x[i].children[9].textContent);
-                            c.setid(x[i].children[10].textContent);
-                            c.setlistCode(x[i].children[11].textContent);
-                            c.setnomMed("");
                             c.setnumeroDossier(x[i].children[12].textContent);
-                            c.setobservation(x[i].children[13].textContent);
-                            c.settype(x[i].children[14].textContent);
-                            c.setuserCreate(x[i].children[15].textContent);
-                            c.setuserDelete(x[i].children[16].textContent);
-                            c.setuserRealise(x[i].children[17].textContent);
+                            c.setuserCreate(x[i].children[16].textContent);
                             c.setcodeClinique(codeClinique);
-                            c.settypeget(type);
-                            c.setetatget(etat);
                         }
                         _this.consigne.push(c);
                         if (c.getetat() === "F") {

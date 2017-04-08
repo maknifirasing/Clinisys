@@ -3,9 +3,10 @@ import {NavController, NavParams, Platform} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {HistDossier} from "../../models/HistDossier";
 import {Consigne} from "../../models/Consigne";
-import {HistDossierService} from "../../services/HistDossierService";
-import {ConsigneService} from "../../services/ConsigneService";
 import {Content} from "ionic-angular";
+import {TabsPage} from "../tabs/tabs";
+import {DossierPage} from "../dossier/dossier";
+import {ConsigneService} from "../../services/ConsigneService";
 
 @Component({
   selector: 'page-consigne',
@@ -15,9 +16,7 @@ import {Content} from "ionic-angular";
 export class ConsignePage {
 
   consigne: Array<Consigne> = [];
-  histD: Array<HistDossier> = [];
-  histd = new HistDossier();
-  histserv: any;
+  histd :any;
   connection: boolean;
   tabLangue: any;
   pass: any;
@@ -46,7 +45,7 @@ export class ConsignePage {
         }
       });
     });
-    this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique)
+    this.histd=DossierPage.hist;
   }
 
   ionViewDidLoad() {
@@ -57,13 +56,6 @@ export class ConsignePage {
     //this.content.scrollToBottom(300);//300ms animation speed
     setTimeout(() => {
       this.content.scrollToBottom(300);//300ms animation speed
-    });
-  }
-
-  historiqueOff(hist, numDoss, codeClinique) {
-    this.histserv = new HistDossierService();
-    this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(res => {
-      this.histd = res.getdate();
     });
   }
 

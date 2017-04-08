@@ -10,11 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, Platform } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
-import { HistDossier } from "../../models/HistDossier";
 import { Consigne } from "../../models/Consigne";
-import { HistDossierService } from "../../services/HistDossierService";
-import { ConsigneService } from "../../services/ConsigneService";
 import { Content } from "ionic-angular";
+import { DossierPage } from "../dossier/dossier";
+import { ConsigneService } from "../../services/ConsigneService";
 var ConsignePage = (function () {
     function ConsignePage(navCtrl, navParams, Url, platform) {
         var _this = this;
@@ -23,8 +22,6 @@ var ConsignePage = (function () {
         this.Url = Url;
         this.platform = platform;
         this.consigne = [];
-        this.histD = [];
-        this.histd = new HistDossier();
         this.tabLangue = navParams.get("tabLangue");
         this.codeClinique = navParams.get("codeClinique");
         this.pass = navParams.get("pass");
@@ -43,7 +40,7 @@ var ConsignePage = (function () {
                 }
             });
         });
-        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
+        this.histd = DossierPage.hist;
     }
     ConsignePage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad ConsignePage');
@@ -53,13 +50,6 @@ var ConsignePage = (function () {
         //this.content.scrollToBottom(300);//300ms animation speed
         setTimeout(function () {
             _this.content.scrollToBottom(300); //300ms animation speed
-        });
-    };
-    ConsignePage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
-        var _this = this;
-        this.histserv = new HistDossierService();
-        this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(function (res) {
-            _this.histd = res.getdate();
         });
     };
     ConsignePage.prototype.getPlanificationTacheInfirmierByNumDossAndTypeOff = function (consigne, numDoss, type, etat, codeClinique) {

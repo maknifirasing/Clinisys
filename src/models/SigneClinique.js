@@ -1,12 +1,6 @@
 var SigneClinique = (function () {
     function SigneClinique() {
     }
-    SigneClinique.prototype.getcodeType = function () {
-        return this._codeType;
-    };
-    SigneClinique.prototype.setcodeType = function (value) {
-        this._codeType = value;
-    };
     SigneClinique.prototype.getdate = function () {
         return this._date;
     };

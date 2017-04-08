@@ -57,8 +57,7 @@ var LanguesPage = (function () {
                 this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
               }
             });
-            */
-        this.navCtrl.push(ListeCliniquePage, { tabLangue: this.tabLangue, langue: lang });
+        */ this.navCtrl.push(ListeCliniquePage, { tabLangue: this.tabLangue, langue: lang });
     };
     return LanguesPage;
 }());

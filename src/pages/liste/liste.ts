@@ -63,10 +63,6 @@ export class ListePage {
 
   }
 
-  someMethod() {
-    this.trigger.openMenu();
-  }
-
   liste(user, searchText, etage, codeClinique) {
     this.patient.pop();
     this.patient = [];
@@ -292,11 +288,6 @@ export class ListePage {
     this.histserv.getHistPatients(hist, user, searchText, etage, codeClinique).then(res => {
       this.histl = res.getdate();
     });
-  }
-
-  openMenu() {
-    console.log("open");
-    this.menuCtrl.open();
   }
 
   deconnexion() {

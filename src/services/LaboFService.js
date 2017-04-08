@@ -53,18 +53,9 @@ var LaboFService = (function () {
                         l.setcodeDemande(result.rows.item(i).codeDemande);
                         l.setcontenuePDF(result.rows.item(i).contenuePDF);
                         l.setdateDemande(result.rows.item(i).dateDemande);
-                        l.setdateRealisation(result.rows.item(i).dateRealisation);
-                        l.setdesignation(result.rows.item(i).designation);
-                        l.setetatExamen(result.rows.item(i).etatExamen);
-                        l.setid(result.rows.item(i).id);
                         l.setmedecinTraitant(result.rows.item(i).medecinTraitant);
-                        l.setnomLabo(result.rows.item(i).nomLabo);
                         l.setnumAdmission(result.rows.item(i).numAdmission);
                         l.setnumDossier(result.rows.item(i).numDossier);
-                        l.setpatient(result.rows.item(i).patient);
-                        l.setstate(result.rows.item(i).state);
-                        l.setuserName(result.rows.item(i).userName);
-                        l.setvalidation(result.rows.item(i).validation);
                         l.setpdf(result.rows.item(i).pdf);
                         _this.labo.push(l);
                     }
@@ -90,22 +81,13 @@ var LaboFService = (function () {
                 }
                 var labo = labos[key];
                 db.executeSql('insert into LaboF (codeDemande,contenuePDF ,dateDemande ' +
-                    ',dateRealisation, designation,etatExamen,id,medecinTraitant,nomLabo,numAdmission,numDossier,patient,state,userName,validation,pdf,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+                    ',medecinTraitant,numAdmission,numDossier,pdf,codeClinique) values (?,?,?,?,?,?,?,?)', [
                     labo.getcodeDemande(),
                     labo.getcontenuePDF(),
                     labo.getdateDemande(),
-                    labo.getdateRealisation(),
-                    labo.getdesignation(),
-                    labo.getetatExamen(),
-                    labo.getid(),
                     labo.getmedecinTraitant(),
-                    labo.getnomLabo(),
                     labo.getnumAdmission(),
                     labo.getnumDossier(),
-                    labo.getpatient(),
-                    labo.getstate(),
-                    labo.getuserName(),
-                    labo.getvalidation(),
                     labo.getpdf(),
                     codeClinique
                 ]);

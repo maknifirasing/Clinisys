@@ -50,41 +50,41 @@
 </ion-header>
 
 <ion-content>
-  <div fxLayout="row" fxLayoutWrap *ngIf="langue==='francais' || langue==='anglais'">
-    <div fxFlex="5" *ngFor="let LP of ListeP " margin-top="10">
+  <div fxLayout="row" fxLayoutWrap *ngFor="let LP of ListeP ">
+    <div fxFlex="5" *ngIf="langue==='francais' || langue==='anglais'" margin-top="10">
       <img src="/android_asset/www/assets/img/valid.png" width="20" height="20">
 
     </div>
-    <div fxFlex="94" *ngFor="let LP of ListeP " margin-top="10">
-      <strong style="color: #0f7ec0">{{tabLangue.titreAct}}: </strong> {{LP.getacte()}}<br/>
-      <strong style="color: #0f7ec0"> {{tabLangue.titreChi}}:</strong> {{LP.getchirurgien()}}<br/>
-      <strong style="color: #0f7ec0"> {{tabLangue.titreDateAct}}: </strong>{{LP.getdateacte()}}<br/>
-      <strong style="color: #0f7ec0"> {{tabLangue.titreHeureDeb}}:</strong> {{LP.getheureDebut()}}
-      <strong style="color: #0f7ec0"> {{tabLangue.titreHeureF}}:</strong> {{LP.getheureFin()}}<br/>
+    <div fxFlex="94" *ngIf="langue==='francais' || langue==='anglais'" margin-top="10">
+      <strong style="color: #0f7ec0 ">{{tabLangue.titreAct}}: </strong> {{LP.getacte()}}<br/>
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreChi}}:</strong> {{LP.getchirurgien()}}<br/>
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreDateAct}}: </strong>{{LP.getdateacte()}}<br/>
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreHeureDeb}}:</strong> {{LP.getheureDebut()}}
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreHeureF}}:</strong> {{LP.getheureFin()}}<br/>
 
-      <strong style="color: #0f7ec0"> KC:</strong> {{LP.getkc()}}<br/>
+      <strong style="color: #0f7ec0 "> KC:</strong> {{LP.getkc()}}<br/>
 
     </div>
 
   </div>
 
-  <div fxLayout="row" fxLayoutWrap *ngIf="langue==='arabe'" dir="rtl">
-    <div fxFlex="5" *ngFor="let LP of ListeP " margin-top="10">
+  <div fxLayout="row" fxLayoutWrap *ngFor="let LP of ListeP ">
+    <div fxFlex="5" *ngIf="langue==='arabe'" dir="rtl" margin-top="10">
       <img  src="/android_asset/www/assets/img/valid.png" width="20" height="20">
 
     </div>
-    <div fxFlex="94" *ngFor="let LP of ListeP " margin-top="10">
-      <strong style="color: #0f7ec0">{{tabLangue.titreAct}}: </strong> {{LP.getacte()}}<br/>
-      <strong style="color: #0f7ec0"> {{tabLangue.titreChi}}:</strong> {{LP.getchirurgien()}}<br/>
-      <strong style="color: #0f7ec0"> {{tabLangue.titreDateAct}}: </strong>{{LP.getdateacte()}}<br/>
-      <strong style="color: #0f7ec0"> {{tabLangue.titreHeureDeb}}:</strong> {{LP.getheureDebut()}}
-      <strong style="color: #0f7ec0"> {{tabLangue.titreHeureF}}:</strong> {{LP.getheureFin()}}<br/>
+    <div fxFlex="94" *ngIf="langue==='arabe'" dir="rtl" margin-top="10">
+      <strong style="color: #0f7ec0 ">{{tabLangue.titreAct}}: </strong> {{LP.getacte()}}<br/>
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreChi}}:</strong> {{LP.getchirurgien()}}<br/>
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreDateAct}}: </strong>{{LP.getdateacte()}}<br/>
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreHeureDeb}}:</strong> {{LP.getheureDebut()}}
+      <strong style="color: #0f7ec0 "> {{tabLangue.titreHeureF}}:</strong> {{LP.getheureFin()}}<br/>
 
-      <strong style="color: #0f7ec0"> KC:</strong> {{LP.getkc()}}<br/>
+      <strong style="color: #0f7ec0 "> KC:</strong> {{LP.getkc()}}<br/>
 
     </div>
 
   </div>
 
 
- </ion-content>
+</ion-content>

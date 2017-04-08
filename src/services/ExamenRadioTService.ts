@@ -52,20 +52,11 @@ export class ExamenRadioTService {
             var ex;
             for (var i = 0; i < result.rows.length; i++) {
               ex = new ExamenRadio();
-              ex.setcodeExamen(result.rows.item(i).codeExamen);
               ex.setcompterendu(result.rows.item(i).compterendu);
               ex.setdateExamen(result.rows.item(i).dateExamen);
-              ex.setdatePrevu(result.rows.item(i).datePrevu);
-              ex.setdate_RDV(result.rows.item(i).date_RDV);
               ex.setdesignationExamen(result.rows.item(i).designationExamen);
-              ex.setheurePrevu(result.rows.item(i).heurePrevu);
-              ex.setidres(result.rows.item(i).idres);
-              ex.setmedecin(result.rows.item(i).medecin);
-              ex.setnature(result.rows.item(i).nature);
               ex.setnumeroDossier(result.rows.item(i).numeroDossier);
-              ex.setnumeroExamen(result.rows.item(i).numeroExamen);
               ex.setobserv(result.rows.item(i).observ);
-              ex.setresultat(result.rows.item(i).resultat);
               this.examenRadio.push(ex);
             }
           }
@@ -90,22 +81,12 @@ export class ExamenRadioTService {
           continue;
         }
         let examenRadio = examenRadios[key];
-        db.executeSql('insert into ExamenRadioT (codeExamen,compterendu ,dateExamen ' +
-          ',datePrevu, date_RDV,designationExamen,heurePrevu,idres,medecin,nature,numeroDossier,numeroExamen,observ,resultat,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
-          examenRadio.getcodeExamen(),
+        db.executeSql('insert into ExamenRadioT (compterendu,dateExamen,designationExamen,numeroDossier,observ,codeClinique) values (?,?,?,?,?,?)', [
           examenRadio.getcompterendu(),
           examenRadio.getdateExamen(),
-          examenRadio.getdatePrevu(),
-          examenRadio.getdate_RDV(),
           examenRadio.getdesignationExamen(),
-          examenRadio.getheurePrevu(),
-          examenRadio.getidres(),
-          examenRadio.getmedecin(),
-          examenRadio.getnature(),
           examenRadio.getnumeroDossier(),
-          examenRadio.getnumeroExamen(),
           examenRadio.getobserv(),
-          examenRadio.getresultat(),
           codeClinique
         ]);
       }

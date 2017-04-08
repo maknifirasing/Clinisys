@@ -11,8 +11,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, Platform } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
 import { Document } from "../../models/Document";
-import { HistDossier } from "../../models/HistDossier";
-import { HistDossierService } from "../../services/HistDossierService";
 import { File, Transfer } from 'ionic-native';
 import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 import { DocumentService } from "../../services/DocumentService";
@@ -35,8 +33,6 @@ var ExamenRadioPage = (function () {
         this.examenRT = [];
         this.examenRF = [];
         this.document = [];
-        this.histD = [];
-        this.histd = new HistDossier();
         this.storageDirectory = '';
         this.histDoc = [];
         this.histdoc = new HistDoc();
@@ -55,7 +51,7 @@ var ExamenRadioPage = (function () {
                 _this.connection = true;
             }
         });
-        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
+        this.histd = DossierPage.hist;
     }
     ExamenRadioPage.prototype.ionViewDidLoad = function () {
     };
@@ -105,13 +101,6 @@ var ExamenRadioPage = (function () {
                     _this.retrieveImage(_this.url, d);
                 }
             });
-        });
-    };
-    ExamenRadioPage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
-        var _this = this;
-        this.histserv = new HistDossierService();
-        this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(function (res) {
-            _this.histd = res.getdate();
         });
     };
     ExamenRadioPage.prototype.open = function (url) {

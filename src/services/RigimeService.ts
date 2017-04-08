@@ -51,7 +51,6 @@ export class RigimeService {
             var r;
             for (var i = 0; i < result.rows.length; i++) {
               r = new Rigime();
-              r.setcodeRegime(result.rows.item(0).codeRegime);
               r.setdesignation(result.rows.item(0).designation);
               this.rigime.push(r);
             }
@@ -77,9 +76,8 @@ export class RigimeService {
           continue;
         }
         let rigime = rigimes[key];
-        db.executeSql('insert into Rigime (codeRegime, designation ,numdoss ' +
-          ',datefeuille, nature,codeClinique) values (?,?,?,?,?,?)', [
-          rigime.getcodeRegime(),
+        db.executeSql('insert into Rigime (designation ,numdoss ' +
+          ',datefeuille, nature,codeClinique) values (?,?,?,?,?)', [
           rigime.getdesignation(),
           numdoss,
           datefeuille,

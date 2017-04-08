@@ -52,22 +52,11 @@ export class motifHospitalisationService {
             var m;
             for (var i = 0; i < result.rows.length; i++) {
               m = new MotifHospitalisation();
-              m.setconclusion(result.rows.item(0).conclusion);
-              m.setdateRdv(result.rows.item(0).dateRdv);
-              m.setdateSortie(result.rows.item(0).dateSortie);
               m.setgroupeSang(result.rows.item(0).groupeSang);
-              m.setheureRdv(result.rows.item(0).heureRdv);
-              m.setheureSortie(result.rows.item(0).heureSortie);
-              m.sethistoiremaladie(result.rows.item(0).histoiremaladie);
               m.setmotifhospitalisation(result.rows.item(0).motifhospitalisation);
               m.setnumdoss(result.rows.item(0).numdoss);
-              m.setobservationSejour(result.rows.item(0).observationSejour);
               m.setpoid(result.rows.item(0).poid);
               m.settaille(result.rows.item(0).taille);
-              m.settraitementHabituelle(result.rows.item(0).traitementHabituelle);
-              m.settraitementSejour(result.rows.item(0).traitementSejour);
-              m.settraitementSortie(result.rows.item(0).traitementSortie);
-              m.setutilisateurMotif(result.rows.item(0).utilisateurMotif);
               this.motifhospitalisation.push(m);
             }
           }
@@ -92,25 +81,13 @@ export class motifHospitalisationService {
           continue;
         }
         let motifhospitalisation = motifhospitalisations[key];
-        db.executeSql('insert into motifHospitalisation (conclusion ,dateRdv ,dateSortie' +
-          ',groupeSang ,heureRdv, heureSortie ,histoiremaladie ,motifhospitalisation ,numdoss ,observationSejour ,poid ,taille ,traitementHabituelle ,traitementSejour ,traitementSortie ,utilisateurMotif,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
-
-          motifhospitalisation.getconclusion(),
-          motifhospitalisation.getdateRdv(),
-          motifhospitalisation.getdateSortie(),
+        db.executeSql('insert into motifHospitalisation (groupeSang ,motifhospitalisation ,numdoss ,poid ,taille ,codeClinique)' +
+          ' values (?,?,?,?,?,?)', [
           motifhospitalisation.getgroupeSang(),
-          motifhospitalisation.getheureRdv(),
-          motifhospitalisation.getheureSortie(),
-          motifhospitalisation.gethistoiremaladie(),
           motifhospitalisation.getmotifhospitalisation(),
           motifhospitalisation.getnumdoss(),
-          motifhospitalisation.getobservationSejour(),
           motifhospitalisation.getpoid(),
           motifhospitalisation.gettaille(),
-          motifhospitalisation.gettraitementHabituelle(),
-          motifhospitalisation.gettraitementSejour(),
-          motifhospitalisation.gettraitementSortie(),
-          motifhospitalisation.getutilisateurMotif(),
           codeClinique
         ]);
       }
