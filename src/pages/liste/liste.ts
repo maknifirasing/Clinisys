@@ -13,6 +13,9 @@ import {LanguesPage} from "../langues/langues";
 import {MenuController} from 'ionic-angular';
 import {MdMenuTrigger} from "@angular/material";
 import {ListeCliniquePage} from "../liste-clinique/liste-clinique";
+import {ModifPassPage} from "../modif-pass/modif-pass";
+import {LangueService} from "../../services/LangueService";
+import {Langue} from "../../models/Langue";
 @Component({
   selector: 'page-liste',
   templateUrl: 'liste.html',
@@ -36,6 +39,8 @@ export class ListePage {
   nomClinique: string;
   private userserv: any;
   langue: any;
+  private langserv: any;
+  langes: Array<Langue> = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public menuCtrl: MenuController, public platform: Platform) {
     this.dtFeuille = new DateFeuille();
@@ -298,6 +303,17 @@ export class ListePage {
 
   changerlangue() {
     this.navCtrl.setRoot(LanguesPage);
+  }
+  changerPassword() {
+    this.langserv = new LangueService();
+    this.langserv.getLangues(this.langes).then(lg => {
+      this.navCtrl.setRoot(ModifPassPage, {
+        tabLangue: this.tabLangue,
+        langue: this.langue,
+        codeClinique: lg.getcodeClinique(),
+        nomClinique: lg.getmatricule()
+      });
+    });
   }
 
   openListeCliniquePage() {

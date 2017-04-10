@@ -201,7 +201,7 @@ export class Variables {
   static uRL = "";
 
   constructor(public http: Http, public navCtrl: NavController) {
-    this.url = "http://192.168.0.56:8084/";
+    this.url = "http://192.168.0.63:8084/";
     Variables.uRL = this.url;
   }
 

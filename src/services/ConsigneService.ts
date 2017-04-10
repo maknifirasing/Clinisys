@@ -103,22 +103,27 @@ export class ConsigneService {
     db.close();
   }
 
-  public deleteConsignes(numeroDossier, codeClinique, typeget, etatget) {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("delete from Consigne where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'and typeget like '" + typeget + "'and etatget like '" + etatget + "'", [])
-        .then(() => {
-          //   alert("Suppression de table Traitement est terminé avec succes");
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 Consigne  ' + error);
-        })
+  public deleteConsignes(numeroDossier, codeClinique, typeget, etatget) : Promise<boolean> {
+    return new Promise<boolean>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("delete from Consigne where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'and typeget like '" + typeget + "'and etatget like '" + etatget + "'", [])
+          .then(() => {
+            resolve(true);
+            return true;
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 3 Consigne  ' + error);
+            resolve(false);
+            return false;
+          })
+      });
+      db.close();
+      return this.consigne;
     });
-    db.close();
-    return this.consigne;
   }
 }

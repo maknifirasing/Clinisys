@@ -1,0 +1,133 @@
+ios, .md {
+  page-modif-pass {
+    .scroll-content {
+
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    img {
+      width: 50%;
+      height: auto;
+      margin: 0 auto;
+    }
+
+    #cloud-layer {
+      background-color: white;
+      background-size: cover;
+      width: 100%;
+      height: 100%;
+    }
+
+    ion-row {
+      align-items: center;
+      text-align: center;
+    }
+
+    .ion-item {
+      border-radius: 30px !important;
+      padding-left: 10px !important;
+      margin-bottom: 10px;
+      background-color: #f6f6f6;
+      opacity: 0.7;
+      font-size: 0.9em;
+    }
+
+    ion-list {
+      margin: 0;
+    }
+
+    .login-button {
+      width: 100%;
+      border-radius: 30px;
+      font-size: 0.9em;
+      border: 1px solid #fff;
+      background-color: #39acdc;
+    }
+
+  @charset "UTF-8";
+
+    /*!
+     * animate.css -http://daneden.me/animate
+     * Version - 3.5.1
+     * Licensed under the MIT license - http://opensource.org/licenses/MIT
+     *
+     * Copyright (c) 2016 Daniel Eden
+     */
+
+    .animated {
+      -webkit-animation-duration: 1s;
+      animation-duration: 1s;
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+    }
+
+    @-webkit-keyframes fadeInUp {
+      from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+      }
+
+      to {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+      }
+
+      to {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+      }
+    }
+
+    .fadeInUp {
+      -webkit-animation-name: fadeInUp;
+      animation-name: fadeInUp;
+    }
+
+    @-webkit-keyframes fadeInUpBig {
+      from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 2000px, 0);
+        transform: translate3d(0, 2000px, 0);
+      }
+
+      to {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+      }
+    }
+
+    @keyframes fadeInUpBig {
+      from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 2000px, 0);
+        transform: translate3d(0, 2000px, 0);
+      }
+
+      to {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+      }
+    }
+
+    .fadeInUpBig {
+      -webkit-animation-name: fadeInUpBig;
+      animation-name: fadeInUpBig;
+    }
+
+  }
+}
