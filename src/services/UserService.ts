@@ -7,8 +7,6 @@ export class UserService {
   constructor() {
   }
 
-//verifUser(): Promise<boolean> {
-//  verifUser(codeClinique, userName, passWord): Promise<boolean> {
   verifUser(codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
       let db = new SQLite();
@@ -17,8 +15,6 @@ export class UserService {
         location: 'default' // the location field is required
       }).then(() => {
         db.executeSql("select count(*) as sum from Users where codeClinique like '" + codeClinique + "'", []).then(result => {
-          //    db.executeSql("select count(*) as sum from Users where userName like '" + userName + "' and passWord like '" + passWord + "'and codeClinique like '" + codeClinique + "'", []).then(result => {
-          //   db.executeSql("select count(*) as sum from Users ", []).then(result => {
           if (result.rows.item(0).sum > 0) {
             resolve(true);
             return true;
@@ -42,7 +38,7 @@ export class UserService {
 
   }
 
-  public getUser(users: any, codeClinique) {
+  public getUser(users: any, codeClinique): Promise<Users> {
     return new Promise<Users>(resolve => {
       let db = new SQLite();
       db.openDatabase({
@@ -101,24 +97,27 @@ export class UserService {
     db.close();
   }
 
-
-  public deleteUsers(codeClinique) {
-
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("delete from Users where codeClinique like '" + codeClinique + "'", [])
-        .then(() => {
-          //     alert("Suppression de table User est terminé avec succes");
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 User  ' + error);
-        })
+  public deleteUsers(codeClinique): Promise<boolean> {
+    return new Promise<boolean>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("delete from Users where codeClinique like '" + codeClinique + "'", [])
+          .then(() => {
+            resolve(true);
+            return true;
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 3 User  ' + error);
+            resolve(false);
+            return false;
+          })
+      });
+      db.close();
+      return this;
     });
-    db.close();
-    return this.users;
   }
 }
