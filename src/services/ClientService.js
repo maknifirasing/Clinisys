@@ -2,7 +2,6 @@ import { SQLite } from 'ionic-native';
 import { Client } from "../models/Client";
 var ClientService = (function () {
     function ClientService() {
-        this.client = [];
     }
     ClientService.prototype.verifClient = function (clients, numdoss, codeClinique) {
         var _this = this;
@@ -36,67 +35,64 @@ var ClientService = (function () {
     };
     ClientService.prototype.getClients = function (clients, numdoss, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("select * from Client where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
-                .then(function (result) {
-                if (result.rows.length === 0) {
-                    _this._insertClients(clients);
-                }
-                else {
-                    var c;
-                    for (var i = 0; i < result.rows.length; i++) {
-                        c = new Client();
-                        c.setadrCli(result.rows.item(i).adrCli);
-                        c.setdatNai(result.rows.item(i).datNai);
-                        c.setlibNat(result.rows.item(i).libNat);
-                        c.setnumTel(result.rows.item(i).numTel);
-                        c.setetage(result.rows.item(i).etage);
-                        c.setnumCha(result.rows.item(i).numCha);
-                        c.setnumdoss(result.rows.item(i).numdoss);
-                        c.setidentifiant(result.rows.item(i).identifiant);
-                        c.setcodeClinique(result.rows.item(i).codeClinique);
-                        c.setdateArr(result.rows.item(i).dateArr);
-                        _this.client.push(c);
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                db.executeSql("select * from Client where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
+                    .then(function (result) {
+                    if (result.rows.length === 0) {
+                        _this._insertClients(clients);
                     }
-                }
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 client  ' + error);
+                    else {
+                        var c;
+                        //       for (var i = 0; i < result.rows.length; i++) {
+                        c = new Client();
+                        c.setadrCli(result.rows.item(0).adrCli);
+                        c.setdatNai(result.rows.item(0).datNai);
+                        c.setlibNat(result.rows.item(0).libNat);
+                        c.setnumTel(result.rows.item(0).numTel);
+                        c.setetage(result.rows.item(0).etage);
+                        c.setnumCha(result.rows.item(0).numCha);
+                        c.setnumdoss(result.rows.item(0).numdoss);
+                        c.setidentifiant(result.rows.item(0).identifiant);
+                        c.setcodeClinique(result.rows.item(0).codeClinique);
+                        c.setdateArr(result.rows.item(0).dateArr);
+                        resolve(c);
+                        return c;
+                        //     }
+                    }
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    alert('Error 1 client  ' + error);
+                });
             });
+            db.close();
+            return _this;
         });
-        db.close();
-        return this.client;
     };
-    ClientService.prototype._insertClients = function (clients) {
+    ClientService.prototype._insertClients = function (client) {
         var db = new SQLite();
         db.openDatabase({
             name: 'clinisys.db',
             location: 'default' // the location field is required
         }).then(function () {
-            for (var key in clients) {
-                if (!clients.hasOwnProperty(key)) {
-                    continue;
-                }
-                var client = clients[key];
-                db.executeSql('insert into Client (adrCli,datNai,libNat' +
-                    ',numTel,etage,numCha,numdoss,identifiant,codeClinique,dateArr) values (?,?,?,?,?,?,?,?,?,?)', [
-                    client.getadrCli(),
-                    client.getdatNai(),
-                    client.getlibNat(),
-                    client.getnumTel(),
-                    client.getetage(),
-                    client.getnumCha(),
-                    client.getnumdoss(),
-                    client.getidentifiant(),
-                    client.getcodeClinique(),
-                    client.getdateArr()
-                ]);
-            }
+            db.executeSql('insert into Client (adrCli,datNai,libNat' +
+                ',numTel,etage,numCha,numdoss,identifiant,codeClinique,dateArr) values (?,?,?,?,?,?,?,?,?,?)', [
+                client.getadrCli(),
+                client.getdatNai(),
+                client.getlibNat(),
+                client.getnumTel(),
+                client.getetage(),
+                client.getnumCha(),
+                client.getnumdoss(),
+                client.getidentifiant(),
+                client.getcodeClinique(),
+                client.getdateArr()
+            ]);
         }).catch(function (error) {
             console.error('Error opening database', error);
             alert('Error 2 client ' + error);

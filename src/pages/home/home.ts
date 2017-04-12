@@ -23,6 +23,7 @@ export class HomePage {
   codeClinique: string;
   langue: any;
   nomClinique: string;
+  url: string;
   langserv: any;
   langes: Array<Langue> = [];
 
@@ -31,13 +32,14 @@ export class HomePage {
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
     this.nomClinique = navParams.get("nomClinique");
+    this.url = navParams.get("url");
 
   }
 
   connecter(userName, passWord) {
     try {
       var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+      xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
       var sr =
         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
         '<soapenv:Header/>' +
@@ -76,6 +78,7 @@ export class HomePage {
                   l.setmatricule(user.getmatricule());
                   l.setcodeClinique(this.codeClinique);
                   l.setnomClinique(this.nomClinique);
+                  l.seturl(this.url);
                   this.langes.push(l);
                   if (result === true) {
                     this.langserv.getLangues(this.langes).then(lg => {

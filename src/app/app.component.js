@@ -30,7 +30,8 @@ var MyApp = (function () {
                 db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeLabo(codeClinique VARCHAR(32),numDoss VARCHAR(32),LabosT VARCHAR(32),Labos VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeRadio(codeClinique VARCHAR(32),numDoss VARCHAR(32),RadioT VARCHAR(32),Radio VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeActe(codeClinique VARCHAR(32),numDoss VARCHAR(32),ActeT VARCHAR(32),Acte VARCHAR(32))', {});
-                db.executeSql('CREATE TABLE IF NOT EXISTS Clinique(code VARCHAR(32),nom VARCHAR(32))', {});
+                db.executeSql('CREATE TABLE IF NOT EXISTS Cliniqueactive(code VARCHAR(32),nom VARCHAR(32))', {});
+                db.executeSql('CREATE TABLE IF NOT EXISTS Cliniqueautre(code VARCHAR(32),nom VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS HistPatient(user VARCHAR(32),searchText VARCHAR(32),etage VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS HistDossier(numDoss VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS HistSigneCourbe(numDoss VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32))', {});
@@ -42,31 +43,28 @@ var MyApp = (function () {
                     'prenom VARCHAR(32),dateNaiss VARCHAR(32),medecin VARCHAR(32),spec VARCHAR(32),etat VARCHAR (32),age NUMERIC(10),' +
                     'img VARCHAR(32),nature VARCHAR(32),user VARCHAR(32),searchText VARCHAR(32),etage VARCHAR(32),codeClinique VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS DateFeuille(datefeuille VARCHAR(32),codeClinique VARCHAR(32))', {});
-                db.executeSql('CREATE TABLE IF NOT EXISTS Traitement(codePosologie VARCHAR(32),date VARCHAR(32),dateFinTrait VARCHAR(32),' +
-                    'dci VARCHAR(32),designation VARCHAR(32),dureEnJour NUMERIC(10),heure VARCHAR(32),heureDebut VARCHAR(32),jour NUMERIC(10),nbFois NUMERIC(10),' +
-                    'numDoss VARCHAR(32),numTraitement VARCHAR(32),numbon VARCHAR(32),posologie VARCHAR(32),prescripteur VARCHAR(32),quantite VARCHAR(32),' +
-                    'unite VARCHAR(32),vitesse VARCHAR(32),voie VARCHAR(32),volume VARCHAR(32),datefeuille VARCHAR(32),codeClinique VARCHAR(32))', {});
-                db.executeSql('CREATE TABLE IF NOT EXISTS SigneCliniqueAlert(date VARCHAR(32),designation VARCHAR(32),' +
+                db.executeSql('CREATE TABLE IF NOT EXISTS Traitement(numDoss VARCHAR(32),designation VARCHAR(32),jour NUMERIC(10),posologie VARCHAR(32),datefeuille VARCHAR(32),codeClinique VARCHAR(32))', {});
+                db.executeSql('CREATE TABLE IF NOT EXISTS SigneCliniqueAlert(codeType VARCHAR(32),date VARCHAR(32),designation VARCHAR(32),' +
                     'quantite VARCHAR(32),numDoss VARCHAR(32),dateFeuille VARCHAR(32),nature VARCHAR(32),codeClinique VARCHAR(32))', {});
-                db.executeSql('CREATE TABLE IF NOT EXISTS SigneCliniqueEnt(date VARCHAR(32),designation VARCHAR(32),' +
+                db.executeSql('CREATE TABLE IF NOT EXISTS SigneCliniqueEnt(codeType VARCHAR(32),date VARCHAR(32),designation VARCHAR(32),' +
                     'quantite VARCHAR(32),numDoss VARCHAR(32),dateFeuille VARCHAR(32),nature VARCHAR(32),codetypeof VARCHAR(32),codeClinique VARCHAR(32))', {});
-                db.executeSql('CREATE TABLE IF NOT EXISTS SigneCliniqueSig(date VARCHAR(32),designation VARCHAR(32),' +
+                db.executeSql('CREATE TABLE IF NOT EXISTS SigneCliniqueSig(codeType VARCHAR(32),date VARCHAR(32),designation VARCHAR(32),' +
                     'quantite VARCHAR(32),numDoss VARCHAR(32),dateFeuille VARCHAR(32),nature VARCHAR(32),codetypeof VARCHAR(32),codeClinique VARCHAR(32))', {});
-                db.executeSql('CREATE TABLE IF NOT EXISTS SigneCliniqueSor(date VARCHAR(32),designation VARCHAR(32),' +
+                db.executeSql('CREATE TABLE IF NOT EXISTS SigneCliniqueSor(codeType VARCHAR(32),date VARCHAR(32),designation VARCHAR(32),' +
                     'quantite VARCHAR(32),numDoss VARCHAR(32),dateFeuille VARCHAR(32),nature VARCHAR(32),codetypeof VARCHAR(32),codeClinique VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS Alegc(idpass VARCHAR(32),ch VARCHAR(32),codeClinique VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS Antech(idpass VARCHAR(32),ch VARCHAR(32),codeClinique VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS motifHospitalisation(groupeSang VARCHAR(32),motifhospitalisation VARCHAR(32),' +
                     'numdoss VARCHAR(32),poid VARCHAR(32),taille VARCHAR(32),codeClinique VARCHAR(32))', {});
-                db.executeSql('CREATE TABLE IF NOT EXISTS EvenementCon(access NUMERIC(10),code VARCHAR(32),evenements VARCHAR(32)' +
-                    ',orderEvenement NUMERIC(10),visible VARCHAR(32),date VARCHAR(32),detail VARCHAR(32),IDEvenement NUMERIC(10),numdoss VARCHAR(32),userCreat VARCHAR(32),codeClinique VARCHAR(32))', {});
-                db.executeSql('CREATE TABLE IF NOT EXISTS EvenementEvo(access NUMERIC(10),code VARCHAR(32),evenements VARCHAR(32)' +
-                    ',orderEvenement NUMERIC(10),visible VARCHAR(32),date VARCHAR(32),detail VARCHAR(32),IDEvenement NUMERIC(10),numdoss VARCHAR(32),userCreat VARCHAR(32),codeClinique VARCHAR(32))', {});
-                db.executeSql('CREATE TABLE IF NOT EXISTS EvenementExa(access NUMERIC(10),code VARCHAR(32),evenements VARCHAR(32)' +
-                    ',orderEvenement NUMERIC(10),visible VARCHAR(32),date VARCHAR(32),detail VARCHAR(32),IDEvenement NUMERIC(10),numdoss VARCHAR(32),userCreat VARCHAR(32),codeClinique VARCHAR(32))', {});
-                db.executeSql('CREATE TABLE IF NOT EXISTS EvenementHis(access NUMERIC(10),code VARCHAR(32),evenements VARCHAR(32)' +
-                    ',orderEvenement NUMERIC(10),visible VARCHAR(32),date VARCHAR(32),detail VARCHAR(32),IDEvenement NUMERIC(10),numdoss VARCHAR(32),userCreat VARCHAR(32),codeClinique VARCHAR(32))', {});
-                db.executeSql('CREATE TABLE IF NOT EXISTS Rigime(codeRegime NUMERIC(10),designation VARCHAR(32),numdoss VARCHAR(32)' +
+                db.executeSql('CREATE TABLE IF NOT EXISTS EvenementCon(evenements VARCHAR(32)' +
+                    ',date VARCHAR(32),detail VARCHAR(32),numdoss VARCHAR(32),userCreat VARCHAR(32),codeClinique VARCHAR(32))', {});
+                db.executeSql('CREATE TABLE IF NOT EXISTS EvenementEvo(evenements VARCHAR(32)' +
+                    ',date VARCHAR(32),detail VARCHAR(32),numdoss VARCHAR(32),userCreat VARCHAR(32),codeClinique VARCHAR(32))', {});
+                db.executeSql('CREATE TABLE IF NOT EXISTS EvenementExa(evenements VARCHAR(32)' +
+                    ',date VARCHAR(32),detail VARCHAR(32),numdoss VARCHAR(32),userCreat VARCHAR(32),codeClinique VARCHAR(32))', {});
+                db.executeSql('CREATE TABLE IF NOT EXISTS EvenementHis(evenements VARCHAR(32)' +
+                    ',date VARCHAR(32),detail VARCHAR(32),numdoss VARCHAR(32),userCreat VARCHAR(32),codeClinique VARCHAR(32))', {});
+                db.executeSql('CREATE TABLE IF NOT EXISTS Rigime(designation VARCHAR(32),numdoss VARCHAR(32)' +
                     ',datefeuille NUMERIC(10),nature VARCHAR(32),codeClinique VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS ExamenRadioT(compterendu VARCHAR(32),dateExamen VARCHAR(32),designationExamen VARCHAR(32),numeroDossier VARCHAR(32),observ VARCHAR(32),codeClinique VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS ExamenRadioF(compterendu VARCHAR(32),dateExamen VARCHAR(32),designationExamen VARCHAR(32),numeroDossier VARCHAR(32),observ VARCHAR(32),codeClinique VARCHAR(32))', {});
@@ -101,35 +99,34 @@ var MyApp = (function () {
                 alert('Error opening database  ' + error);
             });
             /*
-             this.langserv = new LangueService();
-             this.langserv.verifLangue().then(res => {
-             if (res === true) {
-             this.langserv.getLangues(this.langes).then(lang => {
-             this.codeClinique = lang.getcodeClinique();
-             this.nomClinique = lang.getnomClinique();
-             this.langue = lang.getlangue();
-             if (this.langue === "arabe") {
-             this.tabLangue = Variables.arabe;
-             }
-             else if (this.langue === "francais") {
-             this.tabLangue = Variables.francais;
-             }
-             else if (this.langue === "anglais") {
-             this.tabLangue = Variables.anglais;
-             }
-             this.nav.setRoot(ListePage, {
-             tabLangue: this.tabLangue,
-             langue: this.langue,
-             codeClinique: this.codeClinique,
-             nomClinique: this.nomClinique
-             });
-             });
-             } else {
-             this.nav.setRoot(LanguesPage);
-             }
-             });
-             */
-            _this.nav.setRoot(LanguesPage);
+                   this.langserv = new LangueService();
+                   this.langserv.verifLangue().then(res => {
+                   if (res === true) {
+                   this.langserv.getLangues(this.langes).then(lang => {
+                   this.codeClinique = lang.getcodeClinique();
+                   this.nomClinique = lang.getnomClinique();
+                   this.langue = lang.getlangue();
+                   if (this.langue === "arabe") {
+                   this.tabLangue = Variables.arabe;
+                   }
+                   else if (this.langue === "francais") {
+                   this.tabLangue = Variables.francais;
+                   }
+                   else if (this.langue === "anglais") {
+                   this.tabLangue = Variables.anglais;
+                   }
+                   this.nav.setRoot(ListePage, {
+                   tabLangue: this.tabLangue,
+                   langue: this.langue,
+                   codeClinique: this.codeClinique,
+                   nomClinique: this.nomClinique
+                   });
+                   });
+                   } else {
+                   this.nav.setRoot(LanguesPage);
+                   }
+                   });
+            */ _this.nav.setRoot(LanguesPage);
             StatusBar.styleDefault();
             Splashscreen.hide();
         });

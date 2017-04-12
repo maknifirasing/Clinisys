@@ -1,6 +1,7 @@
 export class Clinique {
   private _code: string;
   private _nom: string;
+  private _url: string;
 
   constructor() {
   }
@@ -21,4 +22,11 @@ export class Clinique {
     this._nom = value;
   }
 
+  geturl(): string {
+    return this._url;
+  }
+
+  seturl(value: string) {
+    this._url = value;
+  }
 }

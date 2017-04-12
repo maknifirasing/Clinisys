@@ -207,6 +207,17 @@ var TraitmentCourbe = (function () {
                  text: 'Custom Chart Title'
                  },
                  */
+                elements: {
+                    rectangle: {
+                        borderWidth: 0,
+                        borderColor: 'rgb(0, 255, 0)',
+                        borderSkipped: 'bottom'
+                    }
+                },
+                zoom: {
+                    enabled: true,
+                    mode: 'x'
+                },
                 scaleOverride: true,
                 scaleSteps: 10,
                 scaleStepWidth: 20,
@@ -263,8 +274,7 @@ var TraitmentCourbe = (function () {
                             }
                         });
                     }
-                },
-                zoom: true
+                }
             }
         });
     };

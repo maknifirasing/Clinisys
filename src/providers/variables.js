@@ -16,7 +16,7 @@ var Variables = Variables_1 = (function () {
         this.http = http;
         this.navCtrl = navCtrl;
         this.url = "";
-        this.url = "http://192.168.0.56:8084/";
+        this.url = "http://192.168.0.63:8084/";
         Variables_1.uRL = this.url;
     }
     Variables.checconnection = function () {
@@ -33,7 +33,7 @@ var Variables = Variables_1 = (function () {
             states[Connection.CELL] = 'Cell generic connection';
             states[Connection.NONE] = 'No network connection';
             if (states[networkState] !== "No network connection") {
-                Variables_1.checservice().then(function (res) {
+                Variables_1.checservice(Variables_1.uRL).then(function (res) {
                     if (res === false) {
                         resolve(false);
                         return false;
@@ -51,11 +51,11 @@ var Variables = Variables_1 = (function () {
             return _this;
         });
     };
-    Variables.checservice = function () {
+    Variables.checservice = function (url) {
         var _this = this;
         return new Promise(function (resolve) {
             var xhr = new XMLHttpRequest();
-            var file = Variables_1.uRL;
+            var file = url;
             xhr.timeout = 200;
             xhr.open('HEAD', file, true);
             xhr.send();
@@ -154,7 +154,12 @@ Variables.arabe = {
     titreGroupeSanguim: "فصيلة الدم",
     titrePoid: "الوزن",
     titreTaille: "الحجم",
-    titreecrireICI: "أكتب هنا ..."
+    titreecrireICI: "أكتب هنا ...",
+    titreancienm2p: "كلمة السر القديمة",
+    titrenvm2p: "كلمة المرور الجديدة",
+    titreconfirmerm2p: " أكد الكلمة",
+    titreconfirmerbtn: "تأكيد",
+    titreAutreCliniques: "عيادات أخرى"
 };
 Variables.francais = {
     titreSync: "Synchroniser",
@@ -216,7 +221,12 @@ Variables.francais = {
     titreGroupeSanguim: "Groupe Sanguim",
     titrePoid: "Poids",
     titreTaille: "Taille",
-    titreecrireICI: "Ecrire ici ..."
+    titreecrireICI: "Ecrire ici ...",
+    titreancienm2p: "Ancien Mot de passe",
+    titrenvm2p: "Nouveau mot de passe",
+    titreconfirmerm2p: "Confirmé Mot de passe",
+    titreconfirmerbtn: "Confirmer",
+    titreAutreCliniques: "Autre Cliniques"
 };
 Variables.anglais = {
     titreSync: "Synchronize",
@@ -278,7 +288,12 @@ Variables.anglais = {
     titreGroupeSanguim: "Blood group",
     titrePoid: "Weight",
     titreTaille: "Size",
-    titreecrireICI: "Write Here ..."
+    titreecrireICI: "Write Here ...",
+    titreancienm2p: "Old password",
+    titrenvm2p: "New Password",
+    titreconfirmerm2p: "Confirmed Password",
+    titreconfirmerbtn: "To confirm",
+    titreAutreCliniques: "Other Clinics"
 };
 Variables.uRL = "";
 Variables = Variables_1 = __decorate([

@@ -12,7 +12,9 @@ import { NavController, NavParams, Platform, ViewController } from 'ionic-angula
 import { Variables } from "../../providers/variables";
 import { Clinique } from "../../models/Clinique";
 import { HomePage } from "../home/home";
-import { CliniqueService } from "../../services/CliniqueService";
+import { UserService } from "../../services/UserService";
+import { CliniqueActService } from "../../services/CliniqueActService";
+import { CliniqueAutService } from "../../services/CliniqueAutService";
 var ListeCliniquePage = (function () {
     function ListeCliniquePage(navCtrl, navParams, Url, viewCtrl, platform) {
         var _this = this;
@@ -21,7 +23,8 @@ var ListeCliniquePage = (function () {
         this.Url = Url;
         this.viewCtrl = viewCtrl;
         this.platform = platform;
-        this.clinique = [];
+        this.cliniqueact = [];
+        this.cliniqueaut = [];
         this.users = [];
         this.langes = [];
         this.viewCtrl.showBackButton(false);
@@ -31,7 +34,7 @@ var ListeCliniquePage = (function () {
             Variables.checconnection().then(function (connexion) {
                 if (connexion === false) {
                     _this.connection = false;
-                    _this.ListCliniqueOff(_this.clinique);
+                    _this.ListCliniqueOff(_this.cliniqueact, _this.cliniqueaut);
                 }
                 else {
                     _this.connection = true;
@@ -42,6 +45,8 @@ var ListeCliniquePage = (function () {
     }
     ListeCliniquePage.prototype.ListClinique = function () {
         var _this = this;
+        this.userserv = new UserService();
+        this.test = false;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
@@ -60,10 +65,21 @@ var ListeCliniquePage = (function () {
                         _this.c = new Clinique();
                         _this.c.setcode(x[i].children[0].textContent);
                         _this.c.setnom(x[i].children[2].textContent);
-                        _this.clinique.push(_this.c);
+                        console.log(_this.verif(_this.c.getcode()));
+                        if (_this.verif(_this.c.getcode()) === true) {
+                            _this.cliniqueact.push(_this.c);
+                        }
+                        else {
+                            _this.cliniqueaut.push(_this.c);
+                        }
                     }
-                    _this.clinserv = new CliniqueService();
-                    _this.clinserv.getCliniques(_this.clinique);
+                    if (_this.cliniqueact.length > 0) {
+                        _this.test = true;
+                    }
+                    _this.clinactserv = new CliniqueActService();
+                    _this.clinactserv.getCliniques(_this.cliniqueact);
+                    _this.clinautserv = new CliniqueAutService();
+                    _this.clinautserv.getCliniques(_this.cliniqueaut);
                 }
             }
         };
@@ -71,50 +87,68 @@ var ListeCliniquePage = (function () {
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };
-    ListeCliniquePage.prototype.ListCliniqueOff = function (cliniques) {
-        this.clinserv = new CliniqueService();
-        this.clinique = this.clinserv.getCliniques(cliniques);
+    ListeCliniquePage.prototype.verif = function (code) {
+        this.userserv = new UserService();
+        this.userserv.verifUser(code).then(function (resolve) {
+            return resolve;
+        });
+    };
+    ListeCliniquePage.prototype.ListCliniqueOff = function (cliniquesact, cliniquesaut) {
+        var _this = this;
+        this.test = false;
+        this.clinactserv = new CliniqueActService();
+        this.clinactserv.getCliniques(cliniquesact).then(function (resact) {
+            _this.cliniqueact = resact;
+            if (_this.cliniqueact.length > 0) {
+                _this.test = true;
+            }
+        });
+        this.clinautserv = new CliniqueAutService();
+        this.clinautserv.getCliniques(cliniquesaut).then(function (resaut) {
+            _this.cliniqueaut = resaut;
+        });
     };
     ListeCliniquePage.prototype.goToHomePage = function (codeC) {
         /*
-            this.userserv = new UserService();
-            this.userserv.verifUser(codeC.getcode()).then(user => {
-              if (user === false) {
-                this.navCtrl.push(HomePage, {
-                  tabLangue: this.tabLangue,
-                  langue: this.langue,
-                  codeClinique: codeC.getcode(),
-                  nomClinique: codeC.getnom()
-                });
-              } else {
-                this.langserv = new LangueService();
-                this.langserv.verifLangue().then(res => {
-                  if (res === true) {
-                    this.langserv.getLangues(this.langes).then(lg => {
-                      var l = new Langue();
-                      l.setlangue(lg.getlangue());
-                      l.setmatricule(lg.getmatricule());
-                      l.setcodeClinique(codeC.getcode());
-                      l.setnomClinique(codeC.getnom());
-                      this.langes.push(l);
-                      this.langserv.deleteLangues().then(delet => {
-                        if (delet === true) {
-                          this.langserv._insertLangues(this.langes);
-                        }
-                      });
-        
-                    });
-                  }
-                  this.navCtrl.setRoot(ListePage, {
-                    tabLangue: this.tabLangue,
-                    langue: this.langue,
-                    codeClinique: codeC.getcode(),
-                    nomClinique: codeC.getnom()
-                  });
-                });
-              }
-            });
-            */
+         this.userserv = new UserService();
+         this.userserv.verifUser(codeC.getcode()).then(user => {
+         if (user === false) {
+         this.navCtrl.push(HomePage, {
+         tabLangue: this.tabLangue,
+         langue: this.langue,
+         codeClinique: codeC.getcode(),
+         nomClinique: codeC.getnom()
+         });
+         } else {
+         this.langserv = new LangueService();
+         this.langserv.verifLangue().then(res => {
+         if (res === true) {
+         this.langserv.getLangues(this.langes).then(lg => {
+         var l = new Langue();
+         l.setlangue(lg.getlangue());
+         l.setmatricule(lg.getmatricule());
+         l.setcodeClinique(codeC.getcode());
+         l.setnomClinique(codeC.getnom());
+         this.langes.push(l);
+         this.langserv.deleteLangues().then(delet => {
+         if (delet === true) {
+         this.langserv._insertLangues(this.langes);
+         }
+         });
+    
+         });
+         }
+         this.navCtrl.setRoot(ListePage, {
+         tabLangue: this.tabLangue,
+         langue: this.langue,
+         codeClinique: codeC.getcode(),
+         nomClinique: codeC.getnom()
+         });
+         });
+    
+         }
+         });
+         */
         this.navCtrl.push(HomePage, {
             tabLangue: this.tabLangue,
             langue: this.langue,

@@ -49,6 +49,7 @@ export class LanguesPage {
           l.setmatricule(lg.getmatricule());
           l.setcodeClinique(lg.getcodeClinique());
           l.setnomClinique(lg.getnomClinique());
+          l.seturl(lg.geturl());
           this.langes.push(l);
           this.langserv.deleteLangues().then(delet=>{
             if(delet===true) {

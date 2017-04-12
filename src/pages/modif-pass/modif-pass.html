@@ -9,19 +9,43 @@
     <p>{{mess}}</p>
     <p>{{err}}</p>
     <p>{{errConn}}</p>
-    <md-card class="animated fadeInUp">
-      <ion-input type="password" #passWord placeholder="{{tabLangue.mo2pass}}"
+
+    <div fxLayout="row" fxLayoutWrap class="animated fadeInUp">
+      <div fxFlex="99">
+        <ion-input type="text" #passWord placeholder="{{tabLangue.titreancienm2p}}"
+                   required="true" class=" ion-item"></ion-input>
+      </div>
+
+      <div fxFlex="99">
+        <ion-input type="password" #newpass placeholder="{{tabLangue.titrenvm2p}}"
+                   required="true" class=" ion-item"></ion-input>
+      </div>
+
+      <div fxFlex="99">
+        <ion-input type="password" #confirm placeholder="{{tabLangue.titreconfirmerm2p}}"
+                   required="true" class=" ion-item"></ion-input>
+      </div>
+
+      <div fxFlex="99">
+        <button ion-button class="login-button" (click)="connecter(passWord.value,newpass.value,confirm.value)">
+          {{tabLangue.titreconfirmerbtn}}
+        </button>
+      </div>
+    </div>
+  </div>
+  <!--  <md-card class="animated fadeInUp">
+      <ion-input type="password" #passWord placeholder="{{tabLangue.titreancienm2p}}"
                  required="true" class=" ion-item"></ion-input>
-      <ion-input type="password" #newpass placeholder="{{tabLangue.mo2pass}}"
+      <ion-input type="password" #newpass placeholder="{{tabLangue.titrenvm2p}}"
                  required="true" class=" ion-item"></ion-input>
-      <ion-input type="password" #confirm placeholder="{{tabLangue.mo2pass}}"
+      <ion-input type="password" #confirm placeholder="{{tabLangue.titreconfirmerm2p}}"
                  required="true" class=" ion-item"></ion-input>
       <button ion-button class="login-button" (click)="connecter(passWord.value,newpass.value,confirm.value)">
         {{tabLangue.login}}
       </button>
     </md-card>
+-->
 
-  </div>
   <div padding id="cloud-layer2" *ngIf="langue==='francais' || langue==='anglais'">
 
     <ion-row>
@@ -32,18 +56,44 @@
     <p>{{mess}}</p>
     <p>{{err}}</p>
     <p>{{errConn}}</p>
-    <md-card class="animated fadeInUp">
-      <ion-input type="text" #login placeholder="{{tabLangue.nomUtili}}"
+  <!--  <md-card class="animated fadeInUp">
+      <ion-input type="text" #passWord placeholder="{{tabLangue.titreancienm2p}}"
                  required="true" class=" ion-item"></ion-input>
-      <ion-input type="password" #passWord placeholder="{{tabLangue.mo2pass}}"
+      <ion-input type="password" #newpass placeholder="{{tabLangue.titrenvm2p}}"
                  required="true" class=" ion-item"></ion-input>
-      <ion-input type="password" #newpass placeholder="{{tabLangue.mo2pass}}"
+      <ion-input type="password" #confirm placeholder="{{tabLangue.titreconfirmerm2p}}"
                  required="true" class=" ion-item"></ion-input>
-      <button ion-button class="login-button" (click)="connecter(login.value,passWord.value,newpass.value)">
+      <button ion-button class="login-button" (click)="connecter(passWord.value,newpass.value,confirm.value)">
         {{tabLangue.login}}
       </button>
-    </md-card>
+    </md-card>-->
 
+
+
+
+    <div fxLayout="row" fxLayoutWrap class="animated fadeInUp">
+      <div fxFlex="99">
+        <ion-input type="text" #passWord placeholder="{{tabLangue.titreancienm2p}}"
+                   required="true" class=" ion-item"></ion-input>
+      </div>
+
+      <div fxFlex="99">
+        <ion-input type="password" #newpass placeholder="{{tabLangue.titrenvm2p}}"
+                   required="true" class=" ion-item"></ion-input>
+      </div>
+
+      <div fxFlex="99">
+        <ion-input type="password" #confirm placeholder="{{tabLangue.titreconfirmerm2p}}"
+                   required="true" class=" ion-item"></ion-input>
+      </div>
+
+      <div fxFlex="99">
+        <button ion-button class="login-button" (click)="connecter(passWord.value,newpass.value,confirm.value)">
+          {{tabLangue.titreconfirmerbtn}}
+        </button>
+      </div>
+    </div>
   </div>
+
 </ion-content>
 

@@ -12,7 +12,7 @@ import {MedecinService} from "../../services/MedecinService";
   providers: [Variables]
 })
 export class ClientDetailPage {
-  clientList: Array<Client> = [];
+  client = new Client();
   medecinList: Array<Medecin> = [];
   image: string;
   nom: string;
@@ -39,8 +39,8 @@ export class ClientDetailPage {
     Variables.checconnection().then(res => {
       if (res === false) {
         this.connection = false;
-        this.GetClientByNumDossOff(this.clientList, this.patient.getdossier());
-        this.findMedIntervenatByNumDossOff(this.medecinList,this.patient.getdossier());
+        this.GetClientByNumDossOff(this.client, this.patient.getdossier());
+        this.findMedIntervenatByNumDossOff(this.medecinList, this.patient.getdossier());
       }
       else {
         this.connection = true;
@@ -60,7 +60,7 @@ export class ClientDetailPage {
 
   GetClientByNumDoss(numDoss) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -76,29 +76,26 @@ export class ClientDetailPage {
           var xml = xmlhttp.responseXML;
           var x, i;
           x = xml.getElementsByTagName("return");
-          var client;
-          var d,d2;
+          var d, d2;
           d = new Date();
-          for (i = 0; i < x.length; i++) {
-            client = new Client();
-            client.setadrCli(x[i].children[0].textContent);
-            d = (x[i].children[3].textContent).substr(0, 9);
-            client.setdatNai(d);
-            client.setlibNat(x[i].children[67].children[1].textContent);
-            client.setnumTel(x[i].children[78].textContent);
-            client.setetage(x[i].children[83].children[0].children[3].textContent);
-            client.setnumCha(x[i].children[83].children[2].textContent);
-            client.setnumdoss(x[i].children[6].children[8].textContent);
-            client.setidentifiant(x[i].children[18].textContent);
-            d2 = (x[i].children[4].textContent).substr(0, 9);
-            client.setdateArr(d2);
-            client.setcodeClinique(this.codeClinique);
-            this.clientList.push(client);
-          }
+          this.client.setadrCli(x[0].children[0].textContent);
+          d = (x[0].children[3].textContent).substr(0, 9);
+          this.client.setdatNai(d);
+          this.client.setlibNat(x[0].children[74].children[1].textContent);
+          this.client.setnumTel(x[0].children[85].textContent);
+          this.client.setetage(x[0].children[83].children[0].children[3].textContent);
+          this.client.setnumCha(x[0].children[83].children[2].textContent);
+          this.client.setnumdoss(x[0].children[6].children[8].textContent);
+          this.client.setidentifiant(x[0].children[18].textContent);
+          d2 = (x[0].children[4].textContent).substr(0, 9);
+          this.client.setdateArr(d2);
+          this.client.setcodeClinique(this.codeClinique);
+          console.log(x[0].children[74].children[1].textContent);
+          console.log(x[0].children[85].textContent);
           this.clientserv = new ClientService();
-          this.clientserv.verifClient(this.clientList, numDoss, this.codeClinique).then(res => {
+          this.clientserv.verifClient(this.client, numDoss, this.codeClinique).then(res => {
             if (res === false) {
-              this.clientserv.getClients(this.clientList, numDoss, this.codeClinique);
+              this.clientserv.getClients(this.client, numDoss, this.codeClinique);
             }
           });
         }
@@ -110,14 +107,16 @@ export class ClientDetailPage {
     xmlhttp.send(sr);
   }
 
-  GetClientByNumDossOff(clientList, numDoss) {
+  GetClientByNumDossOff(client, numDoss) {
     this.clientserv = new ClientService();
-    this.clientList = this.clientserv.getClients(clientList, numDoss, this.codeClinique);
+    this.clientserv.getClients(client, numDoss, this.codeClinique).then(res => {
+      this.client = res;
+    })
   }
 
   findMedIntervenatByNumDoss(numDoss) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -156,7 +155,7 @@ export class ClientDetailPage {
     xmlhttp.send(sr);
   }
 
-  findMedIntervenatByNumDossOff(medecinList,numDoss) {
+  findMedIntervenatByNumDossOff(medecinList, numDoss) {
     this.medecinserv = new MedecinService();
     this.medecinList = this.medecinserv.getMedecins(medecinList, numDoss, this.codeClinique);
 

@@ -39,21 +39,15 @@ export class ConsignePage {
     this.consigne = navParams.get("consigne");
     this.type = navParams.get("typeconsigne");
     this.etat = navParams.get("etatconsigne");
-    this.platform.ready().then(() => {
-      Variables.checconnection().then(connexion => {
-        if (connexion === false) {
-          this.connection = false;
-          this.getPlanificationTacheInfirmierByNumDossAndTypeOff(this.consigne, this.pass.getdossier(), this.type, this.etat, this.codeClinique);
-        } else {
-          this.connection = true;
-        }
-      });
+    Variables.checconnection().then(connexion => {
+      if (connexion === false) {
+        this.connection = false;
+        this.getPlanificationTacheInfirmierByNumDossAndTypeOff(this.consigne, this.pass.getdossier(), this.type, this.etat, this.codeClinique);
+      } else {
+        this.connection = true;
+      }
     });
-    this.histd = DossierPage.hist;
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ConsignePage');
+    this.histd=DossierPage.hist;
   }
 
   ionViewDidEnter() {
@@ -83,7 +77,7 @@ export class ConsignePage {
       c.setcodeMedecin("");
 
       var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+      xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
       var sr =
         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
         '<soapenv:Header/>' +
@@ -123,7 +117,7 @@ export class ConsignePage {
 
   getPlanificationTacheInfirmierByNumDossAndType(numDoss, type, etat, codeClinique) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +

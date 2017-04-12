@@ -101,22 +101,28 @@ var ConsigneService = (function () {
         db.close();
     };
     ConsigneService.prototype.deleteConsignes = function (numeroDossier, codeClinique, typeget, etatget) {
-        var db = new SQLite();
-        db.openDatabase({
-            name: 'clinisys.db',
-            location: 'default' // the location field is required
-        }).then(function () {
-            db.executeSql("delete from Consigne where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'and typeget like '" + typeget + "'and etatget like '" + etatget + "'", [])
-                .then(function () {
-                //   alert("Suppression de table Traitement est terminé avec succes");
-            })
-                .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 Consigne  ' + error);
+        var _this = this;
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                db.executeSql("delete from Consigne where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'and typeget like '" + typeget + "'and etatget like '" + etatget + "'", [])
+                    .then(function () {
+                    resolve(true);
+                    return true;
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    alert('Error 3 Consigne  ' + error);
+                    resolve(false);
+                    return false;
+                });
             });
+            db.close();
+            return _this.consigne;
         });
-        db.close();
-        return this.consigne;
     };
     return ConsigneService;
 }());

@@ -83,6 +83,9 @@
     <div fxFlex="2">
 <p></p>
     </div>
+    <div fxFlex="99">
+      <p>&nbsp;</p>
+    </div>
   </div>
 
     <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='F')" dir="rtl">
@@ -106,6 +109,9 @@
       </div>
       <div fxFlex="2">
         <p></p>
+      </div>
+      <div fxFlex="99">
+        <p>&nbsp;</p>
       </div>
 
   </div>
@@ -135,6 +141,9 @@
       <div fxFlex="2">
         <p></p>
       </div>
+      <div fxFlex="99">
+        <p>&nbsp;</p>
+      </div>
     </div>
 
     <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='F')" dir="rtl">
@@ -160,7 +169,9 @@
       <div fxFlex="2">
         <p></p>
       </div>
-
+      <div fxFlex="99">
+        <p>&nbsp;</p>
+      </div>
     </div>
 
   </div>
@@ -168,30 +179,30 @@
 </ion-content>
 <ion-footer *ngIf="langue==='arabe'" dir="rtl">
 
-  <div fxLayout="row" fxLayoutWrap style="background-color: #1ddced;">
-    <div fxFlex="2" style="background-color:#1ddced;">
+  <div fxLayout="row" fxLayoutWrap style="background-color: #F5F5F5;">
+    <div fxFlex="2" style="background-color:#F5F5F5;">
 
     </div>
-    <div fxFlex="82" style="background-color:#1ddced;">
+    <div fxFlex="82" style="background-color:#F5F5F5;">
       <input type="text" placeholder="{{tabLangue.titreecrireICI}}">
     </div>
 
-    <div fxFlex="15" style="background-color: #1ddced; direction: rtl;">
+    <div fxFlex="15" style="background-color: #F5F5F5; direction: rtl;">
       <button><img src="/android_asset/www/assets/img/send2.png" class="img"></button>
     </div>
   </div>
 </ion-footer>
 <ion-footer *ngIf="langue==='francais' || langue==='anglais'">
 
-  <div fxLayout="row" fxLayoutWrap style="background-color: #1ddced;">
-    <div fxFlex="2" style="background-color:#1ddced;">
+  <div fxLayout="row" fxLayoutWrap style="background-color: #F5F5F5;">
+    <div fxFlex="2" style="background-color:#F5F5F5;">
 
     </div>
-    <div fxFlex="82" style="background-color:#1ddced;">
+    <div fxFlex="82" style="background-color:#F5F5F5;">
       <input type="text" #details placeholder="{{tabLangue.titreecrireICI}}">
     </div>
 
-    <div fxFlex="15" style="background-color: #1ddced; direction: rtl;">
+    <div fxFlex="15" style="background-color: #F5F5F5; direction: rtl;">
       <button><img src="/android_asset/www/assets/img/send.png" class="img" (click)="CreatePlanificationTacheInfirmiereForTablette(details.value)"></button>
     </div>
   </div>

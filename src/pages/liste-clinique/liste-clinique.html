@@ -15,24 +15,40 @@
 
 <ion-content padding *ngIf="langue==='arabe'" dir="rtl">
 
+  <div *ngIf="test===true">
+    <ul *ngFor="let cliniq of cliniqueact" style="margin-right: -10px;">
 
-  <ul *ngFor="let clini of clinique ">
+      <li (click)="goToHomePage(cliniq)" style="margin-right: -10px;">
+        {{cliniq.getnom()}}
+      </li>
+    </ul>
+    <p style="color:#5bc0de;"> {{tabLangue.titreAutreCliniques}}</p>
+  </div>
 
-    <li (click)="goToHomePage(clini)">
+  <ul *ngFor="let clini of cliniqueaut " style="margin-right: -10px;">
+
+    <li (click)="goToHomePage(clini)" style="margin-right: -10px;">
       {{clini.getnom()}}
     </li>
   </ul>
-
 </ion-content>
 
 <ion-content padding *ngIf="langue==='francais' || langue==='anglais'">
 
+  <div *ngIf="test===true">
+    <ul *ngFor="let cliniq of cliniqueact" style="margin-left: -10px;">
 
-  <ul *ngFor="let clini of clinique ">
+      <li (click)="goToHomePage(cliniq)" style="margin-left: -10px;">
+        {{cliniq.getnom()}}
+      </li>
+    </ul>
+    <p style="color:#0c60ee;font-size:15px "> {{tabLangue.titreAutreCliniques}}</p>
+  </div>
 
-    <li (click)="goToHomePage(clini)">
+  <ul *ngFor="let clini of cliniqueaut " style="margin-left: -10px;">
+
+    <li (click)="goToHomePage(clini)" style="margin-left: -10px;">
       {{clini.getnom()}}
     </li>
   </ul>
-
 </ion-content>

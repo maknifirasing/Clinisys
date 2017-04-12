@@ -30,7 +30,7 @@ export class ExamenRadioPage {
   examenRF: Array<ExamenRadio> = [];
   document: Array<Document> = [];
   url: string;
-  histd :any;
+  histd: any;
   connection: boolean;
   pass: any;
   codeClinique: any;
@@ -60,7 +60,7 @@ export class ExamenRadioPage {
         this.connection = true;
       }
     });
-    this.histd=DossierPage.hist;
+    this.histd = DossierPage.hist;
   }
 
   ionViewDidLoad() {
@@ -88,31 +88,80 @@ export class ExamenRadioPage {
       Variables.checconnection().then(connexion => {
         if (connexion === false) {
           this.connection = false;
-          this.historiqueDocOff(this.histDoc, this.pass.getdossier(), observ, this.codeClinique);
-          this.docserv = new DocumentService();
-          this.docserv.getDocuments(this.document, observ, this.codeClinique).then(res => {
-            this.retrieveImageOff(res);
+
+          this.histdocserv = new HistDocService();
+          this.histdocserv.getHistDocs(this.histDoc, this.pass.getdossier(), observ, this.codeClinique).then(result => {
+            this.histdoc = result.getdate();
+            this.docserv = new DocumentService();
+            this.docserv.getDocuments(this.document, observ, this.codeClinique).then(res => {
+              this.retrieveImageOff(res);
+            });
           });
+
         }
         else {
           this.connection = true;
-          var d = new Document();
-          d.seturl(this.storageDirectory + observ);
-          d.setobserv(observ);
-          d.setcodeClinique(this.codeClinique);
-          this.document.push(d);
-          this.historiqueDoc(this.pass.getdossier(), observ, this.codeClinique);
-          this.docserv = new DocumentService();
-          this.docserv.verifDocument(this.document, observ, this.codeClinique).then(res => {
-            if (res === false) {
-              this.docserv.getDocuments(this.document, observ, this.codeClinique);
-            }
-          });
 
-          this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
-          this.open(this.url);
+          this.histdocserv = new HistDocService();
+          var hi = new HistDoc();
+          var d = new Date();
+          hi.setnumDoss(this.pass.getdossier());
+          hi.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+          hi.setcodeClinique(this.codeClinique);
+          hi.setnom(observ);
+          this.histDoc.push(hi);
+          try {
+            this.histdocserv.deleteHistDocs(this.pass.getdossier(), this.codeClinique, observ);
+            this.histdocserv.getHistDocs(this.histDoc, this.pass.getdossier(), this.codeClinique, observ).then(result => {
+              this.histdoc = result.getdate();
 
-          this.retrieveImage(this.url, d);
+              var doc = new Document();
+              doc.seturl(this.storageDirectory + observ);
+              doc.setobserv(observ);
+              doc.setcodeClinique(this.codeClinique);
+              this.document.push(doc);
+              this.docserv = new DocumentService();
+              this.docserv.verifDocument(this.document, observ, this.codeClinique).then(res => {
+                if (res === false) {
+                  this.docserv.getDocuments(this.document, observ, this.codeClinique);
+                }
+              });
+
+              this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
+              Variables.checservice(this.url).then(res => {
+                if (res === true) {
+                  this.open(this.url);
+                  this.retrieveImage(this.url, doc);
+                }
+              });
+            });
+          }
+          catch (Error) {
+            this.histdocserv.getHistDocs(this.histDoc, this.pass.getdossier(), this.codeClinique, observ).then(result => {
+              this.histdoc = result.getdate();
+
+              var doc = new Document();
+              doc.seturl(this.storageDirectory + observ);
+              doc.setobserv(observ);
+              doc.setcodeClinique(this.codeClinique);
+              this.document.push(doc);
+              this.docserv = new DocumentService();
+              this.docserv.verifDocument(this.document, observ, this.codeClinique).then(res => {
+                if (res === false) {
+                  this.docserv.getDocuments(this.document, observ, this.codeClinique);
+                }
+              });
+
+              this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
+              Variables.checservice(this.url).then(res => {
+                if (res === true) {
+                  this.open(this.url);
+                  this.retrieveImage(this.url, doc);
+                }
+              });
+
+            });
+          }
         }
       });
     });
@@ -135,7 +184,7 @@ export class ExamenRadioPage {
           showPageTitle: false
         },
         backButton: {
-          wwwImage:'/android_asset/www/assets/img/green.png',
+          wwwImage: '/android_asset/www/assets/img/green.png',
           align: 'left'
         }
       };
@@ -313,33 +362,4 @@ export class ExamenRadioPage {
       });
   }
 
-  historiqueDoc(numDoss, file, codeClinique) {
-    this.histdocserv = new HistDocService();
-    var hi = new HistDoc();
-    var d = new Date();
-    hi.setnumDoss(numDoss);
-    hi.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
-    hi.setcodeClinique(codeClinique);
-    hi.setnom(file);
-    this.histDoc.push(hi);
-    try {
-      this.histdocserv.deleteHistDocs(numDoss, codeClinique, file);
-      this.histdocserv.getHistDocs(this.histDoc, numDoss, codeClinique, file).then(result => {
-        this.histdoc = result.getdate();
-      });
-    }
-    catch (Error) {
-      this.histdocserv.getHistDocs(this.histDoc, numDoss, codeClinique, file).then(result => {
-        this.histdoc = result.getdate();
-      });
-    }
-
-  }
-
-  historiqueDocOff(hist, numDoss, file, codeClinique) {
-    this.histdocserv = new HistDocService();
-    this.histdocserv.getHistDocs(hist, numDoss, codeClinique, file).then(result => {
-      this.histdoc = result.getdate();
-    });
-  }
 }

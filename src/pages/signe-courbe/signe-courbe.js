@@ -191,10 +191,19 @@ var SigneCourbePage = (function () {
             labelcourbePouls.push((courbePouls[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbePouls[i].getdateHeurePrise()).substr(5, 2) + "-" + courbePouls[i].getheurePrise());
             dataPouls.push(courbePouls[i].getquantite());
         }
+        var x, y;
         for (var i = 0; i < courbeTA.length; i++) {
             labelcourbeTA.push((courbeTA[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeTA[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeTA[i].getheurePrise());
-            dataTA1.push(courbeTA[i].getquantite().split("/")[0]);
-            dataTA2.push(courbeTA[i].getquantite().split("/")[1]);
+            x = Number(courbeTA[i].getquantite().split("/")[0]);
+            y = Number(courbeTA[i].getquantite().split("/")[1]);
+            if (x < 45) {
+                x *= 10;
+            }
+            if (y < 45) {
+                y *= 10;
+            }
+            dataTA1.push(x);
+            dataTA2.push(y);
         }
         for (var i = 0; i < courbeTemp.length; i++) {
             labelcourbeTemp.push((courbeTemp[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeTemp[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeTemp[i].getheurePrise());
@@ -265,18 +274,18 @@ var SigneCourbePage = (function () {
                         label: courbeTA[0].getdesignation() + " min",
                         fill: false,
                         lineTension: 0.1,
-                        backgroundColor: "rgb(" + courbeTA[0].getcolor() + ")",
-                        borderColor: "rgb(" + courbeTA[0].getcolor() + ")",
+                        backgroundColor: "rgba(75,192,192,0.4)",
+                        borderColor: "rgba(75,192,192,0.4)",
                         borderCapStyle: 'butt',
                         borderDash: [],
                         borderDashOffset: 0.0,
                         borderJoinStyle: 'miter',
-                        pointBorderColor: "rgb(" + courbeTA[0].getcolor() + ")",
-                        pointBackgroundColor: "rgb(" + courbeTA[0].getcolor() + ")",
+                        pointBorderColor: "rgba(75,192,192,0.4)",
+                        pointBackgroundColor: "rgba(75,192,192,0.4)",
                         pointBorderWidth: 1,
                         pointHoverRadius: 10,
-                        pointHoverBackgroundColor: "rgb(" + courbeTA[0].getcolor() + ")",
-                        pointHoverBorderColor: "rgb(" + courbeTA[0].getcolor() + ")",
+                        pointHoverBackgroundColor: "rgba(75,192,192,0.4)",
+                        pointHoverBorderColor: "rgba(75,192,192,0.4)",
                         pointHoverBorderWidth: 3,
                         pointRadius: 3,
                         pointHitRadius: 10,

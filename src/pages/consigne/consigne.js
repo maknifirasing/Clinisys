@@ -14,6 +14,8 @@ import { Consigne } from "../../models/Consigne";
 import { Content } from "ionic-angular";
 import { DossierPage } from "../dossier/dossier";
 import { ConsigneService } from "../../services/ConsigneService";
+import { tabBadge } from "../../models/tabBadge";
+import { tabBadgeConsigneService } from "../../services/tabBadgeConsigneService";
 var ConsignePage = (function () {
     function ConsignePage(navCtrl, navParams, Url, platform) {
         var _this = this;
@@ -22,6 +24,9 @@ var ConsignePage = (function () {
         this.Url = Url;
         this.platform = platform;
         this.consigne = [];
+        this.coountConsigne = 0;
+        this.coountConsigneT = 0;
+        this.tabgConsigne = [];
         this.tabLangue = navParams.get("tabLangue");
         this.codeClinique = navParams.get("codeClinique");
         this.pass = navParams.get("pass");
@@ -57,31 +62,69 @@ var ConsignePage = (function () {
         this.consigne = this.consigneserv.getConsignes(consigne, numDoss, codeClinique, type, etat);
     };
     ConsignePage.prototype.CreatePlanificationTacheInfirmiereForTablette = function (details) {
-        var c = new Consigne();
-        var date = new Date();
-        var d = date.getFullYear() + "-" + date.getMonth() + 1 + "-" + date.getDay() + "T"
-            + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-        c.setnumeroDossier(this.pass.getdossier());
-        c.setdetails(details);
-        c.settype("Autre");
-        c.setheurtache(d);
-        c.setuserCreate(this.pass.getnom());
-        c.setetat("NL");
-        c.setcodeMedecin("");
+        var _this = this;
+        if (this.connection === true) {
+            var c = new Consigne();
+            var date = new Date();
+            var d = date.getFullYear() + "-" + date.getMonth() + 1 + "-" + date.getDay() + "T"
+                + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+            c.setnumeroDossier(this.pass.getdossier());
+            c.setdetails(details);
+            c.settype("Autre");
+            c.setheurtache(d);
+            c.setuserCreate(this.pass.getnom());
+            c.setetat("NL");
+            c.setcodeMedecin("");
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+            var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+                '<soapenv:Header/>' +
+                '<soapenv:Body>' +
+                '<ser:CreatePlanificationTacheInfirmiereForTablette>' +
+                '<numdoss>' + c.getnumeroDossier() + '</numdoss>' +
+                '<details>' + c.getdetails() + '</details>' +
+                '<type>' + c.gettype() + '</type>' +
+                '<heure>' + c.getheurtache() + '</heure>' +
+                '<userCreate>' + c.getuserCreate() + '</userCreate>' +
+                '<etat>' + c.getetat() + '</etat>' +
+                '<codemed>' + c.getcodeMedecin() + '</codemed>' +
+                '</ser:CreatePlanificationTacheInfirmiereForTablette>' +
+                '</soapenv:Body>' +
+                '</soapenv:Envelope>';
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    if (xmlhttp.status == 200) {
+                        alert("ok");
+                        var xml;
+                        xml = xmlhttp.responseXML;
+                        var x, i;
+                        x = xml.getElementsByTagName("return");
+                        console.log(xml);
+                        console.log(x);
+                        _this.deletePlanificationTacheInfirmierByNumDossAndType(_this.pass.getdossier(), _this.type, _this.etat, _this.codeClinique);
+                    }
+                }
+            };
+            xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+            xmlhttp.responseType = "document";
+            xmlhttp.send(sr);
+        }
+        else {
+            alert(this.tabLangue.errConn);
+        }
+    };
+    ConsignePage.prototype.getPlanificationTacheInfirmierByNumDossAndType = function (numDoss, type, etat, codeClinique) {
+        var _this = this;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
-            '<ser:CreatePlanificationTacheInfirmiereForTablette>' +
-            '<numdoss>' + c.getnumeroDossier() + '</numdoss>' +
-            '<details>' + c.getdetails() + '</details>' +
-            '<type>' + c.gettype() + '</type>' +
-            '<heure>' + c.getheurtache() + '</heure>' +
-            '<userCreate>' + c.getuserCreate() + '</userCreate>' +
-            '<etat>' + c.getetat() + '</etat>' +
-            '<codemed>' + c.getcodeMedecin() + '</codemed>' +
-            '</ser:CreatePlanificationTacheInfirmiereForTablette>' +
+            '<ser:getPlanificationTacheInfirmierByNumDossAndType>' +
+            '<numDoss>' + numDoss + '</numDoss>' +
+            '<type>' + type + '</type>' +
+            '<etat>' + etat + '</etat>' +
+            '</ser:getPlanificationTacheInfirmierByNumDossAndType>' +
             '</soapenv:Body>' +
             '</soapenv:Envelope>';
         xmlhttp.onreadystatechange = function () {
@@ -91,14 +134,72 @@ var ConsignePage = (function () {
                     xml = xmlhttp.responseXML;
                     var x, i;
                     x = xml.getElementsByTagName("return");
-                    console.log(xml);
-                    console.log(x);
+                    var c;
+                    var tempsEnMs = new Date().getFullYear();
+                    var d;
+                    for (i = 0; i < x.length; i++) {
+                        c = new Consigne();
+                        if (x[i].childElementCount === 19) {
+                            c.setcodeMedecin(x[i].children[1].textContent);
+                            c.setdatetache(x[i].children[6].textContent);
+                            c.setdetails(x[i].children[7].textContent);
+                            c.setetat(x[i].children[8].textContent);
+                            c.setheurtache(x[i].children[9].textContent);
+                            c.setnumeroDossier(x[i].children[13].textContent);
+                            c.setuserCreate(x[i].children[16].textContent);
+                            c.setcodeClinique(codeClinique);
+                        }
+                        else if (x[i].childElementCount === 18) {
+                            c.setcodeMedecin(x[i].children[1].textContent);
+                            c.setdatetache(x[i].children[6].textContent);
+                            c.setdetails(x[i].children[7].textContent);
+                            c.setetat(x[i].children[8].textContent);
+                            c.setheurtache(x[i].children[9].textContent);
+                            c.setnumeroDossier(x[i].children[12].textContent);
+                            c.setuserCreate(x[i].children[15].textContent);
+                            c.setcodeClinique(codeClinique);
+                        }
+                        _this.consigne.push(c);
+                        if (c.getetat() === "F") {
+                            _this.coountConsigneT++;
+                        }
+                    }
+                    _this.coountConsigne = _this.consigne.length;
+                    _this.consigneserv = new ConsigneService();
+                    _this.consigneserv.verifConsigne(_this.consigne, numDoss, codeClinique, type, etat).then(function (res) {
+                        if (res === false) {
+                            _this.consigneserv.getConsignes(_this.consigne, numDoss, codeClinique, type, etat);
+                        }
+                    });
+                    var tConsigne = new tabBadge();
+                    tConsigne.setnumDoss(numDoss);
+                    tConsigne.setFichier(_this.coountConsigne);
+                    tConsigne.setFichierT(_this.coountConsigneT);
+                    tConsigne.setcodeClinique(codeClinique);
+                    _this.tabgConsigne.push(tConsigne);
+                    _this.countConsigneserv = new tabBadgeConsigneService();
+                    _this.countConsigneserv.verifTabBadgeConsigne(numDoss, codeClinique).then(function (res) {
+                        if (res === false) {
+                            _this.countConsigneserv.getTabBadgeConsigne(_this.tabgConsigne, numDoss, codeClinique);
+                        }
+                    });
                 }
             }
         };
         xmlhttp.setRequestHeader('Content-Type', 'text/xml');
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
+    };
+    ConsignePage.prototype.deletePlanificationTacheInfirmierByNumDossAndType = function (numDoss, type, etat, codeClinique) {
+        var _this = this;
+        this.countConsigneserv = new tabBadgeConsigneService();
+        this.countConsigneserv.deletetabBadgeConsignes(numDoss, codeClinique);
+        this.consigneserv = new ConsigneService();
+        this.consigneserv.deleteConsignes(numDoss, codeClinique).then(function (res) {
+            if (res === true) {
+                _this.getPlanificationTacheInfirmierByNumDossAndType(numDoss, type, etat, codeClinique);
+            }
+        });
     };
     return ConsignePage;
 }());

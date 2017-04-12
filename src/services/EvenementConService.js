@@ -50,14 +50,9 @@ var EvenementConService = (function () {
                     var e;
                     for (var i = 0; i < result.rows.length; i++) {
                         e = new Evenement();
-                        e.setaccess(result.rows.item(i).access);
-                        e.setcode(result.rows.item(i).code);
                         e.setevenements(result.rows.item(i).evenements);
-                        e.setorderEvenement(result.rows.item(i).orderEvenement);
-                        e.setvisible(result.rows.item(i).visible);
                         e.setdate(result.rows.item(i).date);
                         e.setdetail(result.rows.item(i).detail);
-                        e.setIDEvenement(result.rows.item(i).IDEvenement);
                         e.setnumdoss(result.rows.item(i).numdoss);
                         e.setuserCreat(result.rows.item(i).userCreat);
                         _this.evenement.push(e);
@@ -83,16 +78,11 @@ var EvenementConService = (function () {
                     continue;
                 }
                 var evenement = evenements[key];
-                db.executeSql('insert into EvenementCon (access ,code ,evenements ' +
-                    ',orderEvenement ,visible ,date ,detail ,IDEvenement ,numdoss ,userCreat,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?)', [
-                    evenement.getaccess(),
-                    evenement.getcode(),
+                db.executeSql('insert into EvenementCon (evenements ' +
+                    ',date ,detail ,numdoss ,userCreat,codeClinique) values (?,?,?,?,?,?)', [
                     evenement.getevenements(),
-                    evenement.getorderEvenement(),
-                    evenement.getvisible(),
                     evenement.getdate(),
                     evenement.getdetail(),
-                    evenement.getIDEvenement(),
                     evenement.getnumdoss(),
                     evenement.getuserCreat(),
                     codeClinique
