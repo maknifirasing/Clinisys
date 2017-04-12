@@ -132,6 +132,10 @@ export class ExamenRadioPage {
                 if (res === true) {
                   this.open(this.url);
                   this.retrieveImage(this.url, doc);
+                }else {
+                  this.url="https://www.google.fr/";
+                  this.open(this.url);
+                  this.retrieveImage(this.url, doc);
                 }
               });
             });
@@ -155,6 +159,10 @@ export class ExamenRadioPage {
               this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
               Variables.checservice(this.url).then(res => {
                 if (res === true) {
+                  this.open(this.url);
+                  this.retrieveImage(this.url, doc);
+                }else {
+                  this.url="https://www.google.fr/";
                   this.open(this.url);
                   this.retrieveImage(this.url, doc);
                 }
