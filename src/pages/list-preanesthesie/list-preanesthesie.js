@@ -27,16 +27,14 @@ var ListPreanesthesiePage = (function () {
         this.tabLangue = navParams.get("tabLangue");
         this.codeClinique = navParams.get("codeClinique");
         this.langue = navParams.get("langue");
-        this.platform.ready().then(function () {
-            Variables.checconnection().then(function (connexion) {
-                if (connexion === false) {
-                    _this.connection = false;
-                    _this.findListPreanesthesieByNumeroDossierResponseOff(_this.pass.getdossier(), _this.codeClinique);
-                }
-                else {
-                    _this.connection = true;
-                }
-            });
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+                _this.findListPreanesthesieByNumeroDossierResponseOff(_this.pass.getdossier(), _this.codeClinique);
+            }
+            else {
+                _this.connection = true;
+            }
         });
         this.histd = DossierPage.hist;
     }

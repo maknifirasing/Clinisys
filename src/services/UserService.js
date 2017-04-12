@@ -68,6 +68,37 @@ var UserService = (function () {
             return _this;
         });
     };
+    UserService.prototype.getAllUser = function () {
+        var _this = this;
+        return new Promise(function (resolve) {
+            var db = new SQLite();
+            db.openDatabase({
+                name: 'clinisys.db',
+                location: 'default' // the location field is required
+            }).then(function () {
+                db.executeSql("select * from Users ", []).then(function (result) {
+                    if (result.rows.length > 0) {
+                        var user;
+                        for (var i = 0; i < result.rows.length; i++) {
+                            user = new Users();
+                            user.setmatricule(result.rows.item(i).matricule);
+                            user.setpassWord(result.rows.item(i).passWord);
+                            user.setuserName(result.rows.item(i).userName);
+                            user.setcodeClinique(result.rows.item(i).codeClinique);
+                            _this.users.push(user);
+                        }
+                    }
+                    resolve(_this.users);
+                })
+                    .catch(function (error) {
+                    console.error('Error opening database', error);
+                    alert('Error 1.1 Users  ' + error);
+                });
+            });
+            db.close();
+            return _this;
+        });
+    };
     UserService.prototype._insertUser = function (users) {
         var db = new SQLite();
         db.openDatabase({

@@ -15,9 +15,7 @@ var Variables = Variables_1 = (function () {
     function Variables(http, navCtrl) {
         this.http = http;
         this.navCtrl = navCtrl;
-        this.url = "";
-        this.url = "http://192.168.0.63:8084/";
-        Variables_1.uRL = this.url;
+        Variables_1.uRL = "http://192.168.0.63:8084/";
     }
     Variables.checconnection = function () {
         var _this = this;

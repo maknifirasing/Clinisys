@@ -12,9 +12,11 @@ import { NavController, NavParams, Platform, ViewController } from 'ionic-angula
 import { Variables } from "../../providers/variables";
 import { Clinique } from "../../models/Clinique";
 import { HomePage } from "../home/home";
+import { CliniqueService } from "../../services/CliniqueService";
 import { UserService } from "../../services/UserService";
-import { CliniqueActService } from "../../services/CliniqueActService";
-import { CliniqueAutService } from "../../services/CliniqueAutService";
+import { ListePage } from "../liste/liste";
+import { Langue } from "../../models/Langue";
+import { LangueService } from "../../services/LangueService";
 var ListeCliniquePage = (function () {
     function ListeCliniquePage(navCtrl, navParams, Url, viewCtrl, platform) {
         var _this = this;
@@ -25,30 +27,27 @@ var ListeCliniquePage = (function () {
         this.platform = platform;
         this.cliniqueact = [];
         this.cliniqueaut = [];
+        this.clinique = [];
         this.users = [];
         this.langes = [];
         this.viewCtrl.showBackButton(false);
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
-        this.platform.ready().then(function () {
-            Variables.checconnection().then(function (connexion) {
-                if (connexion === false) {
-                    _this.connection = false;
-                    _this.ListCliniqueOff(_this.cliniqueact, _this.cliniqueaut);
-                }
-                else {
-                    _this.connection = true;
-                    _this.ListClinique();
-                }
-            });
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+                _this.ListCliniqueOff(_this.clinique);
+            }
+            else {
+                _this.connection = true;
+                _this.ListClinique();
+            }
         });
     }
     ListeCliniquePage.prototype.ListClinique = function () {
         var _this = this;
-        this.userserv = new UserService();
-        this.test = false;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -59,27 +58,22 @@ var ListeCliniquePage = (function () {
             if (xmlhttp.readyState == 4) {
                 if (xmlhttp.status == 200) {
                     var xml = xmlhttp.responseXML;
-                    var x, i;
+                    var x, i, c;
                     x = xml.getElementsByTagName("return");
                     for (i = 0; i < x.length; i++) {
-                        _this.c = new Clinique();
-                        _this.c.setcode(x[i].children[0].textContent);
-                        _this.c.setnom(x[i].children[2].textContent);
-                        console.log(_this.verif(_this.c.getcode()));
-                        if (_this.verif(_this.c.getcode()) === true) {
-                            _this.cliniqueact.push(_this.c);
-                        }
-                        else {
-                            _this.cliniqueaut.push(_this.c);
-                        }
+                        c = new Clinique();
+                        c.setcode(x[i].children[0].textContent);
+                        c.setnom(x[i].children[2].textContent);
+                        c.seturl(x[i].children[3].textContent);
+                        _this.clinique.push(c);
                     }
-                    if (_this.cliniqueact.length > 0) {
-                        _this.test = true;
-                    }
-                    _this.clinactserv = new CliniqueActService();
-                    _this.clinactserv.getCliniques(_this.cliniqueact);
-                    _this.clinautserv = new CliniqueAutService();
-                    _this.clinautserv.getCliniques(_this.cliniqueaut);
+                    _this.getcliniques(_this.clinique);
+                    _this.clinserv = new CliniqueService();
+                    _this.clinserv.verifClinique(_this.clinique).then(function (res) {
+                        if (res === false) {
+                            _this.clinserv.getCliniques(_this.clinique);
+                        }
+                    });
                 }
             }
         };
@@ -87,73 +81,89 @@ var ListeCliniquePage = (function () {
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };
-    ListeCliniquePage.prototype.verif = function (code) {
-        this.userserv = new UserService();
-        this.userserv.verifUser(code).then(function (resolve) {
-            return resolve;
-        });
-    };
-    ListeCliniquePage.prototype.ListCliniqueOff = function (cliniquesact, cliniquesaut) {
+    ListeCliniquePage.prototype.getcliniques = function (cliniques) {
         var _this = this;
+        this.cliniqueact = [];
+        this.cliniqueact.length = 0;
+        this.cliniqueaut = [];
+        this.cliniqueaut.length = 0;
         this.test = false;
-        this.clinactserv = new CliniqueActService();
-        this.clinactserv.getCliniques(cliniquesact).then(function (resact) {
-            _this.cliniqueact = resact;
+        this.userserv = new UserService();
+        this.userserv.getAllUser().then(function (res) {
+            if (res.length > 0) {
+                for (var i = 0; i < cliniques.length; i++) {
+                    if (_this.exist(res, cliniques[i].getcode()) === true) {
+                        _this.cliniqueact.push(cliniques[i]);
+                    }
+                    else {
+                        _this.cliniqueaut.push(cliniques[i]);
+                    }
+                }
+            }
+            else {
+                _this.cliniqueaut = cliniques;
+            }
             if (_this.cliniqueact.length > 0) {
                 _this.test = true;
             }
         });
-        this.clinautserv = new CliniqueAutService();
-        this.clinautserv.getCliniques(cliniquesaut).then(function (resaut) {
-            _this.cliniqueaut = resaut;
+    };
+    ListeCliniquePage.prototype.exist = function (t, code) {
+        for (var j = 0; j < t.length; j++) {
+            if (t[j].getcodeClinique() === code) {
+                return true;
+            }
+        }
+        return false;
+    };
+    ListeCliniquePage.prototype.ListCliniqueOff = function (cliniques) {
+        var _this = this;
+        this.clinserv = new CliniqueService();
+        this.clinserv.getCliniques(cliniques).then(function (resact) {
+            _this.getcliniques(resact);
         });
     };
     ListeCliniquePage.prototype.goToHomePage = function (codeC) {
-        /*
-         this.userserv = new UserService();
-         this.userserv.verifUser(codeC.getcode()).then(user => {
-         if (user === false) {
-         this.navCtrl.push(HomePage, {
-         tabLangue: this.tabLangue,
-         langue: this.langue,
-         codeClinique: codeC.getcode(),
-         nomClinique: codeC.getnom()
-         });
-         } else {
-         this.langserv = new LangueService();
-         this.langserv.verifLangue().then(res => {
-         if (res === true) {
-         this.langserv.getLangues(this.langes).then(lg => {
-         var l = new Langue();
-         l.setlangue(lg.getlangue());
-         l.setmatricule(lg.getmatricule());
-         l.setcodeClinique(codeC.getcode());
-         l.setnomClinique(codeC.getnom());
-         this.langes.push(l);
-         this.langserv.deleteLangues().then(delet => {
-         if (delet === true) {
-         this.langserv._insertLangues(this.langes);
-         }
-         });
-    
-         });
-         }
-         this.navCtrl.setRoot(ListePage, {
-         tabLangue: this.tabLangue,
-         langue: this.langue,
-         codeClinique: codeC.getcode(),
-         nomClinique: codeC.getnom()
-         });
-         });
-    
-         }
-         });
-         */
-        this.navCtrl.push(HomePage, {
-            tabLangue: this.tabLangue,
-            langue: this.langue,
-            codeClinique: codeC.getcode(),
-            nomClinique: codeC.getnom()
+        var _this = this;
+        this.userserv = new UserService();
+        this.userserv.verifUser(codeC.getcode()).then(function (user) {
+            if (user === false) {
+                _this.navCtrl.push(HomePage, {
+                    tabLangue: _this.tabLangue,
+                    langue: _this.langue,
+                    codeClinique: codeC.getcode(),
+                    nomClinique: codeC.getnom(),
+                    url: codeC.geturl()
+                });
+            }
+            else {
+                _this.langserv = new LangueService();
+                _this.langserv.verifLangue().then(function (res) {
+                    if (res === true) {
+                        _this.langserv.getLangues(_this.langes).then(function (lg) {
+                            var l = new Langue();
+                            l.setlangue(lg.getlangue());
+                            l.setmatricule(lg.getmatricule());
+                            l.setcodeClinique(codeC.getcode());
+                            l.setnomClinique(codeC.getnom());
+                            l.seturl(lg.geturl());
+                            _this.langes.push(l);
+                            _this.langserv.deleteLangues().then(function (delet) {
+                                if (delet === true) {
+                                    _this.langserv._insertLangues(_this.langes);
+                                }
+                            });
+                        });
+                    }
+                    _this.navCtrl.setRoot(ListePage, {
+                        tabLangue: _this.tabLangue,
+                        langue: _this.langue,
+                        codeClinique: codeC.getcode(),
+                        nomClinique: codeC.getnom(),
+                        url: codeC.geturl()
+                    });
+                });
+            }
         });
     };
     return ListeCliniquePage;

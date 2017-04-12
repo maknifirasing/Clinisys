@@ -25,6 +25,12 @@ var Langue = (function () {
     Langue.prototype.setnomClinique = function (value) {
         this._nomClinique = value;
     };
+    Langue.prototype.geturl = function () {
+        return this._url;
+    };
+    Langue.prototype.seturl = function (value) {
+        this._url = value;
+    };
     return Langue;
 }());
 export { Langue };

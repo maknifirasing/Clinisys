@@ -75,25 +75,23 @@ var DossierPage = DossierPage_1 = (function () {
             this.codeType = "'1','3','4'";
             this.codeTypeOf = "134";
         }
-        this.platform.ready().then(function () {
-            Variables.checconnection().then(function (res) {
-                if (res === false) {
-                    _this.connection = false;
-                    _this.historiqueOff(_this.histD, _this.pass.getdossier(), _this.codeClinique);
-                    _this.GetAllMotifHospitalisationByNumDossOff(_this.motifh, _this.pass.getdossier(), _this.codeClinique);
-                    _this.getAntecedentAllergieByIdentifiantOff(_this.antechl, _this.alechl, _this.pass.getid(), _this.codeClinique);
-                    _this.GetAlerteSigneCliniqueOff(_this.signe, _this.pass.getdossier(), _this.dateFeuille, _this.pass.getnature(), _this.codeClinique);
-                    _this.GetTraitementsOff(_this.traitement, _this.pass.getdossier(), _this.dateFeuille, _this.codeClinique);
-                    _this.GetEvenementByDossierOff(_this.pass.getdossier(), _this.codeClinique);
-                    _this.GetListRegimeOff(_this.rigime, _this.pass.getdossier(), _this.dateFeuille, _this.pass.getnature(), _this.codeClinique);
-                    _this.GetSigneCliniqueOff(_this.pass.getdossier(), _this.dateFeuille, _this.pass.getnature(), _this.codeTypeOf, _this.codeClinique);
-                }
-                else {
-                    _this.connection = true;
-                    _this.historique(_this.pass.getdossier(), _this.codeClinique);
-                    _this.update();
-                }
-            });
+        Variables.checconnection().then(function (res) {
+            if (res === false) {
+                _this.connection = false;
+                _this.historiqueOff(_this.histD, _this.pass.getdossier(), _this.codeClinique);
+                _this.GetAllMotifHospitalisationByNumDossOff(_this.motifh, _this.pass.getdossier(), _this.codeClinique);
+                _this.getAntecedentAllergieByIdentifiantOff(_this.antechl, _this.alechl, _this.pass.getid(), _this.codeClinique);
+                _this.GetAlerteSigneCliniqueOff(_this.signe, _this.pass.getdossier(), _this.dateFeuille, _this.pass.getnature(), _this.codeClinique);
+                _this.GetTraitementsOff(_this.traitement, _this.pass.getdossier(), _this.dateFeuille, _this.codeClinique);
+                _this.GetEvenementByDossierOff(_this.pass.getdossier(), _this.codeClinique);
+                _this.GetListRegimeOff(_this.rigime, _this.pass.getdossier(), _this.dateFeuille, _this.pass.getnature(), _this.codeClinique);
+                _this.GetSigneCliniqueOff(_this.pass.getdossier(), _this.dateFeuille, _this.pass.getnature(), _this.codeTypeOf, _this.codeClinique);
+            }
+            else {
+                _this.connection = true;
+                _this.historique(_this.pass.getdossier(), _this.codeClinique);
+                _this.update();
+            }
         });
     }
     DossierPage.prototype.GetAlerteSigneClinique = function (numDoss, dateFeuille, nature, codeClinique) {
@@ -102,7 +100,7 @@ var DossierPage = DossierPage_1 = (function () {
         this.signe = [];
         this.signe.length = 0;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -175,7 +173,7 @@ var DossierPage = DossierPage_1 = (function () {
         this.antechl = [];
         this.antechl.length = 0;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -275,7 +273,7 @@ var DossierPage = DossierPage_1 = (function () {
         var _this = this;
         this.test = false;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -342,7 +340,7 @@ var DossierPage = DossierPage_1 = (function () {
         this.traitement.length = 0;
         this.trait = false;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -433,7 +431,7 @@ var DossierPage = DossierPage_1 = (function () {
         this.Con = false;
         this.Evo = false;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -587,7 +585,7 @@ var DossierPage = DossierPage_1 = (function () {
         this.rigime.length = 0;
         var xmlhttp = new XMLHttpRequest();
         this.Ri = false;
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -660,7 +658,7 @@ var DossierPage = DossierPage_1 = (function () {
         this.Sorties.length = 0;
         var xmlhttp = new XMLHttpRequest();
         this.Ri = false;
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +

@@ -34,22 +34,17 @@ var ConsignePage = (function () {
         this.consigne = navParams.get("consigne");
         this.type = navParams.get("typeconsigne");
         this.etat = navParams.get("etatconsigne");
-        this.platform.ready().then(function () {
-            Variables.checconnection().then(function (connexion) {
-                if (connexion === false) {
-                    _this.connection = false;
-                    _this.getPlanificationTacheInfirmierByNumDossAndTypeOff(_this.consigne, _this.pass.getdossier(), _this.type, _this.etat, _this.codeClinique);
-                }
-                else {
-                    _this.connection = true;
-                }
-            });
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+                _this.getPlanificationTacheInfirmierByNumDossAndTypeOff(_this.consigne, _this.pass.getdossier(), _this.type, _this.etat, _this.codeClinique);
+            }
+            else {
+                _this.connection = true;
+            }
         });
         this.histd = DossierPage.hist;
     }
-    ConsignePage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad ConsignePage');
-    };
     ConsignePage.prototype.ionViewDidEnter = function () {
         var _this = this;
         //this.content.scrollToBottom(300);//300ms animation speed
@@ -76,7 +71,7 @@ var ConsignePage = (function () {
             c.setetat("NL");
             c.setcodeMedecin("");
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+            xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
             var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
                 '<soapenv:Header/>' +
                 '<soapenv:Body>' +
@@ -116,7 +111,7 @@ var ConsignePage = (function () {
     ConsignePage.prototype.getPlanificationTacheInfirmierByNumDossAndType = function (numDoss, type, etat, codeClinique) {
         var _this = this;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +

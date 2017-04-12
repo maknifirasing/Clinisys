@@ -295,8 +295,13 @@ export class ListePage {
 
   deconnexion() {
     this.userserv = new UserService();
-    this.userserv.deleteUsers(this.codeClinique);
-    this.navCtrl.setRoot(ListeCliniquePage, {tabLangue: this.tabLangue, langue: this.langue});
+    this.userserv.deleteUsers(this.codeClinique).then(res=>{
+      if(res===true)
+      {
+        this.navCtrl.setRoot(ListeCliniquePage, {tabLangue: this.tabLangue, langue: this.langue});
+      }
+    });
+
   }
 
   changerlangue() {

@@ -13,6 +13,12 @@ var Clinique = (function () {
     Clinique.prototype.setnom = function (value) {
         this._nom = value;
     };
+    Clinique.prototype.geturl = function () {
+        return this._url;
+    };
+    Clinique.prototype.seturl = function (value) {
+        this._url = value;
+    };
     return Clinique;
 }());
 export { Clinique };
