@@ -26,12 +26,13 @@ var HomePage = (function () {
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
         this.nomClinique = navParams.get("nomClinique");
+        this.url = navParams.get("url");
     }
     HomePage.prototype.connecter = function (userName, passWord) {
         var _this = this;
         try {
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+            xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
             var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
                 '<soapenv:Header/>' +
                 '<soapenv:Body>' +
@@ -68,6 +69,7 @@ var HomePage = (function () {
                                     l.setmatricule(user.getmatricule());
                                     l.setcodeClinique(_this.codeClinique);
                                     l.setnomClinique(_this.nomClinique);
+                                    l.seturl(_this.url);
                                     _this.langes.push(l);
                                     if (result === true) {
                                         _this.langserv.getLangues(_this.langes).then(function (lg) {

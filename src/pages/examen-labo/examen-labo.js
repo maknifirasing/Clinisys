@@ -30,23 +30,21 @@ var ExamenLaboPage = (function () {
         this.langue = navParams.get("langue");
         this.LabosT = navParams.get("Labost");
         this.LabosF = navParams.get("Labosf");
-        this.platform.ready().then(function () {
-            Variables.checconnection().then(function (connexion) {
-                if (connexion === false) {
-                    _this.connection = false;
-                    _this.findAllLaboByNumDossierOff(_this.pass.getdossier(), _this.codeClinique);
-                }
-                else {
-                    _this.connection = true;
-                }
-            });
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+                _this.findAllLaboByNumDossierOff(_this.pass.getdossier(), _this.codeClinique);
+            }
+            else {
+                _this.connection = true;
+            }
         });
         this.histd = DossierPage.hist;
     }
     ExamenLaboPage.prototype.openURL = function (numAdmission) {
         var _this = this;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -62,7 +60,7 @@ var ExamenLaboPage = (function () {
                         var xml = xmlhttp.responseXML;
                         var x;
                         x = xml.getElementsByTagName("return");
-                        _this.pdf = _this.Url.url + "dmi-web/LaboPDF/" + x[0].childNodes[0].nodeValue.split("1.")[0] + ".pdf";
+                        _this.pdf = Variables.uRL + "dmi-web/LaboPDF/" + x[0].childNodes[0].nodeValue.split("1.")[0] + ".pdf";
                         console.log("p   " + x[0].childNodes[0].nodeValue);
                         console.log("pdf   " + _this.pdf);
                         _this.navCtrl.push(PdfViewPage, { pdf: _this.pdf });

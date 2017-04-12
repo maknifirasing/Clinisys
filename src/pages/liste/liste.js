@@ -43,22 +43,20 @@ var ListePage = (function () {
         this.nomClinique = navParams.get("nomClinique");
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
-        this.platform.ready().then(function () {
-            Variables.checconnection().then(function (connexion) {
-                if (connexion === false) {
-                    _this.connection = false;
-                    _this.historiqueOff(_this.hist, "admin", "", "all", _this.codeClinique);
-                    _this.listeOff(_this.patient, "admin", "", "all", _this.codeClinique);
-                    _this.DateFeuilleOff(_this.datefeuille, _this.codeClinique);
-                }
-                else {
-                    _this.connection = true;
-                    _this.historique("admin", "", "all", _this.codeClinique);
-                    _this.liste("admin", "", "all", _this.codeClinique);
-                    _this.DateFeuille(_this.codeClinique);
-                }
-                _this.patientliste = _this.patient;
-            });
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+                _this.historiqueOff(_this.hist, "admin", "", "all", _this.codeClinique);
+                _this.listeOff(_this.patient, "admin", "", "all", _this.codeClinique);
+                _this.DateFeuilleOff(_this.datefeuille, _this.codeClinique);
+            }
+            else {
+                _this.connection = true;
+                _this.historique("admin", "", "all", _this.codeClinique);
+                _this.liste("admin", "", "all", _this.codeClinique);
+                _this.DateFeuille(_this.codeClinique);
+            }
+            _this.patientliste = _this.patient;
         });
     }
     ListePage.prototype.liste = function (user, searchText, etage, codeClinique) {
@@ -67,7 +65,7 @@ var ListePage = (function () {
         this.patient = [];
         this.patient.length = 0;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -158,7 +156,7 @@ var ListePage = (function () {
         this.datefeuille = [];
         this.datefeuille.length = 0;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +

@@ -11,6 +11,9 @@ import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';
 import { LanguesPage } from '../pages/langues/langues';
 import { StatusBar, Splashscreen, SQLite } from 'ionic-native';
+import { LangueService } from "../services/LangueService";
+import { Variables } from "../providers/variables";
+import { ListePage } from "../pages/liste/liste";
 var MyApp = (function () {
     function MyApp(platform) {
         var _this = this;
@@ -24,14 +27,13 @@ var MyApp = (function () {
                 location: 'default'
             })
                 .then(function (db) {
-                db.executeSql('CREATE TABLE IF NOT EXISTS Langue (langue VARCHAR(32),matricule VARCHAR (32),codeClinique VARCHAR(32),nomClinique VARCHAR(32))', {});
+                db.executeSql('CREATE TABLE IF NOT EXISTS Langue (langue VARCHAR(32),matricule VARCHAR (32),codeClinique VARCHAR(32),nomClinique VARCHAR(32),url VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeListPreanesthesie(codeClinique VARCHAR(32),numDoss VARCHAR(32),ListPreanesthesie VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeConsigne(codeClinique VARCHAR(32),numDoss VARCHAR(32),consigneT VARCHAR(32),consignes VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeLabo(codeClinique VARCHAR(32),numDoss VARCHAR(32),LabosT VARCHAR(32),Labos VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeRadio(codeClinique VARCHAR(32),numDoss VARCHAR(32),RadioT VARCHAR(32),Radio VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeActe(codeClinique VARCHAR(32),numDoss VARCHAR(32),ActeT VARCHAR(32),Acte VARCHAR(32))', {});
-                db.executeSql('CREATE TABLE IF NOT EXISTS Cliniqueactive(code VARCHAR(32),nom VARCHAR(32))', {});
-                db.executeSql('CREATE TABLE IF NOT EXISTS Cliniqueautre(code VARCHAR(32),nom VARCHAR(32))', {});
+                db.executeSql('CREATE TABLE IF NOT EXISTS Clinique(code VARCHAR(32),nom VARCHAR(32),url VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS HistPatient(user VARCHAR(32),searchText VARCHAR(32),etage VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS HistDossier(numDoss VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32))', {});
                 db.executeSql('CREATE TABLE IF NOT EXISTS HistSigneCourbe(numDoss VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32))', {});
@@ -98,35 +100,34 @@ var MyApp = (function () {
                 console.error('Error opening database', error);
                 alert('Error opening database  ' + error);
             });
-            /*
-                   this.langserv = new LangueService();
-                   this.langserv.verifLangue().then(res => {
-                   if (res === true) {
-                   this.langserv.getLangues(this.langes).then(lang => {
-                   this.codeClinique = lang.getcodeClinique();
-                   this.nomClinique = lang.getnomClinique();
-                   this.langue = lang.getlangue();
-                   if (this.langue === "arabe") {
-                   this.tabLangue = Variables.arabe;
-                   }
-                   else if (this.langue === "francais") {
-                   this.tabLangue = Variables.francais;
-                   }
-                   else if (this.langue === "anglais") {
-                   this.tabLangue = Variables.anglais;
-                   }
-                   this.nav.setRoot(ListePage, {
-                   tabLangue: this.tabLangue,
-                   langue: this.langue,
-                   codeClinique: this.codeClinique,
-                   nomClinique: this.nomClinique
-                   });
-                   });
-                   } else {
-                   this.nav.setRoot(LanguesPage);
-                   }
-                   });
-            */ _this.nav.setRoot(LanguesPage);
+            _this.langserv = new LangueService();
+            _this.langserv.verifLangue().then(function (res) {
+                if (res === true) {
+                    _this.langserv.getLangues(_this.langes).then(function (lang) {
+                        _this.codeClinique = lang.getcodeClinique();
+                        _this.nomClinique = lang.getnomClinique();
+                        _this.langue = lang.getlangue();
+                        if (_this.langue === "arabe") {
+                            _this.tabLangue = Variables.arabe;
+                        }
+                        else if (_this.langue === "francais") {
+                            _this.tabLangue = Variables.francais;
+                        }
+                        else if (_this.langue === "anglais") {
+                            _this.tabLangue = Variables.anglais;
+                        }
+                        _this.nav.setRoot(ListePage, {
+                            tabLangue: _this.tabLangue,
+                            langue: _this.langue,
+                            codeClinique: _this.codeClinique,
+                            nomClinique: _this.nomClinique
+                        });
+                    });
+                }
+                else {
+                    _this.nav.setRoot(LanguesPage);
+                }
+            });
             StatusBar.styleDefault();
             Splashscreen.hide();
         });

@@ -6,6 +6,8 @@ import {LangueService} from "../services/LangueService";
 import {Langue} from "../models/Langue";
 import {Variables} from "../providers/variables";
 import {ListePage} from "../pages/liste/liste";
+import {UserService} from "../services/UserService";
+import {HomePage} from "../pages/home/home";
 
 @Component({
   templateUrl: 'app.html'
@@ -22,6 +24,7 @@ export class MyApp {
   private langue: any;
   tabLangue: any;
   nomClinique: any;
+  private userserv: any;
 
   constructor(platform: Platform) {
     this.pages = [
@@ -151,34 +154,41 @@ export class MyApp {
           alert('Error opening database  ' + error);
         });
 
-      this.langserv = new LangueService();
-      this.langserv.verifLangue().then(res => {
-        if (res === true) {
-          this.langserv.getLangues(this.langes).then(lang => {
-            this.codeClinique = lang.getcodeClinique();
-            this.nomClinique = lang.getnomClinique();
-            this.langue = lang.getlangue();
-            if (this.langue === "arabe") {
-              this.tabLangue = Variables.arabe;
-            }
-            else if (this.langue === "francais") {
-              this.tabLangue = Variables.francais;
-            }
-            else if (this.langue === "anglais") {
-              this.tabLangue = Variables.anglais;
-            }
-            this.nav.setRoot(ListePage, {
-              tabLangue: this.tabLangue,
-              langue: this.langue,
-              codeClinique: this.codeClinique,
-              nomClinique: this.nomClinique
-            });
-          });
-        } else {
+      this.userserv = new UserService();
+      this.userserv.getAllUser().then(user => {
+        if (user.length === 0) {
           this.nav.setRoot(LanguesPage);
+        } else {
+          this.langserv = new LangueService();
+          this.langserv.verifLangue().then(res => {
+            if (res === true) {
+              this.langserv.getLangues(this.langes).then(lang => {
+                this.codeClinique = lang.getcodeClinique();
+                this.nomClinique = lang.getnomClinique();
+                this.langue = lang.getlangue();
+                if (this.langue === "arabe") {
+                  this.tabLangue = Variables.arabe;
+                }
+                else if (this.langue === "francais") {
+                  this.tabLangue = Variables.francais;
+                }
+                else if (this.langue === "anglais") {
+                  this.tabLangue = Variables.anglais;
+                }
+
+                this.nav.setRoot(ListePage, {
+                  tabLangue: this.tabLangue,
+                  langue: this.langue,
+                  codeClinique: this.codeClinique,
+                  nomClinique: this.nomClinique
+                });
+              });
+            } else {
+              this.nav.setRoot(LanguesPage);
+            }
+          });
         }
       });
-
 
       StatusBar.styleDefault();
       Splashscreen.hide();

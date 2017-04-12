@@ -11,12 +11,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Client } from "../../models/Client";
 import { Variables } from "../../providers/variables";
-/*
- Generated class for the ClientDetail page.
-
- See http://ionicframework.com/docs/v2/components/#navigation for more info on
- Ionic pages and navigation.
- */
 var TryPage = (function () {
     function TryPage(navCtrl, navParams, Url) {
         this.navCtrl = navCtrl;
@@ -33,7 +27,7 @@ var TryPage = (function () {
     TryPage.prototype.GetClientByNumDoss = function (numDoss) {
         var _this = this;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
