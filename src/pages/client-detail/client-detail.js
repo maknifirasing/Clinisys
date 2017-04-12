@@ -20,7 +20,7 @@ var ClientDetailPage = (function () {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
-        this.clientList = [];
+        this.client = new Client();
         this.medecinList = [];
         this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
         this.patient = navParams.get("patient");
@@ -31,7 +31,7 @@ var ClientDetailPage = (function () {
         Variables.checconnection().then(function (res) {
             if (res === false) {
                 _this.connection = false;
-                _this.GetClientByNumDossOff(_this.clientList, _this.patient.getdossier());
+                _this.GetClientByNumDossOff(_this.client, _this.patient.getdossier());
                 _this.findMedIntervenatByNumDossOff(_this.medecinList, _this.patient.getdossier());
             }
             else {
@@ -65,29 +65,26 @@ var ClientDetailPage = (function () {
                     var xml = xmlhttp.responseXML;
                     var x, i;
                     x = xml.getElementsByTagName("return");
-                    var client;
                     var d, d2;
                     d = new Date();
-                    for (i = 0; i < x.length; i++) {
-                        client = new Client();
-                        client.setadrCli(x[i].children[0].textContent);
-                        d = (x[i].children[3].textContent).substr(0, 9);
-                        client.setdatNai(d);
-                        client.setlibNat(x[i].children[67].children[1].textContent);
-                        client.setnumTel(x[i].children[78].textContent);
-                        client.setetage(x[i].children[83].children[0].children[3].textContent);
-                        client.setnumCha(x[i].children[83].children[2].textContent);
-                        client.setnumdoss(x[i].children[77].textContent);
-                        client.setidentifiant(x[i].children[18].textContent);
-                        d2 = (x[i].children[4].textContent).substr(0, 9);
-                        client.setdateArr(d2);
-                        client.setcodeClinique(_this.codeClinique);
-                        _this.clientList.push(client);
-                    }
+                    _this.client.setadrCli(x[0].children[0].textContent);
+                    d = (x[0].children[3].textContent).substr(0, 9);
+                    _this.client.setdatNai(d);
+                    _this.client.setlibNat(x[0].children[74].children[1].textContent);
+                    _this.client.setnumTel(x[0].children[85].textContent);
+                    _this.client.setetage(x[0].children[83].children[0].children[3].textContent);
+                    _this.client.setnumCha(x[0].children[83].children[2].textContent);
+                    _this.client.setnumdoss(x[0].children[6].children[8].textContent);
+                    _this.client.setidentifiant(x[0].children[18].textContent);
+                    d2 = (x[0].children[4].textContent).substr(0, 9);
+                    _this.client.setdateArr(d2);
+                    _this.client.setcodeClinique(_this.codeClinique);
+                    console.log(x[0].children[74].children[1].textContent);
+                    console.log(x[0].children[85].textContent);
                     _this.clientserv = new ClientService();
-                    _this.clientserv.verifClient(_this.clientList, numDoss, _this.codeClinique).then(function (res) {
+                    _this.clientserv.verifClient(_this.client, numDoss, _this.codeClinique).then(function (res) {
                         if (res === false) {
-                            _this.clientserv.getClients(_this.clientList, numDoss, _this.codeClinique);
+                            _this.clientserv.getClients(_this.client, numDoss, _this.codeClinique);
                         }
                     });
                 }
@@ -97,9 +94,12 @@ var ClientDetailPage = (function () {
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };
-    ClientDetailPage.prototype.GetClientByNumDossOff = function (clientList, numDoss) {
+    ClientDetailPage.prototype.GetClientByNumDossOff = function (client, numDoss) {
+        var _this = this;
         this.clientserv = new ClientService();
-        this.clientList = this.clientserv.getClients(this.clientList, numDoss, this.codeClinique);
+        this.clientserv.getClients(client, numDoss, this.codeClinique).then(function (res) {
+            _this.client = res;
+        });
     };
     ClientDetailPage.prototype.findMedIntervenatByNumDoss = function (numDoss) {
         var _this = this;

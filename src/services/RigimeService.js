@@ -50,7 +50,6 @@ var RigimeService = (function () {
                     var r;
                     for (var i = 0; i < result.rows.length; i++) {
                         r = new Rigime();
-                        r.setcodeRegime(result.rows.item(0).codeRegime);
                         r.setdesignation(result.rows.item(0).designation);
                         _this.rigime.push(r);
                     }
@@ -75,9 +74,8 @@ var RigimeService = (function () {
                     continue;
                 }
                 var rigime = rigimes[key];
-                db.executeSql('insert into Rigime (codeRegime, designation ,numdoss ' +
-                    ',datefeuille, nature,codeClinique) values (?,?,?,?,?,?)', [
-                    rigime.getcodeRegime(),
+                db.executeSql('insert into Rigime (designation ,numdoss ' +
+                    ',datefeuille, nature,codeClinique) values (?,?,?,?,?)', [
                     rigime.getdesignation(),
                     numdoss,
                     datefeuille,

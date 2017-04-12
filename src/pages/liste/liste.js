@@ -22,6 +22,8 @@ import { LanguesPage } from "../langues/langues";
 import { MenuController } from 'ionic-angular';
 import { MdMenuTrigger } from "@angular/material";
 import { ListeCliniquePage } from "../liste-clinique/liste-clinique";
+import { ModifPassPage } from "../modif-pass/modif-pass";
+import { LangueService } from "../../services/LangueService";
 var ListePage = (function () {
     function ListePage(navCtrl, navParams, Url, menuCtrl, platform) {
         var _this = this;
@@ -35,6 +37,7 @@ var ListePage = (function () {
         this.datefeuille = [];
         this.hist = [];
         this.histl = new HistPatient();
+        this.langes = [];
         this.dtFeuille = new DateFeuille();
         this.codeClinique = navParams.get("codeClinique");
         this.nomClinique = navParams.get("nomClinique");
@@ -280,6 +283,18 @@ var ListePage = (function () {
     };
     ListePage.prototype.changerlangue = function () {
         this.navCtrl.setRoot(LanguesPage);
+    };
+    ListePage.prototype.changerPassword = function () {
+        var _this = this;
+        this.langserv = new LangueService();
+        this.langserv.getLangues(this.langes).then(function (lg) {
+            _this.navCtrl.setRoot(ModifPassPage, {
+                tabLangue: _this.tabLangue,
+                langue: _this.langue,
+                codeClinique: lg.getcodeClinique(),
+                nomClinique: lg.getmatricule()
+            });
+        });
     };
     ListePage.prototype.openListeCliniquePage = function () {
         this.navCtrl.setRoot(ListeCliniquePage, { tabLangue: this.tabLangue, langue: this.langue });

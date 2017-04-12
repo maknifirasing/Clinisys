@@ -72,6 +72,37 @@ export class UserService {
     });
   }
 
+  public getAllUser(): Promise<Users[]> {
+    return new Promise<Users[]>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("select * from Users ", []).then(result => {
+          if (result.rows.length > 0) {
+            var user;
+            for (var i = 0; i < result.rows.length; i++) {
+              user = new Users();
+              user.setmatricule(result.rows.item(i).matricule);
+              user.setpassWord(result.rows.item(i).passWord);
+              user.setuserName(result.rows.item(i).userName);
+              user.setcodeClinique(result.rows.item(i).codeClinique);
+              this.users.push(user);
+            }
+          }
+          resolve(this.users);
+        })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 1.1 Users  ' + error);
+          })
+      });
+      db.close();
+      return this;
+    });
+  }
+
   private _insertUser(users): void {
     let db = new SQLite();
     db.openDatabase({

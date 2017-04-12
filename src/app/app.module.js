@@ -25,6 +25,7 @@ import { NotificationPage } from "../pages/notification/notification";
 import { ClientDetailPage } from "../pages/client-detail/client-detail";
 import { TraitmentCourbe } from "../pages/traitment-courbe/traitment-courbe";
 import { ConsignePage } from "../pages/consigne/consigne";
+import { ModifPassPage } from "../pages/modif-pass/modif-pass";
 var AppModule = (function () {
     function AppModule() {
     }
@@ -49,7 +50,8 @@ AppModule = __decorate([
             NotificationPage,
             ClientDetailPage,
             TraitmentCourbe,
-            ConsignePage
+            ConsignePage,
+            ModifPassPage
         ],
         imports: [
             IonicModule.forRoot(MyApp),
@@ -73,7 +75,8 @@ AppModule = __decorate([
             NotificationPage,
             ClientDetailPage,
             TraitmentCourbe,
-            ConsignePage
+            ConsignePage,
+            ModifPassPage
         ],
         providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }]
     })

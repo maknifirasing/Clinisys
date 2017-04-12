@@ -33,7 +33,7 @@ export class MyApp {
         location: 'default'
       })
         .then((db: SQLite) => {
-          db.executeSql('CREATE TABLE IF NOT EXISTS Langue (langue VARCHAR(32),matricule VARCHAR (32),codeClinique VARCHAR(32),nomClinique VARCHAR(32))', {});
+          db.executeSql('CREATE TABLE IF NOT EXISTS Langue (langue VARCHAR(32),matricule VARCHAR (32),codeClinique VARCHAR(32),nomClinique VARCHAR(32),url VARCHAR(32))', {});
 
           db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeListPreanesthesie(codeClinique VARCHAR(32),numDoss VARCHAR(32),ListPreanesthesie VARCHAR(32))', {});
 
@@ -45,7 +45,7 @@ export class MyApp {
 
           db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeActe(codeClinique VARCHAR(32),numDoss VARCHAR(32),ActeT VARCHAR(32),Acte VARCHAR(32))', {});
 
-          db.executeSql('CREATE TABLE IF NOT EXISTS Clinique(code VARCHAR(32),nom VARCHAR(32))', {});
+          db.executeSql('CREATE TABLE IF NOT EXISTS Clinique(code VARCHAR(32),nom VARCHAR(32),url VARCHAR(32))', {});
 
           db.executeSql('CREATE TABLE IF NOT EXISTS HistPatient(user VARCHAR(32),searchText VARCHAR(32),etage VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32))', {});
 
@@ -151,33 +151,34 @@ export class MyApp {
           alert('Error opening database  ' + error);
         });
 
-       this.langserv = new LangueService();
-       this.langserv.verifLangue().then(res => {
-       if (res === true) {
-       this.langserv.getLangues(this.langes).then(lang => {
-       this.codeClinique = lang.getcodeClinique();
-       this.nomClinique = lang.getnomClinique();
-       this.langue = lang.getlangue();
-       if (this.langue === "arabe") {
-       this.tabLangue = Variables.arabe;
-       }
-       else if (this.langue === "francais") {
-       this.tabLangue = Variables.francais;
-       }
-       else if (this.langue === "anglais") {
-       this.tabLangue = Variables.anglais;
-       }
-       this.nav.setRoot(ListePage, {
-       tabLangue: this.tabLangue,
-       langue: this.langue,
-       codeClinique: this.codeClinique,
-       nomClinique: this.nomClinique
-       });
-       });
-       } else {
-       this.nav.setRoot(LanguesPage);
-       }
-       });
+      this.langserv = new LangueService();
+      this.langserv.verifLangue().then(res => {
+        if (res === true) {
+          this.langserv.getLangues(this.langes).then(lang => {
+            this.codeClinique = lang.getcodeClinique();
+            this.nomClinique = lang.getnomClinique();
+            this.langue = lang.getlangue();
+            if (this.langue === "arabe") {
+              this.tabLangue = Variables.arabe;
+            }
+            else if (this.langue === "francais") {
+              this.tabLangue = Variables.francais;
+            }
+            else if (this.langue === "anglais") {
+              this.tabLangue = Variables.anglais;
+            }
+            this.nav.setRoot(ListePage, {
+              tabLangue: this.tabLangue,
+              langue: this.langue,
+              codeClinique: this.codeClinique,
+              nomClinique: this.nomClinique
+            });
+          });
+        } else {
+          this.nav.setRoot(LanguesPage);
+        }
+      });
+
 
       StatusBar.styleDefault();
       Splashscreen.hide();

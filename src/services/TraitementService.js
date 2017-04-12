@@ -50,6 +50,7 @@ var TraitementService = (function () {
                     var t;
                     for (var i = 0; i < result.rows.length; i++) {
                         t = new Traitement();
+                        t.setnumDoss(result.rows.item(i).numDoss);
                         t.setdesignation(result.rows.item(i).designation);
                         t.setjour(result.rows.item(i).jour);
                         t.setposologie(result.rows.item(i).posologie);
@@ -76,7 +77,8 @@ var TraitementService = (function () {
                     continue;
                 }
                 var traitement = traitements[key];
-                db.executeSql('insert into Traitement (designation ,jour ,posologie ,datefeuille,codeClinique) values (?,?,?,?,?)', [
+                db.executeSql('insert into Traitement (numDoss,designation ,jour ,posologie ,datefeuille,codeClinique) values (?,?,?,?,?,?)', [
+                    traitement.getnumDoss(),
                     traitement.getdesignation(),
                     traitement.getjour(),
                     traitement.getposologie(),
@@ -102,7 +104,7 @@ var TraitementService = (function () {
             })
                 .catch(function (error) {
                 console.error('Error opening database', error);
-                alert('Error 1 Traitement  ' + error);
+                alert('Error 3 Traitement  ' + error);
             });
         });
         db.close();

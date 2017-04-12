@@ -3,6 +3,7 @@ export class Langue {
   private _matricule: string;
   private _codeClinique: string;
   private _nomClinique: string;
+  private _url: string;
 
   constructor() {
   }
@@ -37,5 +38,13 @@ export class Langue {
 
   setnomClinique(value: string) {
     this._nomClinique = value;
+  }
+
+  geturl(): string {
+    return this._url;
+  }
+
+  seturl(value: string) {
+    this._url = value;
   }
 }

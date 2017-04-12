@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Component } from "@angular/core";
 import { NavController, NavParams, Platform } from "ionic-angular";
 import { MotifHospitalisation } from "../../models/motifHospitalisation";
-import { Antec } from "../../models/Antec";
 import { SigneClinique } from "../../models/SigneClinique";
 import { Traitement } from "../../models/Traitement";
 import { Evenement } from "../../models/Evenement";
@@ -42,9 +41,7 @@ var DossierPage = DossierPage_1 = (function () {
         this.navParams = navParams;
         this.Url = Url;
         this.platform = platform;
-        this.motifh = [];
-        this.antec = [];
-        this.aleg = [];
+        this.motifh = new MotifHospitalisation();
         this.alechl = [];
         this.antechl = [];
         this.signe = [];
@@ -127,6 +124,7 @@ var DossierPage = DossierPage_1 = (function () {
                         var s;
                         for (i = 0; i < x.length; i++) {
                             s = new SigneClinique();
+                            s.setcodeType(x[i].children[0].textContent);
                             s.setdate(x[i].children[1].textContent);
                             s.setdesignation(x[i].children[2].textContent);
                             s.setquantite(x[i].children[3].textContent);
@@ -170,15 +168,9 @@ var DossierPage = DossierPage_1 = (function () {
         var _this = this;
         this.stringAlerg = "";
         this.stringAntec = "";
-        this.aleg.pop();
-        this.aleg = [];
-        this.aleg.length = 0;
         this.alechl.pop();
         this.alechl = [];
         this.alechl.length = 0;
-        this.antec.pop();
-        this.antec = [];
-        this.antec.length = 0;
         this.antechl.pop();
         this.antechl = [];
         this.antechl.length = 0;
@@ -203,49 +195,28 @@ var DossierPage = DossierPage_1 = (function () {
                         x = xml.getElementsByTagName("return");
                         var a;
                         for (i = 0; i < x.length; i++) {
-                            a = new Antec();
-                            a.setcodeAntecedent(x[i].children[0].children[0].textContent);
-                            a.setcodeFamille(x[i].children[0].children[1].textContent);
-                            a.setdesignation(x[i].children[0].children[2].textContent);
-                            a.setidDetailAntec(x[i].children[0].children[3].textContent);
-                            a.setordre(x[i].children[0].children[4].textContent);
-                            a.setvisiblePreAnes(x[i].children[0].children[5].textContent);
-                            a.setid(x[i].children[1].textContent);
-                            a.setidentifiant(x[i].children[2].textContent);
-                            a.setnumeroDossier(x[i].children[3].textContent);
-                            a.setobservation(x[i].children[4].textContent);
-                            a.setutilisateurAnt(x[i].children[5].textContent);
-                            /* if (i === x.length - 1)
-                             this.disig += a.getdesignation();
-                             else
-                             this.disig += a.getdesignation() + ", ";*/
-                            if (!(a.getcodeAntecedent() === ("A000")) && (!(a.getcodeAntecedent() === ("A255")))) {
-                                if (a.getcodeFamille() === ("FA02")) {
-                                    if (a.getcodeAntecedent().toUpperCase() === ("ALER")) {
-                                        _this.stringAlerg += a.getobservation() + ", ";
+                            if (!((x[i].children[0].children[0].textContent) === ("A000")) && (!((x[i].children[0].children[0].textContent) === ("A255")))) {
+                                if ((x[i].children[0].children[1].textContent) === ("FA02")) {
+                                    if ((x[i].children[0].children[0].textContent).toUpperCase() === ("ALER")) {
+                                        _this.stringAlerg += (x[i].children[4].textContent) + ", ";
                                         _this.Alerg = true;
                                     }
                                     else {
-                                        _this.stringAlerg += a.getdesignation() + ", ";
+                                        _this.stringAlerg += (x[i].children[0].children[2].textContent) + ", ";
                                         _this.Alerg = true;
                                     }
-                                    _this.aleg.push(a);
                                 }
                                 else {
-                                    if (a.getcodeFamille().toUpperCase() === ("AUTR")) {
-                                        _this.stringAntec += a.getobservation() + ", ";
+                                    if ((x[i].children[0].children[1].textContent).toUpperCase() === ("AUTR")) {
+                                        _this.stringAntec += (x[i].children[4].textContent) + ", ";
                                         _this.Ante = true;
                                     }
                                     else {
-                                        _this.stringAntec += a.getdesignation() + ", ";
+                                        _this.stringAntec += (x[i].children[0].children[2].textContent) + ", ";
                                         _this.Ante = true;
                                     }
                                 }
-                                _this.antec.push(a);
                             }
-                        }
-                        if (_this.antec.length === 0) {
-                            _this.AntecedentAllergieTest = false;
                         }
                         var antech = new AntecCh();
                         antech.setidpass(idpass);
@@ -269,7 +240,6 @@ var DossierPage = DossierPage_1 = (function () {
                         });
                     }
                     catch (Error) {
-                        _this.AntecedentAllergieTest = false;
                     }
                 }
             }
@@ -280,7 +250,6 @@ var DossierPage = DossierPage_1 = (function () {
     };
     DossierPage.prototype.getAntecedentAllergieByIdentifiantOff = function (antec, aleg, idpass, codeClinique) {
         var _this = this;
-        this.AntecedentAllergieTest = true;
         this.antecserv = new AntechService();
         this.antecserv.verifAntec(this.antechl, idpass, codeClinique).then(function (res) {
             if (res === true) {
@@ -304,9 +273,6 @@ var DossierPage = DossierPage_1 = (function () {
     };
     DossierPage.prototype.GetAllMotifHospitalisationByNumDoss = function (numDoss, codeClinique) {
         var _this = this;
-        this.motifh.pop();
-        this.motifh = [];
-        this.motifh.length = 0;
         this.test = false;
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
@@ -326,18 +292,13 @@ var DossierPage = DossierPage_1 = (function () {
                         var xml = xmlhttp.responseXML;
                         var x, i;
                         x = xml.getElementsByTagName("return");
-                        var a;
-                        for (i = 0; i < x.length; i++) {
-                            a = new MotifHospitalisation();
-                            a.setgroupeSang(x[0].children[3].textContent);
-                            a.setmotifhospitalisation(x[0].children[7].textContent);
-                            a.setnumdoss(x[0].children[8].textContent);
-                            a.setpoid(x[0].children[10].textContent);
-                            a.settaille(x[0].children[11].textContent);
-                            _this.motifh.push(a);
-                        }
+                        _this.motifh.setgroupeSang(x[0].children[3].textContent);
+                        _this.motifh.setmotifhospitalisation(x[0].children[7].textContent);
+                        _this.motifh.setnumdoss(x[0].children[8].textContent);
+                        _this.motifh.setpoid(x[0].children[10].textContent);
+                        _this.motifh.settaille(x[0].children[11].textContent);
                         DossierPage_1.motifhh = _this.motifh;
-                        if (_this.motifh.length === 0) {
+                        if (_this.motifh.getnumdoss() === "") {
                             _this.test = false;
                         }
                         _this.mserv = new motifHospitalisationService();
@@ -360,10 +321,12 @@ var DossierPage = DossierPage_1 = (function () {
     DossierPage.prototype.GetAllMotifHospitalisationByNumDossOff = function (motif, numdoss, codeClinique) {
         var _this = this;
         this.mserv = new motifHospitalisationService();
-        this.mserv.verifmotifHospitalisation(motif, numdoss, codeClinique).then(function (res) {
-            if (res === true) {
-                _this.motifh = _this.mserv.getmotifHospitalisations(motif, numdoss, codeClinique);
-                DossierPage_1.motifhh = _this.motifh;
+        this.mserv.getmotifHospitalisations(motif, numdoss, codeClinique).then(function (res) {
+            DossierPage_1.motifhh = _this.motifh = res;
+            if (res.getnumdoss() === "") {
+                _this.test = false;
+            }
+            else {
                 _this.test = true;
             }
         });
@@ -402,11 +365,13 @@ var DossierPage = DossierPage_1 = (function () {
                             if (x[i].childElementCount === 20) {
                                 t.setdesignation(x[i].children[4].textContent);
                                 t.setjour(x[i].children[8].textContent);
+                                t.setnumDoss(x[i].children[10].textContent);
                                 t.setposologie(x[i].children[13].textContent);
                             }
                             else if (x[i].childElementCount === 19) {
                                 t.setdesignation(x[i].children[4].textContent);
                                 t.setjour(x[i].children[8].textContent);
+                                t.setnumDoss(x[i].children[9].textContent);
                                 t.setposologie(x[i].children[13].textContent);
                             }
                             _this.traitement.push(t);
@@ -492,11 +457,7 @@ var DossierPage = DossierPage_1 = (function () {
                         var hour = "";
                         for (i = 0; i < x.length; i++) {
                             e = new Evenement();
-                            e.setaccess(x[i].children[0].textContent);
-                            e.setcode(x[i].children[1].children[0].textContent);
                             e.setevenements(x[i].children[1].children[1].textContent);
-                            e.setorderEvenement(x[i].children[1].children[2].textContent);
-                            e.setvisible(x[i].children[1].children[3].textContent);
                             drdv = new Date(x[i].children[2].textContent);
                             day = drdv.getDay();
                             month = drdv.getMonth();
@@ -505,9 +466,8 @@ var DossierPage = DossierPage_1 = (function () {
                             hour = drdv.getHours();
                             e.setdate(day + "/" + month + "/" + year + " - " + hour + ":" + minu);
                             e.setdetail(_this.convertHTMLtoRTF(x[i].children[3].textContent));
-                            e.setIDEvenement(x[i].children[4].textContent);
-                            e.setnumdoss(x[i].children[5].textContent);
                             e.setuserCreat(x[i].children[6].textContent);
+                            e.setnumdoss(x[i].children[5].textContent);
                             if (e.getevenements() === "Evolution") {
                                 _this.Evolution.push(e);
                                 _this.Evo = true;
@@ -647,7 +607,6 @@ var DossierPage = DossierPage_1 = (function () {
                         x = xml.getElementsByTagName("return");
                         for (i = 0; i < x.length; i++) {
                             r = new Rigime();
-                            r.setcodeRegime(x[0].children[0].textContent);
                             r.setdesignation(x[0].children[1].textContent);
                             _this.rigime.push(r);
                         }
@@ -890,7 +849,7 @@ var DossierPage = DossierPage_1 = (function () {
     };
     return DossierPage;
 }());
-DossierPage.motifhh = [];
+DossierPage.motifhh = new MotifHospitalisation();
 DossierPage = DossierPage_1 = __decorate([
     Component({
         selector: 'page-dossier',

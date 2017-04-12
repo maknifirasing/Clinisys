@@ -102,20 +102,19 @@ export class TabsPage {
       typeconsigne: "all",
       etatconsigne: "all"
     };
-    this.platform.ready().then(() => {
-      Variables.checconnection().then(connexion => {
-        if (connexion === false) {
-          this.connection = false;
-          this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
-          this.GetExamenRadioByNumDossResponseOff(this.pass.getdossier(), this.codeClinique);
-          this.findListPreanesthesieByNumeroDossierResponseOff(this.pass.getdossier(), this.codeClinique);
-          this.getPlanificationTacheInfirmierByNumDossAndTypeOff(this.pass.getdossier(), this.codeClinique);
-        }
-        else {
-          this.connection = true;
-          this.update();
-        }
-      });
+
+    Variables.checconnection().then(connexion => {
+      if (connexion === false) {
+        this.connection = false;
+        this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
+        this.GetExamenRadioByNumDossResponseOff(this.pass.getdossier(), this.codeClinique);
+        this.findListPreanesthesieByNumeroDossierResponseOff(this.pass.getdossier(), this.codeClinique);
+        this.getPlanificationTacheInfirmierByNumDossAndTypeOff(this.pass.getdossier(), this.codeClinique);
+      }
+      else {
+        this.connection = true;
+        this.update();
+      }
     });
 
   }
@@ -125,7 +124,7 @@ export class TabsPage {
 
   GetExamenRadioByNumDossResponse(numDoss, codeClinique) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -241,7 +240,7 @@ export class TabsPage {
 
   findAllLaboByNumDossier(numDoss, codeClinique) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -274,7 +273,7 @@ export class TabsPage {
               l.setmedecinTraitant(x[i].children[7].textContent);
               l.setnumAdmission(x[i].children[9].textContent);
               l.setnumDossier(x[i].children[10].textContent);
-              l.setpdf(this.Url.url + "dmi-web/LaboPDF/" + l.getnumAdmission() + "0.pdf");
+              l.setpdf(Variables.uRL + "dmi-web/LaboPDF/" + l.getnumAdmission() + "0.pdf");
               if (l.getcontenuePDF() === "true") {
                 this.LabosT.push(l);
                 this.countPdfT++;
@@ -345,7 +344,7 @@ export class TabsPage {
 
   findListPreanesthesieByNumeroDossierResponse(numDoss, codeClinique) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -443,7 +442,7 @@ export class TabsPage {
 
   getPlanificationTacheInfirmierByNumDossAndType(numDoss, type, etat, codeClinique) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +

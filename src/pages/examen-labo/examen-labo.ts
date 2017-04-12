@@ -34,7 +34,6 @@ export class ExamenLaboPage {
     this.langue = navParams.get("langue");
     this.LabosT = navParams.get("Labost");
     this.LabosF = navParams.get("Labosf");
-    this.platform.ready().then(() => {
       Variables.checconnection().then(connexion => {
         if (connexion === false) {
           this.connection = false;
@@ -43,13 +42,12 @@ export class ExamenLaboPage {
           this.connection = true;
         }
       });
-    });
     this.histd=DossierPage.hist;
   }
 
   openURL(numAdmission) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -66,7 +64,7 @@ export class ExamenLaboPage {
             var xml = xmlhttp.responseXML;
             var x;
             x = xml.getElementsByTagName("return");
-            this.pdf = this.Url.url + "dmi-web/LaboPDF/" + x[0].childNodes[0].nodeValue.split("1.")[0] + ".pdf";
+            this.pdf = Variables.uRL + "dmi-web/LaboPDF/" + x[0].childNodes[0].nodeValue.split("1.")[0] + ".pdf";
             console.log("p   " + x[0].childNodes[0].nodeValue);
             console.log("pdf   " + this.pdf);
             this.navCtrl.push(PdfViewPage, {pdf: this.pdf});

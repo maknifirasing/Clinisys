@@ -9,61 +9,65 @@ export class CliniqueService {
 
   public verifClinique(cliniques: any): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select count(*) as sum from Clinique ", [])
-        .then(result => {
-          if (result.rows.item(0).sum >0) {
-            resolve(true);
-            return true;
-          }
-          else {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("select count(*) as sum from Clinique ", [])
+          .then(result => {
+            if (result.rows.item(0).sum > 0) {
+              resolve(true);
+              return true;
+            }
+            else {
+              resolve(false);
+              return false;
+            }
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 0 Clinique  ' + error);
             resolve(false);
             return false;
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 0 Clinique  ' + error);
-          resolve(false);
-          return false;
-        })
-    });
+          })
+      });
       db.close();
       return this;
     })
   }
 
-  public getCliniques(cliniques: any) {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from Clinique ", [])
-        .then(result => {
-          if (result.rows.length === 0) {
-            this._insertCliniques(cliniques);
-          } else {
-            var c;
-            for (var i = 0; i < result.rows.length; i++) {
-              c = new Clinique();
-              c.setcode(result.rows.item(i).code);
-              c.setnom(result.rows.item(i).nom);
-              this.clinique.push(c);
+  public getCliniques(cliniques: any): Promise<Clinique[]> {
+    return new Promise<Clinique[]>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("select * from Clinique ", [])
+          .then(result => {
+            if (result.rows.length === 0) {
+              this._insertCliniques(cliniques);
+            } else {
+              var c;
+              for (var i = 0; i < result.rows.length; i++) {
+                c = new Clinique();
+                c.setcode(result.rows.item(i).code);
+                c.setnom(result.rows.item(i).nom);
+                c.seturl(result.rows.item(i).url);
+                this.clinique.push(c);
+              }
+              resolve(this.clinique);
             }
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 Clinique  ' + error);
-        })
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 1 Clinique  ' + error);
+          })
+      });
+      db.close();
+      return this;
     });
-    db.close();
-    return this.clinique;
   }
 
   private _insertCliniques(cliniques: Array<Clinique>): void {
@@ -77,9 +81,10 @@ export class CliniqueService {
           continue;
         }
         let clinique = cliniques[key];
-        db.executeSql('insert into Clinique (code,nom) values (?,?)', [
+        db.executeSql('insert into Clinique (code,nom) values (?,?,?)', [
           clinique.getcode(),
-          clinique.getnom()
+          clinique.getnom(),
+          clinique.geturl()
         ]);
       }
     }).catch(error => {
@@ -97,7 +102,7 @@ export class CliniqueService {
     }).then(() => {
       db.executeSql("delete from Clinique ", [])
         .then(() => {
-      //    alert("Suppression de table Aleg est terminé avec succes");
+          //    alert("Suppression de table Aleg est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);

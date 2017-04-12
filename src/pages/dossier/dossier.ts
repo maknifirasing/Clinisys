@@ -33,7 +33,7 @@ import {TraitmentCourbe} from "../traitment-courbe/traitment-courbe";
 })
 
 export class DossierPage {
-  motifh: Array<MotifHospitalisation> = [];
+  motifh = new MotifHospitalisation();
   mserv: any;
   alechl: Array<AntecCh> = [];
   antechl: Array<AntecCh> = [];
@@ -88,7 +88,7 @@ export class DossierPage {
   pass: any;
   dateFeuille: any;
   langue: any;
-  static motifhh: Array<MotifHospitalisation> = [];
+  static motifhh = new MotifHospitalisation();
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform) {
     this.codeClinique = navParams.get("codeClinique");
@@ -105,26 +105,24 @@ export class DossierPage {
       this.codeType = "'1','3','4'";
       this.codeTypeOf = "134";
     }
-    this.platform.ready().then(() => {
-      Variables.checconnection().then(res => {
-        if (res === false) {
-          this.connection = false;
-          this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
-          this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
-          this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
-          this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
-          this.GetTraitementsOff(this.traitement, this.pass.getdossier(), this.dateFeuille, this.codeClinique);
-          this.GetEvenementByDossierOff(this.pass.getdossier(), this.codeClinique);
-          this.GetListRegimeOff(this.rigime, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
-          this.GetSigneCliniqueOff(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeTypeOf, this.codeClinique);
+    Variables.checconnection().then(res => {
+      if (res === false) {
+        this.connection = false;
+        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
+        this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
+        this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
+        this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+        this.GetTraitementsOff(this.traitement, this.pass.getdossier(), this.dateFeuille, this.codeClinique);
+        this.GetEvenementByDossierOff(this.pass.getdossier(), this.codeClinique);
+        this.GetListRegimeOff(this.rigime, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+        this.GetSigneCliniqueOff(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeTypeOf, this.codeClinique);
 
-        }
-        else {
-          this.connection = true;
-          this.historique(this.pass.getdossier(), this.codeClinique);
-          this.update();
-        }
-      });
+      }
+      else {
+        this.connection = true;
+        this.historique(this.pass.getdossier(), this.codeClinique);
+        this.update();
+      }
     });
   }
 
@@ -133,7 +131,7 @@ export class DossierPage {
     this.signe = [];
     this.signe.length = 0;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -210,7 +208,7 @@ export class DossierPage {
     this.antechl = [];
     this.antechl.length = 0;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -328,12 +326,9 @@ export class DossierPage {
   }
 
   GetAllMotifHospitalisationByNumDoss(numDoss, codeClinique) {
-    this.motifh.pop();
-    this.motifh = [];
-    this.motifh.length = 0;
     this.test = false;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -352,18 +347,15 @@ export class DossierPage {
             var xml = xmlhttp.responseXML;
             var x, i;
             x = xml.getElementsByTagName("return");
-            var a;
-            for (i = 0; i < x.length; i++) {
-              a = new MotifHospitalisation();
-              a.setgroupeSang(x[0].children[3].textContent);
-              a.setmotifhospitalisation(x[0].children[7].textContent);
-              a.setnumdoss(x[0].children[8].textContent);
-              a.setpoid(x[0].children[10].textContent);
-              a.settaille(x[0].children[11].textContent);
-              this.motifh.push(a);
-            }
+
+            this.motifh.setgroupeSang(x[0].children[3].textContent);
+            this.motifh.setmotifhospitalisation(x[0].children[7].textContent);
+            this.motifh.setnumdoss(x[0].children[8].textContent);
+            this.motifh.setpoid(x[0].children[10].textContent);
+            this.motifh.settaille(x[0].children[11].textContent);
+
             DossierPage.motifhh = this.motifh;
-            if (this.motifh.length === 0) {
+            if (this.motifh.getnumdoss() === "") {
               this.test = false;
             }
             this.mserv = new motifHospitalisationService();
@@ -386,10 +378,12 @@ export class DossierPage {
 
   GetAllMotifHospitalisationByNumDossOff(motif, numdoss, codeClinique) {
     this.mserv = new motifHospitalisationService();
-    this.mserv.verifmotifHospitalisation(motif, numdoss, codeClinique).then(res => {
-      if (res === true) {
-        this.motifh = this.mserv.getmotifHospitalisations(motif, numdoss, codeClinique);
-        DossierPage.motifhh = this.motifh;
+    this.mserv.getmotifHospitalisations(motif, numdoss, codeClinique).then(res => {
+      DossierPage.motifhh = this.motifh = res;
+      if (res.getnumdoss() === "") {
+        this.test = false;
+      }
+      else {
         this.test = true;
       }
     });
@@ -408,7 +402,7 @@ export class DossierPage {
     this.traitement.length = 0;
     this.trait = false;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -505,7 +499,7 @@ export class DossierPage {
     this.Con = false;
     this.Evo = false;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -664,7 +658,7 @@ export class DossierPage {
     this.rigime.length = 0;
     var xmlhttp = new XMLHttpRequest();
     this.Ri = false;
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -740,7 +734,7 @@ export class DossierPage {
     this.Sorties.length = 0;
     var xmlhttp = new XMLHttpRequest();
     this.Ri = false;
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +

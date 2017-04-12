@@ -29,7 +29,6 @@ export class ListPreanesthesiePage {
     this.tabLangue = navParams.get("tabLangue");
     this.codeClinique = navParams.get("codeClinique");
     this.langue = navParams.get("langue");
-    this.platform.ready().then(() => {
       Variables.checconnection().then(connexion => {
         if (connexion === false) {
           this.connection = false;
@@ -38,7 +37,6 @@ export class ListPreanesthesiePage {
           this.connection = true;
         }
       });
-    });
     this.histd = DossierPage.hist;
 
   }

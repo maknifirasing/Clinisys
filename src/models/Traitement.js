@@ -1,6 +1,12 @@
 var Traitement = (function () {
     function Traitement() {
     }
+    Traitement.prototype.getnumDoss = function () {
+        return this._numDoss;
+    };
+    Traitement.prototype.setnumDoss = function (value) {
+        this._numDoss = value;
+    };
     Traitement.prototype.getdesignation = function () {
         return this._designation;
     };

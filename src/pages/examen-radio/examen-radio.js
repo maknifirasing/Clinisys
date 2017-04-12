@@ -76,29 +76,72 @@ var ExamenRadioPage = (function () {
             Variables.checconnection().then(function (connexion) {
                 if (connexion === false) {
                     _this.connection = false;
-                    _this.historiqueDocOff(_this.histDoc, _this.pass.getdossier(), observ, _this.codeClinique);
-                    _this.docserv = new DocumentService();
-                    _this.docserv.getDocuments(_this.document, observ, _this.codeClinique).then(function (res) {
-                        _this.retrieveImageOff(res);
+                    _this.histdocserv = new HistDocService();
+                    _this.histdocserv.getHistDocs(_this.histDoc, _this.pass.getdossier(), observ, _this.codeClinique).then(function (result) {
+                        _this.histdoc = result.getdate();
+                        _this.docserv = new DocumentService();
+                        _this.docserv.getDocuments(_this.document, observ, _this.codeClinique).then(function (res) {
+                            _this.retrieveImageOff(res);
+                        });
                     });
                 }
                 else {
                     _this.connection = true;
-                    var d = new Document();
-                    d.seturl(_this.storageDirectory + observ);
-                    d.setobserv(observ);
-                    d.setcodeClinique(_this.codeClinique);
-                    _this.document.push(d);
-                    _this.historiqueDoc(_this.pass.getdossier(), observ, _this.codeClinique);
-                    _this.docserv = new DocumentService();
-                    _this.docserv.verifDocument(_this.document, observ, _this.codeClinique).then(function (res) {
-                        if (res === false) {
-                            _this.docserv.getDocuments(_this.document, observ, _this.codeClinique);
-                        }
-                    });
-                    _this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
-                    _this.open(_this.url);
-                    _this.retrieveImage(_this.url, d);
+                    _this.histdocserv = new HistDocService();
+                    var hi = new HistDoc();
+                    var d = new Date();
+                    hi.setnumDoss(_this.pass.getdossier());
+                    hi.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+                    hi.setcodeClinique(_this.codeClinique);
+                    hi.setnom(observ);
+                    _this.histDoc.push(hi);
+                    try {
+                        _this.histdocserv.deleteHistDocs(_this.pass.getdossier(), _this.codeClinique, observ);
+                        _this.histdocserv.getHistDocs(_this.histDoc, _this.pass.getdossier(), _this.codeClinique, observ).then(function (result) {
+                            _this.histdoc = result.getdate();
+                            var doc = new Document();
+                            doc.seturl(_this.storageDirectory + observ);
+                            doc.setobserv(observ);
+                            doc.setcodeClinique(_this.codeClinique);
+                            _this.document.push(doc);
+                            _this.docserv = new DocumentService();
+                            _this.docserv.verifDocument(_this.document, observ, _this.codeClinique).then(function (res) {
+                                if (res === false) {
+                                    _this.docserv.getDocuments(_this.document, observ, _this.codeClinique);
+                                }
+                            });
+                            _this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
+                            Variables.checservice(_this.url).then(function (res) {
+                                if (res === true) {
+                                    _this.open(_this.url);
+                                    _this.retrieveImage(_this.url, doc);
+                                }
+                            });
+                        });
+                    }
+                    catch (Error) {
+                        _this.histdocserv.getHistDocs(_this.histDoc, _this.pass.getdossier(), _this.codeClinique, observ).then(function (result) {
+                            _this.histdoc = result.getdate();
+                            var doc = new Document();
+                            doc.seturl(_this.storageDirectory + observ);
+                            doc.setobserv(observ);
+                            doc.setcodeClinique(_this.codeClinique);
+                            _this.document.push(doc);
+                            _this.docserv = new DocumentService();
+                            _this.docserv.verifDocument(_this.document, observ, _this.codeClinique).then(function (res) {
+                                if (res === false) {
+                                    _this.docserv.getDocuments(_this.document, observ, _this.codeClinique);
+                                }
+                            });
+                            _this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
+                            Variables.checservice(_this.url).then(function (res) {
+                                if (res === true) {
+                                    _this.open(_this.url);
+                                    _this.retrieveImage(_this.url, doc);
+                                }
+                            });
+                        });
+                    }
                 }
             });
         });
@@ -275,35 +318,6 @@ var ExamenRadioPage = (function () {
             tabLangue: this.tabLangue,
             langue: this.langue,
             codeClinique: this.codeClinique
-        });
-    };
-    ExamenRadioPage.prototype.historiqueDoc = function (numDoss, file, codeClinique) {
-        var _this = this;
-        this.histdocserv = new HistDocService();
-        var hi = new HistDoc();
-        var d = new Date();
-        hi.setnumDoss(numDoss);
-        hi.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
-        hi.setcodeClinique(codeClinique);
-        hi.setnom(file);
-        this.histDoc.push(hi);
-        try {
-            this.histdocserv.deleteHistDocs(numDoss, codeClinique, file);
-            this.histdocserv.getHistDocs(this.histDoc, numDoss, codeClinique, file).then(function (result) {
-                _this.histdoc = result.getdate();
-            });
-        }
-        catch (Error) {
-            this.histdocserv.getHistDocs(this.histDoc, numDoss, codeClinique, file).then(function (result) {
-                _this.histdoc = result.getdate();
-            });
-        }
-    };
-    ExamenRadioPage.prototype.historiqueDocOff = function (hist, numDoss, file, codeClinique) {
-        var _this = this;
-        this.histdocserv = new HistDocService();
-        this.histdocserv.getHistDocs(hist, numDoss, codeClinique, file).then(function (result) {
-            _this.histdoc = result.getdate();
         });
     };
     return ExamenRadioPage;

@@ -428,7 +428,7 @@ var TabsPage = (function () {
                             c.setetat(x[i].children[8].textContent);
                             c.setheurtache(x[i].children[9].textContent);
                             c.setnumeroDossier(x[i].children[12].textContent);
-                            c.setuserCreate(x[i].children[16].textContent);
+                            c.setuserCreate(x[i].children[15].textContent);
                             c.setcodeClinique(codeClinique);
                         }
                         _this.consigne.push(c);
