@@ -33,15 +33,15 @@ export class ListeCliniquePage {
     this.viewCtrl.showBackButton(false);
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
-      Variables.checconnection().then(connexion => {
-        if (connexion === false) {
-          this.connection = false;
-          this.ListCliniqueOff(this.clinique);
-        }
-        else {
-          this.connection = true;
-          this.ListClinique();
-        }
+    Variables.checconnection().then(connexion => {
+      if (connexion === false) {
+        this.connection = false;
+        this.ListCliniqueOff(this.clinique);
+      }
+      else {
+        this.connection = true;
+        this.ListClinique();
+      }
     });
   }
 
@@ -137,7 +137,7 @@ export class ListeCliniquePage {
           langue: this.langue,
           codeClinique: codeC.getcode(),
           nomClinique: codeC.getnom(),
-          url:codeC.geturl()
+          url: codeC.geturl()
         });
       } else {
         this.langserv = new LangueService();
@@ -164,7 +164,7 @@ export class ListeCliniquePage {
             langue: this.langue,
             codeClinique: codeC.getcode(),
             nomClinique: codeC.getnom(),
-            url:codeC.geturl()
+            url: codeC.geturl()
           });
         });
       }

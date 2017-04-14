@@ -57,13 +57,13 @@ export class PdfViewPage {
         if (connexion === false) {
           this.connection = false;
           this.pdfSrc = this.storageDirectory + fields[5];
-          this.historiqueOff(this.histC, this.pass.getdossier(),fields[5] ,this.codeClinique);
+          this.historiqueOff(this.histC, this.pass.getdossier(), fields[5], this.codeClinique);
         }
         else {
           this.connection = true;
           this.pdfSrc = this.pdf;
           this.retrieveImage(this.pdfSrc);
-          this.historique(this.pass.getdossier(),fields[5], this.codeClinique);
+          this.historique(this.pass.getdossier(), fields[5], this.codeClinique);
         }
       });
     });
@@ -143,7 +143,7 @@ export class PdfViewPage {
 
   }
 
-  historique(numDoss,file ,codeClinique) {
+  historique(numDoss, file, codeClinique) {
     this.histserv = new HistPdfService();
     var h = new HistDoc();
     var d = new Date();
@@ -153,13 +153,13 @@ export class PdfViewPage {
     h.setnom(file);
     this.histC.push(h);
     try {
-      this.histserv.deleteHistPdfs(numDoss, codeClinique,file);
-      this.histserv.getHistPdfs(this.histC, numDoss, codeClinique,file).then(res => {
+      this.histserv.deleteHistPdfs(numDoss, codeClinique, file);
+      this.histserv.getHistPdfs(this.histC, numDoss, codeClinique, file).then(res => {
         this.histp = res.getdate();
       });
     }
     catch (Error) {
-      this.histserv.getHistPdfs(this.histC, numDoss, codeClinique,file).then(res => {
+      this.histserv.getHistPdfs(this.histC, numDoss, codeClinique, file).then(res => {
         this.histp = res.getdate();
       });
     }
@@ -167,9 +167,9 @@ export class PdfViewPage {
   }
 
 
-  historiqueOff(hist, numDoss,file, codeClinique) {
+  historiqueOff(hist, numDoss, file, codeClinique) {
     this.histserv = new HistPdfService();
-    this.histserv.getHistPdfs(hist, numDoss, codeClinique,file).then(res => {
+    this.histserv.getHistPdfs(hist, numDoss, codeClinique, file).then(res => {
       this.histp = res.getdate();
     });
   }

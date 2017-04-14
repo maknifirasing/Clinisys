@@ -133,7 +133,7 @@ var ExamenRadioPage = (function () {
                                     _this.docserv.getDocuments(_this.document, observ, _this.codeClinique);
                                 }
                             });
-                            _this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
+                            _this.url = "http://192.168.0.115:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
                             Variables.checservice(_this.url).then(function (res) {
                                 if (res === true) {
                                     _this.open(_this.url);

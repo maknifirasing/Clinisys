@@ -35,9 +35,9 @@ export class TabsPage {
   consigneserv: any;
   coountConsigne: number;
   tab1Root: any = DossierPage;
-  tab2Root: any = ExamenRadioPage;
-  tab3Root: any = ListPreanesthesiePage;
-  tab4Root: any = ExamenLaboPage;
+  tab2Root: any = ExamenLaboPage;
+  tab3Root: any = ExamenRadioPage;
+  tab4Root: any = ListPreanesthesiePage;
   tab5Root: any = ConsignePage;
   pass: Patient;
   pdf: string;
@@ -103,20 +103,21 @@ export class TabsPage {
       etatconsigne: "all"
     };
 
-    Variables.checconnection().then(connexion => {
-      if (connexion === false) {
-        this.connection = false;
-        this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
-        this.GetExamenRadioByNumDossResponseOff(this.pass.getdossier(), this.codeClinique);
-        this.findListPreanesthesieByNumeroDossierResponseOff(this.pass.getdossier(), this.codeClinique);
-        this.getPlanificationTacheInfirmierByNumDossAndTypeOff(this.pass.getdossier(), this.codeClinique);
-      }
-      else {
-        this.connection = true;
-        this.update();
-      }
+    platform.ready().then(() => {
+      Variables.checconnection().then(connexion => {
+        if (connexion === false) {
+          this.connection = false;
+          this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
+          this.GetExamenRadioByNumDossResponseOff(this.pass.getdossier(), this.codeClinique);
+          this.findListPreanesthesieByNumeroDossierResponseOff(this.pass.getdossier(), this.codeClinique);
+          this.getPlanificationTacheInfirmierByNumDossAndTypeOff(this.pass.getdossier(), this.codeClinique);
+        }
+        else {
+          this.connection = true;
+          this.update();
+        }
+      });
     });
-
   }
 
   ionViewDidLoad() {
@@ -282,13 +283,13 @@ export class TabsPage {
                 this.LabosF.push(l);
               }
             }
+
             var tLabo = new tabBadge();
             tLabo.setnumDoss(numDoss);
             tLabo.setFichier(this.countPdf);
             tLabo.setFichierT(this.countPdfT);
             tLabo.setcodeClinique(codeClinique);
             this.tabgLabo.push(tLabo);
-
 
             this.LabosFs = new LaboFService();
             this.LabosFs.verifLabo(this.LabosF, numDoss, codeClinique).then(res => {

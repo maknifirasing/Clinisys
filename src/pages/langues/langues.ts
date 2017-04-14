@@ -23,8 +23,8 @@ export class LanguesPage {
   private userserv: any;
 
 
-  constructor(public navCtrl: NavController,private Url: Variables) {
-  //  Variables.auth();
+  constructor(public navCtrl: NavController, private Url: Variables) {
+    //  Variables.auth();
   }
 
   ionViewDidLoad() {
@@ -41,6 +41,7 @@ export class LanguesPage {
     else if (lang === "anglais") {
       this.tabLangue = Variables.anglais;
     }
+
     this.userserv = new UserService();
     this.userserv.getAllUser().then(user => {
       if (user.length === 0) {
@@ -75,7 +76,6 @@ export class LanguesPage {
           }
         });
       }
-      });
-
+    });
   }
 }

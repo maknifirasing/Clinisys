@@ -49,6 +49,7 @@ var PdfViewPage = (function () {
                 return false;
             }
             var fields = _this.pdf.split('/');
+            alert(fields[5]);
             Variables.checconnection().then(function (connexion) {
                 if (connexion === false) {
                     _this.connection = false;
