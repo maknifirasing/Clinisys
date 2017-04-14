@@ -80,7 +80,7 @@ var ConsigneService = (function () {
                     continue;
                 }
                 var consigne = consignes[key];
-                db.executeSql('insert into Consigne (datetache ,details ,etat ,heurtache,numeroDossier,codeMedecin ,type ,userCreate ,codeClinique,typeget ,etatget) values (?,?,?,?,?,?,?,?,?,?)', [
+                db.executeSql('insert into Consigne (datetache ,details ,etat ,heurtache,numeroDossier,codeMedecin ,type ,userCreate ,codeClinique,typeget ,etatget) values (?,?,?,?,?,?,?,?,?,?,?)', [
                     consigne.getdatetache(),
                     consigne.getdetails(),
                     consigne.getetat(),

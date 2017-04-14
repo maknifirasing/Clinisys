@@ -79,7 +79,7 @@ var CliniqueService = (function () {
                     continue;
                 }
                 var clinique = cliniques[key];
-                db.executeSql('insert into Clinique (code,nom) values (?,?,?)', [
+                db.executeSql('insert into Clinique (code,nom,url) values (?,?,?)', [
                     clinique.getcode(),
                     clinique.getnom(),
                     clinique.geturl()

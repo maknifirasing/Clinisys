@@ -37,9 +37,9 @@ var TabsPage = (function () {
         this.Url = Url;
         this.platform = platform;
         this.tab1Root = DossierPage;
-        this.tab2Root = ExamenRadioPage;
-        this.tab3Root = ListPreanesthesiePage;
-        this.tab4Root = ExamenLaboPage;
+        this.tab2Root = ExamenLaboPage;
+        this.tab3Root = ExamenRadioPage;
+        this.tab4Root = ListPreanesthesiePage;
         this.tab5Root = ConsignePage;
         this.tabgLabo = [];
         this.tabgConsigne = [];
@@ -78,18 +78,20 @@ var TabsPage = (function () {
             typeconsigne: "all",
             etatconsigne: "all"
         };
-        Variables.checconnection().then(function (connexion) {
-            if (connexion === false) {
-                _this.connection = false;
-                _this.findAllLaboByNumDossierOff(_this.pass.getdossier(), _this.codeClinique);
-                _this.GetExamenRadioByNumDossResponseOff(_this.pass.getdossier(), _this.codeClinique);
-                _this.findListPreanesthesieByNumeroDossierResponseOff(_this.pass.getdossier(), _this.codeClinique);
-                _this.getPlanificationTacheInfirmierByNumDossAndTypeOff(_this.pass.getdossier(), _this.codeClinique);
-            }
-            else {
-                _this.connection = true;
-                _this.update();
-            }
+        platform.ready().then(function () {
+            Variables.checconnection().then(function (connexion) {
+                if (connexion === false) {
+                    _this.connection = false;
+                    _this.findAllLaboByNumDossierOff(_this.pass.getdossier(), _this.codeClinique);
+                    _this.GetExamenRadioByNumDossResponseOff(_this.pass.getdossier(), _this.codeClinique);
+                    _this.findListPreanesthesieByNumeroDossierResponseOff(_this.pass.getdossier(), _this.codeClinique);
+                    _this.getPlanificationTacheInfirmierByNumDossAndTypeOff(_this.pass.getdossier(), _this.codeClinique);
+                }
+                else {
+                    _this.connection = true;
+                    _this.update();
+                }
+            });
         });
     }
     TabsPage.prototype.ionViewDidLoad = function () {

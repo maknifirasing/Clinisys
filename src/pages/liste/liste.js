@@ -275,9 +275,13 @@ var ListePage = (function () {
         });
     };
     ListePage.prototype.deconnexion = function () {
+        var _this = this;
         this.userserv = new UserService();
-        this.userserv.deleteUsers(this.codeClinique);
-        this.navCtrl.setRoot(ListeCliniquePage, { tabLangue: this.tabLangue, langue: this.langue });
+        this.userserv.deleteUsers(this.codeClinique).then(function (res) {
+            if (res === true) {
+                _this.navCtrl.setRoot(ListeCliniquePage, { tabLangue: _this.tabLangue, langue: _this.langue });
+            }
+        });
     };
     ListePage.prototype.changerlangue = function () {
         this.navCtrl.setRoot(LanguesPage);

@@ -13,10 +13,6 @@ import { Variables } from "../../providers/variables";
 import { Clinique } from "../../models/Clinique";
 import { HomePage } from "../home/home";
 import { CliniqueService } from "../../services/CliniqueService";
-import { UserService } from "../../services/UserService";
-import { ListePage } from "../liste/liste";
-import { Langue } from "../../models/Langue";
-import { LangueService } from "../../services/LangueService";
 var ListeCliniquePage = (function () {
     function ListeCliniquePage(navCtrl, navParams, Url, viewCtrl, platform) {
         var _this = this;
@@ -82,31 +78,32 @@ var ListeCliniquePage = (function () {
         xmlhttp.send(sr);
     };
     ListeCliniquePage.prototype.getcliniques = function (cliniques) {
-        var _this = this;
         this.cliniqueact = [];
         this.cliniqueact.length = 0;
         this.cliniqueaut = [];
         this.cliniqueaut.length = 0;
         this.test = false;
-        this.userserv = new UserService();
-        this.userserv.getAllUser().then(function (res) {
-            if (res.length > 0) {
-                for (var i = 0; i < cliniques.length; i++) {
-                    if (_this.exist(res, cliniques[i].getcode()) === true) {
-                        _this.cliniqueact.push(cliniques[i]);
+        /*    this.userserv = new UserService();
+            this.userserv.getAllUser().then(res => {
+                if (res.length > 0) {
+                  for (var i = 0; i < cliniques.length; i++) {
+                    if (this.exist(res, cliniques[i].getcode()) === true) {
+                      this.cliniqueact.push(cliniques[i]);
                     }
                     else {
-                        _this.cliniqueaut.push(cliniques[i]);
+                      this.cliniqueaut.push(cliniques[i]);
                     }
+                  }
+                } else {
+                  this.cliniqueaut = cliniques;
                 }
-            }
-            else {
-                _this.cliniqueaut = cliniques;
-            }
-            if (_this.cliniqueact.length > 0) {
-                _this.test = true;
-            }
-        });
+                if (this.cliniqueact.length > 0) {
+                  this.test = true;
+                }
+        
+              }
+            );*/
+        this.cliniqueaut = cliniques;
     };
     ListeCliniquePage.prototype.exist = function (t, code) {
         for (var j = 0; j < t.length; j++) {
@@ -124,46 +121,52 @@ var ListeCliniquePage = (function () {
         });
     };
     ListeCliniquePage.prototype.goToHomePage = function (codeC) {
-        var _this = this;
-        this.userserv = new UserService();
-        this.userserv.verifUser(codeC.getcode()).then(function (user) {
+        /*  this.userserv = new UserService();
+          this.userserv.verifUser(codeC.getcode()).then(user => {
             if (user === false) {
-                _this.navCtrl.push(HomePage, {
-                    tabLangue: _this.tabLangue,
-                    langue: _this.langue,
-                    codeClinique: codeC.getcode(),
-                    nomClinique: codeC.getnom(),
-                    url: codeC.geturl()
-                });
-            }
-            else {
-                _this.langserv = new LangueService();
-                _this.langserv.verifLangue().then(function (res) {
-                    if (res === true) {
-                        _this.langserv.getLangues(_this.langes).then(function (lg) {
-                            var l = new Langue();
-                            l.setlangue(lg.getlangue());
-                            l.setmatricule(lg.getmatricule());
-                            l.setcodeClinique(codeC.getcode());
-                            l.setnomClinique(codeC.getnom());
-                            l.seturl(lg.geturl());
-                            _this.langes.push(l);
-                            _this.langserv.deleteLangues().then(function (delet) {
-                                if (delet === true) {
-                                    _this.langserv._insertLangues(_this.langes);
-                                }
-                            });
-                        });
-                    }
-                    _this.navCtrl.setRoot(ListePage, {
-                        tabLangue: _this.tabLangue,
-                        langue: _this.langue,
-                        codeClinique: codeC.getcode(),
-                        nomClinique: codeC.getnom(),
-                        url: codeC.geturl()
+              this.navCtrl.push(HomePage, {
+                tabLangue: this.tabLangue,
+                langue: this.langue,
+                codeClinique: codeC.getcode(),
+                nomClinique: codeC.getnom(),
+                url:codeC.geturl()
+              });
+            } else {
+              this.langserv = new LangueService();
+              this.langserv.verifLangue().then(res => {
+                if (res === true) {
+                  this.langserv.getLangues(this.langes).then(lg => {
+                    var l = new Langue();
+                    l.setlangue(lg.getlangue());
+                    l.setmatricule(lg.getmatricule());
+                    l.setcodeClinique(codeC.getcode());
+                    l.setnomClinique(codeC.getnom());
+                    l.seturl(lg.geturl());
+                    this.langes.push(l);
+                    this.langserv.deleteLangues().then(delet => {
+                      if (delet === true) {
+                        this.langserv._insertLangues(this.langes);
+                      }
                     });
+      
+                  });
+                }
+                this.navCtrl.setRoot(ListePage, {
+                  tabLangue: this.tabLangue,
+                  langue: this.langue,
+                  codeClinique: codeC.getcode(),
+                  nomClinique: codeC.getnom(),
+                  url:codeC.geturl()
                 });
+              });
             }
+          });*/
+        this.navCtrl.push(HomePage, {
+            tabLangue: this.tabLangue,
+            langue: this.langue,
+            codeClinique: codeC.getcode(),
+            nomClinique: codeC.getnom(),
+            url: codeC.geturl()
         });
     };
     return ListeCliniquePage;

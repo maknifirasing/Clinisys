@@ -153,7 +153,6 @@ export class MyApp {
           console.error('Error opening database', error);
           alert('Error opening database  ' + error);
         });
-
       this.userserv = new UserService();
       this.userserv.getAllUser().then(user => {
         if (user.length === 0) {
@@ -189,7 +188,6 @@ export class MyApp {
           });
         }
       });
-
       StatusBar.styleDefault();
       Splashscreen.hide();
     });
