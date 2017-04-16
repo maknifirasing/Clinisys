@@ -1,0 +1,74 @@
+@font-face {
+  font-family: "icomoon";
+  src: url('../assets/fonts/icomoon.eot');
+  src: url('../assets/fonts/icomoon.eot?#iefix') format('eot'),
+  url('../assets/fonts/icomoon.woff2') format('woff2'),
+  url('../assets/fonts/icomoon.woff') format('woff'),
+  url('../assets/fonts/icomoon.ttf') format('truetype'),
+  url('../assets/fonts/icomoon.svg#icomoon') format('svg');
+}
+
+@mixin ico-styles {
+  font-family: "icomoon";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  // speak: none; // only necessary if not using the private unicode range (firstGlyph option)
+  text-decoration: none;
+  text-transform: none;
+}
+
+%ico {
+  @include ico-styles;
+}
+
+@function ico-char($filename) {
+  $char: "";
+
+  @if $filename == bloc {
+  $char: "\E001";
+}
+  @if $filename == consigne {
+  $char: "\E002";
+}
+  @if $filename == dossier {
+  $char: "\E003";
+}
+  @if $filename == lab {
+  $char: "\E004";
+}
+  @if $filename == radio {
+  $char: "\E005";
+}
+
+@return $char;
+}
+
+@mixin ico($filename, $insert: before, $extend: true) {
+&:#{$insert} {
+  @if $extend {
+    @extend %ico;
+  } @else {
+    @include ico-styles;
+  }
+  content: ico-char($filename);
+}
+}
+
+.ico-bloc {
+  @include ico(bloc);
+}
+.ico-consigne {
+  @include ico(consigne);
+}
+.ico-dossier {
+  @include ico(dossier);
+}
+.ico-lab {
+  @include ico(lab);
+}
+.ico-radio {
+  @include ico(radio);
+}

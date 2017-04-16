@@ -1,13 +1,14 @@
 <ion-tabs color="custom-color">
 
-  <ion-tab [root]="tab1Root" tabIcon="home"
+  <ion-tab [root]="tab1Root" customIconSet="ico" customIconName="dossier"
            [rootParams]="tabLangue"></ion-tab>
   <ion-tab [root]="tab2Root"
-           tabBadge="{{countPdfT}}/{{countPdf}}" tabIcon="folder-open" [rootParams]="tabLangue"></ion-tab>
-  <ion-tab [root]="tab3Root" tabIcon="medkit"
+           tabBadge="{{countPdfT}}/{{countPdf}}"  [rootParams]="tabLangue"  customIconSet="ico" customIconName="lab"></ion-tab>
+  <ion-tab [root]="tab3Root" customIconSet="ico" customIconName="radio"
            tabBadge="{{coountexamenRT}}/{{coountexamenR}}" [rootParams]="tabLangue"></ion-tab>
-  <ion-tab [root]="tab4Root" tabBadge="{{coountListPreanesthesie}}" tabIcon="paper"
+  <ion-tab [root]="tab4Root" tabBadge="{{coountListPreanesthesie}}" customIconSet="ico" customIconName="bloc"
            [rootParams]="tabLangue"></ion-tab>
   <ion-tab [root]="tab5Root"
-           tabBadge="{{coountConsigneT}}/{{coountConsigne}}" tabIcon="document" [rootParams]="tabLangue"></ion-tab>
+           tabBadge="{{coountConsigneT}}/{{coountConsigne}}" [rootParams]="tabLangue" customIconSet="ico"
+           customIconName="consigne"></ion-tab>
 </ion-tabs>

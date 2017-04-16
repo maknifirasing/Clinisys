@@ -6,6 +6,9 @@
   "scripts": {
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
+    "ionic2-custom-icons": "ionic2-custom-icons",
+    "build:before": "ionic2-custom-icons",
+    "serve:before": "ionic2-custom-icons",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve"
   },
@@ -36,6 +39,7 @@
     "fsevents": "1.1.0",
     "ionic-angular": "2.2.0",
     "ionic-native": "^2.9.0",
+    "ionic2-custom-icons": "^0.3.1",
     "ionicons": "3.0.0",
     "moment": "^2.18.1",
     "ng2-pdf-viewer": "^1.0.2",
@@ -44,6 +48,11 @@
     "sw-toolbox": "3.4.0",
     "typings": "^2.1.0",
     "zone.js": "0.7.2"
+  },
+  "config": {
+    "ionic_copy": "./config/copy.config.js",
+    "ionic_sass": "./config/sass.config.js",
+    "custom_icons": "./config/custom-icons.config.js"
   },
   "devDependencies": {
     "@ionic/app-scripts": "1.3.2",
