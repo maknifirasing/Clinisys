@@ -21,6 +21,8 @@ import {TraitmentCourbe} from "../pages/traitment-courbe/traitment-courbe";
 import {ConsignePage} from "../pages/consigne/consigne";
 import {ModifPassPage} from "../pages/modif-pass/modif-pass";
 import { CustomIconsModule } from 'ionic2-custom-icons';
+import {TryPage} from "../pages/try/try";
+import { Ng2HighchartsModule } from 'ng2-highcharts';
 
 @NgModule({
   declarations: [
@@ -41,13 +43,15 @@ import { CustomIconsModule } from 'ionic2-custom-icons';
     ClientDetailPage,
     TraitmentCourbe,
     ConsignePage,
-    ModifPassPage
+    ModifPassPage,
+    TryPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
     FlexLayoutModule,
     MaterialModule,
-    CustomIconsModule
+    CustomIconsModule,
+    Ng2HighchartsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -67,7 +71,8 @@ import { CustomIconsModule } from 'ionic2-custom-icons';
     ClientDetailPage,
     TraitmentCourbe,
     ConsignePage,
-    ModifPassPage
+    ModifPassPage,
+    TryPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

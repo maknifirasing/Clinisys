@@ -68,7 +68,8 @@ export class ExamenRadioPage {
   }
 
   getdocumentById(observ) {
-    observ += ".html";
+  //  observ += ".html";
+    observ += "a2a01d9b-684b-478f-824e-5ae8a95bcc0b.html";
     this.platform.ready().then(() => {
       // make sure this is on a device, not an emulation (e.g. chrome tools device mode)
       if (!this.platform.is('cordova')) {
@@ -110,16 +111,21 @@ export class ExamenRadioPage {
           hi.setcodeClinique(this.codeClinique);
           hi.setnom(observ);
           this.histDoc.push(hi);
+
+          var doc = new Document();
+          doc.seturl(this.storageDirectory + observ);
+          doc.setobserv(observ);
+          doc.setcodeClinique(this.codeClinique);
+
+          this.url = "http://37.59.230.40:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
+          var url="http://37.59.230.40:8084/";
+
+          this.document.push(doc);
           try {
             this.histdocserv.deleteHistDocs(this.pass.getdossier(), this.codeClinique, observ);
             this.histdocserv.getHistDocs(this.histDoc, this.pass.getdossier(), this.codeClinique, observ).then(result => {
               this.histdoc = result.getdate();
 
-              var doc = new Document();
-              doc.seturl(this.storageDirectory + observ);
-              doc.setobserv(observ);
-              doc.setcodeClinique(this.codeClinique);
-              this.document.push(doc);
               this.docserv = new DocumentService();
               this.docserv.verifDocument(this.document, observ, this.codeClinique).then(res => {
                 if (res === false) {
@@ -127,11 +133,13 @@ export class ExamenRadioPage {
                 }
               });
 
-              this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
-              Variables.checservice(this.url).then(res => {
+
+              Variables.checservice(url).then(res => {
                 if (res === true) {
                   this.open(this.url);
                   this.retrieveImage(this.url, doc);
+                }else {
+                  alert("document introuvable");
                 }
               });
             });
@@ -140,11 +148,6 @@ export class ExamenRadioPage {
             this.histdocserv.getHistDocs(this.histDoc, this.pass.getdossier(), this.codeClinique, observ).then(result => {
               this.histdoc = result.getdate();
 
-              var doc = new Document();
-              doc.seturl(this.storageDirectory + observ);
-              doc.setobserv(observ);
-              doc.setcodeClinique(this.codeClinique);
-              this.document.push(doc);
               this.docserv = new DocumentService();
               this.docserv.verifDocument(this.document, observ, this.codeClinique).then(res => {
                 if (res === false) {
@@ -152,11 +155,12 @@ export class ExamenRadioPage {
                 }
               });
 
-              this.url = "http://192.168.0.115:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
-              Variables.checservice(this.url).then(res => {
+              Variables.checservice(url).then(res => {
                 if (res === true) {
                   this.open(this.url);
                   this.retrieveImage(this.url, doc);
+                }else {
+                  alert("document introuvable");
                 }
               });
 

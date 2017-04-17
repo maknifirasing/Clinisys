@@ -8,6 +8,7 @@ import {Variables} from "../providers/variables";
 import {ListePage} from "../pages/liste/liste";
 import {UserService} from "../services/UserService";
 import {HomePage} from "../pages/home/home";
+import {TryPage} from "../pages/try/try";
 
 @Component({
   templateUrl: 'app.html'
@@ -153,6 +154,7 @@ export class MyApp {
           console.error('Error opening database', error);
           alert('Error opening database  ' + error);
         });
+
       this.userserv = new UserService();
       this.userserv.getAllUser().then(user => {
         if (user.length === 0) {
@@ -188,6 +190,8 @@ export class MyApp {
           });
         }
       });
+
+      //   this.nav.setRoot(TryPage);
       StatusBar.styleDefault();
       Splashscreen.hide();
     });

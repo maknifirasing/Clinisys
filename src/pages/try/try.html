@@ -12,23 +12,6 @@
 
 <ion-content padding>
 
-  <div class="one">
-    <p><img md-card-sm-image src="../../assets/img/chamb.png"/></p>
-    <p><img md-card-sm-image src="../../assets/img/etage.png"/></p>
-    <p><img md-card-sm-image src="../../assets/img/calendarin.png"/></p>
-    <p><img md-card-sm-image src="../../assets/img/numdoss.png"/></p>
-    <p><img md-card-sm-image src="../../assets/img/idcard.png"/></p>
-  </div>
-  <div class="two">
-    <p><strong>Chambre: </strong></p>
-    <p><strong>Etage: </strong></p>
-    <p><strong>Date Admission: </strong></p>
-    <p><strong>Numéro Dossier: </strong></p>
-    <p><strong>Identifiant: </strong></p>
-  </div>
-  <div class="three">
-
-
-  </div>
+  <div [ng2-highcharts]="chartData"></div>
 
 </ion-content>

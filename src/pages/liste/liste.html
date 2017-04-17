@@ -7,10 +7,6 @@
   </ion-header>
   <ion-content class="contentMenu" *ngIf="langue==='francais' || langue==='anglais'">
     <div class="divFRANG">
-
-      <button menuClose ion-item class="buttonItem"><img src="/android_asset/www/assets/img/sync.ico" width="30"
-                                                         height="30"> {{tabLangue.titreSync}}
-      </button>
       <button menuClose ion-item class="buttonItem" (click)="changerPassword()"><img
         src="/android_asset/www/assets/img/modifIcon.png" width="30" height="30"> {{tabLangue.titreMod}}
       </button>
@@ -28,10 +24,6 @@
   </ion-content>
   <ion-content class="contentMenu" *ngIf="langue==='arabe'">
     <div class="divAr">
-
-      <button menuClose ion-item class="buttonItem"><img src="/android_asset/www/assets/img/sync.ico" width="30"
-                                                         height="30"> {{tabLangue.titreSync}}
-      </button>
       <button menuClose ion-item class="buttonItem" (click)="changerPassword()"><img
         src="/android_asset/www/assets/img/modifIcon.png" width="30" height="30"> {{tabLangue.titreMod}}
       </button>
@@ -98,7 +90,7 @@
 
 <ion-content>
   <div *ngIf="connection===true">
-    <ion-refresher (ionRefresh)="doRefresh($event)" >
+    <ion-refresher (ionRefresh)="doRefresh($event)">
 
       <ion-refresher-content
         pullingIcon="arrow-dropdown"
@@ -111,12 +103,11 @@
     </ion-refresher>
 
 
-
   </div>
   <md-card>
-<md-card-header style="height: 50px">
+    <md-card-header style="height: 50px">
 
-</md-card-header>
+    </md-card-header>
     <md-card-content *ngIf="langue==='arabe'">
 
       <div *ngFor="let pas of patientliste " fxLayout="row" fxLayoutWrap>

@@ -1,9 +1,10 @@
-<ion-tabs color="custom-color">
+<ion-tabs color="custom-color" toolbarColor="dark" sliderColor="light">
 
   <ion-tab [root]="tab1Root" customIconSet="ico" customIconName="dossier"
            [rootParams]="tabLangue"></ion-tab>
   <ion-tab [root]="tab2Root"
-           tabBadge="{{countPdfT}}/{{countPdf}}"  [rootParams]="tabLangue"  customIconSet="ico" customIconName="lab"></ion-tab>
+           tabBadge="{{countPdfT}}/{{countPdf}}" [rootParams]="tabLangue" customIconSet="ico"
+           customIconName="lab"></ion-tab>
   <ion-tab [root]="tab3Root" customIconSet="ico" customIconName="radio"
            tabBadge="{{coountexamenRT}}/{{coountexamenR}}" [rootParams]="tabLangue"></ion-tab>
   <ion-tab [root]="tab4Root" tabBadge="{{coountListPreanesthesie}}" customIconSet="ico" customIconName="bloc"

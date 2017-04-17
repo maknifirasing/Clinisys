@@ -1,5 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {NavController, NavParams, Platform} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {NavController, NavParams} from 'ionic-angular';
 import {Chart} from 'chart.js';
 import {Variables} from "../../providers/variables";
 import {TraitCourbe} from "../../models/TraitCourbe";
@@ -13,8 +13,6 @@ import {TraitCourbeService} from "../../services/TraitCourbeService";
   providers: [Variables]
 })
 export class TraitmentCourbe {
-  @ViewChild('lineCanvas') lineCanvas;
-  lineChart: any;
   codeClinique: any;
   tabLangue: any;
   pass: any;
@@ -26,8 +24,9 @@ export class TraitmentCourbe {
   histc = new HistDossier();
   histserv: any;
   private traitserv: any;
+  chartData: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
@@ -129,8 +128,9 @@ export class TraitmentCourbe {
   onecourbes(courbe) {
     var labelcourbe: Array<string> = [];
     var designation: Array<string> = [];
-    var data: Array<object> = [];
+    var data: Array<Number> = [];
     var nomcourbe: Array<string> = [];
+    var labels: Array<object> = [];
     var dataset: Array<object> = [];
 
     var x;
@@ -158,143 +158,52 @@ export class TraitmentCourbe {
             b = true;
           }
           while (c > 0) {
-            data.push(
-              {
-                x: null,
-                y: null,
-                titre: null
-              });
+            data.push(null);
             c--;
           }
-          data.push(
-            {
-              x: x,
-              y: j + 1,
-              titre: designation[j]
-            }
-          );
+          data.push(j + 1);
 
         }
       }
-      while (data.length < labelcourbe.length + 1) {
-        data.push(
-          {
-            x: null,
-            y: null,
-            titre: null
-          });
-      }
+
+      labels.push({
+        from: j + 1,
+        to: j + 1.1,
+        color: "#f0f0f0",
+        label: {
+          text: nomcourbe[j]
+          , style: {
+            color: '#94bef0'
+          }
+        }
+      });
+
       dataset.push({
-        label: nomcourbe[j],
-        fill: false,
-        lineTension: 0.1,
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
-        borderCapStyle: 'butt',
-        borderDash: [],
-        borderDashOffset: 0.0,
-        borderJoinStyle: 'miter',
-        pointBorderColor: "rgba(75,192,192,1)",
-        pointBackgroundColor: "#fff",
-        pointBorderWidth: 1,
-        pointHoverRadius: 1,
-        pointHoverBackgroundColor: "rgba(75,192,192,1)",
-        pointHoverBorderColor: "rgba(220,220,220,1)",
-        pointHoverBorderWidth: 2,
-        pointRadius: 1,
-        pointHitRadius: 10,
-        data: data,
-        spanGaps: true,
-        radius: 3,
-        DatasetStrokeWidth: 20,
-        ScaleShowLabels: true,
+        name: nomcourbe[j],
+        data: data
       });
     }
-    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-      type: 'line',
-      data: {
-        labels: labelcourbe,
-        datasets: dataset
+    this.chartData = {
+      chart: {
+        type: 'line',
+        zoomType: 'y'
       },
-      options: {
-        responsive: true,
-        /*  title: {
-         display: true,
-         text: 'Custom Chart Title'
-         },
-         */
-        elements: {
-          rectangle: {
-            borderWidth: 0,
-            borderColor: 'rgb(0, 255, 0)',
-            borderSkipped: 'bottom'
-          }
-        },
-        zoom: {
-          enabled: true,
-          mode: 'x'
-        },
-        scaleOverride: true,
-
-        scaleSteps: 10,
-        scaleStepWidth: 20,
-        scales: {
-          yAxes: [{
-            ticks: {min: 0, max: nomcourbe.length + 1},
-            barPercentage: 9.0,
-            height:10
-
-          }
-          ],
-          xAxes: [{
-            xValueType: "dateTime",
-            title: "timeline",
-            gridThickness: 5
-          }]
-        },
-        legend: {
-          display: false
-        },
-        curveType: 'function',
-        tooltips: {
-          callbacks: {
-            label: function (tooltipItem) {
-              //   console.log(tooltipItem)
-              return tooltipItem.yLabel;
-            }
-          }
-        },
-        animation: {
-          onComplete: function () {
-            var ctx = this.chart.ctx;
-   //         ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
-            ctx.font = "6px Arial gras";
-            ctx.fillStyle = "black";
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'bottom';
-            ctx.frontz = 'bottom';
-
-            this.data.datasets.forEach(function (dataset) {
-              for (var i = 0; i < dataset.data.length; i++) {
-                for (var key in dataset._meta) {
-                  var model = dataset._meta[key].data[i]._model;
-                  try {
-                    if (dataset.data[i + 1].titre === null) {
-                      ctx.fillText(dataset.data[i].titre, model.x - ((dataset.data[i].titre).length), model.y);
-                    } else {
-                      ctx.fillText("", model.x, model.y - 5);
-                    }
-                  } catch (Err) {
-                    ctx.fillText("", model.x, model.y - 5);
-                  }
-                }
-              }
-            });
-          }
+      xAxis: {
+        categories: labelcourbe,
+        title: {
+          text: null
         }
-      }
+      },
+      yAxis: {
 
-    });
+
+        plotBands: labels,
+      }
+      , legend: {
+        enabled: false
+      },
+      series: dataset
+    };
 
   }
 

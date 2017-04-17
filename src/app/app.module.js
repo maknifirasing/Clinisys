@@ -26,6 +26,8 @@ import { ClientDetailPage } from "../pages/client-detail/client-detail";
 import { TraitmentCourbe } from "../pages/traitment-courbe/traitment-courbe";
 import { ConsignePage } from "../pages/consigne/consigne";
 import { ModifPassPage } from "../pages/modif-pass/modif-pass";
+import { CustomIconsModule } from 'ionic2-custom-icons';
+import { TryPage } from "../pages/try/try";
 var AppModule = (function () {
     function AppModule() {
     }
@@ -51,12 +53,14 @@ AppModule = __decorate([
             ClientDetailPage,
             TraitmentCourbe,
             ConsignePage,
-            ModifPassPage
+            ModifPassPage,
+            TryPage
         ],
         imports: [
             IonicModule.forRoot(MyApp),
             FlexLayoutModule,
-            MaterialModule
+            MaterialModule,
+            CustomIconsModule
         ],
         bootstrap: [IonicApp],
         entryComponents: [
@@ -76,7 +80,8 @@ AppModule = __decorate([
             ClientDetailPage,
             TraitmentCourbe,
             ConsignePage,
-            ModifPassPage
+            ModifPassPage,
+            TryPage
         ],
         providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler }]
     })

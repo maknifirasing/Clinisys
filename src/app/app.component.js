@@ -11,10 +11,9 @@ import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';
 import { LanguesPage } from '../pages/langues/langues';
 import { StatusBar, Splashscreen, SQLite } from 'ionic-native';
-import { LangueService } from "../services/LangueService";
-import { Variables } from "../providers/variables";
-import { ListePage } from "../pages/liste/liste";
-import { UserService } from "../services/UserService";
+import * as HC from 'highcharts';
+import { TryPage } from "../pages/try/try";
+window['Highcharts'] = HC;
 var MyApp = (function () {
     function MyApp(platform) {
         var _this = this;
@@ -101,42 +100,44 @@ var MyApp = (function () {
                 console.error('Error opening database', error);
                 alert('Error opening database  ' + error);
             });
-            _this.userserv = new UserService();
-            _this.userserv.getAllUser().then(function (user) {
-                if (user.length === 0) {
-                    _this.nav.setRoot(LanguesPage);
-                }
-                else {
-                    _this.langserv = new LangueService();
-                    _this.langserv.verifLangue().then(function (res) {
-                        if (res === true) {
-                            _this.langserv.getLangues(_this.langes).then(function (lang) {
-                                _this.codeClinique = lang.getcodeClinique();
-                                _this.nomClinique = lang.getnomClinique();
-                                _this.langue = lang.getlangue();
-                                if (_this.langue === "arabe") {
-                                    _this.tabLangue = Variables.arabe;
-                                }
-                                else if (_this.langue === "francais") {
-                                    _this.tabLangue = Variables.francais;
-                                }
-                                else if (_this.langue === "anglais") {
-                                    _this.tabLangue = Variables.anglais;
-                                }
-                                _this.nav.setRoot(ListePage, {
-                                    tabLangue: _this.tabLangue,
-                                    langue: _this.langue,
-                                    codeClinique: _this.codeClinique,
-                                    nomClinique: _this.nomClinique
-                                });
-                            });
-                        }
-                        else {
-                            _this.nav.setRoot(LanguesPage);
-                        }
-                    });
-                }
-            });
+            /*
+             this.userserv = new UserService();
+             this.userserv.getAllUser().then(user => {
+             if (user.length === 0) {
+             this.nav.setRoot(LanguesPage);
+             } else {
+             this.langserv = new LangueService();
+             this.langserv.verifLangue().then(res => {
+             if (res === true) {
+             this.langserv.getLangues(this.langes).then(lang => {
+             this.codeClinique = lang.getcodeClinique();
+             this.nomClinique = lang.getnomClinique();
+             this.langue = lang.getlangue();
+             if (this.langue === "arabe") {
+             this.tabLangue = Variables.arabe;
+             }
+             else if (this.langue === "francais") {
+             this.tabLangue = Variables.francais;
+             }
+             else if (this.langue === "anglais") {
+             this.tabLangue = Variables.anglais;
+             }
+      
+             this.nav.setRoot(ListePage, {
+             tabLangue: this.tabLangue,
+             langue: this.langue,
+             codeClinique: this.codeClinique,
+             nomClinique: this.nomClinique
+             });
+             });
+             } else {
+             this.nav.setRoot(LanguesPage);
+             }
+             });
+             }
+             });
+             */
+            _this.nav.setRoot(TryPage);
             StatusBar.styleDefault();
             Splashscreen.hide();
         });

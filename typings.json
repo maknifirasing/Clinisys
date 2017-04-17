@@ -2,5 +2,8 @@
   "dependencies": {
     "debug": "registry:npm/debug#2.0.0+20160723033700",
     "xml2json": "registry:npm/xml2json#0.9.1+20160811060400"
+  },
+  "globalDependencies": {
+    "highcharts": "registry:dt/highcharts#4.2.5+20161025153818"
   }
 }

@@ -9,61 +9,46 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Client } from "../../models/Client";
 import { Variables } from "../../providers/variables";
+import { Ng2Highcharts } from 'ng2-highcharts';
 var TryPage = (function () {
     function TryPage(navCtrl, navParams, Url) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
         this.clientList = [];
-        this.image = navParams.get("image");
-        this.nom = navParams.get("nom");
-        this.prenom = navParams.get("prenom");
+        this.chartData = {
+            chart: {
+                type: 'column'
+            },
+            xAxis: {
+                categories: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            },
+            series: [
+                {
+                    name: 'NC',
+                    data: [7057, 6858, 6643, 6570, 6115, 107, 31, 635, 203, 2, 2]
+                }, {
+                    name: 'OK',
+                    data: [54047, 52484, 50591, 49479, 46677, 33, 156, 947, 408, 6, 2]
+                }, {
+                    name: 'KO',
+                    data: [11388, 11115, 10742, 10757, 10290, 973, 914, 4054, 732, 34, 2]
+                }, {
+                    name: 'VALID',
+                    data: [8836, 8509, 8255, 7760, 7621, 973, 914, 4054, 732, 34, 2]
+                }, {
+                    name: 'CHECK',
+                    data: [115, 162, 150, 187, 172, 973, 914, 4054, 732, 34, 2]
+                }, {
+                    name: 'COR',
+                    data: [12566, 12116, 11446, 10749, 10439, 973, 914, 4054, 732, 34, 2]
+                }
+            ]
+        };
     }
     TryPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad ClientDetailPage');
-    };
-    TryPage.prototype.GetClientByNumDoss = function (numDoss) {
-        var _this = this;
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
-        var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
-            '<soapenv:Header/>' +
-            '<soapenv:Body>' +
-            '<ser:GetClientByNumDoss>' +
-            '<numDoss>' + numDoss + '</numDoss>' +
-            '</ser:GetClientByNumDoss>' +
-            '</soapenv:Body>' +
-            '</soapenv:Envelope>';
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4) {
-                if (xmlhttp.status == 200) {
-                    var xml = xmlhttp.responseXML;
-                    var x, i;
-                    x = xml.getElementsByTagName("return");
-                    var client;
-                    var d;
-                    d = new Date();
-                    for (i = 0; i < x.length; i++) {
-                        client = new Client();
-                        client.setadrCli(x[i].children[0].textContent);
-                        d = (x[i].children[3].textContent).substr(0, 9);
-                        client.setdatNai(d);
-                        client.setlibNat(x[i].children[67].children[1].textContent);
-                        client.setnumTel(x[i].children[78].textContent);
-                        client.setetage(x[i].children[76].children[0].children[3].textContent);
-                        client.setnumCha(x[i].children[76].children[2].textContent);
-                        client.setnumdoss(x[i].children[77].textContent);
-                        client.setidentifiant(x[i].children[18].textContent);
-                        _this.clientList.push(client);
-                    }
-                }
-            }
-        };
-        xmlhttp.setRequestHeader('Content-Type', 'text/xml');
-        xmlhttp.responseType = "document";
-        xmlhttp.send(sr);
     };
     return TryPage;
 }());
@@ -71,7 +56,7 @@ TryPage = __decorate([
     Component({
         selector: 'page-try',
         templateUrl: 'try.html',
-        providers: [Variables]
+        providers: [Variables, Ng2Highcharts]
     }),
     __metadata("design:paramtypes", [NavController, NavParams, Variables])
 ], TryPage);
