@@ -60,7 +60,6 @@ var DossierPage = DossierPage_1 = (function () {
         this.Entrees = [];
         this.Sorties = [];
         this.rigime = [];
-        this.histD = [];
         this.histd = new HistDossier();
         this.codeClinique = navParams.get("codeClinique");
         this.tabLangue = navParams.get("tabLangue");
@@ -78,7 +77,7 @@ var DossierPage = DossierPage_1 = (function () {
         Variables.checconnection().then(function (res) {
             if (res === false) {
                 _this.connection = false;
-                _this.historiqueOff(_this.histD, _this.pass.getdossier(), _this.codeClinique);
+                _this.historiqueOff(_this.histd, _this.pass.getdossier(), _this.codeClinique);
                 _this.GetAllMotifHospitalisationByNumDossOff(_this.motifh, _this.pass.getdossier(), _this.codeClinique);
                 _this.getAntecedentAllergieByIdentifiantOff(_this.antechl, _this.alechl, _this.pass.getid(), _this.codeClinique);
                 _this.GetAlerteSigneCliniqueOff(_this.signe, _this.pass.getdossier(), _this.dateFeuille, _this.pass.getnature(), _this.codeClinique);
@@ -792,21 +791,23 @@ var DossierPage = DossierPage_1 = (function () {
     DossierPage.prototype.historique = function (numDoss, codeClinique) {
         var _this = this;
         this.histserv = new HistDossierService();
-        var h = new HistDossier();
+        this.histd = new HistDossier();
         var d = new Date();
-        h.setnumDoss(numDoss);
-        h.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
-        h.setcodeClinique(codeClinique);
-        this.histD.push(h);
+        this.histd.setnumDoss(numDoss);
+        this.histd.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+        this.histd.setcodeClinique(codeClinique);
         try {
-            this.histserv.deleteHistDossiers(numDoss, codeClinique);
-            this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(function (res) {
-                _this.histd = res.getdate();
-                DossierPage_1.hist = res.getdate();
+            this.histserv.deleteHistDossiers(numDoss, codeClinique).then(function (delet) {
+                if (delet === true) {
+                    _this.histserv.getHistDossiers(_this.histd, numDoss, codeClinique).then(function (res) {
+                        _this.histd = res.getdate();
+                        DossierPage_1.hist = res.getdate();
+                    });
+                }
             });
         }
         catch (Error) {
-            this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(function (res) {
+            this.histserv.getHistDossiers(this.histd, numDoss, codeClinique).then(function (res) {
                 _this.histd = res.getdate();
                 DossierPage_1.hist = res.getdate();
             });

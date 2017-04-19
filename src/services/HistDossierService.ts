@@ -2,7 +2,7 @@ import {SQLite} from 'ionic-native';
 import {HistDossier} from "../models/HistDossier";
 
 export class HistDossierService {
-  public histDossier: Array<HistDossier> = [];
+  histDossier:any;
 
   constructor() {
   }
@@ -37,7 +37,7 @@ export class HistDossierService {
     });
   }
 
-  public getHistDossiers(histDossiers: any, numDoss, codeClinique): Promise<HistDossier> {
+  public getHistDossiers(histDossiers, numDoss, codeClinique): Promise<HistDossier> {
     return new Promise<HistDossier>(resolve => {
       let db = new SQLite();
       db.openDatabase({
@@ -48,20 +48,13 @@ export class HistDossierService {
           .then(result => {
             if (result.rows.length === 0) {
               this._insertHistPatients(histDossiers);
-              resolve(histDossiers[0]);
+              resolve(histDossiers);
             } else {
-              this.histDossier.pop();
-              this.histDossier = [];
-              this.histDossier.length = 0;
-              var d;
-              for (var i = 0; i < result.rows.length; i++) {
-                d = new HistDossier();
-                d.setnumDoss(result.rows.item(i).numDoss);
-                d.setdate(result.rows.item(i).date);
-                d.setcodeClinique(result.rows.item(i).codeClinique);
-                this.histDossier.push(d);
-              }
-              resolve(this.histDossier[0]);
+              this.histDossier=new HistDossier();
+              this.histDossier.setnumDoss(result.rows.item(0).numDoss);
+              this.histDossier.setdate(result.rows.item(0).date);
+              this.histDossier.setcodeClinique(result.rows.item(0).codeClinique);
+              resolve(this.histDossier);
             }
           })
           .catch(error => {
@@ -74,23 +67,19 @@ export class HistDossierService {
     });
   }
 
-  private _insertHistPatients(histDossiers: Array<HistDossier>): void {
+  private _insertHistPatients(histDossier): void {
     let db = new SQLite();
     db.openDatabase({
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then(() => {
-      for (let key in histDossiers) {
-        if (!histDossiers.hasOwnProperty(key)) {
-          continue;
-        }
-        let histDossier = histDossiers[key];
+
         db.executeSql('insert into HistDossier (numDoss ,date ,codeClinique) values (?,?,?)', [
           histDossier.getnumDoss(),
           histDossier.getdate(),
           histDossier.getcodeClinique()
         ]);
-      }
+
     }).catch(error => {
       console.error('Error opening database', error);
       alert('Error 2 HistDossier ' + error);
@@ -99,22 +88,28 @@ export class HistDossierService {
   }
 
 
-  public deleteHistDossiers(numDoss, codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("delete from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
-        .then(() => {
-          //  alert("Suppression de table Patient est terminé avec succes");
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 HistDossier  ' + error);
-        })
+  public deleteHistDossiers(numDoss, codeClinique): Promise<boolean> {
+    return new Promise<boolean>(resolve => {
+      let db = new SQLite();
+      db.openDatabase({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then(() => {
+        db.executeSql("delete from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
+          .then(() => {
+      //      alert("Suppression de table HistDossier est terminé avec succes");
+            resolve(true);
+            return true;
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 3 HistDossier  ' + error);
+            resolve(false);
+            return false;
+          })
+      });
+      db.close();
+      return this;
     });
-    db.close();
-    return this.histDossier;
   }
 }

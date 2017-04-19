@@ -58,6 +58,7 @@ var ExamenRadioPage = (function () {
     ExamenRadioPage.prototype.getdocumentById = function (observ) {
         var _this = this;
         observ += ".html";
+        //  observ += "a2a01d9b-684b-478f-824e-5ae8a95bcc0b.html";
         this.platform.ready().then(function () {
             // make sure this is on a device, not an emulation (e.g. chrome tools device mode)
             if (!_this.platform.is('cordova')) {
@@ -95,26 +96,30 @@ var ExamenRadioPage = (function () {
                     hi.setcodeClinique(_this.codeClinique);
                     hi.setnom(observ);
                     _this.histDoc.push(hi);
+                    var doc = new Document();
+                    doc.seturl(_this.storageDirectory + observ);
+                    doc.setobserv(observ);
+                    doc.setcodeClinique(_this.codeClinique);
+                    _this.url = "http://37.59.230.40:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
+                    var url = "http://37.59.230.40:8084/";
+                    _this.document.push(doc);
                     try {
                         _this.histdocserv.deleteHistDocs(_this.pass.getdossier(), _this.codeClinique, observ);
                         _this.histdocserv.getHistDocs(_this.histDoc, _this.pass.getdossier(), _this.codeClinique, observ).then(function (result) {
                             _this.histdoc = result.getdate();
-                            var doc = new Document();
-                            doc.seturl(_this.storageDirectory + observ);
-                            doc.setobserv(observ);
-                            doc.setcodeClinique(_this.codeClinique);
-                            _this.document.push(doc);
                             _this.docserv = new DocumentService();
                             _this.docserv.verifDocument(_this.document, observ, _this.codeClinique).then(function (res) {
                                 if (res === false) {
                                     _this.docserv.getDocuments(_this.document, observ, _this.codeClinique);
                                 }
                             });
-                            _this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
-                            Variables.checservice(_this.url).then(function (res) {
+                            Variables.checservice(url).then(function (res) {
                                 if (res === true) {
                                     _this.open(_this.url);
                                     _this.retrieveImage(_this.url, doc);
+                                }
+                                else {
+                                    alert("document introuvable");
                                 }
                             });
                         });
@@ -122,22 +127,19 @@ var ExamenRadioPage = (function () {
                     catch (Error) {
                         _this.histdocserv.getHistDocs(_this.histDoc, _this.pass.getdossier(), _this.codeClinique, observ).then(function (result) {
                             _this.histdoc = result.getdate();
-                            var doc = new Document();
-                            doc.seturl(_this.storageDirectory + observ);
-                            doc.setobserv(observ);
-                            doc.setcodeClinique(_this.codeClinique);
-                            _this.document.push(doc);
                             _this.docserv = new DocumentService();
                             _this.docserv.verifDocument(_this.document, observ, _this.codeClinique).then(function (res) {
                                 if (res === false) {
                                     _this.docserv.getDocuments(_this.document, observ, _this.codeClinique);
                                 }
                             });
-                            _this.url = "http://192.168.0.115:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
-                            Variables.checservice(_this.url).then(function (res) {
+                            Variables.checservice(url).then(function (res) {
                                 if (res === true) {
                                     _this.open(_this.url);
                                     _this.retrieveImage(_this.url, doc);
+                                }
+                                else {
+                                    alert("document introuvable");
                                 }
                             });
                         });

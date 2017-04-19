@@ -7,20 +7,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Platform } from 'ionic-angular';
-import { Chart } from 'chart.js';
+import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
 import { TraitCourbe } from "../../models/TraitCourbe";
 import { HistTraitCourbeService } from "../../services/HistTraitCourbeService";
 import { HistDossier } from "../../models/HistDossier";
 import { TraitCourbeService } from "../../services/TraitCourbeService";
 var TraitmentCourbe = (function () {
-    function TraitmentCourbe(navCtrl, navParams, Url, platform) {
+    function TraitmentCourbe(navCtrl, navParams) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.Url = Url;
         this.traitcourbe = [];
         this.histC = [];
         this.histc = new HistDossier();
@@ -130,11 +128,16 @@ var TraitmentCourbe = (function () {
             }
             if (this.exist(nomcourbe, courbe[i].getcodePosologie()) === -1) {
                 nomcourbe.push(courbe[i].getcodePosologie());
-                designation.push(courbe[i].getdesignation());
+                if (courbe[i].getdesignation() === '') {
+                    designation.push(" ");
+                }
+                else {
+                    designation.push(courbe[i].getdesignation());
+                }
             }
         }
         var c;
-        var b;
+        var b, e;
         for (var j = 0; j < nomcourbe.length; j++) {
             data = [];
             b = false;
@@ -147,136 +150,71 @@ var TraitmentCourbe = (function () {
                         b = true;
                     }
                     while (c > 0) {
-                        data.push({
-                            x: null,
-                            y: null,
-                            titre: null
-                        });
+                        data.push(null);
                         c--;
                     }
-                    data.push({
-                        x: x,
-                        y: j + 1,
-                        titre: designation[j]
-                    });
+                    data.push([j + 1]);
                 }
             }
-            while (data.length < labelcourbe.length + 1) {
-                data.push({
-                    x: null,
-                    y: null,
-                    titre: null
-                });
-            }
+            e = data[data.length - 1];
+            data[data.length] = {
+                y: e[0],
+                dataLabels: {
+                    format: designation[j],
+                    enabled: true,
+                    style: {
+                        fontWeight: 'bold'
+                    }
+                }
+            };
             dataset.push({
-                label: nomcourbe[j],
-                fill: false,
-                lineTension: 0.1,
-                backgroundColor: "rgba(75,192,192,0.4)",
-                borderColor: "rgba(75,192,192,1)",
-                borderCapStyle: 'butt',
-                borderDash: [],
-                borderDashOffset: 0.0,
-                borderJoinStyle: 'miter',
-                pointBorderColor: "rgba(75,192,192,1)",
-                pointBackgroundColor: "#fff",
-                pointBorderWidth: 1,
-                pointHoverRadius: 1,
-                pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                pointHoverBorderColor: "rgba(220,220,220,1)",
-                pointHoverBorderWidth: 2,
-                pointRadius: 1,
-                pointHitRadius: 10,
+                name: nomcourbe[j],
                 data: data,
-                spanGaps: true,
-                radius: 3,
-                DatasetStrokeWidth: 20,
-                ScaleShowLabels: true,
+                color: "#1E88E5"
             });
         }
-        this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-            type: 'line',
-            data: {
-                labels: labelcourbe,
-                datasets: dataset
+        this.chartData = {
+            chart: {
+                type: 'line',
+                zoomType: 'y',
+                backgroundColor: 'transparent'
             },
-            options: {
-                responsive: true,
-                /*  title: {
-                 display: true,
-                 text: 'Custom Chart Title'
-                 },
-                 */
-                elements: {
-                    rectangle: {
-                        borderWidth: 0,
-                        borderColor: 'rgb(0, 255, 0)',
-                        borderSkipped: 'bottom'
-                    }
+            title: {
+                text: ''
+            },
+            tooltip: { enabled: false },
+            xAxis: {
+                categories: labelcourbe,
+                title: {
+                    text: null
                 },
-                zoom: {
+            },
+            navigator: {
+                enabled: false
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                },
+                min: 15,
+                max: nomcourbe.length + 2,
+                scrollbar: {
                     enabled: true,
-                    mode: 'x'
-                },
-                scaleOverride: true,
-                scaleSteps: 10,
-                scaleStepWidth: 20,
-                scales: {
-                    yAxes: [{
-                            ticks: { min: 0, max: nomcourbe.length + 1 },
-                            barPercentage: 9.0,
-                            height: 10
-                        }
-                    ],
-                    xAxes: [{
-                            xValueType: "dateTime",
-                            title: "timeline",
-                            gridThickness: 5
-                        }]
-                },
-                legend: {
-                    display: false
-                },
-                curveType: 'function',
-                tooltips: {
-                    callbacks: {
-                        label: function (tooltipItem) {
-                            //   console.log(tooltipItem)
-                            return tooltipItem.yLabel;
-                        }
-                    }
-                },
-                animation: {
-                    onComplete: function () {
-                        var ctx = this.chart.ctx;
-                        //         ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
-                        ctx.font = "6px Arial gras";
-                        ctx.fillStyle = "black";
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'bottom';
-                        ctx.frontz = 'bottom';
-                        this.data.datasets.forEach(function (dataset) {
-                            for (var i = 0; i < dataset.data.length; i++) {
-                                for (var key in dataset._meta) {
-                                    var model = dataset._meta[key].data[i]._model;
-                                    try {
-                                        if (dataset.data[i + 1].titre === null) {
-                                            ctx.fillText(dataset.data[i].titre, model.x - ((dataset.data[i].titre).length), model.y);
-                                        }
-                                        else {
-                                            ctx.fillText("", model.x, model.y - 5);
-                                        }
-                                    }
-                                    catch (Err) {
-                                        ctx.fillText("", model.x, model.y - 5);
-                                    }
-                                }
-                            }
-                        });
-                    }
+                    barBorderRadius: 7,
+                    barBorderWidth: 0,
+                    buttonBorderWidth: 0,
+                    buttonBorderRadius: 7,
+                    trackBackgroundColor: 'none',
+                    trackBorderWidth: 0,
+                    trackBorderRadius: 8,
+                    trackBorderColor: 'rgba(0,0,0,-1)'
                 }
-            }
-        });
+            },
+            legend: {
+                enabled: false
+            },
+            series: dataset
+        };
     };
     TraitmentCourbe.prototype.historique = function (numDoss, codeClinique) {
         var _this = this;
@@ -313,17 +251,13 @@ var TraitmentCourbe = (function () {
     };
     return TraitmentCourbe;
 }());
-__decorate([
-    ViewChild('lineCanvas'),
-    __metadata("design:type", Object)
-], TraitmentCourbe.prototype, "lineCanvas", void 0);
 TraitmentCourbe = __decorate([
     Component({
         selector: 'page-traitment-courbe',
         templateUrl: 'traitment-courbe.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform])
+    __metadata("design:paramtypes", [NavController, NavParams])
 ], TraitmentCourbe);
 export { TraitmentCourbe };
 //# sourceMappingURL=traitment-courbe.js.map

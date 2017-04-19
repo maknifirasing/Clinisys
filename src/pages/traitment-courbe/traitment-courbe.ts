@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import {Chart} from 'chart.js';
 import {Variables} from "../../providers/variables";
 import {TraitCourbe} from "../../models/TraitCourbe";
 import {HistTraitCourbeService} from "../../services/HistTraitCourbeService";
@@ -128,9 +127,8 @@ export class TraitmentCourbe {
   onecourbes(courbe) {
     var labelcourbe: Array<string> = [];
     var designation: Array<string> = [];
-    var data: Array<Number> = [];
+    var data: Array<object> = [];
     var nomcourbe: Array<string> = [];
-    var labels: Array<object> = [];
     var dataset: Array<object> = [];
 
     var x;
@@ -141,11 +139,16 @@ export class TraitmentCourbe {
       }
       if (this.exist(nomcourbe, courbe[i].getcodePosologie()) === -1) {
         nomcourbe.push(courbe[i].getcodePosologie());
-        designation.push(courbe[i].getdesignation());
+        if (courbe[i].getdesignation() === '') {
+          designation.push(" ");
+        } else {
+          designation.push(courbe[i].getdesignation());
+        }
+
       }
     }
     var c;
-    var b;
+    var b, e;
     for (var j = 0; j < nomcourbe.length; j++) {
       data = [];
       b = false;
@@ -161,49 +164,72 @@ export class TraitmentCourbe {
             data.push(null);
             c--;
           }
-          data.push(j + 1);
+          data.push([j + 1]);
 
         }
       }
-
-      labels.push({
-        from: j + 1,
-        to: j + 1.1,
-        color: "#f0f0f0",
-        label: {
-          text: nomcourbe[j]
-          , style: {
-            color: '#94bef0'
+      e = data[data.length - 1];
+      data[data.length] = {
+        y: e[0],
+        dataLabels: {
+          format: designation[j],
+          enabled: true,
+          style: {
+            fontWeight: 'bold'
           }
         }
-      });
+      };
+
 
       dataset.push({
         name: nomcourbe[j],
-        data: data
+        data: data,
+        color: "#1E88E5"
       });
     }
     this.chartData = {
       chart: {
         type: 'line',
-        zoomType: 'y'
+        zoomType: 'y',
+        backgroundColor: 'transparent'
+      }
+      , title: {
+        text: ''
       },
+      tooltip: {enabled: false},
       xAxis: {
         categories: labelcourbe,
         title: {
           text: null
-        }
+        },
+
+      },
+      navigator: {
+        enabled: false
       },
       yAxis: {
-
-
-        plotBands: labels,
+        title: {
+          text: ''
+        },
+        min: 15,
+        max: nomcourbe.length + 2,
+        scrollbar: {
+          enabled: true,
+          barBorderRadius: 7,
+          barBorderWidth: 0,
+          buttonBorderWidth: 0,
+          buttonBorderRadius: 7,
+          trackBackgroundColor: 'none',
+          trackBorderWidth: 0,
+          trackBorderRadius: 8,
+          trackBorderColor: 'rgba(0,0,0,-1)'
+        }
       }
       , legend: {
         enabled: false
       },
       series: dataset
-    };
+    }
 
   }
 

@@ -251,15 +251,18 @@ export class ListePage {
   }
 
   doRefresh(refresher, codeClinique) {
-    this.historique("admin", "", "all", codeClinique);
-    this.deleteListe("admin", "", "all", codeClinique);
-    this.liste("admin", "", "all", codeClinique);
-    this.deleteDateFeuille(codeClinique);
-    this.DateFeuille(codeClinique);
-    setTimeout(() => {
-      //   alert('Async operation has ended');
-      refresher.complete();
-    }, 2000);
+    Variables.checconnection().then(connexion => {
+      if (connexion === true) {
+        this.historique("admin", "", "all", codeClinique);
+        this.deleteListe("admin", "", "all", codeClinique);
+        this.liste("admin", "", "all", codeClinique);
+        this.deleteDateFeuille(codeClinique);
+        this.DateFeuille(codeClinique);
+        setTimeout(() => {
+          //   alert('Async operation has ended');
+          refresher.complete();
+        }, 2000);
+      }});
   }
 
   historique(user, searchText, etage, codeClinique) {

@@ -28,6 +28,7 @@ import { ConsignePage } from "../pages/consigne/consigne";
 import { ModifPassPage } from "../pages/modif-pass/modif-pass";
 import { CustomIconsModule } from 'ionic2-custom-icons';
 import { TryPage } from "../pages/try/try";
+import { Ng2HighchartsModule } from 'ng2-highcharts';
 var AppModule = (function () {
     function AppModule() {
     }
@@ -60,7 +61,8 @@ AppModule = __decorate([
             IonicModule.forRoot(MyApp),
             FlexLayoutModule,
             MaterialModule,
-            CustomIconsModule
+            CustomIconsModule,
+            Ng2HighchartsModule
         ],
         bootstrap: [IonicApp],
         entryComponents: [

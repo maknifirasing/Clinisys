@@ -44,10 +44,10 @@
 <ion-header class="headerListe" #content>
   <md-card class="md-cardListe">
     <div fxLayout="row" fxLayoutWrap *ngIf="langue==='arabe'">
-      <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/menu.png" class="menuImg" menuToggle></div>
-      <div fxFlex="73" style="margin-top: 10px;direction:rtl;" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histl}}
+      <div fxFlex="13" dir="ltr" style="padding-left: -10px"><img src="/android_asset/www/assets/img/menu.png" class="menuImg" menuToggle></div>
+      <div fxFlex="73" style="margin-top: 20px;direction:rtl;" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histl}}
       </div>
-      <div fxFlex="73" style="margin-top: 10px;direction:rtl;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histl}}
+      <div fxFlex="73" style="margin-top: 20px;direction:rtl;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histl}}
       </div>
       <div fxFlex="13" style="margin-top: 10px;direction:rtl;" *ngIf="connection===true"><img
         src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>

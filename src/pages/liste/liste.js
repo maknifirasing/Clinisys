@@ -234,15 +234,20 @@ var ListePage = (function () {
         this.dtFeuilleserv.deleteDateFeuille(codeClinique);
     };
     ListePage.prototype.doRefresh = function (refresher, codeClinique) {
-        this.historique("admin", "", "all", codeClinique);
-        this.deleteListe("admin", "", "all", codeClinique);
-        this.liste("admin", "", "all", codeClinique);
-        this.deleteDateFeuille(codeClinique);
-        this.DateFeuille(codeClinique);
-        setTimeout(function () {
-            //   alert('Async operation has ended');
-            refresher.complete();
-        }, 2000);
+        var _this = this;
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === true) {
+                _this.historique("admin", "", "all", codeClinique);
+                _this.deleteListe("admin", "", "all", codeClinique);
+                _this.liste("admin", "", "all", codeClinique);
+                _this.deleteDateFeuille(codeClinique);
+                _this.DateFeuille(codeClinique);
+                setTimeout(function () {
+                    //   alert('Async operation has ended');
+                    refresher.complete();
+                }, 2000);
+            }
+        });
     };
     ListePage.prototype.historique = function (user, searchText, etage, codeClinique) {
         var _this = this;

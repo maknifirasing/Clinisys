@@ -254,17 +254,56 @@ export class SigneCourbePage {
       dataFrq.push(Number(courbeFrq[i].getquantite()));
     }
 
-
     this.chartData = {
       chart: {
         type: 'line',
-        zoomType: 'x'
+        zoomType: 'x',
+        marginTop: 50,
+        backgroundColor: 'transparent'
+      },
+      title: {
+        text: ''
+      },
+      rangeSelector: {
+        enabled: false,
+
+      },
+      legend: {
+        layout: 'horizontal',
+        align: 'top',
+        verticalAlign: 'top',
+
       },
       xAxis: {
         categories: labelcourbePouls,
+        min: labelcourbePouls.length-3,
+        scrollbar: {
+          enabled: true,
+          barBorderRadius: 2,
+          barBorderWidth: 0,
+          buttonBorderWidth: 0,
+          buttonBorderRadius: 2,
+          trackBackgroundColor: 'none',
+          trackBorderWidth: 0,
+          trackBorderRadius: 2,
+          trackBorderColor: 'rgba(0,0,0,-1)'
+        },
         title: {
-          text: null
+          text: '',
+
         }
+
+      },
+      yAxis: {
+        title: {
+          text: ''
+        }
+
+      },
+      tooltip: {enabled: false},
+
+      navigator: {
+        enabled: false
       },
       plotOptions: {
         line: {
@@ -301,7 +340,7 @@ export class SigneCourbePage {
           color: "rgb(" + courbeFrq[0].getcolor() + ")"
         }
       ]
-    };
+    }
   }
 
   historique(numDoss, codeClinique) {

@@ -80,7 +80,6 @@ export class DossierPage {
   EvenementExaS: any;
   EvenementHisS: any;
   histserv: any;
-  histD: Array<HistDossier> = [];
   histd = new HistDossier();
   static hist: any;
   codeClinique: any;
@@ -108,7 +107,7 @@ export class DossierPage {
     Variables.checconnection().then(res => {
       if (res === false) {
         this.connection = false;
-        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
+        this.historiqueOff(this.histd, this.pass.getdossier(), this.codeClinique);
         this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
         this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
         this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
@@ -885,22 +884,26 @@ export class DossierPage {
   }
 
   historique(numDoss, codeClinique) {
+
     this.histserv = new HistDossierService();
-    var h = new HistDossier();
+    this.histd = new HistDossier();
     var d = new Date();
-    h.setnumDoss(numDoss);
-    h.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
-    h.setcodeClinique(codeClinique);
-    this.histD.push(h);
+    this.histd.setnumDoss(numDoss);
+    this.histd.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+    this.histd.setcodeClinique(codeClinique);
     try {
-      this.histserv.deleteHistDossiers(numDoss, codeClinique);
-      this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(res => {
-        this.histd = res.getdate();
-        DossierPage.hist = res.getdate();
+      this.histserv.deleteHistDossiers(numDoss, codeClinique).then(delet => {
+        if (delet === true) {
+          this.histserv.getHistDossiers(this.histd, numDoss, codeClinique).then(res => {
+            this.histd = res.getdate();
+            DossierPage.hist = res.getdate();
+          });
+        }
       });
+
     }
     catch (Error) {
-      this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(res => {
+      this.histserv.getHistDossiers(this.histd, numDoss, codeClinique).then(res => {
         this.histd = res.getdate();
         DossierPage.hist = res.getdate();
       });

@@ -7,7 +7,6 @@ import {Langue} from "../models/Langue";
 import {Variables} from "../providers/variables";
 import {ListePage} from "../pages/liste/liste";
 import {UserService} from "../services/UserService";
-import {HomePage} from "../pages/home/home";
 import {TryPage} from "../pages/try/try";
 
 @Component({
@@ -191,7 +190,7 @@ export class MyApp {
         }
       });
 
-      //   this.nav.setRoot(TryPage);
+      //       this.nav.setRoot(TryPage);
       StatusBar.styleDefault();
       Splashscreen.hide();
     });

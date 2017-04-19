@@ -27,7 +27,8 @@ $colors: (
   dark: #222,
   custom-color: #0277bd
 );
-
+$tabs-md-tab-icon-size:5rem ;
+$badge-md-background-color:color($colors,danger);
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here

@@ -68,8 +68,8 @@ export class ExamenRadioPage {
   }
 
   getdocumentById(observ) {
-  //  observ += ".html";
-    observ += "a2a01d9b-684b-478f-824e-5ae8a95bcc0b.html";
+    observ += ".html";
+  //  observ += "a2a01d9b-684b-478f-824e-5ae8a95bcc0b.html";
     this.platform.ready().then(() => {
       // make sure this is on a device, not an emulation (e.g. chrome tools device mode)
       if (!this.platform.is('cordova')) {
