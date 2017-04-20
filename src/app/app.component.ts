@@ -191,8 +191,9 @@ export class MyApp {
       });
 
       //       this.nav.setRoot(TryPage);
-      StatusBar.styleDefault();
-      Splashscreen.hide();
+      setTimeout(() => {
+        Splashscreen.hide();
+      }, 1000);
     });
 
   }
