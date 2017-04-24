@@ -34,7 +34,7 @@ export class MyApp {
       {title: 'Langues', component: LanguesPage}
     ];
     platform.ready().then(() => {
-
+/*
       this.userserv = new UserService(this.sqlite);
       this.userserv.getAllUser().then(user => {
         if (user.length === 0) {
@@ -70,8 +70,8 @@ export class MyApp {
           });
         }
       });
-
-      //    this.nav.setRoot(TryPage);
+*/
+          this.nav.setRoot(TryPage);
       statusBar.styleDefault();
       setTimeout(() => {
         splashScreen.hide();

@@ -1,4 +1,4 @@
-
+<!--
 <ion-header style="height: 95px;color: white">
   <div fxLayout="row" fxLayoutWrap *ngIf="langue==='francais' || langue==='anglais'" class="md-card">
     <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/{{pass.getimg()}}" width="40" height="40"></div>
@@ -62,61 +62,404 @@
 
 </ion-header>
 
-
-<ion-content padding class="ion-content">
+-->
+<ion-content padding>
   <div>
-    <p>{{datefeuille}}</p>
-    <p>{{heureActuelle}}</p>
+    <p>{{dateFeuille}}</p>
   </div>
-  <div>
-    <table border="0">
-      <tr>
-        <th>Désignation</th>
-        <th>Valeur</th>
-      </tr>
-      <tr *ngFor="let pla of planification ">
-        <td>{{pla.getdesignation()}}
-        <td *ngIf="pla.getdesignation()==='OXYGENE' || pla.getdesignation()==='Insuline' ">
-          <ion-input type="text" #yy class="input"></ion-input>
-        </td>
-        <td *ngIf="pla.getdesignation()!=='OXYGENE' && pla.getdesignation() !=='Insuline' ">
-          <ion-input type="number" #yy class="input" id="cc" value="5"></ion-input>
-        </td>
-        <td>
-          <button ion-button class="login-button" (click)="CreatePlusieursRealisation(pla.getnum(),yy.value)">
-            ok
-          </button>
-        </td>
-      </tr>
-    </table>
+  <div fxLayout="row" class="teclado2">
+    <div fxFlex="19,8">
 
-    <div #clavier1>
-      <div>
-        <button ion-button class="login-button" name="R" value="R" (click)="cc.value=5"> R</button>
-        <button ion-button class="login-button" name="1" value="1"> 1</button>
-        <button ion-button class="login-button" name="2" value="2"> 2</button>
-        <button ion-button class="login-button" name="3" value="3"> 3</button>
-        <button ion-button class="login-button" name="--" value="--"> --</button>
+    </div>
+    <div fxFlex="19,8">
+      <a href="#"><</a>
+    </div>
+    <div fxFlex="19,8">
+      <a href="#" class="a2">{{heureActuelle}}H</a>
+    </div>
+    <div fxFlex="19,8">
+      <a href="#"> ></a>
+    </div>
+    <div fxFlex="19,8">
+
+    </div>
+  </div>
+  <table border="0">
+    <tr>
+      <th>Désignation</th>
+      <th>Valeur</th>
+    </tr>
+    <tr *ngFor="let pla of planification ">
+      <td>{{pla.getdesignation()}}
+      <td>
+        <ion-input type="text" #{{pla.getrang()}} class="input"
+                   (click)="keyboardShow(pla.getrang(),pla.getdesignation()); "
+                   value="{{planificationvalue[pla.getrang()]}}"></ion-input>
+      </td>
+
+      <td>
+        <button ion-button class="login-button" (click)="CreatePlusieursRealisation(pla.getnum(),yy.value)">
+          ok
+        </button>
+      </td>
+    </tr>
+  </table>
+
+
+  <div *ngIf="keyboar===1">
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+
+        <a href="#" (click)="updateInput('R')">R</a>
       </div>
-      <div>
-        <button ion-button class="login-button" name="X" value="X"> X</button>
-        <button ion-button class="login-button" name="4" value="4"> 4</button>
-        <button ion-button class="login-button" name="5" value="5"> 5</button>
-        <button ion-button class="login-button" name="6" value="6"> 6</button>
-        <button ion-button class="login-button" name="ok" value="ok"> ok</button>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('1')">1</a>
       </div>
-      <div>
-        <button ion-button class="login-button" name="//" value="//"> //</button>
-        <button ion-button class="login-button" name="7" value="7"> 7</button>
-        <button ion-button class="login-button" name="8" value="8"> 8</button>
-        <button ion-button class="login-button" name="9" value="9"> 9</button>
-        <button ion-button class="login-button" name="**" value="**"> **</button>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('2')">2</a>
       </div>
-      <div>
-        <button ion-button class="login-button" name="/" value="/"> /</button>
-        <button ion-button class="login-button" name="esp" value="">  </button>
-        <button ion-button class="login-button" name="0" value="0"> 0</button>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('3')">3</a>
+      </div>
+      <div fxFlex="19,8">
+        <img src="../../assets/img/basic_backspace.png" (click)="updateInput('delete')">
+      </div>
+
+    </div>
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+
+        <a href="#" (click)="updateInput('X')">X</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('4')">4</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('5')">5</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('6')">6</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('OK')">OK</a>
+      </div>
+
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" class="dark" (click)="updateInput('//')">//</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('7')">7</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('8')">8</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('9')">9</a>
+      </div>
+      <div fxFlex="19,8">
+        <img src="../../assets/img/basic_keybord.png" (click)="updateInput('clavier')">
+
+      </div>
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" class="dark" (click)="updateInput('/')">/</a>
+      </div>
+      <div fxFlex="19,8">
+      </div>
+      <div fxFlex="19,8">
+        <a href="" (click)="updateInput('0')">0</a>
+      </div>
+      <div fxFlex="19,8">
+      </div>
+      <div fxFlex="19,8">
+
       </div>
     </div>
   </div>
+
+  <div *ngIf="keyboar===2">
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+
+
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('1')">1</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('2')">2</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('3')">3</a>
+      </div>
+      <div fxFlex="19,8">
+        <img src="../../assets/img/basic_backspace.png" (click)="updateInput('delete')">
+      </div>
+
+    </div>
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+
+
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('4')">4</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('5')">5</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('6')">6</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('OK')">OK</a>
+      </div>
+
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('7')">7</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('8')">8</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('9')">9</a>
+      </div>
+      <div fxFlex="19,8">
+        <img src="../../assets/img/basic_keybord.png" (click)="updateInput('clavier')">
+
+      </div>
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" class="dark" (click)="updateInput('/')">/</a>
+      </div>
+      <div fxFlex="19,8">
+      </div>
+      <div fxFlex="19,8">
+        <a href="" (click)="updateInput('0')">0</a>
+      </div>
+      <div fxFlex="19,8">
+      </div>
+      <div fxFlex="19,8">
+
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="keyboar===4">
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+
+        <img src="../../assets/img/basic_keybord.png" (click)="updateInput('clavier')">
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('36')" style="color: red;">36</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('36.1')" style="color: red;">36.1</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('36.2')" style="color: red;">36.2</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('36.3')" style="color: red;">36.3</a>
+      </div>
+
+    </div>
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+
+        <a href="#" (click)="updateInput('36.4')" style="color: red;">36.4</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('36.5')" style="color: red;"> 36.5</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('36.6')" style="color: red;">36.6</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('36.7')" style="color: red;">36.7</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('36.8')" style="color: red;">36.8</a>
+      </div>
+
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('36.9')" style="color: red;">36.9</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('37')">37</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('37.1')">37.1</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('37.2')">37.2</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('37.3')">37.3</a>
+      </div>
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('37.4')">37.4</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('37.5')">37.5</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('37.6')">37.6</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('37.7')">37.7</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('37.8')">37.8</a>
+      </div>
+    </div>
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('37.9')">37.9</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('38')">38</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color:rgb(243, 156, 18);" (click)="updateInput('38.1')">38.1</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('38.2')">38.2</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('38.3')">38.3</a>
+      </div>
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('38.4')">38.4</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('38.5')">38.5</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('38.6')">38.6</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('38.7')">38.7</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('38.8')">38.8</a>
+      </div>
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('38.9')">38.9</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('39')" style="color: red;">39</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('39.1')" style="color: red;">39.1</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('39.2')" style="color: red;">39.2</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('39.3')" style="color: red;">39.3</a>
+      </div>
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('39.4')" style="color: red;">39.4</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('39.5')" style="color: red;">39.5</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('39.6')" style="color: red;">39.6</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('39.7')" style="color: red;">39.7</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('39.8')" style="color: red;">39.8</a>
+      </div>
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('39.9')" style="color: red;">39.9</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('40')" style="color: red;">40</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('40.1')" style="color: red;">40.1</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('40.2')" style="color: red;">40.2</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('40.3')" style="color: red;">40.3</a>
+      </div>
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('40.4')" style="color: red;">40.4</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('40.5')" style="color: red;">40.5</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('40.6')" style="color: red;">40.6</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('40.7')" style="color: red;">40.7</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('40.8')" style="color: red;">40.8</a>
+      </div>
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('40.9')" style="color: red;">40.9</a>
+      </div>
+      <div fxFlex="19,8">
+
+      </div>
+      <div fxFlex="19,8">
+
+      </div>
+      <div fxFlex="19,8">
+
+      </div>
+      <div fxFlex="19,8">
+
+      </div>
+    </div>
+
+  </div>
+
 </ion-content>

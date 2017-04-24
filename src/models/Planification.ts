@@ -7,9 +7,17 @@ export class Planification {
   private _seuilMax: string;
   private _seuilMin: string;
   private _type: string;
-
+  private _rang: number;
 
   constructor() {
+  }
+
+  getrang(): number {
+    return this._rang;
+  }
+
+  setrang(value: number) {
+    this._rang = value;
   }
 
   getcodeType(): string {

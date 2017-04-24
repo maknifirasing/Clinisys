@@ -32,6 +32,7 @@ import {Ng2HighchartsModule} from 'ng2-highcharts';
 import {RealisationPage} from "../pages/realisation/realisation";
 import {Variables} from "../providers/variables";
 import {HttpModule} from '@angular/http';
+import {MenuPage} from "../pages/menu/menu";
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import {HttpModule} from '@angular/http';
     ConsignePage,
     ModifPassPage,
     RealisationPage,
+    MenuPage,
     TryPage
   ],
   imports: [
@@ -88,6 +90,7 @@ import {HttpModule} from '@angular/http';
     ConsignePage,
     ModifPassPage,
     RealisationPage,
+    MenuPage,
     TryPage
   ],
   providers: [

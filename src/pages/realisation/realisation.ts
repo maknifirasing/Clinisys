@@ -7,7 +7,6 @@ import {DossierPage} from "../dossier/dossier";
 import {ClientDetailPage} from "../client-detail/client-detail";
 import {LangueService} from "../../services/LangueService";
 import {Langue} from "../../models/Langue";
-import {SQLite} from "@ionic-native/sqlite";
 
 @Component({
   selector: 'page-realisation',
@@ -24,43 +23,48 @@ export class RealisationPage {
   langue: any;
   histd: any;
   xml: any;
-  datefeuille: any;
+  dateFeuille: any;
   heureActuelle: any;
   planification: Array<Planification> = [];
   private langserv: any;
   langes: Array<Langue> = [];
   user: any;
+  keyboar = 0;
+  planificationvalue: Array<string> = [];
+  input = -1;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.tabLangue = navParams.get("tabLangue");
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("pass");
     this.langue = navParams.get("langue");
-    this.datefeuille = navParams.get("dateFeuille");
+    this.dateFeuille = navParams.get("dateFeuille");
     this.heureActuelle = navParams.get("heureActuelle");
 
+
+    this.user = "admin";
+    this.dateFeuille = "18/05/2016";
+    this.heureActuelle = "16";
+    this.getAllPlanification("16002649", this.dateFeuille, "REA", this.heureActuelle);
+
+
     /*
-     this.user = "admin";
-     this.datefeuille = "18/05/2016";
-     this.heureActuelle = "16";
-     this.getAllPlanification("16002649", this.datefeuille, "REA", this.heureActuelle);
+
+     Variables.checconnection().then(connexion => {
+     if (connexion === false) {
+     this.connection = false;
+
+     } else {
+     this.connection = true;
+     this.langserv = new LangueService();
+     this.langserv.getLangues(this.langes).then(lg => {
+     this.getAllPlanification(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.heureActuelle);
+     this.user = lg.getnom();
+     });
+     }
+     });
+     this.histd = DossierPage.hist;
      */
-
-    Variables.checconnection().then(connexion => {
-      if (connexion === false) {
-        this.connection = false;
-
-      } else {
-        this.connection = true;
-        this.langserv = new LangueService(this.sqlite);
-        this.langserv.getLangues(this.langes).then(lg => {
-          this.getAllPlanification(this.pass.getdossier(), this.datefeuille, this.pass.getnature(), this.heureActuelle);
-          this.user = lg.getnom();
-        });
-      }
-    });
-    this.histd = DossierPage.hist;
-
   }
 
 
@@ -96,7 +100,9 @@ export class RealisationPage {
             p.setseuilMax(x[i].children[3].textContent);
             p.setseuilMin(x[i].children[4].textContent);
             p.settype(x[i].children[5].textContent);
+            p.setrang(i);
             this.planification.push(p);
+            this.planificationvalue.push("");
             console.log(p);
           }
         }
@@ -117,7 +123,7 @@ export class RealisationPage {
       '<soapenv:Body>' +
       '<ser:CreatePlusieursRealisation>' +
       '<numTr>' + traitsList + '</numTr>' +
-      '<date_prise>' + this.datefeuille + '</date_prise>' +
+      '<date_prise>' + this.dateFeuille + '</date_prise>' +
       '<heure_prise>' + this.heureActuelle + '</heure_prise>' +
       '<qnt>' + qtesList + '</qnt>' +
       '<user>' + this.user + '</user>' +
@@ -150,9 +156,50 @@ export class RealisationPage {
       });
   }
 
-  change(value) {
-    var c = document.getElementById("cc");
-    c = value;
-    document.getElementById("totalValue").innerHTML = "Total price: $" + 500 * value;
+  keyboardShow(rang, designation) {
+
+    switch (designation) {
+      case "T.A":
+        this.keyboar = 2;
+        break;
+      case "Pouls":
+        this.keyboar = 3;
+        break;
+      case "Température":
+        this.keyboar = 4;
+        break;
+      case "ETC02":
+        this.keyboar = 5;
+        break;
+      case "SP02":
+        this.keyboar = 6;
+        break;
+      default:
+        this.keyboar = 1;
+        break;
+    }
+    this.input = rang;
+  }
+
+  updateInput(value) {
+    if (this.keyboar > 2) {
+      this.planificationvalue[this.input] = value;
+      this.input = -1;
+      this.keyboar = 0;
+    } else {
+      switch (value) {
+        case "OK":
+          this.keyboar = 0;
+          break;
+         case "delete":
+         if(this.planificationvalue[this.input].length>0){
+           this.planificationvalue[this.input]=this.planificationvalue[this.input].substr(0,this.planificationvalue[this.input].length-1);
+         }
+          break;
+        default:
+          this.planificationvalue[this.input] += value;
+          break;
+      }
+    }
   }
 }

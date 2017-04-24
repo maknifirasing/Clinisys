@@ -1,6 +1,6 @@
 import {Component, Injectable} from '@angular/core';
 import {DossierPage} from "../dossier/dossier";
-import {NavParams, NavController, Platform} from 'ionic-angular';
+import {NavParams, NavController, Platform,ModalController} from 'ionic-angular';
 import {ExamenRadioPage} from "../examen-radio/examen-radio";
 import {ListPreanesthesiePage} from "../list-preanesthesie/list-preanesthesie";
 import {ExamenLaboPage} from "../examen-labo/examen-labo";
@@ -24,6 +24,7 @@ import {ConsigneService} from "../../services/ConsigneService";
 import {tabBadgeConsigneService} from "../../services/tabBadgeConsigneService";
 import {RealisationPage} from "../realisation/realisation";
 import {SQLite} from "@ionic-native/sqlite";
+import {MenuPage} from "../menu/menu";
 
 @Component({
   selector: 'page-tabs',
@@ -78,7 +79,7 @@ export class TabsPage {
   private coountConsigneT: number;
   private countConsigneserv: any;
 
-  constructor(public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {
+  constructor(public navParams: NavParams, private Url: Variables, public platform: Platform,public modalCtrl: ModalController, private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("mypatient");
     this.tabLangue = navParams.get("tabLangue");
@@ -93,7 +94,7 @@ export class TabsPage {
     this.tabLangue = {
       pass: navParams.get("mypatient"),
       dateFeuille: navParams.get("dateFeuille"),
-      heureActuelle:this.heureActuelle,
+      heureActuelle: this.heureActuelle,
       Labost: this.LabosT,
       Labosf: this.LabosF,
       ListeP: this.ListeP,
@@ -463,7 +464,7 @@ export class TabsPage {
         if (xmlhttp.status == 200) {
           var xml;
           xml = xmlhttp.responseXML;
-          var x, i,c;
+          var x, i, c;
           x = xml.getElementsByTagName("return");
           for (i = 0; i < x.length; i++) {
             c = new Consigne();
@@ -576,5 +577,11 @@ export class TabsPage {
 
     this.deletePlanificationTacheInfirmierByNumDossAndType(this.pass.getdossier(), "all", "all", this.codeClinique)
     this.getPlanificationTacheInfirmierByNumDossAndType(this.pass.getdossier(), "all", "all", this.codeClinique);
+  }
+
+  presentProfileModal() {
+    let profileModal = this.modalCtrl.create(MenuPage, {userId: 8675309,pass: this.pass,langue:this.langue,tabLangue:this.tabLangue,dateFeuille:this.dateFeuille
+      ,heureActuelle:this.heureActuelle,codeClinique:this.codeClinique});
+    profileModal.present();
   }
 }
