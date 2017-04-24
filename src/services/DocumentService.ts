@@ -1,19 +1,19 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {Document} from "../models/Document";
 
 export class DocumentService {
   public document: Array<Document> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
   public  verifDocument(documents: any, observ, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sums from Document where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -32,18 +32,18 @@ export class DocumentService {
             return false;
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   public getDocuments(documents: any, observ, codeClinique): Promise<Document> {
     return new Promise<Document>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select * from Document where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.length === 0) {
@@ -66,17 +66,17 @@ export class DocumentService {
             alert('Error 1 Document  ' + error);
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   private _insertDocuments(documents: Array<Document>): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in documents) {
         if (!documents.hasOwnProperty(key)) {
           continue;
@@ -92,17 +92,17 @@ export class DocumentService {
       console.error('Error opening database', error);
       alert('Error 2 Document ' + error);
     });
-    db.close();
+
   }
 
 
   public deleteDocuments(observ, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from Document where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           //  alert("Suppression de table Patient est terminé avec succes");
@@ -112,7 +112,7 @@ export class DocumentService {
           alert('Error 3 Patient  ' + error);
         })
     });
-    db.close();
+
     return this.document;
   }
 }

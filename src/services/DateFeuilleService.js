@@ -1,17 +1,16 @@
 import { DateFeuille } from "../models/DateFeuille";
-import { SQLite } from "ionic-native";
 var DateFeuilleService = (function () {
-    function DateFeuilleService() {
+    function DateFeuilleService(sqlite) {
+        this.sqlite = sqlite;
         this.date = [];
     }
     DateFeuilleService.prototype.verifDateFeuille = function (codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from DateFeuille where codeClinique like '" + codeClinique + "'", []).then(function (result) {
                     if (result.rows.item(0).sum > 0) {
                         resolve(true);
@@ -29,17 +28,15 @@ var DateFeuilleService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     DateFeuilleService.prototype.getDateFeuille = function (dates, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from DateFeuille where codeClinique like '" + codeClinique + "'", []).then(function (result) {
                 if (result.rows.length === 0) {
                     _this._insertDateFeuille(dates, codeClinique);
@@ -58,15 +55,13 @@ var DateFeuilleService = (function () {
                 alert('Error 1 datefeuille  ' + error);
             });
         });
-        db.close();
         return this.date;
     };
     DateFeuilleService.prototype._insertDateFeuille = function (dates, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in dates) {
                 if (!dates.hasOwnProperty(key)) {
                     continue;
@@ -81,14 +76,12 @@ var DateFeuilleService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 datefeuille ' + error);
         });
-        db.close();
     };
     DateFeuilleService.prototype.deleteDateFeuille = function (codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from DateFeuille where codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //    alert("Suppression de table DateFeuille est terminé avec succes");
@@ -98,7 +91,6 @@ var DateFeuilleService = (function () {
                 alert('Error 3 DateFeuille  ' + error);
             });
         });
-        db.close();
         return this.date;
     };
     return DateFeuilleService;

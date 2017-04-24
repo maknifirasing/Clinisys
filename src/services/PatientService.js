@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { Patient } from "../models/Patient";
 var PatientService = (function () {
-    function PatientService() {
+    function PatientService(sqlite) {
+        this.sqlite = sqlite;
         this.patient = [];
     }
     PatientService.prototype.verifPatient = function (patients, user, searchText, etage, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sums from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,17 +29,15 @@ var PatientService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     PatientService.prototype.getPatients = function (patients, user, searchText, etage, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
@@ -71,15 +68,13 @@ var PatientService = (function () {
                 alert('Error 1 Patient  ' + error);
             });
         });
-        db.close();
         return this.patient;
     };
     PatientService.prototype._insertPatients = function (patients, user, searchText, etage, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in patients) {
                 if (!patients.hasOwnProperty(key)) {
                     continue;
@@ -108,14 +103,12 @@ var PatientService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 Patient ' + error);
         });
-        db.close();
     };
     PatientService.prototype.deletePatients = function (user, searchText, etage, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //  alert("Suppression de table Patient est terminé avec succes");
@@ -125,7 +118,6 @@ var PatientService = (function () {
                 alert('Error 3 Patient  ' + error);
             });
         });
-        db.close();
         return this.patient;
     };
     return PatientService;

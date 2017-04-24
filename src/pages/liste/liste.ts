@@ -16,6 +16,7 @@ import {ListeCliniquePage} from "../liste-clinique/liste-clinique";
 import {ModifPassPage} from "../modif-pass/modif-pass";
 import {LangueService} from "../../services/LangueService";
 import {Langue} from "../../models/Langue";
+import {SQLite} from "@ionic-native/sqlite";
 @Component({
   selector: 'page-liste',
   templateUrl: 'liste.html',
@@ -42,7 +43,7 @@ export class ListePage {
   private langserv: any;
   langes: Array<Langue> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public menuCtrl: MenuController, public platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public menuCtrl: MenuController, public platform: Platform,private sqlite: SQLite) {
     this.dtFeuille = new DateFeuille();
     this.codeClinique = navParams.get("codeClinique");
     this.nomClinique = navParams.get("nomClinique");
@@ -137,7 +138,7 @@ export class ListePage {
           }
           if (searchText === "")
             searchText = "vide";
-          this.patienserv = new PatientService();
+          this.patienserv = new PatientService(this.sqlite);
           this.patienserv.verifPatient(this.patient, user, searchText, etage, codeClinique).then(res => {
             if (res === false) {
               this.patienserv.getPatients(this.patient, user, searchText, etage, codeClinique);
@@ -146,7 +147,6 @@ export class ListePage {
         }
       }
     }
-
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
@@ -155,7 +155,7 @@ export class ListePage {
   listeOff(patient, user, searchText, etage, codeClinique) {
     if (searchText === "")
       searchText = "vide";
-    this.patienserv = new PatientService();
+    this.patienserv = new PatientService(this.sqlite);
     this.patient = this.patienserv.getPatients(patient, user, searchText, etage, codeClinique);
     this.patientliste = this.patient;
   }
@@ -184,7 +184,7 @@ export class ListePage {
             d.setdatefeuille(x[i].childNodes[0].nodeValue);
             this.datefeuille.push(d);
           }
-          this.dtFeuilleserv = new DateFeuilleService();
+          this.dtFeuilleserv = new DateFeuilleService(this.sqlite);
           this.dtFeuilleserv.verifDateFeuille(codeClinique).then(res => {
             if (res === false) {
               this.dtFeuilleserv.getDateFeuille(this.datefeuille, codeClinique);
@@ -199,7 +199,7 @@ export class ListePage {
   }
 
   DateFeuilleOff(datefeuille, codeClinique) {
-    this.dtFeuilleserv = new DateFeuilleService();
+    this.dtFeuilleserv = new DateFeuilleService(this.sqlite);
     this.datefeuille = this.dtFeuilleserv.getDateFeuille(this.datefeuille, codeClinique);
   }
 
@@ -241,29 +241,32 @@ export class ListePage {
   }
 
   deleteListe(user, searchText, etage, codeClinique) {
-    this.patienserv = new PatientService();
+    this.patienserv = new PatientService(this.sqlite);
     this.patienserv.deletePatients(user, searchText, etage, codeClinique);
   }
 
   deleteDateFeuille(codeClinique) {
-    this.dtFeuilleserv = new DateFeuilleService();
+    this.dtFeuilleserv = new DateFeuilleService(this.sqlite);
     this.dtFeuilleserv.deleteDateFeuille(codeClinique);
   }
 
   doRefresh(refresher, codeClinique) {
-    this.historique("admin", "", "all", codeClinique);
-    this.deleteListe("admin", "", "all", codeClinique);
-    this.liste("admin", "", "all", codeClinique);
-    this.deleteDateFeuille(codeClinique);
-    this.DateFeuille(codeClinique);
-    setTimeout(() => {
-      //   alert('Async operation has ended');
-      refresher.complete();
-    }, 2000);
+    Variables.checconnection().then(connexion => {
+      if (connexion === true) {
+        this.historique("admin", "", "all", codeClinique);
+        this.deleteListe("admin", "", "all", codeClinique);
+        this.liste("admin", "", "all", codeClinique);
+        this.deleteDateFeuille(codeClinique);
+        this.DateFeuille(codeClinique);
+        setTimeout(() => {
+          //   alert('Async operation has ended');
+          refresher.complete();
+        }, 2000);
+      }});
   }
 
   historique(user, searchText, etage, codeClinique) {
-    this.histserv = new HistPatientService();
+    this.histserv = new HistPatientService(this.sqlite);
     var h = new HistPatient();
     var d = new Date();
     h.setuser(user);
@@ -287,14 +290,14 @@ export class ListePage {
   }
 
   historiqueOff(hist, user, searchText, etage, codeClinique) {
-    this.histserv = new HistPatientService();
+    this.histserv = new HistPatientService(this.sqlite);
     this.histserv.getHistPatients(hist, user, searchText, etage, codeClinique).then(res => {
       this.histl = res.getdate();
     });
   }
 
   deconnexion() {
-    this.userserv = new UserService();
+    this.userserv = new UserService(this.sqlite);
     this.userserv.deleteUsers(this.codeClinique).then(res=>{
       if(res===true)
       {
@@ -308,7 +311,7 @@ export class ListePage {
     this.navCtrl.setRoot(LanguesPage);
   }
   changerPassword() {
-    this.langserv = new LangueService();
+    this.langserv = new LangueService(this.sqlite);
     this.langserv.getLangues(this.langes).then(lg => {
       this.navCtrl.setRoot(ModifPassPage, {
         tabLangue: this.tabLangue,

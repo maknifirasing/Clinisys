@@ -6,6 +6,7 @@ import {ListPreanesthesieService} from "../../services/ListPreanesthesieService"
 import {ClientDetailPage} from "../client-detail/client-detail";
 import {DossierPage} from "../dossier/dossier";
 import {TabsPage} from "../tabs/tabs";
+import {SQLite} from "@ionic-native/sqlite";
 
 @Component({
   selector: 'page-list-preanesthesie',
@@ -23,7 +24,7 @@ export class ListPreanesthesiePage {
   tabLangue: any;
   ListePserv: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {
     this.ListeP = navParams.get("ListeP");
     this.pass = navParams.get("pass");
     this.tabLangue = navParams.get("tabLangue");
@@ -46,7 +47,7 @@ export class ListPreanesthesiePage {
   }
 
   findListPreanesthesieByNumeroDossierResponseOff(numDoss, codeClinique) {
-    this.ListePserv = new ListPreanesthesieService();
+    this.ListePserv = new ListPreanesthesieService(this.sqlite);
     this.ListeP = this.ListePserv.getListPreanesthesies(this.ListeP, numDoss, codeClinique);
   }
 

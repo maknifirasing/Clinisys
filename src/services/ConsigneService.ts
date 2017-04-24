@@ -1,19 +1,19 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {Consigne} from "../models/Consigne";
 
 export class ConsigneService {
   public consigne: Array<Consigne> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
   public verifConsigne(consignes: any, numeroDossier, codeClinique, typeget, etatget): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sum from Consigne where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'and typeget like '" + typeget + "'and etatget like '" + etatget + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -31,21 +31,21 @@ export class ConsigneService {
             return false;
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   public getConsignes(consignes: any, numeroDossier, codeClinique, typeget, etatget) {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("select * from Consigne where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'and typeget like '" + typeget + "'and etatget like '" + etatget + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertConsignes(consignes,typeget,etatget)
+            this._insertConsignes(consignes, typeget, etatget)
           } else {
             var consigne;
             for (var i = 0; i < result.rows.length; i++) {
@@ -67,16 +67,16 @@ export class ConsigneService {
           alert('Error 1 Consigne  ' + error);
         })
     });
-    db.close();
+
     return this.consigne;
   }
 
-  private _insertConsignes(consignes: Array<Consigne>,typeget,etatget): void {
-    let db = new SQLite();
-    db.openDatabase({
+  private _insertConsignes(consignes: Array<Consigne>, typeget, etatget): void {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in consignes) {
         if (!consignes.hasOwnProperty(key)) {
           continue;
@@ -92,7 +92,7 @@ export class ConsigneService {
           consigne.gettype(),
           consigne.getuserCreate(),
           consigne.getcodeClinique(),
-		      typeget,
+          typeget,
           etatget
         ]);
       }
@@ -100,16 +100,16 @@ export class ConsigneService {
       console.error('Error opening database', error);
       alert('Error 2 Consigne ' + error);
     });
-    db.close();
+
   }
 
-  public deleteConsignes(numeroDossier, codeClinique, typeget, etatget) : Promise<boolean> {
+  public deleteConsignes(numeroDossier, codeClinique, typeget, etatget): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("delete from Consigne where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'and typeget like '" + typeget + "'and etatget like '" + etatget + "'", [])
           .then(() => {
             resolve(true);
@@ -122,7 +122,7 @@ export class ConsigneService {
             return false;
           })
       });
-      db.close();
+
       return this.consigne;
     });
   }

@@ -1,11 +1,11 @@
-import {Component, ViewChild} from '@angular/core';
-import {NavController, NavParams, Platform} from 'ionic-angular';
-import {Chart} from 'chart.js';
+import {Component} from '@angular/core';
+import {NavController, NavParams} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {TraitCourbe} from "../../models/TraitCourbe";
 import {HistTraitCourbeService} from "../../services/HistTraitCourbeService";
 import {HistDossier} from "../../models/HistDossier";
 import {TraitCourbeService} from "../../services/TraitCourbeService";
+import {SQLite} from "@ionic-native/sqlite";
 
 @Component({
   selector: 'page-traitment-courbe',
@@ -13,8 +13,6 @@ import {TraitCourbeService} from "../../services/TraitCourbeService";
   providers: [Variables]
 })
 export class TraitmentCourbe {
-  @ViewChild('lineCanvas') lineCanvas;
-  lineChart: any;
   codeClinique: any;
   tabLangue: any;
   pass: any;
@@ -26,8 +24,9 @@ export class TraitmentCourbe {
   histc = new HistDossier();
   histserv: any;
   private traitserv: any;
+  chartData: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
@@ -90,7 +89,7 @@ export class TraitmentCourbe {
             courbe.setcodeClinique(codeClinique);
             this.traitcourbe.push(courbe);
           }
-          this.traitserv = new TraitCourbeService();
+          this.traitserv = new TraitCourbeService(this.sqlite);
           this.traitserv.verifTraitCourbe(this.traitcourbe, numdoss, codeClinique).then(res => {
             if (res === false) {
               this.traitserv.getTraitCourbes(this.traitcourbe, numdoss, codeClinique);
@@ -106,14 +105,14 @@ export class TraitmentCourbe {
   }
 
   getChartSurveillanceOff(traitcourbe, numdoss, codeClinique) {
-    this.traitserv = new TraitCourbeService();
+    this.traitserv = new TraitCourbeService(this.sqlite);
     this.traitserv.getTraitCourbes(traitcourbe, numdoss, codeClinique).then(res => {
       this.onecourbes(res);
     });
   }
 
   DeletegetChartSurveillance(numdoss, codeClinique) {
-    this.traitserv = new TraitCourbeService();
+    this.traitserv = new TraitCourbeService(this.sqlite);
     this.traitserv.deleteTraitCourbes(numdoss, codeClinique);
   }
 
@@ -141,11 +140,16 @@ export class TraitmentCourbe {
       }
       if (this.exist(nomcourbe, courbe[i].getcodePosologie()) === -1) {
         nomcourbe.push(courbe[i].getcodePosologie());
-        designation.push(courbe[i].getdesignation());
+        if (courbe[i].getdesignation() === '') {
+          designation.push(" ");
+        } else {
+          designation.push(courbe[i].getdesignation());
+        }
+
       }
     }
     var c;
-    var b;
+    var b, e;
     for (var j = 0; j < nomcourbe.length; j++) {
       data = [];
       b = false;
@@ -158,148 +162,80 @@ export class TraitmentCourbe {
             b = true;
           }
           while (c > 0) {
-            data.push(
-              {
-                x: null,
-                y: null,
-                titre: null
-              });
+            data.push(null);
             c--;
           }
-          data.push(
-            {
-              x: x,
-              y: j + 1,
-              titre: designation[j]
-            }
-          );
+          data.push([j + 1]);
 
         }
       }
-      while (data.length < labelcourbe.length + 1) {
-        data.push(
-          {
-            x: null,
-            y: null,
-            titre: null
-          });
-      }
+      e = data[data.length - 1];
+      data[data.length] = {
+        y: e[0],
+        dataLabels: {
+          format: designation[j],
+          enabled: true,
+          style: {
+            fontWeight: 'bold'
+          }
+        }
+      };
+
+
       dataset.push({
-        label: nomcourbe[j],
-        fill: false,
-        lineTension: 0.1,
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
-        borderCapStyle: 'butt',
-        borderDash: [],
-        borderDashOffset: 0.0,
-        borderJoinStyle: 'miter',
-        pointBorderColor: "rgba(75,192,192,1)",
-        pointBackgroundColor: "#fff",
-        pointBorderWidth: 1,
-        pointHoverRadius: 1,
-        pointHoverBackgroundColor: "rgba(75,192,192,1)",
-        pointHoverBorderColor: "rgba(220,220,220,1)",
-        pointHoverBorderWidth: 2,
-        pointRadius: 1,
-        pointHitRadius: 10,
+        name: nomcourbe[j],
         data: data,
-        spanGaps: true,
-        radius: 3,
-        DatasetStrokeWidth: 20,
-        ScaleShowLabels: true,
+        color: "#1E88E5"
       });
     }
-    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-      type: 'line',
-      data: {
-        labels: labelcourbe,
-        datasets: dataset
+    this.chartData = {
+      chart: {
+        type: 'line',
+        zoomType: 'y',
+        backgroundColor: 'transparent'
+      }
+      , title: {
+        text: ''
       },
-      options: {
-        responsive: true,
-        /*  title: {
-         display: true,
-         text: 'Custom Chart Title'
-         },
-         */
-        elements: {
-          rectangle: {
-            borderWidth: 0,
-            borderColor: 'rgb(0, 255, 0)',
-            borderSkipped: 'bottom'
-          }
+      tooltip: {enabled: false},
+      xAxis: {
+        categories: labelcourbe,
+        title: {
+          text: null
         },
-        zoom: {
+
+      },
+      navigator: {
+        enabled: false
+      },
+      yAxis: {
+        title: {
+          text: ''
+        },
+        min: 15,
+        max: nomcourbe.length + 2,
+        scrollbar: {
           enabled: true,
-          mode: 'x'
-        },
-        scaleOverride: true,
-
-        scaleSteps: 10,
-        scaleStepWidth: 20,
-        scales: {
-          yAxes: [{
-            ticks: {min: 0, max: nomcourbe.length + 1},
-            barPercentage: 9.0,
-            height:10
-
-          }
-          ],
-          xAxes: [{
-            xValueType: "dateTime",
-            title: "timeline",
-            gridThickness: 5
-          }]
-        },
-        legend: {
-          display: false
-        },
-        curveType: 'function',
-        tooltips: {
-          callbacks: {
-            label: function (tooltipItem) {
-              //   console.log(tooltipItem)
-              return tooltipItem.yLabel;
-            }
-          }
-        },
-        animation: {
-          onComplete: function () {
-            var ctx = this.chart.ctx;
-   //         ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
-            ctx.font = "6px Arial gras";
-            ctx.fillStyle = "black";
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'bottom';
-            ctx.frontz = 'bottom';
-
-            this.data.datasets.forEach(function (dataset) {
-              for (var i = 0; i < dataset.data.length; i++) {
-                for (var key in dataset._meta) {
-                  var model = dataset._meta[key].data[i]._model;
-                  try {
-                    if (dataset.data[i + 1].titre === null) {
-                      ctx.fillText(dataset.data[i].titre, model.x - ((dataset.data[i].titre).length), model.y);
-                    } else {
-                      ctx.fillText("", model.x, model.y - 5);
-                    }
-                  } catch (Err) {
-                    ctx.fillText("", model.x, model.y - 5);
-                  }
-                }
-              }
-            });
-          }
+          barBorderRadius: 7,
+          barBorderWidth: 0,
+          buttonBorderWidth: 0,
+          buttonBorderRadius: 7,
+          trackBackgroundColor: 'none',
+          trackBorderWidth: 0,
+          trackBorderRadius: 8,
+          trackBorderColor: 'rgba(0,0,0,-1)'
         }
       }
-
-    });
+      , legend: {
+        enabled: false
+      },
+      series: dataset
+    }
 
   }
 
   historique(numDoss, codeClinique) {
-    this.histserv = new HistTraitCourbeService();
+    this.histserv = new HistTraitCourbeService(this.sqlite);
     var h = new HistDossier();
     var d = new Date();
     h.setnumDoss(numDoss);
@@ -320,7 +256,7 @@ export class TraitmentCourbe {
   }
 
   historiqueOff(hist, numDoss, codeClinique) {
-    this.histserv = new HistTraitCourbeService();
+    this.histserv = new HistTraitCourbeService(this.sqlite);
     this.histserv.getHistTraitCourbes(hist, numDoss, codeClinique).then(res => {
       this.histc = res.getdate();
     });

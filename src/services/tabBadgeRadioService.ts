@@ -1,19 +1,19 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {tabBadge} from "../models/tabBadge";
 
 export class tabBadgeRadioService {
   public tabBadgeRadio: Array<tabBadge> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
   public verifTabBadgeRadio(numDoss, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sum from tabBadgeRadio where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -32,18 +32,18 @@ export class tabBadgeRadioService {
             return false;
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   public getTabBadgeRadio(tabBadgeRadios: any, numDoss, codeClinique): Promise<tabBadge> {
     return new Promise<tabBadge>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select * from tabBadgeRadio where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.length === 0) {
@@ -65,17 +65,17 @@ export class tabBadgeRadioService {
             alert('Error 1 tabBadgeRadio  ' + error);
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   private _inserttabBadgeRadios(tabBadgeRadios: Array<tabBadge>): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in tabBadgeRadios) {
         if (!tabBadgeRadios.hasOwnProperty(key)) {
           continue;
@@ -92,16 +92,16 @@ export class tabBadgeRadioService {
       console.error('Error opening database', error);
       alert('Error 2 tabBadgeRadio ' + error);
     });
-    db.close();
+
   }
 
   public deletetabBadgeRadios(numDoss, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from tabBadgeRadio where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           //   alert("Suppression de table Traitement est terminé avec succes");
@@ -111,7 +111,7 @@ export class tabBadgeRadioService {
           alert('Error 3 tabBadgeRadio  ' + error);
         })
     });
-    db.close();
+
     return this.tabBadgeRadio;
   }
 }

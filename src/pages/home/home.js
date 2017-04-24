@@ -15,11 +15,13 @@ import { Variables } from "../../providers/variables";
 import { UserService } from "../../services/UserService";
 import { Langue } from "../../models/Langue";
 import { LangueService } from "../../services/LangueService";
+import { SQLite } from "@ionic-native/sqlite";
 var HomePage = (function () {
-    function HomePage(navCtrl, navParams, Url) {
+    function HomePage(navCtrl, navParams, Url, sqlite) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
+        this.sqlite = sqlite;
         this.users = [];
         this.langes = [];
         this.codeClinique = this.navParams.get("codeClinique");
@@ -56,13 +58,13 @@ var HomePage = (function () {
                             user.setcodeClinique(_this.codeClinique);
                             _this.users.push(user);
                             if (_this.users.length > 0) {
-                                _this.userserv = new UserService();
+                                _this.userserv = new UserService(_this.sqlite);
                                 _this.userserv.verifUser(_this.codeClinique).then(function (res) {
                                     if (res === false) {
                                         _this.userserv.getUser(_this.users, _this.codeClinique);
                                     }
                                 });
-                                _this.langserv = new LangueService();
+                                _this.langserv = new LangueService(_this.sqlite);
                                 _this.langserv.verifLangue().then(function (result) {
                                     var l = new Langue();
                                     l.setlangue(_this.langue);
@@ -125,7 +127,7 @@ HomePage = __decorate([
         templateUrl: 'home.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, SQLite])
 ], HomePage);
 export { HomePage };
 //# sourceMappingURL=home.js.map

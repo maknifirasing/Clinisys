@@ -1,19 +1,19 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {HistDossier} from "../models/HistDossier";
 
 export class HistSigneCourbeService {
   public histSigneCourbe: Array<HistDossier> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
   public verifHistSigneCourbe(numDoss, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sum from HistSigneCourbe where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -32,18 +32,18 @@ export class HistSigneCourbeService {
             return false;
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   public getHistSigneCourbes(histDossiers: any, numDoss, codeClinique): Promise<HistDossier> {
     return new Promise<HistDossier>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select * from HistSigneCourbe where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.length === 0) {
@@ -69,17 +69,17 @@ export class HistSigneCourbeService {
             alert('Error 1.1 HistSigneCourbe  ' + error);
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   private _insertHistSigneCourbes(histDossiers: Array<HistDossier>): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in histDossiers) {
         if (!histDossiers.hasOwnProperty(key)) {
           continue;
@@ -95,16 +95,16 @@ export class HistSigneCourbeService {
       console.error('Error opening database', error);
       alert('Error 2 HistSigneCourbe ' + error);
     });
-    db.close();
+
   }
 
 
   public deleteHistSigneCourbes(numDoss, codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           //  alert("Suppression de table Patient est terminé avec succes");
@@ -114,7 +114,7 @@ export class HistSigneCourbeService {
           alert('Error 3 HistDossier  ' + error);
         })
     });
-    db.close();
+
     return this.histSigneCourbe;
   }
 }

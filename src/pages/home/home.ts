@@ -6,6 +6,7 @@ import {Variables} from "../../providers/variables";
 import {UserService} from "../../services/UserService";
 import {Langue} from "../../models/Langue";
 import {LangueService} from "../../services/LangueService";
+import {SQLite} from "@ionic-native/sqlite";
 
 
 @Component({
@@ -27,7 +28,7 @@ export class HomePage {
   langserv: any;
   langes: Array<Langue> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private sqlite: SQLite) {
     this.codeClinique = this.navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
@@ -65,16 +66,17 @@ export class HomePage {
               user.setcodeClinique(this.codeClinique);
               this.users.push(user);
               if (this.users.length > 0) {
-                this.userserv = new UserService();
+                this.userserv = new UserService(this.sqlite);
                 this.userserv.verifUser(this.codeClinique).then(res => {
                   if (res === false) {
                     this.userserv.getUser(this.users, this.codeClinique);
                   }
                 });
-                this.langserv = new LangueService();
+                this.langserv = new LangueService(this.sqlite);
                 this.langserv.verifLangue().then(result => {
                   var l = new Langue();
                   l.setlangue(this.langue);
+                  l.setnom(user.getuserName());
                   l.setmatricule(user.getmatricule());
                   l.setcodeClinique(this.codeClinique);
                   l.setnomClinique(this.nomClinique);

@@ -69,10 +69,7 @@
   </div>
 
   <div fxLayout="row" fxLayoutWrap *ngFor="let LP of ListeP ">
-    <div fxFlex="5" *ngIf="langue==='arabe'" dir="rtl" margin-top="10">
-      <img  src="/android_asset/www/assets/img/valid.png" width="20" height="20">
 
-    </div>
     <div fxFlex="94" *ngIf="langue==='arabe'" dir="rtl" margin-top="10">
       <strong style="color: #0f7ec0 ">{{tabLangue.titreAct}}: </strong> {{LP.getacte()}}<br/>
       <strong style="color: #0f7ec0 "> {{tabLangue.titreChi}}:</strong> {{LP.getchirurgien()}}<br/>
@@ -83,7 +80,10 @@
       <strong style="color: #0f7ec0 "> KC:</strong> {{LP.getkc()}}<br/>
 
     </div>
+    <div fxFlex="5" *ngIf="langue==='arabe'" dir="rtl" margin-top="10">
+      <img  src="/android_asset/www/assets/img/valid.png" width="20" height="20">
 
+    </div>
   </div>
 
 

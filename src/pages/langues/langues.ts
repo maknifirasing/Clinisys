@@ -1,12 +1,13 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
-import {NativeStorage} from "ionic-native";
 import {ListeCliniquePage} from "../liste-clinique/liste-clinique";
 import {Langue} from "../../models/Langue";
 import {LangueService} from "../../services/LangueService";
 import {ListePage} from "../liste/liste";
 import {UserService} from "../../services/UserService";
+import {SQLite} from "@ionic-native/sqlite";
+
 
 @Component({
   selector: 'page-langues',
@@ -23,12 +24,11 @@ export class LanguesPage {
   private userserv: any;
 
 
-  constructor(public navCtrl: NavController, private Url: Variables) {
+  constructor(public navCtrl: NavController,private sqlite: SQLite) {
     //  Variables.auth();
   }
 
-  ionViewDidLoad() {
-  }
+
 
   choixLang(lang) {
 
@@ -42,17 +42,18 @@ export class LanguesPage {
       this.tabLangue = Variables.anglais;
     }
 
-    this.userserv = new UserService();
+    this.userserv = new UserService(this.sqlite);
     this.userserv.getAllUser().then(user => {
       if (user.length === 0) {
         this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
       } else {
-        this.langserv = new LangueService();
+        this.langserv = new LangueService(this.sqlite);
         this.langserv.verifLangue().then(res => {
           if (res === true) {
             this.langserv.getLangues(this.langes).then(lg => {
               var l = new Langue();
               l.setlangue(lang);
+              l.setnom(lg.getnom());
               l.setmatricule(lg.getmatricule());
               l.setcodeClinique(lg.getcodeClinique());
               l.setnomClinique(lg.getnomClinique());

@@ -14,12 +14,14 @@ import { Variables } from "../../providers/variables";
 import { Medecin } from "../../models/Medecin";
 import { ClientService } from "../../services/ClientService";
 import { MedecinService } from "../../services/MedecinService";
+import { SQLite } from "@ionic-native/sqlite";
 var ClientDetailPage = (function () {
-    function ClientDetailPage(navCtrl, navParams, Url) {
+    function ClientDetailPage(navCtrl, navParams, Url, sqlite) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
+        this.sqlite = sqlite;
         this.client = new Client();
         this.medecinList = [];
         this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
@@ -81,7 +83,7 @@ var ClientDetailPage = (function () {
                     _this.client.setcodeClinique(_this.codeClinique);
                     console.log(x[0].children[74].children[1].textContent);
                     console.log(x[0].children[85].textContent);
-                    _this.clientserv = new ClientService();
+                    _this.clientserv = new ClientService(_this.sqlite);
                     _this.clientserv.verifClient(_this.client, numDoss, _this.codeClinique).then(function (res) {
                         if (res === false) {
                             _this.clientserv.getClients(_this.client, numDoss, _this.codeClinique);
@@ -96,7 +98,7 @@ var ClientDetailPage = (function () {
     };
     ClientDetailPage.prototype.GetClientByNumDossOff = function (client, numDoss) {
         var _this = this;
-        this.clientserv = new ClientService();
+        this.clientserv = new ClientService(this.sqlite);
         this.clientserv.getClients(client, numDoss, this.codeClinique).then(function (res) {
             _this.client = res;
         });
@@ -128,7 +130,7 @@ var ClientDetailPage = (function () {
                         medecin.setcodeClinique(_this.codeClinique);
                         _this.medecinList.push(medecin);
                     }
-                    _this.medecinserv = new MedecinService();
+                    _this.medecinserv = new MedecinService(_this.sqlite);
                     _this.medecinserv.verifMedecin(_this.medecinList, numDoss, _this.codeClinique).then(function (res) {
                         if (res === false) {
                             _this.medecinserv.getMedecins(_this.medecinList, numDoss, _this.codeClinique);
@@ -142,7 +144,7 @@ var ClientDetailPage = (function () {
         xmlhttp.send(sr);
     };
     ClientDetailPage.prototype.findMedIntervenatByNumDossOff = function (medecinList, numDoss) {
-        this.medecinserv = new MedecinService();
+        this.medecinserv = new MedecinService(this.sqlite);
         this.medecinList = this.medecinserv.getMedecins(medecinList, numDoss, this.codeClinique);
     };
     return ClientDetailPage;
@@ -153,7 +155,7 @@ ClientDetailPage = __decorate([
         templateUrl: 'client-detail.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, SQLite])
 ], ClientDetailPage);
 export { ClientDetailPage };
 //# sourceMappingURL=client-detail.js.map

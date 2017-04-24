@@ -9,6 +9,7 @@ import {UserService} from "../../services/UserService";
 import {ListePage} from "../liste/liste";
 import {Langue} from "../../models/Langue";
 import {LangueService} from "../../services/LangueService";
+import {SQLite} from "@ionic-native/sqlite";
 
 @Component({
   selector: 'page-liste-clinique',
@@ -29,7 +30,7 @@ export class ListeCliniquePage {
   langes: Array<Langue> = [];
   test: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private viewCtrl: ViewController, public platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private viewCtrl: ViewController, public platform: Platform,private sqlite: SQLite) {
     this.viewCtrl.showBackButton(false);
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
@@ -69,7 +70,7 @@ export class ListeCliniquePage {
             this.clinique.push(c);
           }
           this.getcliniques(this.clinique);
-          this.clinserv = new CliniqueService();
+          this.clinserv = new CliniqueService(this.sqlite);
           this.clinserv.verifClinique(this.clinique).then(res => {
             if (res === false) {
               this.clinserv.getCliniques(this.clinique);
@@ -89,7 +90,8 @@ export class ListeCliniquePage {
     this.cliniqueaut = [];
     this.cliniqueaut.length = 0;
     this.test = false;
-    this.userserv = new UserService();
+
+    this.userserv = new UserService(this.sqlite);
     this.userserv.getAllUser().then(res => {
         if (res.length > 0) {
           for (var i = 0; i < cliniques.length; i++) {
@@ -122,14 +124,14 @@ export class ListeCliniquePage {
   }
 
   ListCliniqueOff(cliniques) {
-    this.clinserv = new CliniqueService();
+    this.clinserv = new CliniqueService(this.sqlite);
     this.clinserv.getCliniques(cliniques).then(resact => {
       this.getcliniques(resact);
     });
   }
 
   goToHomePage(codeC) {
-    this.userserv = new UserService();
+    this.userserv = new UserService(this.sqlite);
     this.userserv.verifUser(codeC.getcode()).then(user => {
       if (user === false) {
         this.navCtrl.push(HomePage, {
@@ -140,12 +142,13 @@ export class ListeCliniquePage {
           url: codeC.geturl()
         });
       } else {
-        this.langserv = new LangueService();
+        this.langserv = new LangueService(this.sqlite);
         this.langserv.verifLangue().then(res => {
           if (res === true) {
             this.langserv.getLangues(this.langes).then(lg => {
               var l = new Langue();
               l.setlangue(lg.getlangue());
+              l.setnom(lg.getnom());
               l.setmatricule(lg.getmatricule());
               l.setcodeClinique(codeC.getcode());
               l.setnomClinique(codeC.getnom());

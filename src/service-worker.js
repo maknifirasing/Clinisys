@@ -17,7 +17,6 @@ self.toolbox.precache(
     './build/main.js',
     './build/main.css',
     './build/polyfills.js',
-    './build/ionic-material.js',
     'index.html',
     'manifest.json'
   ]

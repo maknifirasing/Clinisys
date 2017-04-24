@@ -1,19 +1,18 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {Users} from "../models/Users";
 
 export class UserService {
   users: Array<Users> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite) {
   }
 
   verifUser(codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sum from Users where codeClinique like '" + codeClinique + "'", []).then(result => {
           if (result.rows.item(0).sum > 0) {
             resolve(true);
@@ -32,7 +31,6 @@ export class UserService {
             return false;
           })
       });
-      db.close();
       return this;
     })
 
@@ -40,11 +38,10 @@ export class UserService {
 
   public getUser(users: any, codeClinique): Promise<Users> {
     return new Promise<Users>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select * from Users where codeClinique like '" + codeClinique + "'", []).then(result => {
           if (result.rows.length === 0) {
             this._insertUser(users);
@@ -67,18 +64,16 @@ export class UserService {
             alert('Error 1 Users  ' + error);
           })
       });
-      db.close();
       return this;
     });
   }
 
   public getAllUser(): Promise<Users[]> {
     return new Promise<Users[]>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select * from Users ", []).then(result => {
           if (result.rows.length > 0) {
             var user;
@@ -98,17 +93,16 @@ export class UserService {
             alert('Error 1.1 Users  ' + error);
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   private _insertUser(users): void {
-    let db = new SQLite();
-    db.openDatabase({
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in users) {
         if (!users.hasOwnProperty(key)) {
           continue;
@@ -125,16 +119,15 @@ export class UserService {
       console.error('Error opening database', error);
       alert('Error 2 Users ' + error);
     });
-    db.close();
   }
 
   public deleteUsers(codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("delete from Users where codeClinique like '" + codeClinique + "'", [])
           .then(() => {
             resolve(true);
@@ -147,7 +140,6 @@ export class UserService {
             return false;
           })
       });
-      db.close();
       return this;
     });
   }

@@ -25,6 +25,8 @@ import {HistDossier} from "../../models/HistDossier";
 import {SigneCourbePage} from "../signe-courbe/signe-courbe";
 import {ClientDetailPage} from "../client-detail/client-detail";
 import {TraitmentCourbe} from "../traitment-courbe/traitment-courbe";
+import {Patient} from "../../models/Patient";
+import {SQLite} from "@ionic-native/sqlite";
 
 @Component({
   selector: 'page-dossier',
@@ -80,17 +82,16 @@ export class DossierPage {
   EvenementExaS: any;
   EvenementHisS: any;
   histserv: any;
-  histD: Array<HistDossier> = [];
   histd = new HistDossier();
   static hist: any;
   codeClinique: any;
   tabLangue: any;
-  pass: any;
+  pass=new Patient();
   dateFeuille: any;
   langue: any;
   static motifhh = new MotifHospitalisation();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.pass = navParams.get("pass");
@@ -108,7 +109,7 @@ export class DossierPage {
     Variables.checconnection().then(res => {
       if (res === false) {
         this.connection = false;
-        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
+        this.historiqueOff(this.histd, this.pass.getdossier(), this.codeClinique);
         this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
         this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
         this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
@@ -167,7 +168,7 @@ export class DossierPage {
           } catch (Error) {
             this.AlerteSigneCliniqueTest = false;
           }
-          this.signeCliniqueAlertS = new SigneCliniqueAlertService();
+          this.signeCliniqueAlertS = new SigneCliniqueAlertService(this.sqlite);
           this.signeCliniqueAlertS.verifSigneCliniqueAlert(this.signe, numDoss, dateFeuille, nature, codeClinique).then(res => {
             if (res === false) {
               this.signeCliniqueAlertS.getSigneCliniquesAlert(this.signe, numDoss, dateFeuille, nature, codeClinique);
@@ -183,7 +184,7 @@ export class DossierPage {
 
   GetAlerteSigneCliniqueOff(signe, numDoss, dateFeuille, nature, codeClinique) {
 
-    this.signeCliniqueAlertS = new SigneCliniqueAlertService();
+    this.signeCliniqueAlertS = new SigneCliniqueAlertService(this.sqlite);
     this.signeCliniqueAlertS.verifSigneCliniqueAlert(signe, numDoss, dateFeuille, nature, codeClinique).then(res => {
       if (res === true) {
         this.signe = this.signeCliniqueAlertS.getSigneCliniquesAlert(signe, numDoss, dateFeuille, nature, codeClinique);
@@ -194,7 +195,7 @@ export class DossierPage {
 
   DeleteGetAlerteSigneClinique(numDoss, dateFeuille, nature, codeClinique) {
 
-    this.traitementServ = new TraitementService();
+    this.traitementServ = new TraitementService(this.sqlite);
     this.traitementServ.deleteTraitements(numDoss, dateFeuille, nature, codeClinique);
   }
 
@@ -228,7 +229,6 @@ export class DossierPage {
             var xml = xmlhttp.responseXML;
             var x, i;
             x = xml.getElementsByTagName("return");
-            var a;
             for (i = 0; i < x.length; i++) {
               if (!((x[i].children[0].children[0].textContent) === ("A000")) && (!((x[i].children[0].children[0].textContent) === ("A255")))) {
                 if ((x[i].children[0].children[1].textContent) === ("FA02")) // Allergie
@@ -267,7 +267,7 @@ export class DossierPage {
 
             this.antechl.push(antech);
 
-            this.antecserv = new AntechService();
+            this.antecserv = new AntechService(this.sqlite);
             this.antecserv.verifAntec(this.antechl, idpass, codeClinique).then(res => {
               if (res === false) {
                 this.antecserv.getAntecs(this.antechl, idpass, codeClinique);
@@ -281,7 +281,7 @@ export class DossierPage {
 
             this.alechl.push(alech);
 
-            this.alegserv = new AlegchService();
+            this.alegserv = new AlegchService(this.sqlite);
             this.alegserv.verifAleg(this.alechl, idpass, codeClinique).then(res => {
               if (res === false) {
                 this.alegserv.getAlegs(this.alechl, idpass, codeClinique);
@@ -300,7 +300,7 @@ export class DossierPage {
   }
 
   getAntecedentAllergieByIdentifiantOff(antec, aleg, idpass, codeClinique) {
-    this.antecserv = new AntechService();
+    this.antecserv = new AntechService(this.sqlite);
     this.antecserv.verifAntec(this.antechl, idpass, codeClinique).then(res => {
       if (res === true) {
         this.antechl = this.antecserv.getAntecs(antec, idpass, codeClinique);
@@ -308,7 +308,7 @@ export class DossierPage {
       }
     });
 
-    this.alegserv = new AlegchService();
+    this.alegserv = new AlegchService(this.sqlite);
     this.alegserv.verifAleg(this.alechl, idpass, codeClinique).then(res => {
       if (res === true) {
         this.alechl = this.alegserv.getAlegs(aleg, idpass, codeClinique);
@@ -318,10 +318,10 @@ export class DossierPage {
   }
 
   DeletegetAntecedentAllergieByIdentifiant(idpass, codeClinique) {
-    this.antecserv = new AntechService();
+    this.antecserv = new AntechService(this.sqlite);
     this.antecserv.deleteAntecs(idpass, codeClinique);
 
-    this.alegserv = new AlegchService();
+    this.alegserv = new AlegchService(this.sqlite);
     this.alegserv.deleteAlegs(idpass, codeClinique);
   }
 
@@ -345,9 +345,8 @@ export class DossierPage {
           try {
             this.test = true;
             var xml = xmlhttp.responseXML;
-            var x, i;
+            var x;
             x = xml.getElementsByTagName("return");
-
             this.motifh.setgroupeSang(x[0].children[3].textContent);
             this.motifh.setmotifhospitalisation(x[0].children[7].textContent);
             this.motifh.setnumdoss(x[0].children[8].textContent);
@@ -358,7 +357,7 @@ export class DossierPage {
             if (this.motifh.getnumdoss() === "") {
               this.test = false;
             }
-            this.mserv = new motifHospitalisationService();
+            this.mserv = new motifHospitalisationService(this.sqlite);
             this.mserv.verifmotifHospitalisation(this.motifh, numDoss, codeClinique).then(res => {
               if (res === false) {
                 this.mserv.getmotifHospitalisations(this.motifh, numDoss, codeClinique);
@@ -377,7 +376,7 @@ export class DossierPage {
   }
 
   GetAllMotifHospitalisationByNumDossOff(motif, numdoss, codeClinique) {
-    this.mserv = new motifHospitalisationService();
+    this.mserv = new motifHospitalisationService(this.sqlite);
     this.mserv.getmotifHospitalisations(motif, numdoss, codeClinique).then(res => {
       DossierPage.motifhh = this.motifh = res;
       if (res.getnumdoss() === "") {
@@ -392,7 +391,7 @@ export class DossierPage {
   }
 
   DeleteGetAllMotifHospitalisationByNumDoss(numDoss, codeClinique) {
-    this.mserv = new motifHospitalisationService();
+    this.mserv = new motifHospitalisationService(this.sqlite);
     this.mserv.deleteMotifhospitalisations(numDoss, codeClinique);
   }
 
@@ -443,7 +442,7 @@ export class DossierPage {
             }
 
 
-            this.traitementServ = new TraitementService();
+            this.traitementServ = new TraitementService(this.sqlite);
             this.traitementServ.verifTraitement(this.traitement, this.pass.getdossier(), this.dateFeuille, codeClinique).then(res => {
               if (res === false) {
                 this.traitementServ.getTraitements(this.traitement, this.pass.getdossier(), this.dateFeuille, codeClinique);
@@ -461,7 +460,7 @@ export class DossierPage {
   }
 
   GetTraitementsOff(traitement, numdoss, datefeuille, codeClinique) {
-    this.traitementServ = new TraitementService();
+    this.traitementServ = new TraitementService(this.sqlite);
     this.traitementServ.verifTraitement(this.traitement, this.pass.getdossier(), this.dateFeuille, codeClinique).then(res => {
       if (res === true) {
         this.traitement = this.traitementServ.getTraitements(this.traitement, this.pass.getdossier(), this.dateFeuille, codeClinique);
@@ -472,7 +471,7 @@ export class DossierPage {
 
   DeleteTraitement(numdoss, dateFeuille, codeClinique) {
 
-    this.traitementServ = new TraitementService();
+    this.traitementServ = new TraitementService(this.sqlite);
     this.traitementServ.deleteTraitements(numdoss, dateFeuille, codeClinique);
   }
 
@@ -556,7 +555,7 @@ export class DossierPage {
             if (this.Conclusion.length === 0) {
               this.Con = false;
             } else {
-              this.EvenementConS = new EvenementConService();
+              this.EvenementConS = new EvenementConService(this.sqlite);
               this.EvenementConS.verifEvenement(this.Conclusion, this.pass.getdossier(), codeClinique).then(res => {
                 if (res === false) {
                   this.EvenementConS.getEvenements(this.Conclusion, this.pass.getdossier(), codeClinique);
@@ -566,7 +565,7 @@ export class DossierPage {
             if (this.Examenclinique.length === 0) {
               this.Exa = false;
             } else {
-              this.EvenementExaS = new EvenementExaService();
+              this.EvenementExaS = new EvenementExaService(this.sqlite);
               this.EvenementExaS.verifEvenement(this.Examenclinique, this.pass.getdossier(), codeClinique).then(res => {
                 if (res === false) {
                   this.EvenementExaS.getEvenements(this.Examenclinique, this.pass.getdossier(), codeClinique);
@@ -576,7 +575,7 @@ export class DossierPage {
             if (this.Histoiremaladie.length === 0) {
               this.His = false;
             } else {
-              this.EvenementHisS = new EvenementHisService();
+              this.EvenementHisS = new EvenementHisService(this.sqlite);
               this.EvenementHisS.verifEvenement(this.Histoiremaladie, this.pass.getdossier(), codeClinique).then(res => {
                 if (res === false) {
                   this.EvenementHisS.getEvenements(this.Histoiremaladie, this.pass.getdossier(), codeClinique);
@@ -587,7 +586,7 @@ export class DossierPage {
               this.Evo = false;
             }
             else {
-              this.EvenementEvoS = new EvenementEvoService();
+              this.EvenementEvoS = new EvenementEvoService(this.sqlite);
               this.EvenementEvoS.verifEvenement(this.Evolution, this.pass.getdossier(), codeClinique).then(res => {
                 if (res === false) {
                   this.EvenementEvoS.getEvenements(this.Evolution, this.pass.getdossier(), codeClinique);
@@ -605,7 +604,7 @@ export class DossierPage {
   }
 
   GetEvenementByDossierOff(numdoss, codeClinique) {
-    this.EvenementConS = new EvenementConService();
+    this.EvenementConS = new EvenementConService(this.sqlite);
     this.EvenementConS.verifEvenement(this.Conclusion, numdoss, codeClinique).then(res => {
       if (res === true) {
         this.Conclusion = this.EvenementConS.getEvenements(this.Conclusion, numdoss, codeClinique);
@@ -613,7 +612,7 @@ export class DossierPage {
       }
     });
 
-    this.EvenementExaS = new EvenementExaService();
+    this.EvenementExaS = new EvenementExaService(this.sqlite);
     this.EvenementExaS.verifEvenement(this.Examenclinique, this.pass.getdossier(), codeClinique).then(res => {
       if (res === true) {
         this.Examenclinique = this.EvenementExaS.getEvenements(this.Examenclinique, numdoss, codeClinique);
@@ -621,7 +620,7 @@ export class DossierPage {
       }
     });
 
-    this.EvenementHisS = new EvenementHisService();
+    this.EvenementHisS = new EvenementHisService(this.sqlite);
     this.EvenementHisS.verifEvenement(this.Histoiremaladie, this.pass.getdossier(), codeClinique).then(res => {
       if (res === true) {
         this.Histoiremaladie = this.EvenementHisS.getEvenements(this.Histoiremaladie, this.pass.getdossier(), codeClinique);
@@ -629,7 +628,7 @@ export class DossierPage {
       }
     });
 
-    this.EvenementEvoS = new EvenementEvoService();
+    this.EvenementEvoS = new EvenementEvoService(this.sqlite);
     this.EvenementEvoS.verifEvenement(this.Evolution, this.pass.getdossier(), codeClinique).then(res => {
       if (res === true) {
         this.Evolution = this.EvenementEvoS.getEvenements(this.Evolution, this.pass.getdossier(), codeClinique);
@@ -639,16 +638,16 @@ export class DossierPage {
   }
 
   DeleteGetEvenementByDossier(numdoss, codeClinique) {
-    this.EvenementConS = new EvenementConService();
+    this.EvenementConS = new EvenementConService(this.sqlite);
     this.EvenementConS.deleteEvenementCons(numdoss, codeClinique);
 
-    this.EvenementExaS = new EvenementExaService();
+    this.EvenementExaS = new EvenementExaService(this.sqlite);
     this.EvenementExaS.deleteEvenementExas(numdoss, codeClinique);
 
-    this.EvenementHisS = new EvenementHisService();
+    this.EvenementHisS = new EvenementHisService(this.sqlite);
     this.EvenementHisS.deleteEvenementHis(numdoss, codeClinique);
 
-    this.EvenementEvoS = new EvenementEvoService();
+    this.EvenementEvoS = new EvenementEvoService(this.sqlite);
     this.EvenementEvoS.deleteEvenementEvos(numdoss, codeClinique);
   }
 
@@ -690,7 +689,7 @@ export class DossierPage {
             else {
               this.Ri = true;
             }
-            this.rigimeserv = new RigimeService();
+            this.rigimeserv = new RigimeService(this.sqlite);
             this.rigimeserv.verifRigime(this.rigime, numdoss, datefeuille, nature, codeClinique).then(res => {
               if (res === false) {
                 this.rigimeserv.getRigimes(this.rigime, numdoss, datefeuille, nature, codeClinique);
@@ -708,7 +707,7 @@ export class DossierPage {
   }
 
   GetListRegimeOff(rigime, numdoss, datefeuille, nature, codeClinique) {
-    this.rigimeserv = new RigimeService();
+    this.rigimeserv = new RigimeService(this.sqlite);
     this.rigimeserv.verifRigime(this.rigime, numdoss, datefeuille, nature, codeClinique).then(res => {
       if (res === true) {
         this.rigimeserv.getRigimes(this.rigime, numdoss, datefeuille, nature, codeClinique);
@@ -718,7 +717,7 @@ export class DossierPage {
   }
 
   DeleteGetListRegime(numdoss, datefeuille, nature, codeClinique) {
-    this.rigimeserv = new RigimeService();
+    this.rigimeserv = new RigimeService(this.sqlite);
     this.rigimeserv.deleteRigimes(numdoss, datefeuille, nature, codeClinique);
   }
 
@@ -782,21 +781,21 @@ export class DossierPage {
               this.Ent = false;
             }
 
-            this.signeCliniqueEntS = new SigneCliniqueEntService();
+            this.signeCliniqueEntS = new SigneCliniqueEntService(this.sqlite);
             this.signeCliniqueEntS.verifSigneClinique(this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(res => {
               if (res === false) {
                 this.signeCliniqueEntS.getSigneCliniques(this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
               }
             });
 
-            this.signeCliniqueSorS = new SigneCliniqueSorService();
+            this.signeCliniqueSorS = new SigneCliniqueSorService(this.sqlite);
             this.signeCliniqueSorS.verifSigneClinique(this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(res => {
               if (res === false) {
                 this.signeCliniqueSorS.getSigneCliniques(this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
               }
             });
 
-            this.signeCliniqueSigS = new SigneCliniqueSigService();
+            this.signeCliniqueSigS = new SigneCliniqueSigService(this.sqlite);
             this.signeCliniqueSigS.verifSigneClinique(this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(res => {
               if (res === false) {
                 this.signeCliniqueSigS.getSigneCliniques(this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
@@ -816,7 +815,7 @@ export class DossierPage {
   }
 
   GetSigneCliniqueOff(numdoss, dateFeuille, nature, codeTypeOf, codeClinique) {
-    this.signeCliniqueEntS = new SigneCliniqueEntService();
+    this.signeCliniqueEntS = new SigneCliniqueEntService(this.sqlite);
     this.signeCliniqueEntS.verifSigneClinique(this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(res => {
       if (res === true) {
         this.Entrees = this.signeCliniqueEntS.getSigneCliniques(this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
@@ -824,7 +823,7 @@ export class DossierPage {
       }
     });
 
-    this.signeCliniqueSorS = new SigneCliniqueSorService();
+    this.signeCliniqueSorS = new SigneCliniqueSorService(this.sqlite);
     this.signeCliniqueSorS.verifSigneClinique(this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(res => {
       if (res === true) {
         this.Sorties = this.signeCliniqueSorS.getSigneCliniques(this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
@@ -832,7 +831,7 @@ export class DossierPage {
       }
     });
 
-    this.signeCliniqueSigS = new SigneCliniqueSigService();
+    this.signeCliniqueSigS = new SigneCliniqueSigService(this.sqlite);
     this.signeCliniqueSigS.verifSigneClinique(this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(res => {
       if (res === true) {
         this.signec = this.signeCliniqueSigS.getSigneCliniques(this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
@@ -842,13 +841,13 @@ export class DossierPage {
   }
 
   DeleteGetSigneClinique(numdoss, dateFeuille, nature, codeTypeOf, codeClinique) {
-    this.signeCliniqueEntS = new SigneCliniqueEntService();
+    this.signeCliniqueEntS = new SigneCliniqueEntService(this.sqlite);
     this.signeCliniqueEntS.deleteSigneCliniques(numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
 
-    this.signeCliniqueSorS = new SigneCliniqueSorService();
+    this.signeCliniqueSorS = new SigneCliniqueSorService(this.sqlite);
     this.signeCliniqueSorS.deleteSigneCliniques(numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
 
-    this.signeCliniqueSigS = new SigneCliniqueSigService();
+    this.signeCliniqueSigS = new SigneCliniqueSigService(this.sqlite);
     this.signeCliniqueSigS.deleteSigneCliniques(numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
   }
 
@@ -885,22 +884,26 @@ export class DossierPage {
   }
 
   historique(numDoss, codeClinique) {
-    this.histserv = new HistDossierService();
-    var h = new HistDossier();
+
+    this.histserv = new HistDossierService(this.sqlite);
+    this.histd = new HistDossier();
     var d = new Date();
-    h.setnumDoss(numDoss);
-    h.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
-    h.setcodeClinique(codeClinique);
-    this.histD.push(h);
+    this.histd.setnumDoss(numDoss);
+    this.histd.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+    this.histd.setcodeClinique(codeClinique);
     try {
-      this.histserv.deleteHistDossiers(numDoss, codeClinique);
-      this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(res => {
-        this.histd = res.getdate();
-        DossierPage.hist = res.getdate();
+      this.histserv.deleteHistDossiers(numDoss, codeClinique).then(delet => {
+        if (delet === true) {
+          this.histserv.getHistDossiers(this.histd, numDoss, codeClinique).then(res => {
+            this.histd = res.getdate();
+            DossierPage.hist = res.getdate();
+          });
+        }
       });
+
     }
     catch (Error) {
-      this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(res => {
+      this.histserv.getHistDossiers(this.histd, numDoss, codeClinique).then(res => {
         this.histd = res.getdate();
         DossierPage.hist = res.getdate();
       });
@@ -909,7 +912,7 @@ export class DossierPage {
   }
 
   historiqueOff(hist, numDoss, codeClinique) {
-    this.histserv = new HistDossierService();
+    this.histserv = new HistDossierService(this.sqlite);
     this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(res => {
       this.histd = res.getdate();
       DossierPage.hist = res.getdate();

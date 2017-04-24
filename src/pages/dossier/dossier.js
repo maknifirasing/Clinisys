@@ -34,13 +34,16 @@ import { HistDossier } from "../../models/HistDossier";
 import { SigneCourbePage } from "../signe-courbe/signe-courbe";
 import { ClientDetailPage } from "../client-detail/client-detail";
 import { TraitmentCourbe } from "../traitment-courbe/traitment-courbe";
+import { Patient } from "../../models/Patient";
+import { SQLite } from "@ionic-native/sqlite";
 var DossierPage = DossierPage_1 = (function () {
-    function DossierPage(navCtrl, navParams, Url, platform) {
+    function DossierPage(navCtrl, navParams, Url, platform, sqlite) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
         this.platform = platform;
+        this.sqlite = sqlite;
         this.motifh = new MotifHospitalisation();
         this.alechl = [];
         this.antechl = [];
@@ -60,8 +63,8 @@ var DossierPage = DossierPage_1 = (function () {
         this.Entrees = [];
         this.Sorties = [];
         this.rigime = [];
-        this.histD = [];
         this.histd = new HistDossier();
+        this.pass = new Patient();
         this.codeClinique = navParams.get("codeClinique");
         this.tabLangue = navParams.get("tabLangue");
         this.pass = navParams.get("pass");
@@ -78,7 +81,7 @@ var DossierPage = DossierPage_1 = (function () {
         Variables.checconnection().then(function (res) {
             if (res === false) {
                 _this.connection = false;
-                _this.historiqueOff(_this.histD, _this.pass.getdossier(), _this.codeClinique);
+                _this.historiqueOff(_this.histd, _this.pass.getdossier(), _this.codeClinique);
                 _this.GetAllMotifHospitalisationByNumDossOff(_this.motifh, _this.pass.getdossier(), _this.codeClinique);
                 _this.getAntecedentAllergieByIdentifiantOff(_this.antechl, _this.alechl, _this.pass.getid(), _this.codeClinique);
                 _this.GetAlerteSigneCliniqueOff(_this.signe, _this.pass.getdossier(), _this.dateFeuille, _this.pass.getnature(), _this.codeClinique);
@@ -135,7 +138,7 @@ var DossierPage = DossierPage_1 = (function () {
                     catch (Error) {
                         _this.AlerteSigneCliniqueTest = false;
                     }
-                    _this.signeCliniqueAlertS = new SigneCliniqueAlertService();
+                    _this.signeCliniqueAlertS = new SigneCliniqueAlertService(_this.sqlite);
                     _this.signeCliniqueAlertS.verifSigneCliniqueAlert(_this.signe, numDoss, dateFeuille, nature, codeClinique).then(function (res) {
                         if (res === false) {
                             _this.signeCliniqueAlertS.getSigneCliniquesAlert(_this.signe, numDoss, dateFeuille, nature, codeClinique);
@@ -150,7 +153,7 @@ var DossierPage = DossierPage_1 = (function () {
     };
     DossierPage.prototype.GetAlerteSigneCliniqueOff = function (signe, numDoss, dateFeuille, nature, codeClinique) {
         var _this = this;
-        this.signeCliniqueAlertS = new SigneCliniqueAlertService();
+        this.signeCliniqueAlertS = new SigneCliniqueAlertService(this.sqlite);
         this.signeCliniqueAlertS.verifSigneCliniqueAlert(signe, numDoss, dateFeuille, nature, codeClinique).then(function (res) {
             if (res === true) {
                 _this.signe = _this.signeCliniqueAlertS.getSigneCliniquesAlert(signe, numDoss, dateFeuille, nature, codeClinique);
@@ -159,7 +162,7 @@ var DossierPage = DossierPage_1 = (function () {
         });
     };
     DossierPage.prototype.DeleteGetAlerteSigneClinique = function (numDoss, dateFeuille, nature, codeClinique) {
-        this.traitementServ = new TraitementService();
+        this.traitementServ = new TraitementService(this.sqlite);
         this.traitementServ.deleteTraitements(numDoss, dateFeuille, nature, codeClinique);
     };
     DossierPage.prototype.getAntecedentAllergieByIdentifiant = function (idpass, codeClinique) {
@@ -220,7 +223,7 @@ var DossierPage = DossierPage_1 = (function () {
                         antech.setidpass(idpass);
                         antech.setch(_this.stringAntec);
                         _this.antechl.push(antech);
-                        _this.antecserv = new AntechService();
+                        _this.antecserv = new AntechService(_this.sqlite);
                         _this.antecserv.verifAntec(_this.antechl, idpass, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.antecserv.getAntecs(_this.antechl, idpass, codeClinique);
@@ -230,7 +233,7 @@ var DossierPage = DossierPage_1 = (function () {
                         alech.setidpass(idpass);
                         alech.setch(_this.stringAlerg);
                         _this.alechl.push(alech);
-                        _this.alegserv = new AlegchService();
+                        _this.alegserv = new AlegchService(_this.sqlite);
                         _this.alegserv.verifAleg(_this.alechl, idpass, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.alegserv.getAlegs(_this.alechl, idpass, codeClinique);
@@ -248,14 +251,14 @@ var DossierPage = DossierPage_1 = (function () {
     };
     DossierPage.prototype.getAntecedentAllergieByIdentifiantOff = function (antec, aleg, idpass, codeClinique) {
         var _this = this;
-        this.antecserv = new AntechService();
+        this.antecserv = new AntechService(this.sqlite);
         this.antecserv.verifAntec(this.antechl, idpass, codeClinique).then(function (res) {
             if (res === true) {
                 _this.antechl = _this.antecserv.getAntecs(antec, idpass, codeClinique);
                 _this.Ante = true;
             }
         });
-        this.alegserv = new AlegchService();
+        this.alegserv = new AlegchService(this.sqlite);
         this.alegserv.verifAleg(this.alechl, idpass, codeClinique).then(function (res) {
             if (res === true) {
                 _this.alechl = _this.alegserv.getAlegs(aleg, idpass, codeClinique);
@@ -264,9 +267,9 @@ var DossierPage = DossierPage_1 = (function () {
         });
     };
     DossierPage.prototype.DeletegetAntecedentAllergieByIdentifiant = function (idpass, codeClinique) {
-        this.antecserv = new AntechService();
+        this.antecserv = new AntechService(this.sqlite);
         this.antecserv.deleteAntecs(idpass, codeClinique);
-        this.alegserv = new AlegchService();
+        this.alegserv = new AlegchService(this.sqlite);
         this.alegserv.deleteAlegs(idpass, codeClinique);
     };
     DossierPage.prototype.GetAllMotifHospitalisationByNumDoss = function (numDoss, codeClinique) {
@@ -299,7 +302,7 @@ var DossierPage = DossierPage_1 = (function () {
                         if (_this.motifh.getnumdoss() === "") {
                             _this.test = false;
                         }
-                        _this.mserv = new motifHospitalisationService();
+                        _this.mserv = new motifHospitalisationService(_this.sqlite);
                         _this.mserv.verifmotifHospitalisation(_this.motifh, numDoss, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.mserv.getmotifHospitalisations(_this.motifh, numDoss, codeClinique);
@@ -318,7 +321,7 @@ var DossierPage = DossierPage_1 = (function () {
     };
     DossierPage.prototype.GetAllMotifHospitalisationByNumDossOff = function (motif, numdoss, codeClinique) {
         var _this = this;
-        this.mserv = new motifHospitalisationService();
+        this.mserv = new motifHospitalisationService(this.sqlite);
         this.mserv.getmotifHospitalisations(motif, numdoss, codeClinique).then(function (res) {
             DossierPage_1.motifhh = _this.motifh = res;
             if (res.getnumdoss() === "") {
@@ -330,7 +333,7 @@ var DossierPage = DossierPage_1 = (function () {
         });
     };
     DossierPage.prototype.DeleteGetAllMotifHospitalisationByNumDoss = function (numDoss, codeClinique) {
-        this.mserv = new motifHospitalisationService();
+        this.mserv = new motifHospitalisationService(this.sqlite);
         this.mserv.deleteMotifhospitalisations(numDoss, codeClinique);
     };
     DossierPage.prototype.GetTraitements = function (numdoss, datefeuille, codeClinique) {
@@ -377,7 +380,7 @@ var DossierPage = DossierPage_1 = (function () {
                         if (_this.traitement.length === 0) {
                             _this.trait = false;
                         }
-                        _this.traitementServ = new TraitementService();
+                        _this.traitementServ = new TraitementService(_this.sqlite);
                         _this.traitementServ.verifTraitement(_this.traitement, _this.pass.getdossier(), _this.dateFeuille, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.traitementServ.getTraitements(_this.traitement, _this.pass.getdossier(), _this.dateFeuille, codeClinique);
@@ -396,7 +399,7 @@ var DossierPage = DossierPage_1 = (function () {
     };
     DossierPage.prototype.GetTraitementsOff = function (traitement, numdoss, datefeuille, codeClinique) {
         var _this = this;
-        this.traitementServ = new TraitementService();
+        this.traitementServ = new TraitementService(this.sqlite);
         this.traitementServ.verifTraitement(this.traitement, this.pass.getdossier(), this.dateFeuille, codeClinique).then(function (res) {
             if (res === true) {
                 _this.traitement = _this.traitementServ.getTraitements(_this.traitement, _this.pass.getdossier(), _this.dateFeuille, codeClinique);
@@ -405,7 +408,7 @@ var DossierPage = DossierPage_1 = (function () {
         });
     };
     DossierPage.prototype.DeleteTraitement = function (numdoss, dateFeuille, codeClinique) {
-        this.traitementServ = new TraitementService();
+        this.traitementServ = new TraitementService(this.sqlite);
         this.traitementServ.deleteTraitements(numdoss, dateFeuille, codeClinique);
     };
     DossierPage.prototype.convertHTMLtoRTF = function (rtf) {
@@ -487,7 +490,7 @@ var DossierPage = DossierPage_1 = (function () {
                             _this.Con = false;
                         }
                         else {
-                            _this.EvenementConS = new EvenementConService();
+                            _this.EvenementConS = new EvenementConService(_this.sqlite);
                             _this.EvenementConS.verifEvenement(_this.Conclusion, _this.pass.getdossier(), codeClinique).then(function (res) {
                                 if (res === false) {
                                     _this.EvenementConS.getEvenements(_this.Conclusion, _this.pass.getdossier(), codeClinique);
@@ -498,7 +501,7 @@ var DossierPage = DossierPage_1 = (function () {
                             _this.Exa = false;
                         }
                         else {
-                            _this.EvenementExaS = new EvenementExaService();
+                            _this.EvenementExaS = new EvenementExaService(_this.sqlite);
                             _this.EvenementExaS.verifEvenement(_this.Examenclinique, _this.pass.getdossier(), codeClinique).then(function (res) {
                                 if (res === false) {
                                     _this.EvenementExaS.getEvenements(_this.Examenclinique, _this.pass.getdossier(), codeClinique);
@@ -509,7 +512,7 @@ var DossierPage = DossierPage_1 = (function () {
                             _this.His = false;
                         }
                         else {
-                            _this.EvenementHisS = new EvenementHisService();
+                            _this.EvenementHisS = new EvenementHisService(_this.sqlite);
                             _this.EvenementHisS.verifEvenement(_this.Histoiremaladie, _this.pass.getdossier(), codeClinique).then(function (res) {
                                 if (res === false) {
                                     _this.EvenementHisS.getEvenements(_this.Histoiremaladie, _this.pass.getdossier(), codeClinique);
@@ -520,7 +523,7 @@ var DossierPage = DossierPage_1 = (function () {
                             _this.Evo = false;
                         }
                         else {
-                            _this.EvenementEvoS = new EvenementEvoService();
+                            _this.EvenementEvoS = new EvenementEvoService(_this.sqlite);
                             _this.EvenementEvoS.verifEvenement(_this.Evolution, _this.pass.getdossier(), codeClinique).then(function (res) {
                                 if (res === false) {
                                     _this.EvenementEvoS.getEvenements(_this.Evolution, _this.pass.getdossier(), codeClinique);
@@ -539,28 +542,28 @@ var DossierPage = DossierPage_1 = (function () {
     };
     DossierPage.prototype.GetEvenementByDossierOff = function (numdoss, codeClinique) {
         var _this = this;
-        this.EvenementConS = new EvenementConService();
+        this.EvenementConS = new EvenementConService(this.sqlite);
         this.EvenementConS.verifEvenement(this.Conclusion, numdoss, codeClinique).then(function (res) {
             if (res === true) {
                 _this.Conclusion = _this.EvenementConS.getEvenements(_this.Conclusion, numdoss, codeClinique);
                 _this.Con = true;
             }
         });
-        this.EvenementExaS = new EvenementExaService();
+        this.EvenementExaS = new EvenementExaService(this.sqlite);
         this.EvenementExaS.verifEvenement(this.Examenclinique, this.pass.getdossier(), codeClinique).then(function (res) {
             if (res === true) {
                 _this.Examenclinique = _this.EvenementExaS.getEvenements(_this.Examenclinique, numdoss, codeClinique);
                 _this.Exa = true;
             }
         });
-        this.EvenementHisS = new EvenementHisService();
+        this.EvenementHisS = new EvenementHisService(this.sqlite);
         this.EvenementHisS.verifEvenement(this.Histoiremaladie, this.pass.getdossier(), codeClinique).then(function (res) {
             if (res === true) {
                 _this.Histoiremaladie = _this.EvenementHisS.getEvenements(_this.Histoiremaladie, _this.pass.getdossier(), codeClinique);
                 _this.His = true;
             }
         });
-        this.EvenementEvoS = new EvenementEvoService();
+        this.EvenementEvoS = new EvenementEvoService(this.sqlite);
         this.EvenementEvoS.verifEvenement(this.Evolution, this.pass.getdossier(), codeClinique).then(function (res) {
             if (res === true) {
                 _this.Evolution = _this.EvenementEvoS.getEvenements(_this.Evolution, _this.pass.getdossier(), codeClinique);
@@ -569,13 +572,13 @@ var DossierPage = DossierPage_1 = (function () {
         });
     };
     DossierPage.prototype.DeleteGetEvenementByDossier = function (numdoss, codeClinique) {
-        this.EvenementConS = new EvenementConService();
+        this.EvenementConS = new EvenementConService(this.sqlite);
         this.EvenementConS.deleteEvenementCons(numdoss, codeClinique);
-        this.EvenementExaS = new EvenementExaService();
+        this.EvenementExaS = new EvenementExaService(this.sqlite);
         this.EvenementExaS.deleteEvenementExas(numdoss, codeClinique);
-        this.EvenementHisS = new EvenementHisService();
+        this.EvenementHisS = new EvenementHisService(this.sqlite);
         this.EvenementHisS.deleteEvenementHis(numdoss, codeClinique);
-        this.EvenementEvoS = new EvenementEvoService();
+        this.EvenementEvoS = new EvenementEvoService(this.sqlite);
         this.EvenementEvoS.deleteEvenementEvos(numdoss, codeClinique);
     };
     DossierPage.prototype.GetListRegime = function (numdoss, datefeuille, nature, codeClinique) {
@@ -614,7 +617,7 @@ var DossierPage = DossierPage_1 = (function () {
                         else {
                             _this.Ri = true;
                         }
-                        _this.rigimeserv = new RigimeService();
+                        _this.rigimeserv = new RigimeService(_this.sqlite);
                         _this.rigimeserv.verifRigime(_this.rigime, numdoss, datefeuille, nature, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.rigimeserv.getRigimes(_this.rigime, numdoss, datefeuille, nature, codeClinique);
@@ -633,7 +636,7 @@ var DossierPage = DossierPage_1 = (function () {
     };
     DossierPage.prototype.GetListRegimeOff = function (rigime, numdoss, datefeuille, nature, codeClinique) {
         var _this = this;
-        this.rigimeserv = new RigimeService();
+        this.rigimeserv = new RigimeService(this.sqlite);
         this.rigimeserv.verifRigime(this.rigime, numdoss, datefeuille, nature, codeClinique).then(function (res) {
             if (res === true) {
                 _this.rigimeserv.getRigimes(_this.rigime, numdoss, datefeuille, nature, codeClinique);
@@ -642,7 +645,7 @@ var DossierPage = DossierPage_1 = (function () {
         });
     };
     DossierPage.prototype.DeleteGetListRegime = function (numdoss, datefeuille, nature, codeClinique) {
-        this.rigimeserv = new RigimeService();
+        this.rigimeserv = new RigimeService(this.sqlite);
         this.rigimeserv.deleteRigimes(numdoss, datefeuille, nature, codeClinique);
     };
     DossierPage.prototype.GetSigneClinique = function (numdoss, dateFeuille, nature, codeType, codeTypeOf, codeClinique) {
@@ -703,19 +706,19 @@ var DossierPage = DossierPage_1 = (function () {
                             _this.Sor = false;
                             _this.Ent = false;
                         }
-                        _this.signeCliniqueEntS = new SigneCliniqueEntService();
+                        _this.signeCliniqueEntS = new SigneCliniqueEntService(_this.sqlite);
                         _this.signeCliniqueEntS.verifSigneClinique(_this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.signeCliniqueEntS.getSigneCliniques(_this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
                             }
                         });
-                        _this.signeCliniqueSorS = new SigneCliniqueSorService();
+                        _this.signeCliniqueSorS = new SigneCliniqueSorService(_this.sqlite);
                         _this.signeCliniqueSorS.verifSigneClinique(_this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.signeCliniqueSorS.getSigneCliniques(_this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
                             }
                         });
-                        _this.signeCliniqueSigS = new SigneCliniqueSigService();
+                        _this.signeCliniqueSigS = new SigneCliniqueSigService(_this.sqlite);
                         _this.signeCliniqueSigS.verifSigneClinique(_this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.signeCliniqueSigS.getSigneCliniques(_this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
@@ -736,21 +739,21 @@ var DossierPage = DossierPage_1 = (function () {
     };
     DossierPage.prototype.GetSigneCliniqueOff = function (numdoss, dateFeuille, nature, codeTypeOf, codeClinique) {
         var _this = this;
-        this.signeCliniqueEntS = new SigneCliniqueEntService();
+        this.signeCliniqueEntS = new SigneCliniqueEntService(this.sqlite);
         this.signeCliniqueEntS.verifSigneClinique(this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(function (res) {
             if (res === true) {
                 _this.Entrees = _this.signeCliniqueEntS.getSigneCliniques(_this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
                 _this.Ent = true;
             }
         });
-        this.signeCliniqueSorS = new SigneCliniqueSorService();
+        this.signeCliniqueSorS = new SigneCliniqueSorService(this.sqlite);
         this.signeCliniqueSorS.verifSigneClinique(this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(function (res) {
             if (res === true) {
                 _this.Sorties = _this.signeCliniqueSorS.getSigneCliniques(_this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
                 _this.Sor = true;
             }
         });
-        this.signeCliniqueSigS = new SigneCliniqueSigService();
+        this.signeCliniqueSigS = new SigneCliniqueSigService(this.sqlite);
         this.signeCliniqueSigS.verifSigneClinique(this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(function (res) {
             if (res === true) {
                 _this.signec = _this.signeCliniqueSigS.getSigneCliniques(_this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
@@ -759,11 +762,11 @@ var DossierPage = DossierPage_1 = (function () {
         });
     };
     DossierPage.prototype.DeleteGetSigneClinique = function (numdoss, dateFeuille, nature, codeTypeOf, codeClinique) {
-        this.signeCliniqueEntS = new SigneCliniqueEntService();
+        this.signeCliniqueEntS = new SigneCliniqueEntService(this.sqlite);
         this.signeCliniqueEntS.deleteSigneCliniques(numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
-        this.signeCliniqueSorS = new SigneCliniqueSorService();
+        this.signeCliniqueSorS = new SigneCliniqueSorService(this.sqlite);
         this.signeCliniqueSorS.deleteSigneCliniques(numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
-        this.signeCliniqueSigS = new SigneCliniqueSigService();
+        this.signeCliniqueSigS = new SigneCliniqueSigService(this.sqlite);
         this.signeCliniqueSigS.deleteSigneCliniques(numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
     };
     DossierPage.prototype.update = function () {
@@ -791,22 +794,24 @@ var DossierPage = DossierPage_1 = (function () {
     };
     DossierPage.prototype.historique = function (numDoss, codeClinique) {
         var _this = this;
-        this.histserv = new HistDossierService();
-        var h = new HistDossier();
+        this.histserv = new HistDossierService(this.sqlite);
+        this.histd = new HistDossier();
         var d = new Date();
-        h.setnumDoss(numDoss);
-        h.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
-        h.setcodeClinique(codeClinique);
-        this.histD.push(h);
+        this.histd.setnumDoss(numDoss);
+        this.histd.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+        this.histd.setcodeClinique(codeClinique);
         try {
-            this.histserv.deleteHistDossiers(numDoss, codeClinique);
-            this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(function (res) {
-                _this.histd = res.getdate();
-                DossierPage_1.hist = res.getdate();
+            this.histserv.deleteHistDossiers(numDoss, codeClinique).then(function (delet) {
+                if (delet === true) {
+                    _this.histserv.getHistDossiers(_this.histd, numDoss, codeClinique).then(function (res) {
+                        _this.histd = res.getdate();
+                        DossierPage_1.hist = res.getdate();
+                    });
+                }
             });
         }
         catch (Error) {
-            this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(function (res) {
+            this.histserv.getHistDossiers(this.histd, numDoss, codeClinique).then(function (res) {
                 _this.histd = res.getdate();
                 DossierPage_1.hist = res.getdate();
             });
@@ -814,7 +819,7 @@ var DossierPage = DossierPage_1 = (function () {
     };
     DossierPage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
         var _this = this;
-        this.histserv = new HistDossierService();
+        this.histserv = new HistDossierService(this.sqlite);
         this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(function (res) {
             _this.histd = res.getdate();
             DossierPage_1.hist = res.getdate();
@@ -854,7 +859,7 @@ DossierPage = DossierPage_1 = __decorate([
         templateUrl: 'dossier.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform, SQLite])
 ], DossierPage);
 export { DossierPage };
 var DossierPage_1;

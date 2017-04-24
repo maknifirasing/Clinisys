@@ -3,7 +3,8 @@ import {NavController, NavParams, AlertController, Platform} from 'ionic-angular
 import {Variables} from "../../providers/variables";
 import {ExamenRadio} from "../../models/ExamenRadio";
 import {Document} from "../../models/Document";
-import {File, Transfer} from 'ionic-native';
+import { File} from '@ionic-native/file';
+import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
 import {
   ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject,
   ThemeableBrowserButton
@@ -15,13 +16,13 @@ import {ClientDetailPage} from "../client-detail/client-detail";
 import {DossierPage} from "../dossier/dossier";
 import {HistDoc} from "../../models/HistDoc";
 import {HistDocService} from "../../services/HistDocService";
-import {TabsPage} from "../tabs/tabs";
+import {SQLite} from "@ionic-native/sqlite";
 
 declare var cordova: any;
 @Component({
   selector: 'page-examen-radio',
   templateUrl: 'examen-radio.html',
-  providers: [Variables, ThemeableBrowser]
+  providers: [Variables, ThemeableBrowser,File,Transfer]
 })
 
 export class ExamenRadioPage {
@@ -44,7 +45,8 @@ export class ExamenRadioPage {
   private histdoc = new HistDoc();
   private histdocserv: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private themeableBrowser: ThemeableBrowser, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private themeableBrowser: ThemeableBrowser, public alertCtrl: AlertController
+    ,private transfer: Transfer, private file: File,private sqlite: SQLite) {
     this.tabLangue = navParams.get("tabLangue");
     this.pass = navParams.get("pass");
     this.examenRF = navParams.get("examenRF");
@@ -69,6 +71,7 @@ export class ExamenRadioPage {
 
   getdocumentById(observ) {
     observ += ".html";
+  //  observ += "a2a01d9b-684b-478f-824e-5ae8a95bcc0b.html";
     this.platform.ready().then(() => {
       // make sure this is on a device, not an emulation (e.g. chrome tools device mode)
       if (!this.platform.is('cordova')) {
@@ -89,10 +92,10 @@ export class ExamenRadioPage {
         if (connexion === false) {
           this.connection = false;
 
-          this.histdocserv = new HistDocService();
+          this.histdocserv = new HistDocService(this.sqlite);
           this.histdocserv.getHistDocs(this.histDoc, this.pass.getdossier(), observ, this.codeClinique).then(result => {
             this.histdoc = result.getdate();
-            this.docserv = new DocumentService();
+            this.docserv = new DocumentService(this.sqlite);
             this.docserv.getDocuments(this.document, observ, this.codeClinique).then(res => {
               this.retrieveImageOff(res);
             });
@@ -102,7 +105,7 @@ export class ExamenRadioPage {
         else {
           this.connection = true;
 
-          this.histdocserv = new HistDocService();
+          this.histdocserv = new HistDocService(this.sqlite);
           var hi = new HistDoc();
           var d = new Date();
           hi.setnumDoss(this.pass.getdossier());
@@ -110,28 +113,35 @@ export class ExamenRadioPage {
           hi.setcodeClinique(this.codeClinique);
           hi.setnom(observ);
           this.histDoc.push(hi);
+
+          var doc = new Document();
+          doc.seturl(this.storageDirectory + observ);
+          doc.setobserv(observ);
+          doc.setcodeClinique(this.codeClinique);
+
+          this.url = "http://37.59.230.40:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
+          var url="http://37.59.230.40:8084/";
+
+          this.document.push(doc);
           try {
             this.histdocserv.deleteHistDocs(this.pass.getdossier(), this.codeClinique, observ);
             this.histdocserv.getHistDocs(this.histDoc, this.pass.getdossier(), this.codeClinique, observ).then(result => {
               this.histdoc = result.getdate();
 
-              var doc = new Document();
-              doc.seturl(this.storageDirectory + observ);
-              doc.setobserv(observ);
-              doc.setcodeClinique(this.codeClinique);
-              this.document.push(doc);
-              this.docserv = new DocumentService();
+              this.docserv = new DocumentService(this.sqlite);
               this.docserv.verifDocument(this.document, observ, this.codeClinique).then(res => {
                 if (res === false) {
                   this.docserv.getDocuments(this.document, observ, this.codeClinique);
                 }
               });
 
-              this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
-              Variables.checservice(this.url).then(res => {
+
+              Variables.checservice(url).then(res => {
                 if (res === true) {
                   this.open(this.url);
                   this.retrieveImage(this.url, doc);
+                }else {
+                  alert("document introuvable");
                 }
               });
             });
@@ -140,23 +150,19 @@ export class ExamenRadioPage {
             this.histdocserv.getHistDocs(this.histDoc, this.pass.getdossier(), this.codeClinique, observ).then(result => {
               this.histdoc = result.getdate();
 
-              var doc = new Document();
-              doc.seturl(this.storageDirectory + observ);
-              doc.setobserv(observ);
-              doc.setcodeClinique(this.codeClinique);
-              this.document.push(doc);
-              this.docserv = new DocumentService();
+              this.docserv = new DocumentService(this.sqlite);
               this.docserv.verifDocument(this.document, observ, this.codeClinique).then(res => {
                 if (res === false) {
                   this.docserv.getDocuments(this.document, observ, this.codeClinique);
                 }
               });
 
-              this.url = "http://192.168.0.115:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
-              Variables.checservice(this.url).then(res => {
+              Variables.checservice(url).then(res => {
                 if (res === true) {
                   this.open(this.url);
                   this.retrieveImage(this.url, doc);
+                }else {
+                  alert("document introuvable");
                 }
               });
 
@@ -263,8 +269,7 @@ export class ExamenRadioPage {
   downloadImage(url, doc) {
 
     this.platform.ready().then(() => {
-      const fileTransfer = new Transfer();
-
+      const fileTransfer: TransferObject = this.transfer.create();
       fileTransfer.download(url, this.storageDirectory + doc.getobserv()).then((entry) => {
 
         /*    const alertSuccess = this.alertCtrl.create({
@@ -291,7 +296,7 @@ export class ExamenRadioPage {
 
   retrieveImage(url, doc) {
     const file = doc.getobserv();
-    File.checkFile(this.storageDirectory, file)
+    this.file.checkFile(this.storageDirectory, file)
       .then(() => {
 
         /*    const alertSuccess = this.alertCtrl.create({
@@ -317,7 +322,7 @@ export class ExamenRadioPage {
 
   retrieveImageOff(doc) {
     const file = doc.getobserv();
-    File.checkFile(this.storageDirectory, file)
+    this.file.checkFile(this.storageDirectory, file)
       .then(() => {
         this.url = doc.geturl();
         this.open(this.url);
@@ -344,10 +349,10 @@ export class ExamenRadioPage {
 
 
   GetExamenRadioByNumDossResponseOff(numDoss, codeClinique) {
-    this.RadiosTs = new ExamenRadioTService();
+    this.RadiosTs = new ExamenRadioTService(this.sqlite);
     this.examenRT = this.RadiosTs.getExamenRadios(this.examenRT, numDoss, codeClinique);
 
-    this.RadiosFs = new ExamenRadioFService();
+    this.RadiosFs = new ExamenRadioFService(this.sqlite);
     this.examenRF = this.RadiosFs.getExamenRadios(this.examenRF, numDoss, codeClinique);
   }
 

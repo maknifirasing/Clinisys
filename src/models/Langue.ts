@@ -1,5 +1,6 @@
 export class Langue {
   private _langue: string;
+  private _nom: string;
   private _matricule: string;
   private _codeClinique: string;
   private _nomClinique: string;
@@ -10,6 +11,14 @@ export class Langue {
 
   getlangue(): string {
     return this._langue;
+  }
+
+  getnom(): string {
+    return this._nom;
+  }
+
+  setnom(value: string) {
+    this._nom = value;
   }
 
   setlangue(value: string) {

@@ -1,16 +1,15 @@
-import { SQLite } from 'ionic-native';
 import { Client } from "../models/Client";
 var ClientService = (function () {
-    function ClientService() {
+    function ClientService(sqlite) {
+        this.sqlite = sqlite;
     }
     ClientService.prototype.verifClient = function (clients, numdoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from Client where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -29,18 +28,16 @@ var ClientService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     ClientService.prototype.getClients = function (clients, numdoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select * from Client where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.length === 0) {
@@ -70,16 +67,14 @@ var ClientService = (function () {
                     alert('Error 1 client  ' + error);
                 });
             });
-            db.close();
             return _this;
         });
     };
     ClientService.prototype._insertClients = function (client) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql('insert into Client (adrCli,datNai,libNat' +
                 ',numTel,etage,numCha,numdoss,identifiant,codeClinique,dateArr) values (?,?,?,?,?,?,?,?,?,?)', [
                 client.getadrCli(),
@@ -97,14 +92,12 @@ var ClientService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 client ' + error);
         });
-        db.close();
     };
     ClientService.prototype.deleteClients = function (numdoss, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from Client where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 alert("Suppression de table Client est terminé avec succes");
@@ -114,7 +107,6 @@ var ClientService = (function () {
                 alert('Error 3 Client  ' + error);
             });
         });
-        db.close();
         return this.client;
     };
     return ClientService;

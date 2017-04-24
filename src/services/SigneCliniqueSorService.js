@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { SigneClinique } from "../models/SigneClinique";
 var SigneCliniqueSorService = (function () {
-    function SigneCliniqueSorService() {
+    function SigneCliniqueSorService(sqlite) {
+        this.sqlite = sqlite;
         this.signeClinique = [];
     }
     SigneCliniqueSorService.prototype.verifSigneClinique = function (signeCliniques, numDoss, dateFeuille, nature, codeType, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
                     + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
@@ -31,17 +30,15 @@ var SigneCliniqueSorService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     SigneCliniqueSorService.prototype.getSigneCliniques = function (signeCliniques, numDoss, dateFeuille, nature, codeType, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
                 + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
@@ -64,15 +61,13 @@ var SigneCliniqueSorService = (function () {
                 alert('Error 1 SigneCliniqueSor  ' + error);
             });
         });
-        db.close();
         return this.signeClinique;
     };
     SigneCliniqueSorService.prototype._insertSigneCliniques = function (signeCliniques, numDoss, dateFeuille, nature, codeType, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in signeCliniques) {
                 if (!signeCliniques.hasOwnProperty(key)) {
                     continue;
@@ -93,14 +88,12 @@ var SigneCliniqueSorService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 SigneCliniqueSor ' + error);
         });
-        db.close();
     };
     SigneCliniqueSorService.prototype.deleteSigneCliniques = function (numDoss, dateFeuille, nature, codeType, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //    alert("Suppression de table SigneCliniqueSor est terminé avec succes");
@@ -110,7 +103,6 @@ var SigneCliniqueSorService = (function () {
                 alert('Error 3 SigneCliniqueSor  ' + error);
             });
         });
-        db.close();
         return this.signeClinique;
     };
     return SigneCliniqueSorService;

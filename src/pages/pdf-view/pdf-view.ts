@@ -1,18 +1,20 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams, Platform, AlertController} from 'ionic-angular';
 import {PdfViewerComponent} from 'ng2-pdf-viewer';
-import {File, Transfer} from 'ionic-native';
+import { File} from '@ionic-native/file';
+import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
 import {Variables} from "../../providers/variables";
 import {HistDossier} from "../../models/HistDossier";
 import {HistPdfService} from "../../services/HistPdfService";
 import {HistDoc} from "../../models/HistDoc";
+import {SQLite} from "@ionic-native/sqlite";
 
 declare var cordova: any;
 
 @Component({
   selector: 'page-pdf-view',
   templateUrl: 'pdf-view.html',
-  providers: [PdfViewerComponent]
+  providers: [PdfViewerComponent,File,Transfer]
 })
 export class PdfViewPage {
   pdfSrc: string;
@@ -29,7 +31,8 @@ export class PdfViewPage {
   pass: any;
   langue: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private PdfViewerComponent: PdfViewerComponent, public platform: Platform, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private PdfViewerComponent: PdfViewerComponent, public platform: Platform, public alertCtrl: AlertController
+    ,private transfer: Transfer, private file: File,private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.pass = navParams.get("pass");
@@ -82,7 +85,7 @@ export class PdfViewPage {
   downloadImage(file) {
 
     this.platform.ready().then(() => {
-      const fileTransfer = new Transfer();
+      const fileTransfer: TransferObject = this.transfer.create();
 
       fileTransfer.download(this.pdf, this.storageDirectory + file).then((entry) => {
         /*
@@ -115,7 +118,7 @@ export class PdfViewPage {
     const imageLocation = `${src}`;
     var fields = imageLocation.split('/');
     const file = fields[5];
-    File.checkFile(this.storageDirectory, file)
+    this.file.checkFile(this.storageDirectory, file)
       .then(() => {
 
 
@@ -144,7 +147,7 @@ export class PdfViewPage {
   }
 
   historique(numDoss, file, codeClinique) {
-    this.histserv = new HistPdfService();
+    this.histserv = new HistPdfService(this.sqlite);
     var h = new HistDoc();
     var d = new Date();
     h.setnumDoss(numDoss);
@@ -168,7 +171,7 @@ export class PdfViewPage {
 
 
   historiqueOff(hist, numDoss, file, codeClinique) {
-    this.histserv = new HistPdfService();
+    this.histserv = new HistPdfService(this.sqlite);
     this.histserv.getHistPdfs(hist, numDoss, codeClinique, file).then(res => {
       this.histp = res.getdate();
     });

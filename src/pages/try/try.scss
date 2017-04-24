@@ -1,16 +1,80 @@
 page-try {
-  .size{
-    font-size: 80%;
+  #GlobalSigne{
+    margin-right:-50px;
 
   }
-  .md-icon-buttonArr{
-    float: left;
-    background-color: #0277bd;
+  #GlobalSigne #gaucheSigne {
+    float:left;
+    width:60%;
   }
-  .spacer {
-    -webkit-box-flex: 1;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
+  #GlobalSigne #droiteSigne {
+    margin-left:70%;
+
+  }
+  #GlobalTrait{
+    margin-right:-50px;
+
+  }
+  #GlobalTrait #gaucheTrait {
+    float:left;
+    width:60%;
+  }
+  #GlobalTrait #droiteTrait {
+    margin-left:70%;
+
+  }
+  .img{
+    font-size: 50px;
+  }
+  ion-scroll {
+    white-space: nowrap;
+    height: 100%;
+  }
+  .new-background {
+    background-color: red;
+  }
+
+  .ion-navbar {
+    height: -10px;
+    background-color:#0277bd;
+  }
+
+  .td{
+    padding-left: 2%;
+  }
+  .roundedImage{
+    overflow:hidden;
+    -webkit-border-radius:50px;
+    -moz-border-radius:50px;
+    border-radius:50px;
+    width:50px;
+    height:50px;
+    margin-top: 10px;
+  }
+  .first {
+    width: 90px;
+    float:left; /* add this */
+    // border: 1px solid red;
+  }
+  .second {
+    width: 200px;
+    // border: 1px solid green;
+    overflow: hidden; /* if you don't want #second to wrap below #first */
+  }
+
+  .strong{
+    color: #0c60ee;
+    font-size: 15px;
+    line-height:5px;
+  }
+
+  .strong2{
+    margin-top: 5px;
+    font-size: 15px;
+  }
+  .size{
+    font-size: 80%;
+    padding-left: 2%;
   }
   #wrap:after {
     display: block;
@@ -22,64 +86,59 @@ page-try {
     float: left;
     word-break: break-all;
   }
-  #one {
-    width: 10%;
-    background-color: red;
+  #wrap2:after {
+    display: block;
+    height: 0px;
+    clear: both;
+    float: none;
   }
-  .flex-container {
-    display: -webkit-flex;
-    display: flex;
-    width: 400px;
-    height: 250px;
-    background-color: lightgrey;
+  #wrap2 div {
+    float: left;
+    word-break: break-all;
   }
 
-  .flex-item {
-    background-color: cornflowerblue;
-    width: 100px;
-    height: 100px;
+  .oneFRANG {
+    width: 15%;
+    // background-color: red;
 
+    //margin-top: 10px;
   }
-  .flex-item3 {
-    background-color: cornflowerblue;
-    width: 100px;
-    height: 100px;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-justify-content: flex-end;
-    justify-content: flex-end;
-  }
-  #two {
-    width: 50%;
-    background-color: yellow;
-  }
-  #three {
+  .threeFRANG {
     width: 40%;
-    background-color: blue;
+    margin-top: 35px;
     direction: rtl;
   }
-  .md-icon-button{
-    float: right;
-    background-color: #0277bd;
+  .one {
+    width: 40%;
+    background-color: red;
+    direction: ltr;
+    margin-top: 35px;
+  }
+  .two {
+    width: 15%;
+    color: white;
+    background-color: yellow;
+  }
+  .three {
+    width: 45%;
+    background-color: blue;
+    margin-top: 5px;
+    margin-right:0px;
+  }
+  .p{
+    line-height:8px;
   }
   .md-card{
-    background-color:#0277bd;
-    color:white;
+    margin-top: 0px;
+    padding-top: 0px;
+    background-color: #0277bd;
+    height: 47px;
   }
-  .item-avatar  {
-    width:15% !important;
-    height : 15% !important;
-    max-width: 100px !important;  //any size
-    max-height: 100px !important; //any size
-  }
-  .md-button.md-icon-button {
-    margin: 0 0.6rem;
-    height: 4.8rem;
-    min-width: 0;
-    line-height: 4.8rem;
-    padding-left: 0;
-    padding-right: 0;
-    width: 4.8rem;
-    text-align: center;
+  .md-card2 {
+    margin-top: 0px;
+
+    background-color: #0277bd;
+    opacity: 0.9;
+    height: 45px;
   }
 }

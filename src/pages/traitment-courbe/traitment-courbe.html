@@ -31,8 +31,10 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content  scroll="false">
 
-  <canvas #lineCanvas></canvas>
+  <div fxLayout="row" fxLayoutWrap>
+    <div fxFlex="99" [ng2-highcharts]="chartData" class="courbe" ></div>
+  </div>
 
 </ion-content>

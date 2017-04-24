@@ -1,8 +1,14 @@
 import {NgModule, ErrorHandler} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
 import {MyApp} from './app.component';
+
 import {HomePage} from '../pages/home/home';
 import {TabsPage} from '../pages/tabs/tabs';
+
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
 import {ListePage} from '../pages/liste/liste';
 import {DossierPage} from '../pages/dossier/dossier';
 import {ExamenRadioPage} from "../pages/examen-radio/examen-radio";
@@ -12,14 +18,20 @@ import {PdfViewPage} from '../pages/pdf-view/pdf-view';
 import {ListPreanesthesiePage} from "../pages/list-preanesthesie/list-preanesthesie";
 import {LanguesPage} from "../pages/langues/langues";
 import {ListeCliniquePage} from "../pages/liste-clinique/liste-clinique";
-import {MaterialModule} from "@angular/material";
+import {MaterialModule} from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {SigneCourbePage} from "../pages/signe-courbe/signe-courbe";
-import {NotificationPage} from "../pages/notification/notification";
 import {ClientDetailPage} from "../pages/client-detail/client-detail";
 import {TraitmentCourbe} from "../pages/traitment-courbe/traitment-courbe";
 import {ConsignePage} from "../pages/consigne/consigne";
 import {ModifPassPage} from "../pages/modif-pass/modif-pass";
+import {CustomIconsModule} from 'ionic2-custom-icons';
+import {TryPage} from "../pages/try/try";
+import {Ng2HighchartsModule} from 'ng2-highcharts';
+import {RealisationPage} from "../pages/realisation/realisation";
+import {Variables} from "../providers/variables";
+import {HttpModule} from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -36,16 +48,25 @@ import {ModifPassPage} from "../pages/modif-pass/modif-pass";
     LanguesPage,
     ListeCliniquePage,
     SigneCourbePage,
-    NotificationPage,
     ClientDetailPage,
     TraitmentCourbe,
     ConsignePage,
-    ModifPassPage
+    ModifPassPage,
+    RealisationPage,
+    TryPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp),
+    BrowserModule,
     FlexLayoutModule,
-    MaterialModule
+    CustomIconsModule,
+    Ng2HighchartsModule,
+    BrowserAnimationsModule,
+    FlexLayoutModule,
+    CustomIconsModule,
+    Ng2HighchartsModule,
+    MaterialModule.forRoot(),
+    HttpModule,
+    IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -57,17 +78,25 @@ import {ModifPassPage} from "../pages/modif-pass/modif-pass";
     ExamenRadioPage,
     ExamenLaboPage,
     PdfViewPage,
+    PdfViewerComponent,
     ListPreanesthesiePage,
     LanguesPage,
     ListeCliniquePage,
     SigneCourbePage,
-    NotificationPage,
     ClientDetailPage,
     TraitmentCourbe,
     ConsignePage,
-    ModifPassPage
+    ModifPassPage,
+    RealisationPage,
+    TryPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [
+    StatusBar,
+    SplashScreen,
+    SQLite,
+    Variables,
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
+  ]
 })
 export class AppModule {
 }

@@ -7,6 +7,7 @@ import {DossierPage} from "../dossier/dossier";
 import {ConsigneService} from "../../services/ConsigneService";
 import {tabBadge} from "../../models/tabBadge";
 import {tabBadgeConsigneService} from "../../services/tabBadgeConsigneService";
+import {SQLite} from "@ionic-native/sqlite";
 
 @Component({
   selector: 'page-consigne',
@@ -31,7 +32,7 @@ export class ConsignePage {
   countConsigneserv: any;
   @ViewChild(Content) content: Content;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {
     this.tabLangue = navParams.get("tabLangue");
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("pass");
@@ -58,7 +59,7 @@ export class ConsignePage {
   }
 
   getPlanificationTacheInfirmierByNumDossAndTypeOff(consigne, numDoss, type, etat, codeClinique) {
-    this.consigneserv = new ConsigneService();
+    this.consigneserv = new ConsigneService(this.sqlite);
     this.consigne = this.consigneserv.getConsignes(consigne, numDoss, codeClinique, type, etat);
   }
 
@@ -134,12 +135,8 @@ export class ConsignePage {
         if (xmlhttp.status == 200) {
           var xml;
           xml = xmlhttp.responseXML;
-          var x, i;
+          var x, i,c;
           x = xml.getElementsByTagName("return");
-
-          var c;
-          var tempsEnMs = new Date().getFullYear();
-          var d;
           for (i = 0; i < x.length; i++) {
             c = new Consigne();
             if (x[i].childElementCount === 19) {
@@ -168,7 +165,7 @@ export class ConsignePage {
             }
           }
           this.coountConsigne = this.consigne.length;
-          this.consigneserv = new ConsigneService();
+          this.consigneserv = new ConsigneService(this.sqlite);
           this.consigneserv.verifConsigne(this.consigne, numDoss, codeClinique, type, etat).then(res => {
             if (res === false) {
               this.consigneserv.getConsignes(this.consigne, numDoss, codeClinique, type, etat);
@@ -182,7 +179,7 @@ export class ConsignePage {
           tConsigne.setcodeClinique(codeClinique);
           this.tabgConsigne.push(tConsigne);
 
-          this.countConsigneserv = new tabBadgeConsigneService();
+          this.countConsigneserv = new tabBadgeConsigneService(this.sqlite);
           this.countConsigneserv.verifTabBadgeConsigne(numDoss, codeClinique).then(res => {
             if (res === false) {
               this.countConsigneserv.getTabBadgeConsigne(this.tabgConsigne, numDoss, codeClinique);
@@ -197,10 +194,10 @@ export class ConsignePage {
   }
 
   deletePlanificationTacheInfirmierByNumDossAndType(numDoss, type, etat, codeClinique) {
-    this.countConsigneserv = new tabBadgeConsigneService();
+    this.countConsigneserv = new tabBadgeConsigneService(this.sqlite);
     this.countConsigneserv.deletetabBadgeConsignes(numDoss, codeClinique);
 
-    this.consigneserv = new ConsigneService();
+    this.consigneserv = new ConsigneService(this.sqlite);
     this.consigneserv.deleteConsignes(numDoss, codeClinique).then(res => {
       if (res === true) {
         this.getPlanificationTacheInfirmierByNumDossAndType(numDoss, type, etat, codeClinique);

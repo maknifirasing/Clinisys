@@ -6,6 +6,7 @@ import {Langue} from "../../models/Langue";
 import {UserService} from "../../services/UserService";
 import {LangueService} from "../../services/LangueService";
 import {ListePage} from "../liste/liste";
+import {SQLite} from "@ionic-native/sqlite";
 
 @Component({
   selector: 'page-modif-pass',
@@ -27,12 +28,12 @@ export class ModifPassPage {
   langes: Array<Langue> = [];
   user: Users;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,private sqlite: SQLite) {
     this.codeClinique = this.navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
     this.nomClinique = navParams.get("nomClinique");
-    this.userserv = new UserService();
+    this.userserv = new UserService(this.sqlite);
     this.userserv.getUser(this.users, this.codeClinique).then(res => {
       this.user = res;
     })
@@ -73,7 +74,7 @@ export class ModifPassPage {
                   if (res === true) {
                     this.userserv.getUser(this.users, this.codeClinique);
 
-                    this.langserv = new LangueService();
+                    this.langserv = new LangueService(this.sqlite);
                     var l = new Langue();
                     l.setlangue(this.langue);
                     l.setmatricule(user.getmatricule());

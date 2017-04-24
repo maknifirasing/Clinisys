@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { Consigne } from "../models/Consigne";
 var ConsigneService = (function () {
-    function ConsigneService() {
+    function ConsigneService(sqlite) {
+        this.sqlite = sqlite;
         this.consigne = [];
     }
     ConsigneService.prototype.verifConsigne = function (consignes, numeroDossier, codeClinique, typeget, etatget) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from Consigne where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'and typeget like '" + typeget + "'and etatget like '" + etatget + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -29,17 +28,15 @@ var ConsigneService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     ConsigneService.prototype.getConsignes = function (consignes, numeroDossier, codeClinique, typeget, etatget) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from Consigne where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'and typeget like '" + typeget + "'and etatget like '" + etatget + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
@@ -66,15 +63,13 @@ var ConsigneService = (function () {
                 alert('Error 1 Consigne  ' + error);
             });
         });
-        db.close();
         return this.consigne;
     };
     ConsigneService.prototype._insertConsignes = function (consignes, typeget, etatget) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in consignes) {
                 if (!consignes.hasOwnProperty(key)) {
                     continue;
@@ -98,16 +93,14 @@ var ConsigneService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 Consigne ' + error);
         });
-        db.close();
     };
     ConsigneService.prototype.deleteConsignes = function (numeroDossier, codeClinique, typeget, etatget) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("delete from Consigne where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'and typeget like '" + typeget + "'and etatget like '" + etatget + "'", [])
                     .then(function () {
                     resolve(true);
@@ -120,7 +113,6 @@ var ConsigneService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this.consigne;
         });
     };

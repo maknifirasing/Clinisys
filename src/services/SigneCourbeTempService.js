@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { SigneCourbe } from "../models/SigneCourbe";
 var SigneCourbeTempService = (function () {
-    function SigneCourbeTempService() {
+    function SigneCourbeTempService(sqlite) {
+        this.sqlite = sqlite;
         this.signeCourbe = [];
     }
     SigneCourbeTempService.prototype.verifSigneCourbe = function (signeCourbes, numdoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from SigneCourbeTemp where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,18 +29,16 @@ var SigneCourbeTempService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     SigneCourbeTempService.prototype.getSigneCourbes = function (signeCourbes, numdoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select * from SigneCourbeTemp where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.length === 0) {
@@ -70,16 +67,14 @@ var SigneCourbeTempService = (function () {
                     alert('Error 1 SigneCourbeTemp  ' + error);
                 });
             });
-            db.close();
             return _this;
         });
     };
     SigneCourbeTempService.prototype._insertSigneCourbes = function (signeCourbes, numdoss, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in signeCourbes) {
                 if (!signeCourbes.hasOwnProperty(key)) {
                     continue;
@@ -104,14 +99,12 @@ var SigneCourbeTempService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 SigneCourbeTemp ' + error);
         });
-        db.close();
     };
     SigneCourbeTempService.prototype.deleteSigneCourbes = function (numdoss, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from SigneCourbeTemp where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //    alert("Suppression de table signeCourbe est terminé avec succes");
@@ -121,7 +114,6 @@ var SigneCourbeTempService = (function () {
                 alert('Error 3 SigneCourbeTemp  ' + error);
             });
         });
-        db.close();
         return this.signeCourbe;
     };
     return SigneCourbeTempService;

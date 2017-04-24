@@ -1,19 +1,19 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {ExamenRadio} from "../models/ExamenRadio";
 
 export class ExamenRadioTService {
   public examenRadio: Array<ExamenRadio> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
   public verifExamenRadio(examenRadios: any, numeroDossier, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sum from ExamenRadioT where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -32,18 +32,18 @@ export class ExamenRadioTService {
             return false;
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   public getExamenRadios(examenRadios: any, numeroDossier, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("select * from ExamenRadioT where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
@@ -66,16 +66,16 @@ export class ExamenRadioTService {
           alert('Error 1 ExamenRadioT  ' + error);
         })
     });
-    db.close();
+
     return this.examenRadio;
   }
 
   private _insertExamenRadios(examenRadios: Array<ExamenRadio>, codeClinique): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in examenRadios) {
         if (!examenRadios.hasOwnProperty(key)) {
           continue;
@@ -94,26 +94,26 @@ export class ExamenRadioTService {
       console.error('Error opening database', error);
       alert('Error 2 ExamenRadioT ' + error);
     });
-    db.close();
+
   }
 
   public deleteExamenRadios(numeroDossier, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from ExamenRadioT where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-      //    alert("Suppression de table ExamenRadioT est terminé avec succes");
+          //    alert("Suppression de table ExamenRadioT est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 3 ExamenRadioT  ' + error);
         })
     });
-    db.close();
+
     return this.examenRadio;
   }
 }

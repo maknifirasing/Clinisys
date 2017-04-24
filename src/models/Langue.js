@@ -4,6 +4,12 @@ var Langue = (function () {
     Langue.prototype.getlangue = function () {
         return this._langue;
     };
+    Langue.prototype.getnom = function () {
+        return this._nom;
+    };
+    Langue.prototype.setnom = function (value) {
+        this._nom = value;
+    };
     Langue.prototype.setlangue = function (value) {
         this._langue = value;
     };

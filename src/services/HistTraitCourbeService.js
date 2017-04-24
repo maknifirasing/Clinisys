@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { HistDossier } from "../models/HistDossier";
 var HistTraitCourbeService = (function () {
-    function HistTraitCourbeService() {
+    function HistTraitCourbeService(sqlite) {
+        this.sqlite = sqlite;
         this.histSigneCourbe = [];
     }
     HistTraitCourbeService.prototype.verifHistTraitCourbe = function (numDoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from HistTraitCourbe where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,18 +29,16 @@ var HistTraitCourbeService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     HistTraitCourbeService.prototype.getHistTraitCourbes = function (histDossiers, numDoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select * from HistTraitCourbe where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.length === 0) {
@@ -68,16 +65,14 @@ var HistTraitCourbeService = (function () {
                     alert('Error 1.1 HistTraitCourbe  ' + error);
                 });
             });
-            db.close();
             return _this;
         });
     };
     HistTraitCourbeService.prototype._insertHistTraitCourbes = function (histDossiers) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in histDossiers) {
                 if (!histDossiers.hasOwnProperty(key)) {
                     continue;
@@ -93,14 +88,12 @@ var HistTraitCourbeService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 HistTraitCourbe ' + error);
         });
-        db.close();
     };
     HistTraitCourbeService.prototype.deleteHistTraitCourbes = function (numDoss, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from HistTraitCourbe where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //  alert("Suppression de table Patient est terminé avec succes");
@@ -110,7 +103,6 @@ var HistTraitCourbeService = (function () {
                 alert('Error 3 HistTraitCourbe  ' + error);
             });
         });
-        db.close();
         return this.histSigneCourbe;
     };
     return HistTraitCourbeService;

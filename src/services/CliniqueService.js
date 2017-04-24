@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { Clinique } from "../models/Clinique";
 var CliniqueService = (function () {
-    function CliniqueService() {
+    function CliniqueService(sqlite) {
+        this.sqlite = sqlite;
         this.clinique = [];
     }
     CliniqueService.prototype.verifClinique = function (cliniques) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from Clinique ", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,18 +29,16 @@ var CliniqueService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     CliniqueService.prototype.getCliniques = function (cliniques) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select * from Clinique ", [])
                     .then(function (result) {
                     if (result.rows.length === 0) {
@@ -64,16 +61,14 @@ var CliniqueService = (function () {
                     alert('Error 1 Clinique  ' + error);
                 });
             });
-            db.close();
             return _this;
         });
     };
     CliniqueService.prototype._insertCliniques = function (cliniques) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in cliniques) {
                 if (!cliniques.hasOwnProperty(key)) {
                     continue;
@@ -89,14 +84,12 @@ var CliniqueService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 Clinique ' + error);
         });
-        db.close();
     };
     CliniqueService.prototype.deleteCliniques = function () {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from Clinique ", [])
                 .then(function () {
                 //    alert("Suppression de table Aleg est terminé avec succes");
@@ -106,7 +99,6 @@ var CliniqueService = (function () {
                 alert('Error 3 Clinique  ' + error);
             });
         });
-        db.close();
         return this.clinique;
     };
     return CliniqueService;

@@ -1,4 +1,3 @@
-import { SQLite } from 'ionic-native';
 import { tabBadge } from "../models/tabBadge";
 var tabBadgeActeService = (function () {
     function tabBadgeActeService() {
@@ -7,11 +6,10 @@ var tabBadgeActeService = (function () {
     tabBadgeActeService.prototype.verifTabBadgeActe = function (tabBadgeActes, numDoss, FichierT, FichierF, codeClinique) {
         var _this = this;
         this.verif = false;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             alert("g " + tabBadgeActes[0].getnumDoss());
             db.executeSql("select * from tabBadgeActe where numDoss like '" + numDoss + "' and ActeT like '" + FichierT + "'and ActeF like '" + FichierF + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
@@ -24,16 +22,14 @@ var tabBadgeActeService = (function () {
                 alert('Error 0 tabBadgeActe  ' + error);
             });
         });
-        db.close();
         return this.verif;
     };
     tabBadgeActeService.prototype.getTabBadgeActe = function (tabBadgeActes, numDoss, FichierT, FichierF, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from tabBadgeActe where numDoss like '" + numDoss + "' and ActeT like '" + FichierT + "'and ActeF like '" + FichierF + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
@@ -55,15 +51,13 @@ var tabBadgeActeService = (function () {
                 alert('Error 1 tabBadgeActe  ' + error);
             });
         });
-        db.close();
         return this.tabBadgeActe;
     };
     tabBadgeActeService.prototype._inserttabBadgeActes = function (tabBadgeActes, numDoss, FichierT, FichierF, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in tabBadgeActes) {
                 if (!tabBadgeActes.hasOwnProperty(key)) {
                     continue;
@@ -79,14 +73,12 @@ var tabBadgeActeService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 tabBadgeActe ' + error);
         });
-        db.close();
     };
     tabBadgeActeService.prototype.deletetabBadgeActes = function (numDoss, FichierT, FichierF, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from tabBadgeActes where numDoss like '" + numDoss + "' and ActeT like '" + FichierT + "'and ActeF like '" + FichierF + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //   alert("Suppression de table Traitement est terminé avec succes");
@@ -96,7 +88,6 @@ var tabBadgeActeService = (function () {
                 alert('Error 1 Traitement  ' + error);
             });
         });
-        db.close();
         return this.tabBadgeActe;
     };
     return tabBadgeActeService;

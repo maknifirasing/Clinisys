@@ -1,19 +1,19 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {tabBadge} from "../models/tabBadge";
 
 export class tabBadgeConsigneService {
   public tabBadgeConsigne: Array<tabBadge> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
   public verifTabBadgeConsigne(numDoss, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sum from tabBadgeConsigne where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -32,18 +32,18 @@ export class tabBadgeConsigneService {
             return false;
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   public getTabBadgeConsigne(tabBadgeConsignes: any, numDoss, codeClinique): Promise<tabBadge> {
     return new Promise<tabBadge>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select * from tabBadgeConsigne where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.length === 0) {
@@ -66,17 +66,17 @@ export class tabBadgeConsigneService {
             alert('Error 1 tabBadgeConsigne  ' + error);
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   private _inserttabBadgeConsignes(tabBadgeConsignes: Array<tabBadge>): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in tabBadgeConsignes) {
         if (!tabBadgeConsignes.hasOwnProperty(key)) {
           continue;
@@ -93,15 +93,15 @@ export class tabBadgeConsigneService {
       console.error('Error opening database', error);
       alert('Error 2 tabBadgeConsigne ' + error);
     });
-    db.close();
+
   }
 
   public deletetabBadgeConsignes(numDoss, codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from tabBadgeConsigne where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           //   alert("Suppression de table Traitement est terminé avec succes");
@@ -111,7 +111,7 @@ export class tabBadgeConsigneService {
           alert('Error 3 tabBadgeConsignes  ' + error);
         })
     });
-    db.close();
+
     return this.tabBadgeConsigne;
   }
 }

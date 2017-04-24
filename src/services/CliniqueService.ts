@@ -1,19 +1,19 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {Clinique} from "../models/Clinique";
 
 export class CliniqueService {
   public clinique: Array<Clinique> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
   public verifClinique(cliniques: any): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sum from Clinique ", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -32,18 +32,18 @@ export class CliniqueService {
             return false;
           })
       });
-      db.close();
+
       return this;
     })
   }
 
   public getCliniques(cliniques: any): Promise<Clinique[]> {
     return new Promise<Clinique[]>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select * from Clinique ", [])
           .then(result => {
             if (result.rows.length === 0) {
@@ -65,17 +65,17 @@ export class CliniqueService {
             alert('Error 1 Clinique  ' + error);
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   private _insertCliniques(cliniques: Array<Clinique>): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in cliniques) {
         if (!cliniques.hasOwnProperty(key)) {
           continue;
@@ -91,15 +91,15 @@ export class CliniqueService {
       console.error('Error opening database', error);
       alert('Error 2 Clinique ' + error);
     });
-    db.close();
+
   }
 
   public deleteCliniques() {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from Clinique ", [])
         .then(() => {
           //    alert("Suppression de table Aleg est terminé avec succes");
@@ -109,7 +109,7 @@ export class CliniqueService {
           alert('Error 3 Clinique  ' + error);
         })
     });
-    db.close();
+
     return this.clinique;
   }
 }

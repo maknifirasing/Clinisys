@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { ExamenRadio } from "../models/ExamenRadio";
 var ExamenRadioFService = (function () {
-    function ExamenRadioFService() {
+    function ExamenRadioFService(sqlite) {
+        this.sqlite = sqlite;
         this.examenRadio = [];
     }
     ExamenRadioFService.prototype.verifExamenRadio = function (examenRadios, numeroDossier, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from ExamenRadioF where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,17 +29,15 @@ var ExamenRadioFService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     ExamenRadioFService.prototype.getExamenRadios = function (examenRadios, numeroDossier, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from ExamenRadioF where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
@@ -64,15 +61,13 @@ var ExamenRadioFService = (function () {
                 alert('Error 1 ExamenRadioF  ' + error);
             });
         });
-        db.close();
         return this.examenRadio;
     };
     ExamenRadioFService.prototype._insertExamenRadios = function (examenRadios, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in examenRadios) {
                 if (!examenRadios.hasOwnProperty(key)) {
                     continue;
@@ -91,14 +86,12 @@ var ExamenRadioFService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 ExamenRadioF ' + error);
         });
-        db.close();
     };
     ExamenRadioFService.prototype.deleteExamenRadios = function (numeroDossier, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from ExamenRadioF where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //   alert("Suppression de table ExamenRadioF est terminé avec succes");
@@ -108,7 +101,6 @@ var ExamenRadioFService = (function () {
                 alert('Error 3 ExamenRadioF  ' + error);
             });
         });
-        db.close();
         return this.examenRadio;
     };
     return ExamenRadioFService;
