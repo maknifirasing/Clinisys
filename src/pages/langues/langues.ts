@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
-import {NativeStorage} from "ionic-native";
 import {ListeCliniquePage} from "../liste-clinique/liste-clinique";
 import {Langue} from "../../models/Langue";
 import {LangueService} from "../../services/LangueService";
@@ -25,7 +24,7 @@ export class LanguesPage {
   private userserv: any;
 
 
-  constructor(public navCtrl: NavController, private Url: Variables,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController,private sqlite: SQLite) {
     //  Variables.auth();
   }
 

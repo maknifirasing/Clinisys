@@ -93,6 +93,7 @@ export class TabsPage {
     this.tabLangue = {
       pass: navParams.get("mypatient"),
       dateFeuille: navParams.get("dateFeuille"),
+      heureActuelle:this.heureActuelle,
       Labost: this.LabosT,
       Labosf: this.LabosF,
       ListeP: this.ListeP,
@@ -462,12 +463,8 @@ export class TabsPage {
         if (xmlhttp.status == 200) {
           var xml;
           xml = xmlhttp.responseXML;
-          var x, i;
+          var x, i,c;
           x = xml.getElementsByTagName("return");
-
-          var c;
-          var tempsEnMs = new Date().getFullYear();
-          var d;
           for (i = 0; i < x.length; i++) {
             c = new Consigne();
             if (x[i].childElementCount === 19) {

@@ -3,13 +3,12 @@ import {Users} from "../models/Users";
 
 export class UserService {
   users: Array<Users> = [];
-  
+
   constructor(private sqlite: SQLite) {
   }
 
   verifUser(codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-
       this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
@@ -32,7 +31,6 @@ export class UserService {
             return false;
           })
       });
-
       return this;
     })
 
@@ -40,7 +38,6 @@ export class UserService {
 
   public getUser(users: any, codeClinique): Promise<Users> {
     return new Promise<Users>(resolve => {
-
       this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
@@ -67,14 +64,12 @@ export class UserService {
             alert('Error 1 Users  ' + error);
           })
       });
-
       return this;
     });
   }
 
   public getAllUser(): Promise<Users[]> {
     return new Promise<Users[]>(resolve => {
-
       this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
@@ -104,7 +99,6 @@ export class UserService {
   }
 
   private _insertUser(users): void {
-
     this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
@@ -125,7 +119,6 @@ export class UserService {
       console.error('Error opening database', error);
       alert('Error 2 Users ' + error);
     });
-
   }
 
   public deleteUsers(codeClinique): Promise<boolean> {
@@ -147,7 +140,6 @@ export class UserService {
             return false;
           })
       });
-
       return this;
     });
   }

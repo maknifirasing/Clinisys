@@ -229,7 +229,6 @@ export class DossierPage {
             var xml = xmlhttp.responseXML;
             var x, i;
             x = xml.getElementsByTagName("return");
-            var a;
             for (i = 0; i < x.length; i++) {
               if (!((x[i].children[0].children[0].textContent) === ("A000")) && (!((x[i].children[0].children[0].textContent) === ("A255")))) {
                 if ((x[i].children[0].children[1].textContent) === ("FA02")) // Allergie
@@ -346,9 +345,8 @@ export class DossierPage {
           try {
             this.test = true;
             var xml = xmlhttp.responseXML;
-            var x, i;
+            var x;
             x = xml.getElementsByTagName("return");
-
             this.motifh.setgroupeSang(x[0].children[3].textContent);
             this.motifh.setmotifhospitalisation(x[0].children[7].textContent);
             this.motifh.setnumdoss(x[0].children[8].textContent);

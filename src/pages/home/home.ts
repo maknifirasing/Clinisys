@@ -28,7 +28,7 @@ export class HomePage {
   langserv: any;
   langes: Array<Langue> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private sqlite: SQLite) {
     this.codeClinique = this.navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
@@ -76,7 +76,7 @@ export class HomePage {
                 this.langserv.verifLangue().then(result => {
                   var l = new Langue();
                   l.setlangue(this.langue);
-
+                  l.setnom(user.getuserName());
                   l.setmatricule(user.getmatricule());
                   l.setcodeClinique(this.codeClinique);
                   l.setnomClinique(this.nomClinique);

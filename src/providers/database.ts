@@ -3,12 +3,6 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 
-/*
-  Generated class for the Database provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
 @Injectable()
 export class Database {
 
@@ -18,7 +12,7 @@ export class Database {
       location: 'default'
     })
       .then((db: SQLiteObject) => {
-        db.executeSql('CREATE TABLE IF NOT EXISTS Langue (langue VARCHAR(32),matricule VARCHAR (32),codeClinique VARCHAR(32),nomClinique VARCHAR(32),url VARCHAR(32))', {});
+        db.executeSql('CREATE TABLE IF NOT EXISTS Langue (langue VARCHAR(32),nom VARCHAR (32),matricule VARCHAR (32),codeClinique VARCHAR(32),nomClinique VARCHAR(32),url VARCHAR(32))', {});
 
         db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeListPreanesthesie(codeClinique VARCHAR(32),numDoss VARCHAR(32),ListPreanesthesie VARCHAR(32))', {});
 

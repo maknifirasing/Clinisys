@@ -135,12 +135,8 @@ export class ConsignePage {
         if (xmlhttp.status == 200) {
           var xml;
           xml = xmlhttp.responseXML;
-          var x, i;
+          var x, i,c;
           x = xml.getElementsByTagName("return");
-
-          var c;
-          var tempsEnMs = new Date().getFullYear();
-          var d;
           for (i = 0; i < x.length; i++) {
             c = new Consigne();
             if (x[i].childElementCount === 19) {

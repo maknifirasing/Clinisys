@@ -4,11 +4,10 @@ import 'rxjs/add/operator/map';
 import {NavController} from "ionic-angular";
 
 /*
-  Generated class for the Variables provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
+ Generated class for the Variables provider.
+ See https://angular.io/docs/ts/latest/guide/dependency-injection.html
+ for more info on providers and Angular 2 DI.
+ */
 declare var navigator: any;
 declare var Connection: any;
 

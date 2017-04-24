@@ -75,7 +75,7 @@ export class ClientDetailPage {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
           var xml = xmlhttp.responseXML;
-          var x, i;
+          var x;
           x = xml.getElementsByTagName("return");
           var d, d2;
           d = new Date();
