@@ -1,51 +1,51 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {AntecCh} from "../models/AntecCh";
 
 export class AntechService {
   public antec: Array<AntecCh> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
-  public verifAntec(antecs: any, idpass,codeClinique) : Promise<boolean> {
+  public verifAntec(antecs: any, idpass, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select count(*) as sum from Antech where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.item(0).sum >0) {
-            resolve(true);
-            return true;
-          }
-          else {
+
+      this.sqlite.create({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then((db: SQLiteObject) => {
+        db.executeSql("select count(*) as sum from Antech where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.item(0).sum > 0) {
+              resolve(true);
+              return true;
+            }
+            else {
+              resolve(false);
+              return false;
+            }
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
             resolve(false);
             return false;
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          resolve(false);
-          return false;
-        })
-    });
-      db.close();
+          })
+      });
+
       return this;
     });
   }
 
-  public getAntecs(antecs: any, idpass,codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
+  public getAntecs(antecs: any, idpass, codeClinique) {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("select * from Antech where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertAntecs(antecs,codeClinique);
+            this._insertAntecs(antecs, codeClinique);
           } else {
             var an;
             for (var i = 0; i < result.rows.length; i++) {
@@ -61,16 +61,16 @@ export class AntechService {
           alert('Error 1 Antech  ' + error);
         })
     });
-    db.close();
+
     return this.antec;
   }
 
-  private _insertAntecs(antecs: Array<AntecCh>,codeClinique): void {
-    let db = new SQLite();
-    db.openDatabase({
+  private _insertAntecs(antecs: Array<AntecCh>, codeClinique): void {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in antecs) {
         if (!antecs.hasOwnProperty(key)) {
           continue;
@@ -86,26 +86,26 @@ export class AntechService {
       console.error('Error opening database', error);
       alert('Error 2 Antech ' + error);
     });
-    db.close();
+
   }
 
-  public deleteAntecs(idpass,codeClinique) {
+  public deleteAntecs(idpass, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from Antech where  idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-   //       alert("Suppression de table Antech est terminé avec succes");
+          //       alert("Suppression de table Antech est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 3 Antech  ' + error);
         })
     });
-    db.close();
+
     return this.antec;
   }
 }

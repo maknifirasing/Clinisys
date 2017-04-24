@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { Rigime } from "../models/Rigime";
 var RigimeService = (function () {
-    function RigimeService() {
+    function RigimeService(sqlite) {
+        this.sqlite = sqlite;
         this.rigime = [];
     }
     RigimeService.prototype.verifRigime = function (rigimes, numdoss, datefeuille, nature, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from Rigime where numdoss like '" + numdoss + "' and datefeuille like '" + datefeuille + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,17 +29,15 @@ var RigimeService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     RigimeService.prototype.getRigimes = function (rigimes, numdoss, datefeuille, nature, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from Rigime where numdoss like '" + numdoss + "' and datefeuille like '" + datefeuille + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
@@ -60,15 +57,13 @@ var RigimeService = (function () {
                 alert('Error 1 Rigime  ' + error);
             });
         });
-        db.close();
         return this.rigime;
     };
     RigimeService.prototype._insertRigimes = function (rigimes, numdoss, datefeuille, nature, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in rigimes) {
                 if (!rigimes.hasOwnProperty(key)) {
                     continue;
@@ -87,14 +82,12 @@ var RigimeService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 Rigime ' + error);
         });
-        db.close();
     };
     RigimeService.prototype.deleteRigimes = function (numdoss, datefeuille, nature, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from Rigime where numdoss like '" + numdoss + "' and datefeuille like '" + datefeuille + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //      alert("Suppression de table Rigime est terminé avec succes");
@@ -104,7 +97,6 @@ var RigimeService = (function () {
                 alert('Error 3 Rigime  ' + error);
             });
         });
-        db.close();
         return this.rigime;
     };
     return RigimeService;

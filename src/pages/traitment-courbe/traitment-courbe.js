@@ -14,11 +14,13 @@ import { TraitCourbe } from "../../models/TraitCourbe";
 import { HistTraitCourbeService } from "../../services/HistTraitCourbeService";
 import { HistDossier } from "../../models/HistDossier";
 import { TraitCourbeService } from "../../services/TraitCourbeService";
+import { SQLite } from "@ionic-native/sqlite";
 var TraitmentCourbe = (function () {
-    function TraitmentCourbe(navCtrl, navParams) {
+    function TraitmentCourbe(navCtrl, navParams, sqlite) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
+        this.sqlite = sqlite;
         this.traitcourbe = [];
         this.histC = [];
         this.histc = new HistDossier();
@@ -81,7 +83,7 @@ var TraitmentCourbe = (function () {
                         courbe.setcodeClinique(codeClinique);
                         _this.traitcourbe.push(courbe);
                     }
-                    _this.traitserv = new TraitCourbeService();
+                    _this.traitserv = new TraitCourbeService(_this.sqlite);
                     _this.traitserv.verifTraitCourbe(_this.traitcourbe, numdoss, codeClinique).then(function (res) {
                         if (res === false) {
                             _this.traitserv.getTraitCourbes(_this.traitcourbe, numdoss, codeClinique);
@@ -97,13 +99,13 @@ var TraitmentCourbe = (function () {
     };
     TraitmentCourbe.prototype.getChartSurveillanceOff = function (traitcourbe, numdoss, codeClinique) {
         var _this = this;
-        this.traitserv = new TraitCourbeService();
+        this.traitserv = new TraitCourbeService(this.sqlite);
         this.traitserv.getTraitCourbes(traitcourbe, numdoss, codeClinique).then(function (res) {
             _this.onecourbes(res);
         });
     };
     TraitmentCourbe.prototype.DeletegetChartSurveillance = function (numdoss, codeClinique) {
-        this.traitserv = new TraitCourbeService();
+        this.traitserv = new TraitCourbeService(this.sqlite);
         this.traitserv.deleteTraitCourbes(numdoss, codeClinique);
     };
     TraitmentCourbe.prototype.exist = function (t, ch) {
@@ -218,7 +220,7 @@ var TraitmentCourbe = (function () {
     };
     TraitmentCourbe.prototype.historique = function (numDoss, codeClinique) {
         var _this = this;
-        this.histserv = new HistTraitCourbeService();
+        this.histserv = new HistTraitCourbeService(this.sqlite);
         var h = new HistDossier();
         var d = new Date();
         h.setnumDoss(numDoss);
@@ -239,7 +241,7 @@ var TraitmentCourbe = (function () {
     };
     TraitmentCourbe.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
         var _this = this;
-        this.histserv = new HistTraitCourbeService();
+        this.histserv = new HistTraitCourbeService(this.sqlite);
         this.histserv.getHistTraitCourbes(hist, numDoss, codeClinique).then(function (res) {
             _this.histc = res.getdate();
         });
@@ -257,7 +259,7 @@ TraitmentCourbe = __decorate([
         templateUrl: 'traitment-courbe.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams])
+    __metadata("design:paramtypes", [NavController, NavParams, SQLite])
 ], TraitmentCourbe);
 export { TraitmentCourbe };
 //# sourceMappingURL=traitment-courbe.js.map

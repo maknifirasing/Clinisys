@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { AntecCh } from "../models/AntecCh";
 var AlegchService = (function () {
-    function AlegchService() {
+    function AlegchService(sqlite) {
+        this.sqlite = sqlite;
         this.aleg = [];
     }
     AlegchService.prototype.verifAleg = function (alegs, idpass, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from Alegc where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,17 +29,15 @@ var AlegchService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     AlegchService.prototype.getAlegs = function (alegs, idpass, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from Alegc where idpass like '" + idpass + "' and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
@@ -61,15 +58,13 @@ var AlegchService = (function () {
                 alert('Error 1 Alegc  ' + error);
             });
         });
-        db.close();
         return this.aleg;
     };
     AlegchService.prototype._insertAlegs = function (alegs, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in alegs) {
                 if (!alegs.hasOwnProperty(key)) {
                     continue;
@@ -85,14 +80,12 @@ var AlegchService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 Alegc ' + error);
         });
-        db.close();
     };
     AlegchService.prototype.deleteAlegs = function (idpass, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from Alegc where  idpass like '" + idpass + "' and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //    alert("Suppression de table Aleg est terminé avec succes");
@@ -102,7 +95,6 @@ var AlegchService = (function () {
                 alert('Error 3 Alegc  ' + error);
             });
         });
-        db.close();
         return this.aleg;
     };
     return AlegchService;

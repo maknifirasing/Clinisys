@@ -11,7 +11,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, Platform } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
 import { Document } from "../../models/Document";
-import { File, Transfer } from 'ionic-native';
+import { File } from '@ionic-native/file';
+import { Transfer } from '@ionic-native/transfer';
 import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 import { DocumentService } from "../../services/DocumentService";
 import { ExamenRadioTService } from "../../services/ExamenRadioTService";
@@ -20,8 +21,9 @@ import { ClientDetailPage } from "../client-detail/client-detail";
 import { DossierPage } from "../dossier/dossier";
 import { HistDoc } from "../../models/HistDoc";
 import { HistDocService } from "../../services/HistDocService";
+import { SQLite } from "@ionic-native/sqlite";
 var ExamenRadioPage = (function () {
-    function ExamenRadioPage(navCtrl, navParams, Url, platform, themeableBrowser, alertCtrl) {
+    function ExamenRadioPage(navCtrl, navParams, Url, platform, themeableBrowser, alertCtrl, transfer, file, sqlite) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
@@ -29,6 +31,9 @@ var ExamenRadioPage = (function () {
         this.platform = platform;
         this.themeableBrowser = themeableBrowser;
         this.alertCtrl = alertCtrl;
+        this.transfer = transfer;
+        this.file = file;
+        this.sqlite = sqlite;
         this.GetExamenRadioByNumDossResponseTest = false;
         this.examenRT = [];
         this.examenRF = [];
@@ -77,10 +82,10 @@ var ExamenRadioPage = (function () {
             Variables.checconnection().then(function (connexion) {
                 if (connexion === false) {
                     _this.connection = false;
-                    _this.histdocserv = new HistDocService();
+                    _this.histdocserv = new HistDocService(_this.sqlite);
                     _this.histdocserv.getHistDocs(_this.histDoc, _this.pass.getdossier(), observ, _this.codeClinique).then(function (result) {
                         _this.histdoc = result.getdate();
-                        _this.docserv = new DocumentService();
+                        _this.docserv = new DocumentService(_this.sqlite);
                         _this.docserv.getDocuments(_this.document, observ, _this.codeClinique).then(function (res) {
                             _this.retrieveImageOff(res);
                         });
@@ -88,7 +93,7 @@ var ExamenRadioPage = (function () {
                 }
                 else {
                     _this.connection = true;
-                    _this.histdocserv = new HistDocService();
+                    _this.histdocserv = new HistDocService(_this.sqlite);
                     var hi = new HistDoc();
                     var d = new Date();
                     hi.setnumDoss(_this.pass.getdossier());
@@ -107,7 +112,7 @@ var ExamenRadioPage = (function () {
                         _this.histdocserv.deleteHistDocs(_this.pass.getdossier(), _this.codeClinique, observ);
                         _this.histdocserv.getHistDocs(_this.histDoc, _this.pass.getdossier(), _this.codeClinique, observ).then(function (result) {
                             _this.histdoc = result.getdate();
-                            _this.docserv = new DocumentService();
+                            _this.docserv = new DocumentService(_this.sqlite);
                             _this.docserv.verifDocument(_this.document, observ, _this.codeClinique).then(function (res) {
                                 if (res === false) {
                                     _this.docserv.getDocuments(_this.document, observ, _this.codeClinique);
@@ -127,7 +132,7 @@ var ExamenRadioPage = (function () {
                     catch (Error) {
                         _this.histdocserv.getHistDocs(_this.histDoc, _this.pass.getdossier(), _this.codeClinique, observ).then(function (result) {
                             _this.histdoc = result.getdate();
-                            _this.docserv = new DocumentService();
+                            _this.docserv = new DocumentService(_this.sqlite);
                             _this.docserv.verifDocument(_this.document, observ, _this.codeClinique).then(function (res) {
                                 if (res === false) {
                                     _this.docserv.getDocuments(_this.document, observ, _this.codeClinique);
@@ -237,7 +242,7 @@ var ExamenRadioPage = (function () {
     ExamenRadioPage.prototype.downloadImage = function (url, doc) {
         var _this = this;
         this.platform.ready().then(function () {
-            var fileTransfer = new Transfer();
+            var fileTransfer = _this.transfer.create();
             fileTransfer.download(url, _this.storageDirectory + doc.getobserv()).then(function (entry) {
                 /*    const alertSuccess = this.alertCtrl.create({
                  title: `Download Succeeded!`,
@@ -261,7 +266,7 @@ var ExamenRadioPage = (function () {
     ExamenRadioPage.prototype.retrieveImage = function (url, doc) {
         var _this = this;
         var file = doc.getobserv();
-        File.checkFile(this.storageDirectory, file)
+        this.file.checkFile(this.storageDirectory, file)
             .then(function () {
             /*    const alertSuccess = this.alertCtrl.create({
              title: `File retrieval Succeeded!`,
@@ -285,7 +290,7 @@ var ExamenRadioPage = (function () {
     ExamenRadioPage.prototype.retrieveImageOff = function (doc) {
         var _this = this;
         var file = doc.getobserv();
-        File.checkFile(this.storageDirectory, file)
+        this.file.checkFile(this.storageDirectory, file)
             .then(function () {
             _this.url = doc.geturl();
             _this.open(_this.url);
@@ -308,9 +313,9 @@ var ExamenRadioPage = (function () {
         });
     };
     ExamenRadioPage.prototype.GetExamenRadioByNumDossResponseOff = function (numDoss, codeClinique) {
-        this.RadiosTs = new ExamenRadioTService();
+        this.RadiosTs = new ExamenRadioTService(this.sqlite);
         this.examenRT = this.RadiosTs.getExamenRadios(this.examenRT, numDoss, codeClinique);
-        this.RadiosFs = new ExamenRadioFService();
+        this.RadiosFs = new ExamenRadioFService(this.sqlite);
         this.examenRF = this.RadiosFs.getExamenRadios(this.examenRF, numDoss, codeClinique);
     };
     ExamenRadioPage.prototype.goToInfPage = function (patient) {
@@ -330,7 +335,8 @@ ExamenRadioPage = __decorate([
         templateUrl: 'examen-radio.html',
         providers: [Variables, ThemeableBrowser]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform, ThemeableBrowser, AlertController])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform, ThemeableBrowser, AlertController,
+        Transfer, File, SQLite])
 ], ExamenRadioPage);
 export { ExamenRadioPage };
 //# sourceMappingURL=examen-radio.js.map

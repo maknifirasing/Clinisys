@@ -10,19 +10,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Component } from '@angular/core';
 import { NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
-import { File, Transfer } from 'ionic-native';
+import { File } from '@ionic-native/file';
+import { Transfer } from '@ionic-native/transfer';
 import { Variables } from "../../providers/variables";
 import { HistDossier } from "../../models/HistDossier";
 import { HistPdfService } from "../../services/HistPdfService";
 import { HistDoc } from "../../models/HistDoc";
+import { SQLite } from "@ionic-native/sqlite";
 var PdfViewPage = (function () {
-    function PdfViewPage(navCtrl, navParams, PdfViewerComponent, platform, alertCtrl) {
+    function PdfViewPage(navCtrl, navParams, PdfViewerComponent, platform, alertCtrl, transfer, file, sqlite) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.PdfViewerComponent = PdfViewerComponent;
         this.platform = platform;
         this.alertCtrl = alertCtrl;
+        this.transfer = transfer;
+        this.file = file;
+        this.sqlite = sqlite;
         this.page = 1;
         this.storageDirectory = '';
         this.histC = [];
@@ -73,7 +78,7 @@ var PdfViewPage = (function () {
     PdfViewPage.prototype.downloadImage = function (file) {
         var _this = this;
         this.platform.ready().then(function () {
-            var fileTransfer = new Transfer();
+            var fileTransfer = _this.transfer.create();
             fileTransfer.download(_this.pdf, _this.storageDirectory + file).then(function (entry) {
                 /*
                  const alertSuccess = this.alertCtrl.create({
@@ -102,7 +107,7 @@ var PdfViewPage = (function () {
         var imageLocation = "" + src;
         var fields = imageLocation.split('/');
         var file = fields[5];
-        File.checkFile(this.storageDirectory, file)
+        this.file.checkFile(this.storageDirectory, file)
             .then(function () {
             /*
              const alertSuccess = this.alertCtrl.create({
@@ -127,7 +132,7 @@ var PdfViewPage = (function () {
     };
     PdfViewPage.prototype.historique = function (numDoss, file, codeClinique) {
         var _this = this;
-        this.histserv = new HistPdfService();
+        this.histserv = new HistPdfService(this.sqlite);
         var h = new HistDoc();
         var d = new Date();
         h.setnumDoss(numDoss);
@@ -149,7 +154,7 @@ var PdfViewPage = (function () {
     };
     PdfViewPage.prototype.historiqueOff = function (hist, numDoss, file, codeClinique) {
         var _this = this;
-        this.histserv = new HistPdfService();
+        this.histserv = new HistPdfService(this.sqlite);
         this.histserv.getHistPdfs(hist, numDoss, codeClinique, file).then(function (res) {
             _this.histp = res.getdate();
         });
@@ -162,7 +167,8 @@ PdfViewPage = __decorate([
         templateUrl: 'pdf-view.html',
         providers: [PdfViewerComponent]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, PdfViewerComponent, Platform, AlertController])
+    __metadata("design:paramtypes", [NavController, NavParams, PdfViewerComponent, Platform, AlertController,
+        Transfer, File, SQLite])
 ], PdfViewPage);
 export { PdfViewPage };
 //# sourceMappingURL=pdf-view.js.map

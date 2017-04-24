@@ -1,19 +1,19 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {MotifHospitalisation} from "../models/motifHospitalisation";
 
 export class motifHospitalisationService {
   public motifhospitalisation = new MotifHospitalisation();
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
   public verifmotifHospitalisation(motifhospitalisations: any, numdoss, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sum from motifHospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -32,18 +32,18 @@ export class motifHospitalisationService {
             return false;
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   public getmotifHospitalisations(motifhospitalisations: any, numdoss, codeClinique): Promise<MotifHospitalisation> {
     return new Promise<MotifHospitalisation>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select * from motifHospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.length === 0) {
@@ -63,42 +63,42 @@ export class motifHospitalisationService {
             alert('Error 1 motifHospitalisation  ' + error);
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   private _insertmotifHospitalisations(motifhospitalisation, codeClinique): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
 
-        db.executeSql('insert into motifHospitalisation (groupeSang ,motifhospitalisation ,numdoss ,poid ,taille ,codeClinique)' +
-          ' values (?,?,?,?,?,?)', [
-          motifhospitalisation.getgroupeSang(),
-          motifhospitalisation.getmotifhospitalisation(),
-          motifhospitalisation.getnumdoss(),
-          motifhospitalisation.getpoid(),
-          motifhospitalisation.gettaille(),
-          codeClinique
-        ]);
+      db.executeSql('insert into motifHospitalisation (groupeSang ,motifhospitalisation ,numdoss ,poid ,taille ,codeClinique)' +
+        ' values (?,?,?,?,?,?)', [
+        motifhospitalisation.getgroupeSang(),
+        motifhospitalisation.getmotifhospitalisation(),
+        motifhospitalisation.getnumdoss(),
+        motifhospitalisation.getpoid(),
+        motifhospitalisation.gettaille(),
+        codeClinique
+      ]);
 
     }).catch(error => {
       console.error('Error opening database', error);
       alert('Error 2 motifHospitalisation ' + error);
     });
-    db.close();
+
   }
 
   public deleteMotifhospitalisations(numdoss, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from Motifhospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           //      alert("Suppression de table Motifhospitalisation est terminé avec succes");
@@ -108,7 +108,7 @@ export class motifHospitalisationService {
           alert('Error 3 Motifhospitalisation  ' + error);
         })
     });
-    db.close();
+
     return this.motifhospitalisation;
   }
 }

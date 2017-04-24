@@ -1,19 +1,19 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {TraitCourbe} from "../models/TraitCourbe";
 
 export class TraitCourbeService {
   public traitCourbe: Array<TraitCourbe> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
   public verifTraitCourbe(traitCourbes: any, numDoss, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sum from TraitCourbe where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -32,18 +32,18 @@ export class TraitCourbeService {
             return false;
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   public getTraitCourbes(traitCourbes: any, numDoss, codeClinique): Promise<TraitCourbe[]> {
     return new Promise<TraitCourbe[]>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select * from TraitCourbe where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.length === 0) {
@@ -75,17 +75,17 @@ export class TraitCourbeService {
             alert('Error 1 TraitCourbe  ' + error);
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   private _insertTraitCourbes(traitCourbes: Array<TraitCourbe>): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in traitCourbes) {
         if (!traitCourbes.hasOwnProperty(key)) {
           continue;
@@ -111,15 +111,15 @@ export class TraitCourbeService {
       console.error('Error opening database', error);
       alert('Error 2 Traitement ' + error);
     });
-    db.close();
+
   }
 
   public deleteTraitCourbes(numDoss, codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from TraitCourbe where  numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           //   alert("Suppression de table Traitement est terminé avec succes");
@@ -129,7 +129,7 @@ export class TraitCourbeService {
           alert('Error 3 TraitCourbe  ' + error);
         })
     });
-    db.close();
+
     return this.traitCourbe;
   }
 }

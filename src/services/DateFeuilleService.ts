@@ -1,48 +1,49 @@
 import {DateFeuille} from "../models/DateFeuille";
-import {SQLite} from "ionic-native";
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 export class DateFeuilleService {
-  date: Array<DateFeuille> = [];
 
-  constructor() {
+  date: Array<DateFeuille> = [];
+  
+  constructor(private sqlite: SQLite)  {
   }
 
-  public verifDateFeuille(codeClinique):Promise<boolean> {
-    return  new Promise<boolean>(resolve => {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select count(*) as sum from DateFeuille where codeClinique like '" + codeClinique + "'", []).then(result => {
-        if (result.rows.item(0).sum > 0) {
-          resolve(true);
-          return true;
-        }else {
-          resolve(false);
-          return false;
-        }
-      })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 0 datefeuille  ' + error);
-          resolve(false);
-          return false;
+  public verifDateFeuille(codeClinique): Promise<boolean> {
+    return new Promise<boolean>(resolve => {
+
+      this.sqlite.create({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then((db: SQLiteObject) => {
+        db.executeSql("select count(*) as sum from DateFeuille where codeClinique like '" + codeClinique + "'", []).then(result => {
+          if (result.rows.item(0).sum > 0) {
+            resolve(true);
+            return true;
+          } else {
+            resolve(false);
+            return false;
+          }
         })
-    });
-    db.close();
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 0 datefeuille  ' + error);
+            resolve(false);
+            return false;
+          })
+      });
+
       return this;
     });
   }
 
-  public getDateFeuille(dates: any,codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
+  public getDateFeuille(dates: any, codeClinique) {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("select * from DateFeuille where codeClinique like '" + codeClinique + "'", []).then(result => {
         if (result.rows.length === 0) {
-          this._insertDateFeuille(dates,codeClinique);
+          this._insertDateFeuille(dates, codeClinique);
         } else {
           var d;
           for (var i = 0; i < result.rows.length; i++) {
@@ -57,16 +58,16 @@ export class DateFeuilleService {
           alert('Error 1 datefeuille  ' + error);
         })
     });
-    db.close();
+
     return this.date;
   }
 
-  private _insertDateFeuille(dates: Array<DateFeuille>,codeClinique): void {
-    let db = new SQLite();
-    db.openDatabase({
+  private _insertDateFeuille(dates: Array<DateFeuille>, codeClinique): void {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in dates) {
         if (!dates.hasOwnProperty(key)) {
           continue;
@@ -81,25 +82,25 @@ export class DateFeuilleService {
       console.error('Error opening database', error);
       alert('Error 2 datefeuille ' + error);
     });
-    db.close();
+
   }
 
   public deleteDateFeuille(codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from DateFeuille where codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-      //    alert("Suppression de table DateFeuille est terminé avec succes");
+          //    alert("Suppression de table DateFeuille est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 3 DateFeuille  ' + error);
         })
     });
-    db.close();
+
     return this.date;
   }
 }

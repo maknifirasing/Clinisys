@@ -18,11 +18,13 @@ import { SigneCourbeSaturationService } from "../../services/SigneCourbeSaturati
 import { SigneCourbeTAService } from "../../services/SigneCourbeTAService";
 import { SigneCourbeTempService } from "../../services/SigneCourbeTempService";
 import { HistSigneCourbeService } from "../../services/HistSigneCourbeService";
+import { SQLite } from "@ionic-native/sqlite";
 var SigneCourbePage = (function () {
-    function SigneCourbePage(navCtrl, navParams) {
+    function SigneCourbePage(navCtrl, navParams, sqlite) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
+        this.sqlite = sqlite;
         this.courbePouls = [];
         this.courbeTA = [];
         this.courbeTemp = [];
@@ -99,31 +101,31 @@ var SigneCourbePage = (function () {
                             _this.courbeFrq.push(courbe);
                         }
                     }
-                    _this.sgcPserv = new SigneCourbePoulsService();
+                    _this.sgcPserv = new SigneCourbePoulsService(_this.sqlite);
                     _this.sgcPserv.verifSigneCourbe(_this.courbePouls, numdoss, codeClinique).then(function (res) {
                         if (res === false) {
                             _this.sgcPserv.getSigneCourbes(_this.courbePouls, numdoss, codeClinique);
                         }
                     });
-                    _this.sgcTAserv = new SigneCourbeTAService();
+                    _this.sgcTAserv = new SigneCourbeTAService(_this.sqlite);
                     _this.sgcTAserv.verifSigneCourbe(_this.courbeTA, numdoss, codeClinique).then(function (res) {
                         if (res === false) {
                             _this.sgcTAserv.getSigneCourbes(_this.courbeTA, numdoss, codeClinique);
                         }
                     });
-                    _this.sgcTserv = new SigneCourbeTempService();
+                    _this.sgcTserv = new SigneCourbeTempService(_this.sqlite);
                     _this.sgcTserv.verifSigneCourbe(_this.courbeTemp, numdoss, codeClinique).then(function (res) {
                         if (res === false) {
                             _this.sgcTserv.getSigneCourbes(_this.courbeTemp, numdoss, codeClinique);
                         }
                     });
-                    _this.sgcSserv = new SigneCourbeSaturationService();
+                    _this.sgcSserv = new SigneCourbeSaturationService(_this.sqlite);
                     _this.sgcSserv.verifSigneCourbe(_this.courbeSaturation, numdoss, codeClinique).then(function (res) {
                         if (res === false) {
                             _this.sgcSserv.getSigneCourbes(_this.courbeSaturation, numdoss, codeClinique);
                         }
                     });
-                    _this.sgcFserv = new SigneCourbeFrqService();
+                    _this.sgcFserv = new SigneCourbeFrqService(_this.sqlite);
                     _this.sgcFserv.verifSigneCourbe(_this.courbeFrq, numdoss, codeClinique).then(function (res) {
                         if (res === false) {
                             _this.sgcFserv.getSigneCourbes(_this.courbeFrq, numdoss, codeClinique);
@@ -138,32 +140,32 @@ var SigneCourbePage = (function () {
         xmlhttp.send(sr);
     };
     SigneCourbePage.prototype.DeletegetChartSurveillance = function (numdoss, codeClinique) {
-        this.sgcPserv = new SigneCourbePoulsService();
+        this.sgcPserv = new SigneCourbePoulsService(this.sqlite);
         this.sgcPserv.deleteSigneCourbes(numdoss, codeClinique);
-        this.sgcTAserv = new SigneCourbeTAService();
+        this.sgcTAserv = new SigneCourbeTAService(this.sqlite);
         this.sgcTAserv.deleteSigneCourbes(numdoss, codeClinique);
-        this.sgcTserv = new SigneCourbeTempService();
+        this.sgcTserv = new SigneCourbeTempService(this.sqlite);
         this.sgcTserv.deleteSigneCourbes(numdoss, codeClinique);
-        this.sgcSserv = new SigneCourbeSaturationService();
+        this.sgcSserv = new SigneCourbeSaturationService(this.sqlite);
         this.sgcSserv.deleteSigneCourbes(numdoss, codeClinique);
-        this.sgcFserv = new SigneCourbeFrqService();
+        this.sgcFserv = new SigneCourbeFrqService(this.sqlite);
         this.sgcFserv.deleteSigneCourbes(numdoss, codeClinique);
     };
     SigneCourbePage.prototype.getChartSurveillanceOff = function (numdoss, codeClinique) {
         var _this = this;
-        this.sgcPserv = new SigneCourbePoulsService();
+        this.sgcPserv = new SigneCourbePoulsService(this.sqlite);
         this.sgcPserv.getSigneCourbes(this.courbePouls, numdoss, codeClinique).then(function (resp) {
             _this.courbePouls = resp;
-            _this.sgcTAserv = new SigneCourbeTAService();
+            _this.sgcTAserv = new SigneCourbeTAService(_this.sqlite);
             _this.sgcTAserv.getSigneCourbes(_this.courbeTA, numdoss, codeClinique).then(function (resta) {
                 _this.courbeTA = resta;
-                _this.sgcTserv = new SigneCourbeTempService();
+                _this.sgcTserv = new SigneCourbeTempService(_this.sqlite);
                 _this.sgcTserv.getSigneCourbes(_this.courbeTemp, numdoss, codeClinique).then(function (rest) {
                     _this.courbeTemp = rest;
-                    _this.sgcSserv = new SigneCourbeSaturationService();
+                    _this.sgcSserv = new SigneCourbeSaturationService(_this.sqlite);
                     _this.sgcSserv.getSigneCourbes(_this.courbeSaturation, numdoss, codeClinique).then(function (ress) {
                         _this.courbeSaturation = ress;
-                        _this.sgcFserv = new SigneCourbeFrqService();
+                        _this.sgcFserv = new SigneCourbeFrqService(_this.sqlite);
                         _this.sgcFserv.getSigneCourbes(_this.courbeFrq, numdoss, codeClinique).then(function (resf) {
                             _this.courbeFrq = resf;
                             _this.doublecourbes(_this.courbePouls, _this.courbeTA, _this.courbeTemp, _this.courbeSaturation, _this.courbeFrq);
@@ -299,7 +301,7 @@ var SigneCourbePage = (function () {
     };
     SigneCourbePage.prototype.historique = function (numDoss, codeClinique) {
         var _this = this;
-        this.histserv = new HistSigneCourbeService();
+        this.histserv = new HistSigneCourbeService(this.sqlite);
         var h = new HistDossier();
         var d = new Date();
         h.setnumDoss(numDoss);
@@ -320,7 +322,7 @@ var SigneCourbePage = (function () {
     };
     SigneCourbePage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
         var _this = this;
-        this.histserv = new HistSigneCourbeService();
+        this.histserv = new HistSigneCourbeService(this.sqlite);
         this.histserv.getHistSigneCourbes(hist, numDoss, codeClinique).then(function (res) {
             _this.histc = res.getdate();
         });
@@ -338,7 +340,7 @@ SigneCourbePage = __decorate([
         templateUrl: 'signe-courbe.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams])
+    __metadata("design:paramtypes", [NavController, NavParams, SQLite])
 ], SigneCourbePage);
 export { SigneCourbePage };
 //# sourceMappingURL=signe-courbe.js.map

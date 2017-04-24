@@ -1,84 +1,84 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {HistPatient} from "../models/HistPatient";
 
 export class HistPatientService {
   public histPatient: Array<HistPatient> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
-  public verifHistPatient(user, searchText, etage,codeClinique) : Promise<boolean> {
+  public verifHistPatient(user, searchText, etage, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select count(*) as sum from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.item(0).sum > 0) {
-            resolve(true);
-            return true;
-          }
-          else {
+
+      this.sqlite.create({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then((db: SQLiteObject) => {
+        db.executeSql("select count(*) as sum from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.item(0).sum > 0) {
+              resolve(true);
+              return true;
+            }
+            else {
+              resolve(false);
+              return false;
+            }
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 0 HistPatient  ' + error);
             resolve(false);
             return false;
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 0 HistPatient  ' + error);
-          resolve(false);
-          return false;
-        })
-    });
-      db.close();
+          })
+      });
+
       return this;
     });
   }
 
-  public getHistPatients(histPatients: any, user, searchText, etage, codeClinique) : Promise<HistPatient> {
+  public getHistPatients(histPatients: any, user, searchText, etage, codeClinique): Promise<HistPatient> {
     return new Promise<HistPatient>(resolve => {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.length === 0) {
-            this._insertHistPatients(histPatients);
-            resolve(histPatients[0]);
-          } else {
-            var p;
-            for (var i = 0; i < result.rows.length; i++) {
-              p = new HistPatient();
-              p.setuser(result.rows.item(i).user);
-              p.setsearchText(result.rows.item(i).searchText);
-              p.setetage(result.rows.item(i).etage);
-              p.setdate(result.rows.item(i).date);
-              p.setcodeClinique(result.rows.item(i).codeClinique);
-              this.histPatient.push(p);
+
+      this.sqlite.create({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then((db: SQLiteObject) => {
+        db.executeSql("select * from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.length === 0) {
+              this._insertHistPatients(histPatients);
+              resolve(histPatients[0]);
+            } else {
+              var p;
+              for (var i = 0; i < result.rows.length; i++) {
+                p = new HistPatient();
+                p.setuser(result.rows.item(i).user);
+                p.setsearchText(result.rows.item(i).searchText);
+                p.setetage(result.rows.item(i).etage);
+                p.setdate(result.rows.item(i).date);
+                p.setcodeClinique(result.rows.item(i).codeClinique);
+                this.histPatient.push(p);
+              }
+              resolve(this.histPatient[0]);
             }
-            resolve(this.histPatient[0]);
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1.1 HistPatient  ' + error);
-        })
-    });
-    db.close();
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 1.1 HistPatient  ' + error);
+          })
+      });
+
       return this;
     });
   }
 
   private _insertHistPatients(histPatients: Array<HistPatient>): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in histPatients) {
         if (!histPatients.hasOwnProperty(key)) {
           continue;
@@ -96,26 +96,26 @@ export class HistPatientService {
       console.error('Error opening database', error);
       alert('Error 2 HistPatient ' + error);
     });
-    db.close();
+
   }
 
 
-  public deleteHistPatients(user, searchText, etage,codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
+  public deleteHistPatients(user, searchText, etage, codeClinique) {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-        //  alert("Suppression de table Patient est terminé avec succes");
+          //  alert("Suppression de table Patient est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 3 HistPatient  ' + error);
         })
     });
-    db.close();
+
     return this.histPatient;
   }
 }

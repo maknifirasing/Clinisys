@@ -1,16 +1,15 @@
-import { SQLite } from 'ionic-native';
 import { HistDossier } from "../models/HistDossier";
 var HistDossierService = (function () {
-    function HistDossierService() {
+    function HistDossierService(sqlite) {
+        this.sqlite = sqlite;
     }
     HistDossierService.prototype.verifHistDossier = function (numDoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -29,18 +28,16 @@ var HistDossierService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     HistDossierService.prototype.getHistDossiers = function (histDossiers, numDoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select * from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.length === 0) {
@@ -60,16 +57,14 @@ var HistDossierService = (function () {
                     alert('Error 1.1 HistDossier  ' + error);
                 });
             });
-            db.close();
             return _this;
         });
     };
     HistDossierService.prototype._insertHistPatients = function (histDossier) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql('insert into HistDossier (numDoss ,date ,codeClinique) values (?,?,?)', [
                 histDossier.getnumDoss(),
                 histDossier.getdate(),
@@ -79,16 +74,14 @@ var HistDossierService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 HistDossier ' + error);
         });
-        db.close();
     };
     HistDossierService.prototype.deleteHistDossiers = function (numDoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("delete from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
                     .then(function () {
                     //      alert("Suppression de table HistDossier est terminé avec succes");
@@ -102,7 +95,6 @@ var HistDossierService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };

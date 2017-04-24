@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { tabBadge } from "../models/tabBadge";
 var tabBadgeListPreanesthesie = (function () {
-    function tabBadgeListPreanesthesie() {
+    function tabBadgeListPreanesthesie(sqlite) {
+        this.sqlite = sqlite;
         this.tabBadgeList = [];
     }
     tabBadgeListPreanesthesie.prototype.verifTabBadgeList = function (numDoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from tabBadgeListPreanesthesie where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,18 +29,16 @@ var tabBadgeListPreanesthesie = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     tabBadgeListPreanesthesie.prototype.getTabBadgeList = function (tabBadgeLists, numDoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select * from tabBadgeListPreanesthesie where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.length === 0) {
@@ -65,16 +62,14 @@ var tabBadgeListPreanesthesie = (function () {
                     alert('Error 1 tabBadgeListPreanesthesie  ' + error);
                 });
             });
-            db.close();
             return _this;
         });
     };
     tabBadgeListPreanesthesie.prototype._inserttabBadgeLists = function (tabBadgeLists) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in tabBadgeLists) {
                 if (!tabBadgeLists.hasOwnProperty(key)) {
                     continue;
@@ -90,14 +85,12 @@ var tabBadgeListPreanesthesie = (function () {
             console.error('Error opening database', error);
             alert('Error 2 tabBadgeListPreanesthesie ' + error);
         });
-        db.close();
     };
     tabBadgeListPreanesthesie.prototype.deletetabBadgeLists = function (numDoss, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from tabBadgeListPreanesthesie where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //   alert("Suppression de table Traitement est terminé avec succes");
@@ -107,7 +100,6 @@ var tabBadgeListPreanesthesie = (function () {
                 alert('Error 3 tabBadgeListPreanesthesie  ' + error);
             });
         });
-        db.close();
         return this.tabBadgeList;
     };
     return tabBadgeListPreanesthesie;

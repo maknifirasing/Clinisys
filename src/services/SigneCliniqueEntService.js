@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { SigneClinique } from "../models/SigneClinique";
 var SigneCliniqueEntService = (function () {
-    function SigneCliniqueEntService() {
+    function SigneCliniqueEntService(sqlite) {
+        this.sqlite = sqlite;
         this.signeClinique = [];
     }
     SigneCliniqueEntService.prototype.verifSigneClinique = function (signeCliniques, numDoss, dateFeuille, nature, codeType, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from SigneCliniqueEnt where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
                     + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
@@ -31,17 +30,15 @@ var SigneCliniqueEntService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     SigneCliniqueEntService.prototype.getSigneCliniques = function (signeCliniques, numDoss, dateFeuille, nature, codeType, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from SigneCliniqueEnt where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
                 + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
@@ -64,15 +61,13 @@ var SigneCliniqueEntService = (function () {
                 alert('Error 1 SigneCliniqueEnt  ' + error);
             });
         });
-        db.close();
         return this.signeClinique;
     };
     SigneCliniqueEntService.prototype._insertSigneCliniques = function (signeCliniques, numDoss, dateFeuille, nature, codeType, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in signeCliniques) {
                 if (!signeCliniques.hasOwnProperty(key)) {
                     continue;
@@ -93,14 +88,12 @@ var SigneCliniqueEntService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 SigneCliniqueEnt ' + error);
         });
-        db.close();
     };
     SigneCliniqueEntService.prototype.deleteSigneCliniques = function (numDoss, dateFeuille, nature, codeType, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from SigneCliniqueEnt where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //      alert("Suppression de table SigneCliniqueEnt est terminé avec succes");
@@ -110,7 +103,6 @@ var SigneCliniqueEntService = (function () {
                 alert('Error 3 SigneCliniqueEnt  ' + error);
             });
         });
-        db.close();
         return this.signeClinique;
     };
     return SigneCliniqueEntService;

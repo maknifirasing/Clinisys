@@ -5,6 +5,7 @@ import {Variables} from "../../providers/variables";
 import {Medecin} from "../../models/Medecin";
 import {ClientService} from "../../services/ClientService";
 import {MedecinService} from "../../services/MedecinService";
+import {SQLite} from "@ionic-native/sqlite";
 
 @Component({
   selector: 'page-client-detail',
@@ -29,7 +30,7 @@ export class ClientDetailPage {
   patient: any;
   connection: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,private sqlite: SQLite) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.patient = navParams.get("patient");
     this.motif = navParams.get("motif");
@@ -92,7 +93,7 @@ export class ClientDetailPage {
           this.client.setcodeClinique(this.codeClinique);
           console.log(x[0].children[74].children[1].textContent);
           console.log(x[0].children[85].textContent);
-          this.clientserv = new ClientService();
+          this.clientserv = new ClientService(this.sqlite);
           this.clientserv.verifClient(this.client, numDoss, this.codeClinique).then(res => {
             if (res === false) {
               this.clientserv.getClients(this.client, numDoss, this.codeClinique);
@@ -108,7 +109,7 @@ export class ClientDetailPage {
   }
 
   GetClientByNumDossOff(client, numDoss) {
-    this.clientserv = new ClientService();
+    this.clientserv = new ClientService(this.sqlite);
     this.clientserv.getClients(client, numDoss, this.codeClinique).then(res => {
       this.client = res;
     })
@@ -141,7 +142,7 @@ export class ClientDetailPage {
             medecin.setcodeClinique(this.codeClinique);
             this.medecinList.push(medecin);
           }
-          this.medecinserv = new MedecinService();
+          this.medecinserv = new MedecinService(this.sqlite);
           this.medecinserv.verifMedecin(this.medecinList, numDoss, this.codeClinique).then(res => {
             if (res === false) {
               this.medecinserv.getMedecins(this.medecinList, numDoss, this.codeClinique);
@@ -156,7 +157,7 @@ export class ClientDetailPage {
   }
 
   findMedIntervenatByNumDossOff(medecinList, numDoss) {
-    this.medecinserv = new MedecinService();
+    this.medecinserv = new MedecinService(this.sqlite);
     this.medecinList = this.medecinserv.getMedecins(medecinList, numDoss, this.codeClinique);
 
   }

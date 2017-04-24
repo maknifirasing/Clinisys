@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { TraitCourbe } from "../models/TraitCourbe";
 var TraitCourbeService = (function () {
-    function TraitCourbeService() {
+    function TraitCourbeService(sqlite) {
+        this.sqlite = sqlite;
         this.traitCourbe = [];
     }
     TraitCourbeService.prototype.verifTraitCourbe = function (traitCourbes, numDoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from TraitCourbe where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,18 +29,16 @@ var TraitCourbeService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     TraitCourbeService.prototype.getTraitCourbes = function (traitCourbes, numDoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select * from TraitCourbe where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.length === 0) {
@@ -74,16 +71,14 @@ var TraitCourbeService = (function () {
                     alert('Error 1 TraitCourbe  ' + error);
                 });
             });
-            db.close();
             return _this;
         });
     };
     TraitCourbeService.prototype._insertTraitCourbes = function (traitCourbes) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in traitCourbes) {
                 if (!traitCourbes.hasOwnProperty(key)) {
                     continue;
@@ -109,14 +104,12 @@ var TraitCourbeService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 Traitement ' + error);
         });
-        db.close();
     };
     TraitCourbeService.prototype.deleteTraitCourbes = function (numDoss, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from TraitCourbe where  numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //   alert("Suppression de table Traitement est terminé avec succes");
@@ -126,7 +119,6 @@ var TraitCourbeService = (function () {
                 alert('Error 3 TraitCourbe  ' + error);
             });
         });
-        db.close();
         return this.traitCourbe;
     };
     return TraitCourbeService;

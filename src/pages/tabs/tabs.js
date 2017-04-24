@@ -30,17 +30,21 @@ import { ConsignePage } from "../consigne/consigne";
 import { Consigne } from "../../models/Consigne";
 import { ConsigneService } from "../../services/ConsigneService";
 import { tabBadgeConsigneService } from "../../services/tabBadgeConsigneService";
+import { RealisationPage } from "../realisation/realisation";
+import { SQLite } from "@ionic-native/sqlite";
 var TabsPage = (function () {
-    function TabsPage(navParams, Url, platform) {
+    function TabsPage(navParams, Url, platform, sqlite) {
         var _this = this;
         this.navParams = navParams;
         this.Url = Url;
         this.platform = platform;
+        this.sqlite = sqlite;
         this.tab1Root = DossierPage;
         this.tab2Root = ExamenLaboPage;
         this.tab3Root = ExamenRadioPage;
         this.tab4Root = ListPreanesthesiePage;
         this.tab5Root = ConsignePage;
+        this.tab6Root = RealisationPage;
         this.tabgLabo = [];
         this.tabgConsigne = [];
         this.tabgRadio = [];
@@ -155,19 +159,19 @@ var TabsPage = (function () {
                         tRadio.setFichierT(_this.coountexamenRT);
                         tRadio.setcodeClinique(codeClinique);
                         _this.tabgRadio.push(tRadio);
-                        _this.RadiosFs = new ExamenRadioFService();
+                        _this.RadiosFs = new ExamenRadioFService(_this.sqlite);
                         _this.RadiosFs.verifExamenRadio(_this.examenRF, numDoss, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.RadiosFs.getExamenRadios(_this.examenRF, numDoss, codeClinique);
                             }
                         });
-                        _this.RadiosTs = new ExamenRadioTService();
+                        _this.RadiosTs = new ExamenRadioTService(_this.sqlite);
                         _this.RadiosTs.verifExamenRadio(_this.examenRT, numDoss, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.RadiosTs.getExamenRadios(_this.examenRT, numDoss, codeClinique);
                             }
                         });
-                        _this.countDocs = new tabBadgeRadioService();
+                        _this.countDocs = new tabBadgeRadioService(_this.sqlite);
                         _this.countDocs.verifTabBadgeRadio(numDoss, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.countDocs.getTabBadgeRadio(_this.tabgRadio, numDoss, codeClinique);
@@ -186,18 +190,18 @@ var TabsPage = (function () {
     };
     TabsPage.prototype.GetExamenRadioByNumDossResponseOff = function (numDoss, codeClinique) {
         var _this = this;
-        this.countDocs = new tabBadgeRadioService();
+        this.countDocs = new tabBadgeRadioService(this.sqlite);
         this.countDocs.getTabBadgeRadio(this.tabgRadio, numDoss, codeClinique).then(function (res) {
             _this.coountexamenR = res.getFichier();
             _this.coountexamenRT = res.getFichierT();
         });
     };
     TabsPage.prototype.deleteExamenRadioByNumDossResponse = function (numDoss, codeClinique) {
-        this.countDocs = new tabBadgeRadioService();
+        this.countDocs = new tabBadgeRadioService(this.sqlite);
         this.countDocs.deletetabBadgeRadios(numDoss, codeClinique);
-        this.RadiosFs = new ExamenRadioFService();
+        this.RadiosFs = new ExamenRadioFService(this.sqlite);
         this.RadiosFs.deleteExamenRadios(numDoss, codeClinique);
-        this.RadiosTs = new ExamenRadioTService();
+        this.RadiosTs = new ExamenRadioTService(this.sqlite);
         this.RadiosTs.deleteExamenRadios(numDoss, codeClinique);
     };
     TabsPage.prototype.findAllLaboByNumDossier = function (numDoss, codeClinique) {
@@ -250,19 +254,19 @@ var TabsPage = (function () {
                         tLabo.setFichierT(_this.countPdfT);
                         tLabo.setcodeClinique(codeClinique);
                         _this.tabgLabo.push(tLabo);
-                        _this.LabosFs = new LaboFService();
+                        _this.LabosFs = new LaboFService(_this.sqlite);
                         _this.LabosFs.verifLabo(_this.LabosF, numDoss, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.LabosFs.getLabos(_this.LabosF, numDoss, codeClinique);
                             }
                         });
-                        _this.LabosTs = new LaboTService();
+                        _this.LabosTs = new LaboTService(_this.sqlite);
                         _this.LabosTs.verifLabo(_this.LabosT, numDoss, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.LabosTs.getLabos(_this.LabosT, numDoss, codeClinique);
                             }
                         });
-                        _this.countPdfs = new tabBadgeLaboService();
+                        _this.countPdfs = new tabBadgeLaboService(_this.sqlite);
                         _this.countPdfs.verifTabBadgeLabo(numDoss, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.countPdfs.getTabBadgeLabo(_this.tabgLabo, numDoss, codeClinique);
@@ -280,18 +284,18 @@ var TabsPage = (function () {
     };
     TabsPage.prototype.findAllLaboByNumDossierOff = function (numDoss, codeClinique) {
         var _this = this;
-        this.countPdfs = new tabBadgeLaboService();
+        this.countPdfs = new tabBadgeLaboService(this.sqlite);
         this.countPdfs.getTabBadgeLabo(this.tabgLabo, numDoss, codeClinique).then(function (res) {
             _this.countPdf = res.getFichier();
             _this.countPdfT = res.getFichierT();
         });
     };
     TabsPage.prototype.deleteAllLaboByNumDossier = function (numDoss, codeClinique) {
-        this.countPdfs = new tabBadgeLaboService();
+        this.countPdfs = new tabBadgeLaboService(this.sqlite);
         this.countPdfs.deletetabBadgeLabos(numDoss, codeClinique);
-        this.LabosFs = new LaboFService();
+        this.LabosFs = new LaboFService(this.sqlite);
         this.LabosFs.deleteLabos(numDoss, codeClinique);
-        this.LabosTs = new LaboTService();
+        this.LabosTs = new LaboTService(this.sqlite);
         this.LabosTs.deleteLabos(numDoss, codeClinique);
     };
     TabsPage.prototype.findListPreanesthesieByNumeroDossierResponse = function (numDoss, codeClinique) {
@@ -342,7 +346,7 @@ var TabsPage = (function () {
                             _this.ListPreanesthesieByNumeroDossierTest = false;
                         }
                         else {
-                            _this.ListePserv = new ListPreanesthesieService();
+                            _this.ListePserv = new ListPreanesthesieService(_this.sqlite);
                             _this.ListePserv.verifListPreanesthesie(_this.ListeP, numDoss, codeClinique).then(function (res) {
                                 if (res === false) {
                                     _this.ListePserv.getListPreanesthesies(_this.ListeP, numDoss, codeClinique);
@@ -355,7 +359,7 @@ var TabsPage = (function () {
                         tList.setFichierT(0);
                         tList.setcodeClinique(codeClinique);
                         _this.ListPreanesthesies.push(tList);
-                        _this.countListPreanesthesiess = new tabBadgeListPreanesthesie();
+                        _this.countListPreanesthesiess = new tabBadgeListPreanesthesie(_this.sqlite);
                         _this.countListPreanesthesiess.verifTabBadgeList(numDoss, codeClinique).then(function (res) {
                             if (res === false) {
                                 _this.countListPreanesthesiess.getTabBadgeList(_this.ListPreanesthesies, numDoss, codeClinique);
@@ -374,15 +378,15 @@ var TabsPage = (function () {
     };
     TabsPage.prototype.findListPreanesthesieByNumeroDossierResponseOff = function (numDoss, codeClinique) {
         var _this = this;
-        this.countListPreanesthesiess = new tabBadgeListPreanesthesie();
+        this.countListPreanesthesiess = new tabBadgeListPreanesthesie(this.sqlite);
         this.countListPreanesthesiess.getTabBadgeList(this.ListPreanesthesies, numDoss, codeClinique).then(function (res) {
             _this.coountListPreanesthesie = res.getFichier();
         });
     };
     TabsPage.prototype.deleteListPreanesthesieByNumeroDossierResponser = function (numDoss, codeClinique) {
-        this.countListPreanesthesiess = new tabBadgeListPreanesthesie();
+        this.countListPreanesthesiess = new tabBadgeListPreanesthesie(this.sqlite);
         this.countListPreanesthesiess.deletetabBadgeLists(numDoss, codeClinique);
-        this.ListePserv = new ListPreanesthesieService();
+        this.ListePserv = new ListPreanesthesieService(this.sqlite);
         this.ListePserv.deleteListPreanesthesies(numDoss, codeClinique);
     };
     TabsPage.prototype.getPlanificationTacheInfirmierByNumDossAndType = function (numDoss, type, etat, codeClinique) {
@@ -437,7 +441,7 @@ var TabsPage = (function () {
                         }
                     }
                     _this.coountConsigne = _this.consigne.length;
-                    _this.consigneserv = new ConsigneService();
+                    _this.consigneserv = new ConsigneService(_this.sqlite);
                     _this.consigneserv.verifConsigne(_this.consigne, numDoss, codeClinique, type, etat).then(function (res) {
                         if (res === false) {
                             _this.consigneserv.getConsignes(_this.consigne, numDoss, codeClinique, type, etat);
@@ -449,7 +453,7 @@ var TabsPage = (function () {
                     tConsigne.setFichierT(_this.coountConsigneT);
                     tConsigne.setcodeClinique(codeClinique);
                     _this.tabgConsigne.push(tConsigne);
-                    _this.countConsigneserv = new tabBadgeConsigneService();
+                    _this.countConsigneserv = new tabBadgeConsigneService(_this.sqlite);
                     _this.countConsigneserv.verifTabBadgeConsigne(numDoss, codeClinique).then(function (res) {
                         if (res === false) {
                             _this.countConsigneserv.getTabBadgeConsigne(_this.tabgConsigne, numDoss, codeClinique);
@@ -464,19 +468,44 @@ var TabsPage = (function () {
     };
     TabsPage.prototype.getPlanificationTacheInfirmierByNumDossAndTypeOff = function (numDoss, codeClinique) {
         var _this = this;
-        this.countConsigneserv = new tabBadgeConsigneService();
+        this.countConsigneserv = new tabBadgeConsigneService(this.sqlite);
         this.countConsigneserv.getTabBadgeConsigne(this.tabgConsigne, numDoss, codeClinique).then(function (res) {
             _this.coountConsigne = res.getFichier();
             _this.coountConsigneT = res.getFichierT();
         });
     };
     TabsPage.prototype.deletePlanificationTacheInfirmierByNumDossAndType = function (numDoss, type, etat, codeClinique) {
-        this.countConsigneserv = new tabBadgeConsigneService();
+        this.countConsigneserv = new tabBadgeConsigneService(this.sqlite);
         this.countConsigneserv.deletetabBadgeConsignes(numDoss, codeClinique);
-        this.consigneserv = new ConsigneService();
+        this.consigneserv = new ConsigneService(this.sqlite);
         this.consigneserv.deleteConsignes(numDoss, codeClinique);
     };
+    TabsPage.prototype.GetHour = function () {
+        var _this = this;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
+        var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+            '<soapenv:Header/>' +
+            '<soapenv:Body>' +
+            '  <ser:GetHour/>' +
+            '</soapenv:Body>' +
+            '</soapenv:Envelope>';
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                if (xmlhttp.status == 200) {
+                    var xml = xmlhttp.responseXML;
+                    var x;
+                    x = xml.getElementsByTagName("return");
+                    _this.heureActuelle = x[0].childNodes[0].nodeValue;
+                }
+            }
+        };
+        xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+        xmlhttp.responseType = "document";
+        xmlhttp.send(sr);
+    };
     TabsPage.prototype.update = function () {
+        this.GetHour();
         this.deleteAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
         this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
         this.deleteExamenRadioByNumDossResponse(this.pass.getdossier(), this.codeClinique);
@@ -495,7 +524,7 @@ TabsPage = __decorate([
         providers: [Variables]
     }),
     Injectable(),
-    __metadata("design:paramtypes", [NavParams, Variables, Platform])
+    __metadata("design:paramtypes", [NavParams, Variables, Platform, SQLite])
 ], TabsPage);
 export { TabsPage };
 //# sourceMappingURL=tabs.js.map

@@ -1,52 +1,52 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {AntecCh} from "../models/AntecCh";
 
 export class AlegchService {
   public aleg: Array<AntecCh> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
-  public verifAleg(alegs: any, idpass,codeClinique) : Promise<boolean> {
+  public verifAleg(alegs: any, idpass, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select count(*) as sum from Alegc where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.item(0).sum > 0) {
-            resolve(true);
-            return true;
-          }
-          else {
+
+      this.sqlite.create({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then((db: SQLiteObject) => {
+        db.executeSql("select count(*) as sum from Alegc where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.item(0).sum > 0) {
+              resolve(true);
+              return true;
+            }
+            else {
+              resolve(false);
+              return false;
+            }
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 0 Alegc  ' + error);
             resolve(false);
             return false;
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 0 Alegc  ' + error);
-          resolve(false);
-          return false;
-        })
-    });
-      db.close();
+          })
+      });
+
       return this;
     })
   }
 
-  public getAlegs(alegs: any, idpass,codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
+  public getAlegs(alegs: any, idpass, codeClinique) {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("select * from Alegc where idpass like '" + idpass + "' and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertAlegs(alegs,codeClinique);
+            this._insertAlegs(alegs, codeClinique);
           } else {
             var an;
             for (var i = 0; i < result.rows.length; i++) {
@@ -62,16 +62,16 @@ export class AlegchService {
           alert('Error 1 Alegc  ' + error);
         })
     });
-    db.close();
+
     return this.aleg;
   }
 
-  private _insertAlegs(alegs: Array<AntecCh>,codeClinique): void {
-    let db = new SQLite();
-    db.openDatabase({
+  private _insertAlegs(alegs: Array<AntecCh>, codeClinique): void {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in alegs) {
         if (!alegs.hasOwnProperty(key)) {
           continue;
@@ -87,25 +87,25 @@ export class AlegchService {
       console.error('Error opening database', error);
       alert('Error 2 Alegc ' + error);
     });
-    db.close();
+
   }
 
-  public deleteAlegs(idpass,codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
+  public deleteAlegs(idpass, codeClinique) {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from Alegc where  idpass like '" + idpass + "' and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-      //    alert("Suppression de table Aleg est terminé avec succes");
+          //    alert("Suppression de table Aleg est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 3 Alegc  ' + error);
         })
     });
-    db.close();
+
     return this.aleg;
   }
 }

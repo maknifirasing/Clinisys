@@ -1,52 +1,52 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {Labo} from "../models/Labo";
 
 export class LaboFService {
   public labo: Array<Labo> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
-  public verifLabo(labos: any, numDossier,codeClinique) : Promise<boolean> {
+  public verifLabo(labos: any, numDossier, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select count(*) as sum from LaboF where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.item(0).sum > 0) {
-            resolve(true);
-            return true;
-          }
-          else {
+
+      this.sqlite.create({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then((db: SQLiteObject) => {
+        db.executeSql("select count(*) as sum from LaboF where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.item(0).sum > 0) {
+              resolve(true);
+              return true;
+            }
+            else {
+              resolve(false);
+              return false;
+            }
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 0 LaboF  ' + error);
             resolve(false);
             return false;
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 0 LaboF  ' + error);
-          resolve(false);
-          return false;
-        })
-    });
-      db.close();
+          })
+      });
+
       return this;
     });
   }
 
-  public getLabos(labos: any, numDossier,codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
+  public getLabos(labos: any, numDossier, codeClinique) {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("select * from LaboF where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertLabos(labos,codeClinique);
+            this._insertLabos(labos, codeClinique);
           } else {
             var l;
             for (var i = 0; i < result.rows.length; i++) {
@@ -67,16 +67,16 @@ export class LaboFService {
           alert('Error 1 LaboF  ' + error);
         })
     });
-    db.close();
+
     return this.labo;
   }
 
-  private _insertLabos(labos: Array<Labo>,codeClinique): void {
-    let db = new SQLite();
-    db.openDatabase({
+  private _insertLabos(labos: Array<Labo>, codeClinique): void {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in labos) {
         if (!labos.hasOwnProperty(key)) {
           continue;
@@ -98,26 +98,26 @@ export class LaboFService {
       console.error('Error opening database', error);
       alert('Error 2 LaboF ' + error);
     });
-    db.close();
+
   }
 
-  public deleteLabos(numDossier,codeClinique) {
+  public deleteLabos(numDossier, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from LaboF where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-   //       alert("Suppression de table Labo est terminé avec succes");
+          //       alert("Suppression de table Labo est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 3 LaboF  ' + error);
         })
     });
-    db.close();
+
     return this.labo;
   }
 }

@@ -1,52 +1,52 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {Evenement} from "../models/Evenement";
 
 export class EvenementConService {
   public evenement: Array<Evenement> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
-  public verifEvenement(evenements: any, numdoss,codeClinique) : Promise<boolean> {
+  public verifEvenement(evenements: any, numdoss, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select count(*) as sum from EvenementCon where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.item(0).sum > 0) {
-            resolve(true);
-            return true;
-          }
-          else {
+
+      this.sqlite.create({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then((db: SQLiteObject) => {
+        db.executeSql("select count(*) as sum from EvenementCon where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.item(0).sum > 0) {
+              resolve(true);
+              return true;
+            }
+            else {
+              resolve(false);
+              return false;
+            }
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 0 EvenementCon  ' + error);
             resolve(false);
             return false;
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 0 EvenementCon  ' + error);
-          resolve(false);
-          return false;
-        })
-    });
-      db.close();
+          })
+      });
+
       return this;
     });
   }
 
-  public getEvenements(evenements: any, numdoss,codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
+  public getEvenements(evenements: any, numdoss, codeClinique) {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("select * from EvenementCon where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
-            this._insertEvenements(evenements,codeClinique);
+            this._insertEvenements(evenements, codeClinique);
           } else {
             var e;
             for (var i = 0; i < result.rows.length; i++) {
@@ -65,16 +65,16 @@ export class EvenementConService {
           alert('Error 1 EvenementCon  ' + error);
         })
     });
-    db.close();
+
     return this.evenement;
   }
 
-  private _insertEvenements(evenements: Array<Evenement>,codeClinique): void {
-    let db = new SQLite();
-    db.openDatabase({
+  private _insertEvenements(evenements: Array<Evenement>, codeClinique): void {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in evenements) {
         if (!evenements.hasOwnProperty(key)) {
           continue;
@@ -94,26 +94,26 @@ export class EvenementConService {
       console.error('Error opening database', error);
       alert('Error 2 EvenementCon ' + error);
     });
-    db.close();
+
   }
 
-   public deleteEvenementCons(numdoss,codeClinique) {
+  public deleteEvenementCons(numdoss, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from EvenementCon where  numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
- //         alert("Suppression de table EvenementCon est terminé avec succes");
+          //         alert("Suppression de table EvenementCon est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 3 EvenementCons  ' + error);
         })
     });
-    db.close();
+
     return this.evenement;
   }
 }

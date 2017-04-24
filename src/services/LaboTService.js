@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { Labo } from "../models/Labo";
 var LaboTService = (function () {
-    function LaboTService() {
+    function LaboTService(sqlite) {
+        this.sqlite = sqlite;
         this.labo = [];
     }
     LaboTService.prototype.verifLabo = function (labos, numDossier, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum  from LaboT where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,17 +29,15 @@ var LaboTService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     LaboTService.prototype.getLabos = function (labos, numDossier, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from LaboT where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
@@ -66,15 +63,13 @@ var LaboTService = (function () {
                 alert('Error 1 LaboT  ' + error);
             });
         });
-        db.close();
         return this.labo;
     };
     LaboTService.prototype._insertLabos = function (labos, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in labos) {
                 if (!labos.hasOwnProperty(key)) {
                     continue;
@@ -96,14 +91,12 @@ var LaboTService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 LaboT ' + error);
         });
-        db.close();
     };
     LaboTService.prototype.deleteLabos = function (numDossier, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from LaboT where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //     alert("Suppression de table Labo est terminé avec succes");
@@ -113,7 +106,6 @@ var LaboTService = (function () {
                 alert('Error 3 LaboT  ' + error);
             });
         });
-        db.close();
         return this.labo;
     };
     return LaboTService;

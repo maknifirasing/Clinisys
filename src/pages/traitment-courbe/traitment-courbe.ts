@@ -5,6 +5,7 @@ import {TraitCourbe} from "../../models/TraitCourbe";
 import {HistTraitCourbeService} from "../../services/HistTraitCourbeService";
 import {HistDossier} from "../../models/HistDossier";
 import {TraitCourbeService} from "../../services/TraitCourbeService";
+import {SQLite} from "@ionic-native/sqlite";
 
 @Component({
   selector: 'page-traitment-courbe',
@@ -25,7 +26,7 @@ export class TraitmentCourbe {
   private traitserv: any;
   chartData: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
@@ -88,7 +89,7 @@ export class TraitmentCourbe {
             courbe.setcodeClinique(codeClinique);
             this.traitcourbe.push(courbe);
           }
-          this.traitserv = new TraitCourbeService();
+          this.traitserv = new TraitCourbeService(this.sqlite);
           this.traitserv.verifTraitCourbe(this.traitcourbe, numdoss, codeClinique).then(res => {
             if (res === false) {
               this.traitserv.getTraitCourbes(this.traitcourbe, numdoss, codeClinique);
@@ -104,14 +105,14 @@ export class TraitmentCourbe {
   }
 
   getChartSurveillanceOff(traitcourbe, numdoss, codeClinique) {
-    this.traitserv = new TraitCourbeService();
+    this.traitserv = new TraitCourbeService(this.sqlite);
     this.traitserv.getTraitCourbes(traitcourbe, numdoss, codeClinique).then(res => {
       this.onecourbes(res);
     });
   }
 
   DeletegetChartSurveillance(numdoss, codeClinique) {
-    this.traitserv = new TraitCourbeService();
+    this.traitserv = new TraitCourbeService(this.sqlite);
     this.traitserv.deleteTraitCourbes(numdoss, codeClinique);
   }
 
@@ -234,7 +235,7 @@ export class TraitmentCourbe {
   }
 
   historique(numDoss, codeClinique) {
-    this.histserv = new HistTraitCourbeService();
+    this.histserv = new HistTraitCourbeService(this.sqlite);
     var h = new HistDossier();
     var d = new Date();
     h.setnumDoss(numDoss);
@@ -255,7 +256,7 @@ export class TraitmentCourbe {
   }
 
   historiqueOff(hist, numDoss, codeClinique) {
-    this.histserv = new HistTraitCourbeService();
+    this.histserv = new HistTraitCourbeService(this.sqlite);
     this.histserv.getHistTraitCourbes(hist, numDoss, codeClinique).then(res => {
       this.histc = res.getdate();
     });

@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { Users } from "../models/Users";
 var UserService = (function () {
-    function UserService() {
+    function UserService(sqlite) {
+        this.sqlite = sqlite;
         this.users = [];
     }
     UserService.prototype.verifUser = function (codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from Users where codeClinique like '" + codeClinique + "'", []).then(function (result) {
                     if (result.rows.item(0).sum > 0) {
                         resolve(true);
@@ -29,18 +28,16 @@ var UserService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     UserService.prototype.getUser = function (users, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select * from Users where codeClinique like '" + codeClinique + "'", []).then(function (result) {
                     if (result.rows.length === 0) {
                         _this._insertUser(users);
@@ -64,18 +61,16 @@ var UserService = (function () {
                     alert('Error 1 Users  ' + error);
                 });
             });
-            db.close();
             return _this;
         });
     };
     UserService.prototype.getAllUser = function () {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select * from Users ", []).then(function (result) {
                     if (result.rows.length > 0) {
                         var user;
@@ -95,16 +90,14 @@ var UserService = (function () {
                     alert('Error 1.1 Users  ' + error);
                 });
             });
-            db.close();
             return _this;
         });
     };
     UserService.prototype._insertUser = function (users) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in users) {
                 if (!users.hasOwnProperty(key)) {
                     continue;
@@ -121,16 +114,14 @@ var UserService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 Users ' + error);
         });
-        db.close();
     };
     UserService.prototype.deleteUsers = function (codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("delete from Users where codeClinique like '" + codeClinique + "'", [])
                     .then(function () {
                     resolve(true);
@@ -143,7 +134,6 @@ var UserService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };

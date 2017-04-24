@@ -15,19 +15,21 @@ import { Langue } from "../../models/Langue";
 import { UserService } from "../../services/UserService";
 import { LangueService } from "../../services/LangueService";
 import { ListePage } from "../liste/liste";
+import { SQLite } from "@ionic-native/sqlite";
 var ModifPassPage = (function () {
-    function ModifPassPage(navCtrl, navParams, Url) {
+    function ModifPassPage(navCtrl, navParams, Url, sqlite) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
+        this.sqlite = sqlite;
         this.users = [];
         this.langes = [];
         this.codeClinique = this.navParams.get("codeClinique");
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
         this.nomClinique = navParams.get("nomClinique");
-        this.userserv = new UserService();
+        this.userserv = new UserService(this.sqlite);
         this.userserv.getUser(this.users, this.codeClinique).then(function (res) {
             _this.user = res;
         });
@@ -64,7 +66,7 @@ var ModifPassPage = (function () {
                                 _this.userserv.deleteUsers(_this.codeClinique).then(function (res) {
                                     if (res === true) {
                                         _this.userserv.getUser(_this.users, _this.codeClinique);
-                                        _this.langserv = new LangueService();
+                                        _this.langserv = new LangueService(_this.sqlite);
                                         var l = new Langue();
                                         l.setlangue(_this.langue);
                                         l.setmatricule(user.getmatricule());
@@ -111,7 +113,7 @@ ModifPassPage = __decorate([
         templateUrl: 'modif-pass.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, SQLite])
 ], ModifPassPage);
 export { ModifPassPage };
 //# sourceMappingURL=modif-pass.js.map

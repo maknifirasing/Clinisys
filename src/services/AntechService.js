@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { AntecCh } from "../models/AntecCh";
 var AntechService = (function () {
-    function AntechService() {
+    function AntechService(sqlite) {
+        this.sqlite = sqlite;
         this.antec = [];
     }
     AntechService.prototype.verifAntec = function (antecs, idpass, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from Antech where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -29,17 +28,15 @@ var AntechService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     AntechService.prototype.getAntecs = function (antecs, idpass, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from Antech where idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
@@ -60,15 +57,13 @@ var AntechService = (function () {
                 alert('Error 1 Antech  ' + error);
             });
         });
-        db.close();
         return this.antec;
     };
     AntechService.prototype._insertAntecs = function (antecs, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in antecs) {
                 if (!antecs.hasOwnProperty(key)) {
                     continue;
@@ -84,14 +79,12 @@ var AntechService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 Antech ' + error);
         });
-        db.close();
     };
     AntechService.prototype.deleteAntecs = function (idpass, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from Antech where  idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //       alert("Suppression de table Antech est terminé avec succes");
@@ -101,7 +94,6 @@ var AntechService = (function () {
                 alert('Error 3 Antech  ' + error);
             });
         });
-        db.close();
         return this.antec;
     };
     return AntechService;

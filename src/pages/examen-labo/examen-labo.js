@@ -15,13 +15,15 @@ import { LaboFService } from "../../services/LaboFService";
 import { LaboTService } from "../../services/LaboTService";
 import { ClientDetailPage } from "../client-detail/client-detail";
 import { DossierPage } from "../dossier/dossier";
+import { SQLite } from "@ionic-native/sqlite";
 var ExamenLaboPage = (function () {
-    function ExamenLaboPage(navCtrl, navParams, Url, platform) {
+    function ExamenLaboPage(navCtrl, navParams, Url, platform, sqlite) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
         this.platform = platform;
+        this.sqlite = sqlite;
         this.LabosT = [];
         this.LabosF = [];
         this.tabLangue = navParams.get("tabLangue");
@@ -79,9 +81,9 @@ var ExamenLaboPage = (function () {
             langue: this.langue, codeClinique: this.codeClinique, pass: this.pass });
     };
     ExamenLaboPage.prototype.findAllLaboByNumDossierOff = function (numDoss, codeClinique) {
-        this.LabosFs = new LaboFService();
+        this.LabosFs = new LaboFService(this.sqlite);
         this.LabosF = this.LabosFs.getLabos(this.LabosF, numDoss, codeClinique);
-        this.LabosTs = new LaboTService();
+        this.LabosTs = new LaboTService(this.sqlite);
         this.LabosT = this.LabosTs.getLabos(this.LabosT, numDoss, codeClinique);
     };
     ExamenLaboPage.prototype.goToInfPage = function (patient) {
@@ -101,7 +103,7 @@ ExamenLaboPage = __decorate([
         templateUrl: 'examen-labo.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform, SQLite])
 ], ExamenLaboPage);
 export { ExamenLaboPage };
 //# sourceMappingURL=examen-labo.js.map

@@ -9,6 +9,7 @@ import {SigneCourbeSaturationService} from "../../services/SigneCourbeSaturation
 import {SigneCourbeTAService} from "../../services/SigneCourbeTAService";
 import {SigneCourbeTempService} from "../../services/SigneCourbeTempService";
 import {HistSigneCourbeService} from "../../services/HistSigneCourbeService";
+import {SQLite} from "@ionic-native/sqlite";
 
 @Component({
   selector: 'page-signe-courbe',
@@ -37,7 +38,7 @@ export class SigneCourbePage {
   tabBarElement: any;
   chartData: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 
     this.codeClinique = navParams.get("codeClinique");
@@ -115,35 +116,35 @@ export class SigneCourbePage {
             }
           }
 
-          this.sgcPserv = new SigneCourbePoulsService();
+          this.sgcPserv = new SigneCourbePoulsService(this.sqlite);
           this.sgcPserv.verifSigneCourbe(this.courbePouls, numdoss, codeClinique).then(res => {
             if (res === false) {
               this.sgcPserv.getSigneCourbes(this.courbePouls, numdoss, codeClinique);
             }
           });
 
-          this.sgcTAserv = new SigneCourbeTAService();
+          this.sgcTAserv = new SigneCourbeTAService(this.sqlite);
           this.sgcTAserv.verifSigneCourbe(this.courbeTA, numdoss, codeClinique).then(res => {
             if (res === false) {
               this.sgcTAserv.getSigneCourbes(this.courbeTA, numdoss, codeClinique);
             }
           });
 
-          this.sgcTserv = new SigneCourbeTempService();
+          this.sgcTserv = new SigneCourbeTempService(this.sqlite);
           this.sgcTserv.verifSigneCourbe(this.courbeTemp, numdoss, codeClinique).then(res => {
             if (res === false) {
               this.sgcTserv.getSigneCourbes(this.courbeTemp, numdoss, codeClinique);
             }
           });
 
-          this.sgcSserv = new SigneCourbeSaturationService();
+          this.sgcSserv = new SigneCourbeSaturationService(this.sqlite);
           this.sgcSserv.verifSigneCourbe(this.courbeSaturation, numdoss, codeClinique).then(res => {
             if (res === false) {
               this.sgcSserv.getSigneCourbes(this.courbeSaturation, numdoss, codeClinique);
             }
           });
 
-          this.sgcFserv = new SigneCourbeFrqService();
+          this.sgcFserv = new SigneCourbeFrqService(this.sqlite);
           this.sgcFserv.verifSigneCourbe(this.courbeFrq, numdoss, codeClinique).then(res => {
             if (res === false) {
               this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique);
@@ -159,43 +160,43 @@ export class SigneCourbePage {
   }
 
   DeletegetChartSurveillance(numdoss, codeClinique) {
-    this.sgcPserv = new SigneCourbePoulsService();
+    this.sgcPserv = new SigneCourbePoulsService(this.sqlite);
     this.sgcPserv.deleteSigneCourbes(numdoss, codeClinique);
 
-    this.sgcTAserv = new SigneCourbeTAService();
+    this.sgcTAserv = new SigneCourbeTAService(this.sqlite);
     this.sgcTAserv.deleteSigneCourbes(numdoss, codeClinique);
 
 
-    this.sgcTserv = new SigneCourbeTempService();
+    this.sgcTserv = new SigneCourbeTempService(this.sqlite);
     this.sgcTserv.deleteSigneCourbes(numdoss, codeClinique);
 
 
-    this.sgcSserv = new SigneCourbeSaturationService();
+    this.sgcSserv = new SigneCourbeSaturationService(this.sqlite);
     this.sgcSserv.deleteSigneCourbes(numdoss, codeClinique);
 
 
-    this.sgcFserv = new SigneCourbeFrqService();
+    this.sgcFserv = new SigneCourbeFrqService(this.sqlite);
     this.sgcFserv.deleteSigneCourbes(numdoss, codeClinique);
   }
 
   getChartSurveillanceOff(numdoss, codeClinique) {
-    this.sgcPserv = new SigneCourbePoulsService();
+    this.sgcPserv = new SigneCourbePoulsService(this.sqlite);
     this.sgcPserv.getSigneCourbes(this.courbePouls, numdoss, codeClinique).then(resp => {
       this.courbePouls = resp;
 
-      this.sgcTAserv = new SigneCourbeTAService();
+      this.sgcTAserv = new SigneCourbeTAService(this.sqlite);
       this.sgcTAserv.getSigneCourbes(this.courbeTA, numdoss, codeClinique).then(resta => {
         this.courbeTA = resta;
 
-        this.sgcTserv = new SigneCourbeTempService();
+        this.sgcTserv = new SigneCourbeTempService(this.sqlite);
         this.sgcTserv.getSigneCourbes(this.courbeTemp, numdoss, codeClinique).then(rest => {
           this.courbeTemp = rest;
 
-          this.sgcSserv = new SigneCourbeSaturationService();
+          this.sgcSserv = new SigneCourbeSaturationService(this.sqlite);
           this.sgcSserv.getSigneCourbes(this.courbeSaturation, numdoss, codeClinique).then(ress => {
             this.courbeSaturation = ress;
 
-            this.sgcFserv = new SigneCourbeFrqService();
+            this.sgcFserv = new SigneCourbeFrqService(this.sqlite);
             this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique).then(resf => {
               this.courbeFrq = resf;
 
@@ -344,7 +345,7 @@ export class SigneCourbePage {
   }
 
   historique(numDoss, codeClinique) {
-    this.histserv = new HistSigneCourbeService();
+    this.histserv = new HistSigneCourbeService(this.sqlite);
     var h = new HistDossier();
     var d = new Date();
     h.setnumDoss(numDoss);
@@ -366,7 +367,7 @@ export class SigneCourbePage {
   }
 
   historiqueOff(hist, numDoss, codeClinique) {
-    this.histserv = new HistSigneCourbeService();
+    this.histserv = new HistSigneCourbeService(this.sqlite);
     this.histserv.getHistSigneCourbes(hist, numDoss, codeClinique).then(res => {
       this.histc = res.getdate();
     });

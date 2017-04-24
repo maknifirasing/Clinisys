@@ -17,14 +17,16 @@ import { UserService } from "../../services/UserService";
 import { ListePage } from "../liste/liste";
 import { Langue } from "../../models/Langue";
 import { LangueService } from "../../services/LangueService";
+import { SQLite } from "@ionic-native/sqlite";
 var ListeCliniquePage = (function () {
-    function ListeCliniquePage(navCtrl, navParams, Url, viewCtrl, platform) {
+    function ListeCliniquePage(navCtrl, navParams, Url, viewCtrl, platform, sqlite) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
         this.viewCtrl = viewCtrl;
         this.platform = platform;
+        this.sqlite = sqlite;
         this.cliniqueact = [];
         this.cliniqueaut = [];
         this.clinique = [];
@@ -68,7 +70,7 @@ var ListeCliniquePage = (function () {
                         _this.clinique.push(c);
                     }
                     _this.getcliniques(_this.clinique);
-                    _this.clinserv = new CliniqueService();
+                    _this.clinserv = new CliniqueService(_this.sqlite);
                     _this.clinserv.verifClinique(_this.clinique).then(function (res) {
                         if (res === false) {
                             _this.clinserv.getCliniques(_this.clinique);
@@ -88,7 +90,7 @@ var ListeCliniquePage = (function () {
         this.cliniqueaut = [];
         this.cliniqueaut.length = 0;
         this.test = false;
-        this.userserv = new UserService();
+        this.userserv = new UserService(this.sqlite);
         this.userserv.getAllUser().then(function (res) {
             if (res.length > 0) {
                 for (var i = 0; i < cliniques.length; i++) {
@@ -118,14 +120,14 @@ var ListeCliniquePage = (function () {
     };
     ListeCliniquePage.prototype.ListCliniqueOff = function (cliniques) {
         var _this = this;
-        this.clinserv = new CliniqueService();
+        this.clinserv = new CliniqueService(this.sqlite);
         this.clinserv.getCliniques(cliniques).then(function (resact) {
             _this.getcliniques(resact);
         });
     };
     ListeCliniquePage.prototype.goToHomePage = function (codeC) {
         var _this = this;
-        this.userserv = new UserService();
+        this.userserv = new UserService(this.sqlite);
         this.userserv.verifUser(codeC.getcode()).then(function (user) {
             if (user === false) {
                 _this.navCtrl.push(HomePage, {
@@ -137,12 +139,13 @@ var ListeCliniquePage = (function () {
                 });
             }
             else {
-                _this.langserv = new LangueService();
+                _this.langserv = new LangueService(_this.sqlite);
                 _this.langserv.verifLangue().then(function (res) {
                     if (res === true) {
                         _this.langserv.getLangues(_this.langes).then(function (lg) {
                             var l = new Langue();
                             l.setlangue(lg.getlangue());
+                            l.setnom(lg.getnom());
                             l.setmatricule(lg.getmatricule());
                             l.setcodeClinique(codeC.getcode());
                             l.setnomClinique(codeC.getnom());
@@ -174,7 +177,7 @@ ListeCliniquePage = __decorate([
         templateUrl: 'liste-clinique.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables, ViewController, Platform])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, ViewController, Platform, SQLite])
 ], ListeCliniquePage);
 export { ListeCliniquePage };
 //# sourceMappingURL=liste-clinique.js.map

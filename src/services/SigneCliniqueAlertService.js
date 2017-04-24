@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { SigneClinique } from "../models/SigneClinique";
 var SigneCliniqueAlertService = (function () {
-    function SigneCliniqueAlertService() {
+    function SigneCliniqueAlertService(sqlite) {
+        this.sqlite = sqlite;
         this.signeClinique = [];
     }
     SigneCliniqueAlertService.prototype.verifSigneCliniqueAlert = function (signeCliniques, numDoss, dateFeuille, nature, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from SigneCliniqueAlert where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
                     + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
@@ -31,17 +30,15 @@ var SigneCliniqueAlertService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     SigneCliniqueAlertService.prototype.getSigneCliniquesAlert = function (signeCliniques, numDoss, dateFeuille, nature, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from SigneCliniqueAlert where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
                 + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
@@ -65,15 +62,13 @@ var SigneCliniqueAlertService = (function () {
                 alert('Error 1 SigneCliniqueAlert  ' + error);
             });
         });
-        db.close();
         return this.signeClinique;
     };
     SigneCliniqueAlertService.prototype._insertSigneCliniquesAlert = function (signeCliniques, numDoss, dateFeuille, nature, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in signeCliniques) {
                 if (!signeCliniques.hasOwnProperty(key)) {
                     continue;
@@ -94,14 +89,12 @@ var SigneCliniqueAlertService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 SigneCliniqueAlert ' + error);
         });
-        db.close();
     };
     SigneCliniqueAlertService.prototype.deleteSigneCliniquesAlert = function (numDoss, dateFeuille, nature, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from SigneCliniqueAlert where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 alert("Suppression de table SigneCliniqueAlert est terminé avec succes");
@@ -111,7 +104,6 @@ var SigneCliniqueAlertService = (function () {
                 alert('Error 3 SigneCliniqueAlert  ' + error);
             });
         });
-        db.close();
         return this.signeClinique;
     };
     return SigneCliniqueAlertService;

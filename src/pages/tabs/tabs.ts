@@ -22,8 +22,8 @@ import {ConsignePage} from "../consigne/consigne";
 import {Consigne} from "../../models/Consigne";
 import {ConsigneService} from "../../services/ConsigneService";
 import {tabBadgeConsigneService} from "../../services/tabBadgeConsigneService";
-import {HistDossierService} from "../../services/HistDossierService";
-import {HistDossier} from "../../models/HistDossier";
+import {RealisationPage} from "../realisation/realisation";
+import {SQLite} from "@ionic-native/sqlite";
 
 @Component({
   selector: 'page-tabs',
@@ -39,9 +39,11 @@ export class TabsPage {
   tab3Root: any = ExamenRadioPage;
   tab4Root: any = ListPreanesthesiePage;
   tab5Root: any = ConsignePage;
+  tab6Root: any = RealisationPage;
   pass: Patient;
   pdf: string;
   dateFeuille: string;
+  heureActuelle: any;
   tabLangue: any;
   countPdfT: number;
   countPdf: number;
@@ -76,7 +78,7 @@ export class TabsPage {
   private coountConsigneT: number;
   private countConsigneserv: any;
 
-  constructor(public navParams: NavParams, private Url: Variables, public platform: Platform) {
+  constructor(public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("mypatient");
     this.tabLangue = navParams.get("tabLangue");
@@ -187,21 +189,21 @@ export class TabsPage {
             tRadio.setcodeClinique(codeClinique);
             this.tabgRadio.push(tRadio);
 
-            this.RadiosFs = new ExamenRadioFService();
+            this.RadiosFs = new ExamenRadioFService(this.sqlite);
             this.RadiosFs.verifExamenRadio(this.examenRF, numDoss, codeClinique).then(res => {
               if (res === false) {
                 this.RadiosFs.getExamenRadios(this.examenRF, numDoss, codeClinique);
               }
             });
 
-            this.RadiosTs = new ExamenRadioTService();
+            this.RadiosTs = new ExamenRadioTService(this.sqlite);
             this.RadiosTs.verifExamenRadio(this.examenRT, numDoss, codeClinique).then(res => {
               if (res === false) {
                 this.RadiosTs.getExamenRadios(this.examenRT, numDoss, codeClinique);
               }
             });
 
-            this.countDocs = new tabBadgeRadioService();
+            this.countDocs = new tabBadgeRadioService(this.sqlite);
             this.countDocs.verifTabBadgeRadio(numDoss, codeClinique).then(res => {
               if (res === false) {
                 this.countDocs.getTabBadgeRadio(this.tabgRadio, numDoss, codeClinique);
@@ -220,7 +222,7 @@ export class TabsPage {
   }
 
   GetExamenRadioByNumDossResponseOff(numDoss, codeClinique) {
-    this.countDocs = new tabBadgeRadioService();
+    this.countDocs = new tabBadgeRadioService(this.sqlite);
     this.countDocs.getTabBadgeRadio(this.tabgRadio, numDoss, codeClinique).then(res => {
       this.coountexamenR = res.getFichier();
       this.coountexamenRT = res.getFichierT();
@@ -229,13 +231,13 @@ export class TabsPage {
   }
 
   deleteExamenRadioByNumDossResponse(numDoss, codeClinique) {
-    this.countDocs = new tabBadgeRadioService();
+    this.countDocs = new tabBadgeRadioService(this.sqlite);
     this.countDocs.deletetabBadgeRadios(numDoss, codeClinique);
 
-    this.RadiosFs = new ExamenRadioFService();
+    this.RadiosFs = new ExamenRadioFService(this.sqlite);
     this.RadiosFs.deleteExamenRadios(numDoss, codeClinique);
 
-    this.RadiosTs = new ExamenRadioTService();
+    this.RadiosTs = new ExamenRadioTService(this.sqlite);
     this.RadiosTs.deleteExamenRadios(numDoss, codeClinique);
   }
 
@@ -291,21 +293,21 @@ export class TabsPage {
             tLabo.setcodeClinique(codeClinique);
             this.tabgLabo.push(tLabo);
 
-            this.LabosFs = new LaboFService();
+            this.LabosFs = new LaboFService(this.sqlite);
             this.LabosFs.verifLabo(this.LabosF, numDoss, codeClinique).then(res => {
               if (res === false) {
                 this.LabosFs.getLabos(this.LabosF, numDoss, codeClinique);
               }
             });
 
-            this.LabosTs = new LaboTService();
+            this.LabosTs = new LaboTService(this.sqlite);
             this.LabosTs.verifLabo(this.LabosT, numDoss, codeClinique).then(res => {
               if (res === false) {
                 this.LabosTs.getLabos(this.LabosT, numDoss, codeClinique);
               }
             });
 
-            this.countPdfs = new tabBadgeLaboService();
+            this.countPdfs = new tabBadgeLaboService(this.sqlite);
             this.countPdfs.verifTabBadgeLabo(numDoss, codeClinique).then(res => {
               if (res === false) {
                 this.countPdfs.getTabBadgeLabo(this.tabgLabo, numDoss, codeClinique);
@@ -325,7 +327,7 @@ export class TabsPage {
   }
 
   findAllLaboByNumDossierOff(numDoss, codeClinique) {
-    this.countPdfs = new tabBadgeLaboService();
+    this.countPdfs = new tabBadgeLaboService(this.sqlite);
     this.countPdfs.getTabBadgeLabo(this.tabgLabo, numDoss, codeClinique).then(res => {
       this.countPdf = res.getFichier();
       this.countPdfT = res.getFichierT();
@@ -333,13 +335,13 @@ export class TabsPage {
   }
 
   deleteAllLaboByNumDossier(numDoss, codeClinique) {
-    this.countPdfs = new tabBadgeLaboService();
+    this.countPdfs = new tabBadgeLaboService(this.sqlite);
     this.countPdfs.deletetabBadgeLabos(numDoss, codeClinique);
 
-    this.LabosFs = new LaboFService();
+    this.LabosFs = new LaboFService(this.sqlite);
     this.LabosFs.deleteLabos(numDoss, codeClinique);
 
-    this.LabosTs = new LaboTService();
+    this.LabosTs = new LaboTService(this.sqlite);
     this.LabosTs.deleteLabos(numDoss, codeClinique);
   }
 
@@ -391,7 +393,7 @@ export class TabsPage {
             if (this.ListeP.length === 0) {
               this.ListPreanesthesieByNumeroDossierTest = false;
             } else {
-              this.ListePserv = new ListPreanesthesieService();
+              this.ListePserv = new ListPreanesthesieService(this.sqlite);
               this.ListePserv.verifListPreanesthesie(this.ListeP, numDoss, codeClinique).then(res => {
                 if (res === false) {
                   this.ListePserv.getListPreanesthesies(this.ListeP, numDoss, codeClinique);
@@ -407,7 +409,7 @@ export class TabsPage {
             tList.setcodeClinique(codeClinique);
             this.ListPreanesthesies.push(tList);
 
-            this.countListPreanesthesiess = new tabBadgeListPreanesthesie();
+            this.countListPreanesthesiess = new tabBadgeListPreanesthesie(this.sqlite);
             this.countListPreanesthesiess.verifTabBadgeList(numDoss, codeClinique).then(res => {
               if (res === false) {
                 this.countListPreanesthesiess.getTabBadgeList(this.ListPreanesthesies, numDoss, codeClinique);
@@ -427,17 +429,17 @@ export class TabsPage {
   }
 
   findListPreanesthesieByNumeroDossierResponseOff(numDoss, codeClinique) {
-    this.countListPreanesthesiess = new tabBadgeListPreanesthesie();
+    this.countListPreanesthesiess = new tabBadgeListPreanesthesie(this.sqlite);
     this.countListPreanesthesiess.getTabBadgeList(this.ListPreanesthesies, numDoss, codeClinique).then(res => {
       this.coountListPreanesthesie = res.getFichier();
     });
   }
 
   deleteListPreanesthesieByNumeroDossierResponser(numDoss, codeClinique) {
-    this.countListPreanesthesiess = new tabBadgeListPreanesthesie();
+    this.countListPreanesthesiess = new tabBadgeListPreanesthesie(this.sqlite);
     this.countListPreanesthesiess.deletetabBadgeLists(numDoss, codeClinique);
 
-    this.ListePserv = new ListPreanesthesieService();
+    this.ListePserv = new ListPreanesthesieService(this.sqlite);
     this.ListePserv.deleteListPreanesthesies(numDoss, codeClinique);
   }
 
@@ -494,7 +496,7 @@ export class TabsPage {
             }
           }
           this.coountConsigne = this.consigne.length;
-          this.consigneserv = new ConsigneService();
+          this.consigneserv = new ConsigneService(this.sqlite);
           this.consigneserv.verifConsigne(this.consigne, numDoss, codeClinique, type, etat).then(res => {
             if (res === false) {
               this.consigneserv.getConsignes(this.consigne, numDoss, codeClinique, type, etat);
@@ -508,7 +510,7 @@ export class TabsPage {
           tConsigne.setcodeClinique(codeClinique);
           this.tabgConsigne.push(tConsigne);
 
-          this.countConsigneserv = new tabBadgeConsigneService();
+          this.countConsigneserv = new tabBadgeConsigneService(this.sqlite);
           this.countConsigneserv.verifTabBadgeConsigne(numDoss, codeClinique).then(res => {
             if (res === false) {
               this.countConsigneserv.getTabBadgeConsigne(this.tabgConsigne, numDoss, codeClinique);
@@ -523,7 +525,7 @@ export class TabsPage {
   }
 
   getPlanificationTacheInfirmierByNumDossAndTypeOff(numDoss, codeClinique) {
-    this.countConsigneserv = new tabBadgeConsigneService();
+    this.countConsigneserv = new tabBadgeConsigneService(this.sqlite);
     this.countConsigneserv.getTabBadgeConsigne(this.tabgConsigne, numDoss, codeClinique).then(res => {
       this.coountConsigne = res.getFichier();
       this.coountConsigneT = res.getFichierT();
@@ -531,14 +533,41 @@ export class TabsPage {
   }
 
   deletePlanificationTacheInfirmierByNumDossAndType(numDoss, type, etat, codeClinique) {
-    this.countConsigneserv = new tabBadgeConsigneService();
+    this.countConsigneserv = new tabBadgeConsigneService(this.sqlite);
     this.countConsigneserv.deletetabBadgeConsignes(numDoss, codeClinique);
 
-    this.consigneserv = new ConsigneService();
+    this.consigneserv = new ConsigneService(this.sqlite);
     this.consigneserv.deleteConsignes(numDoss, codeClinique);
   }
 
+  GetHour() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '  <ser:GetHour/>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          var xml = xmlhttp.responseXML;
+          var x;
+          x = xml.getElementsByTagName("return");
+          this.heureActuelle = x[0].childNodes[0].nodeValue;
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
   update() {
+    this.GetHour();
+
     this.deleteAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
     this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
 

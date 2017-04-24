@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { HistDoc } from "../models/HistDoc";
 var HistDocService = (function () {
-    function HistDocService() {
+    function HistDocService(sqlite) {
+        this.sqlite = sqlite;
         this.histSigneCourbe = [];
     }
     HistDocService.prototype.verifHistDoc = function (numDoss, codeClinique, file) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from HistDoc where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and nom like '" + file + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,18 +29,16 @@ var HistDocService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     HistDocService.prototype.getHistDocs = function (histDossiers, numDoss, codeClinique, file) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select * from HistDoc where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and nom like '" + file + "'", [])
                     .then(function (result) {
                     if (result.rows.length === 0) {
@@ -69,16 +66,14 @@ var HistDocService = (function () {
                     alert('Error 1.1 HistDoc  ' + error);
                 });
             });
-            db.close();
             return _this;
         });
     };
     HistDocService.prototype._insertHistDocs = function (histDossiers) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in histDossiers) {
                 if (!histDossiers.hasOwnProperty(key)) {
                     continue;
@@ -95,14 +90,12 @@ var HistDocService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 HistDoc ' + error);
         });
-        db.close();
     };
     HistDocService.prototype.deleteHistDocs = function (numDoss, codeClinique, file) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from HistDoc where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and nom like '" + file + "'", [])
                 .then(function () {
                 //  alert("Suppression de table Patient est terminé avec succes");
@@ -112,7 +105,6 @@ var HistDocService = (function () {
                 alert('Error 3 HistDoc  ' + error);
             });
         });
-        db.close();
         return this.histSigneCourbe;
     };
     return HistDocService;

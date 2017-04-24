@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { Document } from "../models/Document";
 var DocumentService = (function () {
-    function DocumentService() {
+    function DocumentService(sqlite) {
+        this.sqlite = sqlite;
         this.document = [];
     }
     DocumentService.prototype.verifDocument = function (documents, observ, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sums from Document where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,18 +29,16 @@ var DocumentService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     DocumentService.prototype.getDocuments = function (documents, observ, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select * from Document where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.length === 0) {
@@ -65,16 +62,14 @@ var DocumentService = (function () {
                     alert('Error 1 Document  ' + error);
                 });
             });
-            db.close();
             return _this;
         });
     };
     DocumentService.prototype._insertDocuments = function (documents) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in documents) {
                 if (!documents.hasOwnProperty(key)) {
                     continue;
@@ -90,14 +85,12 @@ var DocumentService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 Document ' + error);
         });
-        db.close();
     };
     DocumentService.prototype.deleteDocuments = function (observ, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from Document where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //  alert("Suppression de table Patient est terminé avec succes");
@@ -107,7 +100,6 @@ var DocumentService = (function () {
                 alert('Error 3 Patient  ' + error);
             });
         });
-        db.close();
         return this.document;
     };
     return DocumentService;

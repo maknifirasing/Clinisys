@@ -8,6 +8,7 @@ import {LaboTService} from "../../services/LaboTService";
 import {ClientDetailPage} from "../client-detail/client-detail";
 import {DossierPage} from "../dossier/dossier";
 import {TabsPage} from "../tabs/tabs";
+import {SQLite} from "@ionic-native/sqlite";
 
 @Component({
   selector: 'page-examen-labo',
@@ -27,7 +28,7 @@ export class ExamenLaboPage {
   LabosFs: any;
   LabosTs: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,public platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,public platform: Platform,private sqlite: SQLite) {
     this.tabLangue = navParams.get("tabLangue");
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("pass");
@@ -84,10 +85,10 @@ export class ExamenLaboPage {
   }
 
   findAllLaboByNumDossierOff(numDoss, codeClinique) {
-    this.LabosFs = new LaboFService();
+    this.LabosFs = new LaboFService(this.sqlite);
     this.LabosF = this.LabosFs.getLabos(this.LabosF, numDoss, codeClinique);
 
-    this.LabosTs = new LaboTService();
+    this.LabosTs = new LaboTService(this.sqlite);
     this.LabosT = this.LabosTs.getLabos(this.LabosT, numDoss, codeClinique);
   }
 

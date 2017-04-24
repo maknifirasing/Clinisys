@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { Traitement } from "../models/Traitement";
 var TraitementService = (function () {
-    function TraitementService() {
+    function TraitementService(sqlite) {
+        this.sqlite = sqlite;
         this.traitement = [];
     }
     TraitementService.prototype.verifTraitement = function (traitements, numDoss, datefeuille, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from Traitement where numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,17 +29,15 @@ var TraitementService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     TraitementService.prototype.getTraitements = function (traitements, numDoss, datefeuille, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from Traitement where numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
@@ -63,15 +60,13 @@ var TraitementService = (function () {
                 alert('Error 1 Traitement  ' + error);
             });
         });
-        db.close();
         return this.traitement;
     };
     TraitementService.prototype._insertTraitements = function (traitements, datefeuille, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in traitements) {
                 if (!traitements.hasOwnProperty(key)) {
                     continue;
@@ -90,14 +85,12 @@ var TraitementService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 Traitement ' + error);
         });
-        db.close();
     };
     TraitementService.prototype.deleteTraitements = function (numDoss, datefeuille, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from Traitement where  numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //   alert("Suppression de table Traitement est terminé avec succes");
@@ -107,7 +100,6 @@ var TraitementService = (function () {
                 alert('Error 3 Traitement  ' + error);
             });
         });
-        db.close();
         return this.traitement;
     };
     return TraitementService;

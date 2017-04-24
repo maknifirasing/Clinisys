@@ -15,15 +15,15 @@ import { Langue } from "../../models/Langue";
 import { LangueService } from "../../services/LangueService";
 import { ListePage } from "../liste/liste";
 import { UserService } from "../../services/UserService";
+import { SQLite } from "@ionic-native/sqlite";
 var LanguesPage = (function () {
-    function LanguesPage(navCtrl, Url) {
+    function LanguesPage(navCtrl, Url, sqlite) {
         this.navCtrl = navCtrl;
         this.Url = Url;
+        this.sqlite = sqlite;
         this.langes = [];
         //  Variables.auth();
     }
-    LanguesPage.prototype.ionViewDidLoad = function () {
-    };
     LanguesPage.prototype.choixLang = function (lang) {
         var _this = this;
         if (lang === "arabe") {
@@ -35,18 +35,19 @@ var LanguesPage = (function () {
         else if (lang === "anglais") {
             this.tabLangue = Variables.anglais;
         }
-        this.userserv = new UserService();
+        this.userserv = new UserService(this.sqlite);
         this.userserv.getAllUser().then(function (user) {
             if (user.length === 0) {
                 _this.navCtrl.push(ListeCliniquePage, { tabLangue: _this.tabLangue, langue: lang });
             }
             else {
-                _this.langserv = new LangueService();
+                _this.langserv = new LangueService(_this.sqlite);
                 _this.langserv.verifLangue().then(function (res) {
                     if (res === true) {
                         _this.langserv.getLangues(_this.langes).then(function (lg) {
                             var l = new Langue();
                             l.setlangue(lang);
+                            l.setnom(lg.getnom());
                             l.setmatricule(lg.getmatricule());
                             l.setcodeClinique(lg.getcodeClinique());
                             l.setnomClinique(lg.getnomClinique());
@@ -80,7 +81,7 @@ LanguesPage = __decorate([
         templateUrl: 'langues.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, Variables])
+    __metadata("design:paramtypes", [NavController, Variables, SQLite])
 ], LanguesPage);
 export { LanguesPage };
 //# sourceMappingURL=langues.js.map

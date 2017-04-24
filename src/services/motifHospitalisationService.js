@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { MotifHospitalisation } from "../models/motifHospitalisation";
 var motifHospitalisationService = (function () {
-    function motifHospitalisationService() {
+    function motifHospitalisationService(sqlite) {
+        this.sqlite = sqlite;
         this.motifhospitalisation = new MotifHospitalisation();
     }
     motifHospitalisationService.prototype.verifmotifHospitalisation = function (motifhospitalisations, numdoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from motifHospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,18 +29,16 @@ var motifHospitalisationService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     motifHospitalisationService.prototype.getmotifHospitalisations = function (motifhospitalisations, numdoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select * from motifHospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.length === 0) {
@@ -62,16 +59,14 @@ var motifHospitalisationService = (function () {
                     alert('Error 1 motifHospitalisation  ' + error);
                 });
             });
-            db.close();
             return _this;
         });
     };
     motifHospitalisationService.prototype._insertmotifHospitalisations = function (motifhospitalisation, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql('insert into motifHospitalisation (groupeSang ,motifhospitalisation ,numdoss ,poid ,taille ,codeClinique)' +
                 ' values (?,?,?,?,?,?)', [
                 motifhospitalisation.getgroupeSang(),
@@ -85,14 +80,12 @@ var motifHospitalisationService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 motifHospitalisation ' + error);
         });
-        db.close();
     };
     motifHospitalisationService.prototype.deleteMotifhospitalisations = function (numdoss, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from Motifhospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //      alert("Suppression de table Motifhospitalisation est terminé avec succes");
@@ -102,7 +95,6 @@ var motifHospitalisationService = (function () {
                 alert('Error 3 Motifhospitalisation  ' + error);
             });
         });
-        db.close();
         return this.motifhospitalisation;
     };
     return motifHospitalisationService;

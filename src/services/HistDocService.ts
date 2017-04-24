@@ -1,19 +1,19 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {HistDoc} from "../models/HistDoc";
 
 export class HistDocService {
   public histSigneCourbe: Array<HistDoc> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
-  public verifHistDoc(numDoss, codeClinique,file): Promise<boolean> {
+  public verifHistDoc(numDoss, codeClinique, file): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sum from HistDoc where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and nom like '" + file + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -32,18 +32,18 @@ export class HistDocService {
             return false;
           })
       });
-      db.close();
+
       return this;
     });
   }
 
-  public getHistDocs(histDossiers: any, numDoss, codeClinique,file): Promise<HistDoc> {
+  public getHistDocs(histDossiers: any, numDoss, codeClinique, file): Promise<HistDoc> {
     return new Promise<HistDoc>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select * from HistDoc where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and nom like '" + file + "'", [])
           .then(result => {
             if (result.rows.length === 0) {
@@ -70,17 +70,17 @@ export class HistDocService {
             alert('Error 1.1 HistDoc  ' + error);
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   private _insertHistDocs(histDossiers: Array<HistDoc>): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in histDossiers) {
         if (!histDossiers.hasOwnProperty(key)) {
           continue;
@@ -97,17 +97,17 @@ export class HistDocService {
       console.error('Error opening database', error);
       alert('Error 2 HistDoc ' + error);
     });
-    db.close();
+
   }
 
 
-  public deleteHistDocs(numDoss, codeClinique,file) {
-    let db = new SQLite();
-    db.openDatabase({
+  public deleteHistDocs(numDoss, codeClinique, file) {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("delete from HistDoc where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique  + "'and nom like '" + file + "'", [])
+    }).then((db: SQLiteObject) => {
+      db.executeSql("delete from HistDoc where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and nom like '" + file + "'", [])
         .then(() => {
           //  alert("Suppression de table Patient est terminé avec succes");
         })
@@ -116,7 +116,7 @@ export class HistDocService {
           alert('Error 3 HistDoc  ' + error);
         })
     });
-    db.close();
+
     return this.histSigneCourbe;
   }
 }

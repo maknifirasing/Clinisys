@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { tabBadge } from "../models/tabBadge";
 var tabBadgeLaboService = (function () {
-    function tabBadgeLaboService() {
+    function tabBadgeLaboService(sqlite) {
+        this.sqlite = sqlite;
         this.tabBadgeLabo = [];
     }
     tabBadgeLaboService.prototype.verifTabBadgeLabo = function (numDoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from tabBadgeLabo where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,18 +29,16 @@ var tabBadgeLaboService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     tabBadgeLaboService.prototype.getTabBadgeLabo = function (tabBadgeLabos, numDoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select * from tabBadgeLabo where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.length === 0) {
@@ -65,16 +62,14 @@ var tabBadgeLaboService = (function () {
                     alert('Error 1 tabBadgeLabo  ' + error);
                 });
             });
-            db.close();
             return _this;
         });
     };
     tabBadgeLaboService.prototype._inserttabBadgeLabos = function (tabBadgeLabos) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in tabBadgeLabos) {
                 if (!tabBadgeLabos.hasOwnProperty(key)) {
                     continue;
@@ -91,14 +86,12 @@ var tabBadgeLaboService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 tabBadgeLabo ' + error);
         });
-        db.close();
     };
     tabBadgeLaboService.prototype.deletetabBadgeLabos = function (numDoss, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from tabBadgeLabo where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //   alert("Suppression de table Traitement est terminé avec succes");
@@ -108,7 +101,6 @@ var tabBadgeLaboService = (function () {
                 alert('Error 3 tabBadgeLabos  ' + error);
             });
         });
-        db.close();
         return this.tabBadgeLabo;
     };
     return tabBadgeLaboService;

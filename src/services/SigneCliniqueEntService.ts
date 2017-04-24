@@ -1,19 +1,19 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {SigneClinique} from "../models/SigneClinique";
 
 export class SigneCliniqueEntService {
   public signeClinique: Array<SigneClinique> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
   public verifSigneClinique(signeCliniques: any, numDoss, dateFeuille, nature, codeType, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sum from SigneCliniqueEnt where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
           + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
@@ -33,18 +33,18 @@ export class SigneCliniqueEntService {
             return false;
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   public getSigneCliniques(signeCliniques: any, numDoss, dateFeuille, nature, codeType, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("select * from SigneCliniqueEnt where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
         + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
@@ -66,16 +66,16 @@ export class SigneCliniqueEntService {
           alert('Error 1 SigneCliniqueEnt  ' + error);
         })
     });
-    db.close();
+
     return this.signeClinique;
   }
 
   private _insertSigneCliniques(signeCliniques: Array<SigneClinique>, numDoss, dateFeuille, nature, codeType, codeClinique): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in signeCliniques) {
         if (!signeCliniques.hasOwnProperty(key)) {
           continue;
@@ -96,16 +96,16 @@ export class SigneCliniqueEntService {
       console.error('Error opening database', error);
       alert('Error 2 SigneCliniqueEnt ' + error);
     });
-    db.close();
+
   }
 
   public deleteSigneCliniques(numDoss, dateFeuille, nature, codeType, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from SigneCliniqueEnt where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           //      alert("Suppression de table SigneCliniqueEnt est terminé avec succes");
@@ -115,7 +115,7 @@ export class SigneCliniqueEntService {
           alert('Error 3 SigneCliniqueEnt  ' + error);
         })
     });
-    db.close();
+
     return this.signeClinique;
   }
 }

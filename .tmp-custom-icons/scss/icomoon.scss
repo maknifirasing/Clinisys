@@ -36,11 +36,14 @@
   @if $filename == dossier {
   $char: "\E003";
 }
-  @if $filename == lab {
+  @if $filename == info {
   $char: "\E004";
 }
-  @if $filename == radio {
+  @if $filename == lab {
   $char: "\E005";
+}
+  @if $filename == radio {
+  $char: "\E006";
 }
 
 @return $char;
@@ -65,6 +68,9 @@
 }
 .ico-dossier {
   @include ico(dossier);
+}
+.ico-info {
+  @include ico(info);
 }
 .ico-lab {
   @include ico(lab);

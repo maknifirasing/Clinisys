@@ -16,13 +16,15 @@ import { DossierPage } from "../dossier/dossier";
 import { ConsigneService } from "../../services/ConsigneService";
 import { tabBadge } from "../../models/tabBadge";
 import { tabBadgeConsigneService } from "../../services/tabBadgeConsigneService";
+import { SQLite } from "@ionic-native/sqlite";
 var ConsignePage = (function () {
-    function ConsignePage(navCtrl, navParams, Url, platform) {
+    function ConsignePage(navCtrl, navParams, Url, platform, sqlite) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
         this.platform = platform;
+        this.sqlite = sqlite;
         this.consigne = [];
         this.coountConsigne = 0;
         this.coountConsigneT = 0;
@@ -53,7 +55,7 @@ var ConsignePage = (function () {
         });
     };
     ConsignePage.prototype.getPlanificationTacheInfirmierByNumDossAndTypeOff = function (consigne, numDoss, type, etat, codeClinique) {
-        this.consigneserv = new ConsigneService();
+        this.consigneserv = new ConsigneService(this.sqlite);
         this.consigne = this.consigneserv.getConsignes(consigne, numDoss, codeClinique, type, etat);
     };
     ConsignePage.prototype.CreatePlanificationTacheInfirmiereForTablette = function (details) {
@@ -160,7 +162,7 @@ var ConsignePage = (function () {
                         }
                     }
                     _this.coountConsigne = _this.consigne.length;
-                    _this.consigneserv = new ConsigneService();
+                    _this.consigneserv = new ConsigneService(_this.sqlite);
                     _this.consigneserv.verifConsigne(_this.consigne, numDoss, codeClinique, type, etat).then(function (res) {
                         if (res === false) {
                             _this.consigneserv.getConsignes(_this.consigne, numDoss, codeClinique, type, etat);
@@ -172,7 +174,7 @@ var ConsignePage = (function () {
                     tConsigne.setFichierT(_this.coountConsigneT);
                     tConsigne.setcodeClinique(codeClinique);
                     _this.tabgConsigne.push(tConsigne);
-                    _this.countConsigneserv = new tabBadgeConsigneService();
+                    _this.countConsigneserv = new tabBadgeConsigneService(_this.sqlite);
                     _this.countConsigneserv.verifTabBadgeConsigne(numDoss, codeClinique).then(function (res) {
                         if (res === false) {
                             _this.countConsigneserv.getTabBadgeConsigne(_this.tabgConsigne, numDoss, codeClinique);
@@ -187,9 +189,9 @@ var ConsignePage = (function () {
     };
     ConsignePage.prototype.deletePlanificationTacheInfirmierByNumDossAndType = function (numDoss, type, etat, codeClinique) {
         var _this = this;
-        this.countConsigneserv = new tabBadgeConsigneService();
+        this.countConsigneserv = new tabBadgeConsigneService(this.sqlite);
         this.countConsigneserv.deletetabBadgeConsignes(numDoss, codeClinique);
-        this.consigneserv = new ConsigneService();
+        this.consigneserv = new ConsigneService(this.sqlite);
         this.consigneserv.deleteConsignes(numDoss, codeClinique).then(function (res) {
             if (res === true) {
                 _this.getPlanificationTacheInfirmierByNumDossAndType(numDoss, type, etat, codeClinique);
@@ -208,7 +210,7 @@ ConsignePage = __decorate([
         templateUrl: 'consigne.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform, SQLite])
 ], ConsignePage);
 export { ConsignePage };
 //# sourceMappingURL=consigne.js.map

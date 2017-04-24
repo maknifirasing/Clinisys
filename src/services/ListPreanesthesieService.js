@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { ListPreanesthesie } from "../models/ListPreanesthesie";
 var ListPreanesthesieService = (function () {
-    function ListPreanesthesieService() {
+    function ListPreanesthesieService(sqlite) {
+        this.sqlite = sqlite;
         this.listPreanesthesie = [];
     }
     ListPreanesthesieService.prototype.verifListPreanesthesie = function (ListPreanesthesies, numeroDossier, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum  from ListPreanesthesie where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,17 +29,15 @@ var ListPreanesthesieService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     ListPreanesthesieService.prototype.getListPreanesthesies = function (ListPreanesthesies, numeroDossier, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from ListPreanesthesie where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
@@ -66,15 +63,13 @@ var ListPreanesthesieService = (function () {
                 alert('Error 1 listPreanesthesie  ' + error);
             });
         });
-        db.close();
         return this.listPreanesthesie;
     };
     ListPreanesthesieService.prototype._insertListPreanesthesies = function (ListPreanesthesies, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in ListPreanesthesies) {
                 if (!ListPreanesthesies.hasOwnProperty(key)) {
                     continue;
@@ -95,14 +90,12 @@ var ListPreanesthesieService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 listPreanesthesie ' + error);
         });
-        db.close();
     };
     ListPreanesthesieService.prototype.deleteListPreanesthesies = function (numeroDossier, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from ListPreanesthesie where numeroDossier like '" + numeroDossier + "' and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //    alert("Suppression de table Aleg est terminé avec succes");
@@ -112,7 +105,6 @@ var ListPreanesthesieService = (function () {
                 alert('Error 3 ListPreanesthesie  ' + error);
             });
         });
-        db.close();
         return this.listPreanesthesie;
     };
     return ListPreanesthesieService;

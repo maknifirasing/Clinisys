@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { Evenement } from "../models/Evenement";
 var EvenementExaService = (function () {
-    function EvenementExaService() {
+    function EvenementExaService(sqlite) {
+        this.sqlite = sqlite;
         this.evenement = [];
     }
     EvenementExaService.prototype.verifEvenement = function (evenements, numdoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum  from EvenementExa where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,17 +29,15 @@ var EvenementExaService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     EvenementExaService.prototype.getEvenements = function (evenements, numdoss, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from EvenementExa where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
@@ -64,15 +61,13 @@ var EvenementExaService = (function () {
                 alert('Error 1 EvenementExa  ' + error);
             });
         });
-        db.close();
         return this.evenement;
     };
     EvenementExaService.prototype._insertEvenements = function (evenements, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in evenements) {
                 if (!evenements.hasOwnProperty(key)) {
                     continue;
@@ -92,14 +87,12 @@ var EvenementExaService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 EvenementExa ' + error);
         });
-        db.close();
     };
     EvenementExaService.prototype.deleteEvenementExas = function (numdoss, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from EvenementExa where  numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //    alert("Suppression de table EvenementExa est terminé avec succes");
@@ -109,7 +102,6 @@ var EvenementExaService = (function () {
                 alert('Error 3 EvenementExa  ' + error);
             });
         });
-        db.close();
         return this.evenement;
     };
     return EvenementExaService;
