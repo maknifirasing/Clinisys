@@ -218,14 +218,10 @@ export class Variables {
   }
 
   static uRL = "";
+  static path = "";
 
   constructor(public http: Http, public navCtrl: NavController) {
-<<<<<<< HEAD
-    this.url = "http://192.168.0.56:8084/";
-    Variables.uRL = this.url;
-=======
     Variables.uRL = "http://192.168.0.63:8084/";
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   }
 
 

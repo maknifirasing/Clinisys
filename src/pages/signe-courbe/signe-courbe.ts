@@ -1,11 +1,5 @@
-<<<<<<< HEAD
-import {Component, ViewChild} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
-import {Chart} from 'chart.js';
-=======
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 import {SigneCourbe} from "../../models/SigneCourbe";
 import {Variables} from "../../providers/variables";
 import {SigneCourbePoulsService} from "../../services/SigneCourbePoulsService";
@@ -15,17 +9,15 @@ import {SigneCourbeSaturationService} from "../../services/SigneCourbeSaturation
 import {SigneCourbeTAService} from "../../services/SigneCourbeTAService";
 import {SigneCourbeTempService} from "../../services/SigneCourbeTempService";
 import {HistSigneCourbeService} from "../../services/HistSigneCourbeService";
-<<<<<<< HEAD
-//import {ScreenOrientation} from '@ionic-native/screen-orientation';
-=======
 import {SQLite} from "@ionic-native/sqlite";
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 @Component({
   selector: 'page-signe-courbe',
   templateUrl: 'signe-courbe.html',
-  providers: [Variables]
+  providers: [ScreenOrientation,Variables]
 })
+
 export class SigneCourbePage {
   codeClinique: any;
   tabLangue: any;
@@ -44,20 +36,13 @@ export class SigneCourbePage {
   private sgcTserv: any;
   private sgcSserv: any;
   private sgcFserv: any;
-<<<<<<< HEAD
-  private langue: any;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
-    //   this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
-=======
   langue: any;
   tabBarElement: any;
   chartData: any;
+  pathimage=Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite,private screenOrientation: ScreenOrientation) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
-
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.pass = navParams.get("pass");
@@ -75,9 +60,15 @@ export class SigneCourbePage {
     });
   }
 
+
   ionViewDidLoad() {
+    this.tabBarElement.style.display = 'none';
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+  }
 
-
+  ionViewWillLeave() {
+    this.tabBarElement.style.display = 'flex';
+    this.screenOrientation.unlock();
   }
 
   getChartSurveillance(numdoss, codeClinique) {
@@ -163,11 +154,7 @@ export class SigneCourbePage {
               this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique);
             }
           });
-<<<<<<< HEAD
-          this.cPouls(this.courbePouls);
-=======
           this.doublecourbes(this.courbePouls, this.courbeTA, this.courbeTemp, this.courbeSaturation, this.courbeFrq);
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         }
       }
     }
@@ -217,16 +204,6 @@ export class SigneCourbePage {
             this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique).then(resf => {
               this.courbeFrq = resf;
 
-<<<<<<< HEAD
-    this.sgcFserv = new SigneCourbeFrqService();
-    this.courbeFrq = this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique);
-
-    this.cPouls(this.courbePouls);
-  }
-
-  cPouls(courbe) {
-    var labelcourbe: Array<string> = [];
-=======
               this.doublecourbes(this.courbePouls, this.courbeTA, this.courbeTemp, this.courbeSaturation, this.courbeFrq);
             });
           });
@@ -266,22 +243,15 @@ export class SigneCourbePage {
       dataTA1.push(x);
       dataTA2.push(y);
     }
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
     for (var i = 0; i < courbeTemp.length; i++) {
       labelcourbeTemp.push((courbeTemp[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeTemp[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeTemp[i].getheurePrise());
       dataTemp.push(Number(courbeTemp[i].getquantite()));
     }
 
-<<<<<<< HEAD
-    for (var i = 0; i < courbe.length; i++) {
-      labelcourbe.push((courbe[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbe[i].getdateHeurePrise()).substr(5, 2) + "-" + courbe[i].getheurePrise());
-      data.push(courbe[i].getquantite())
-=======
     for (var i = 0; i < courbeSaturation.length; i++) {
       labelcourbeSaturation.push((courbeSaturation[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeSaturation[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeSaturation[i].getheurePrise());
       dataSaturation.push(Number(courbeSaturation[i].getquantite()));
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
     }
 
     for (var i = 0; i < courbeFrq.length; i++) {
@@ -289,48 +259,6 @@ export class SigneCourbePage {
       dataFrq.push(Number(courbeFrq[i].getquantite()));
     }
 
-<<<<<<< HEAD
-    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-      type: 'line',
-      data: {
-        labels: labelcourbe,
-        datasets: [{
-          label: courbe[0].getdesignation(),
-          fill: false,
-          lineTension: 0.1,
-          backgroundColor: "rgb(" + courbe[0].getcolor() + ")",
-          borderColor: "rgb(" + courbe[0].getcolor() + ")",
-          borderCapStyle: 'butt',
-          borderDash: [],
-          borderDashOffset: 0.0,
-          borderJoinStyle: 'miter',
-          pointBorderColor: "rgb(" + courbe[0].getcolor() + ")",
-          pointBackgroundColor: "rgb(" + courbe[0].getcolor() + ")",
-          pointBorderWidth: 1,
-          pointHoverRadius: 10,
-          pointHoverBackgroundColor: "rgb(" + courbe[0].getcolor() + ")",
-          pointHoverBorderColor: "rgb(" + courbe[0].getcolor() + ")",
-          pointHoverBorderWidth: 2,
-          pointRadius: 1,
-          pointHitRadius: 10,
-          data: data,
-          spanGaps: true
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {min: Number(courbe[0].getseuilMin()), max: Number(courbe[0].getseuilMax())},
-          }
-          ],
-          xAxes: [{
-            //     scaleOverride: true,
-            //     scaleSteps: 3,
-            //     scaleStepWidth: Math.ceil(max / steps),
-            ticks: {min: data[0], max: data[data.length]},
-            //       scaleStartValue: data[data.length - 3]
-          }]
-=======
     this.chartData = {
       chart: {
         type: 'line',
@@ -374,7 +302,6 @@ export class SigneCourbePage {
       yAxis: {
         title: {
           text: ''
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         }
 
       },
@@ -454,11 +381,5 @@ export class SigneCourbePage {
     this.DeletegetChartSurveillance(this.pass.getdossier(), this.codeClinique);
     this.getChartSurveillance(this.pass.getdossier(), this.codeClinique);
     this.historique(this.pass.getdossier(), this.codeClinique);
-    this.cPouls(this.courbePouls);
   }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 }

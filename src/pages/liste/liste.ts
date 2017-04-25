@@ -17,11 +17,13 @@ import {ModifPassPage} from "../modif-pass/modif-pass";
 import {LangueService} from "../../services/LangueService";
 import {Langue} from "../../models/Langue";
 import {SQLite} from "@ionic-native/sqlite";
+
 @Component({
   selector: 'page-liste',
   templateUrl: 'liste.html',
   providers: [Variables]
 })
+
 export class ListePage {
   @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   xml: any;
@@ -42,6 +44,7 @@ export class ListePage {
   langue: any;
   private langserv: any;
   langes: Array<Langue> = [];
+  pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public menuCtrl: MenuController, public platform: Platform,private sqlite: SQLite) {
     this.dtFeuille = new DateFeuille();

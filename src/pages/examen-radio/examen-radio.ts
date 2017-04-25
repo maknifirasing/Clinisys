@@ -16,10 +16,7 @@ import {ClientDetailPage} from "../client-detail/client-detail";
 import {DossierPage} from "../dossier/dossier";
 import {HistDoc} from "../../models/HistDoc";
 import {HistDocService} from "../../services/HistDocService";
-<<<<<<< HEAD
-=======
 import {SQLite} from "@ionic-native/sqlite";
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
 declare var cordova: any;
 @Component({
@@ -47,6 +44,7 @@ export class ExamenRadioPage {
   private histDoc: Array<HistDoc> = [];
   private histdoc = new HistDoc();
   private histdocserv: any;
+  pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private themeableBrowser: ThemeableBrowser, public alertCtrl: AlertController
     ,private transfer: Transfer, private file: File,private sqlite: SQLite) {
@@ -73,7 +71,6 @@ export class ExamenRadioPage {
   }
 
   getdocumentById(observ) {
-    alert("ts magdoud");
     observ += ".html";
   //  observ += "a2a01d9b-684b-478f-824e-5ae8a95bcc0b.html";
     this.platform.ready().then(() => {
@@ -95,12 +92,6 @@ export class ExamenRadioPage {
       Variables.checconnection().then(connexion => {
         if (connexion === false) {
           this.connection = false;
-<<<<<<< HEAD
-          this.historiqueDocOff(this.histDoc, this.pass.getdossier(), observ, this.codeClinique);
-          this.docserv = new DocumentService();
-          this.docserv.getDocuments(this.document, observ, this.codeClinique).then(res => {
-            this.retrieveImageOff(res);
-=======
 
           this.histdocserv = new HistDocService(this.sqlite);
           this.histdocserv.getHistDocs(this.histDoc, this.pass.getdossier(), observ, this.codeClinique).then(result => {
@@ -109,27 +100,11 @@ export class ExamenRadioPage {
             this.docserv.getDocuments(this.document, observ, this.codeClinique).then(res => {
               this.retrieveImageOff(res);
             });
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
           });
 
         }
         else {
           this.connection = true;
-<<<<<<< HEAD
-          var d = new Document();
-          d.seturl(this.storageDirectory + observ);
-          d.setobserv(observ);
-          d.setcodeClinique(this.codeClinique);
-          this.document.push(d);
-          this.historiqueDoc(this.pass.getdossier(), observ, this.codeClinique);
-          this.docserv = new DocumentService();
-          this.docserv.verifDocument(this.document, observ, this.codeClinique).then(res => {
-            if (res === false) {
-              this.docserv.getDocuments(this.document, observ, this.codeClinique);
-            }
-          });
-=======
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           this.histdocserv = new HistDocService(this.sqlite);
           var hi = new HistDoc();
@@ -201,29 +176,6 @@ export class ExamenRadioPage {
   }
 
   open(url) {
-<<<<<<< HEAD
-    const options: ThemeableBrowserOptions = {
-      statusbar: {
-        color: '#ffffffff'
-      },
-      toolbar: {
-        height: 44,
-        color: '#f0f0f0ff'
-      },
-      title: {
-        color: '#003264ff',
-        staticText: this.tabLangue.titreHorsLigne+" "+this.histdoc,
-        showPageTitle: false
-      },
-    /*  backButton: {
-        image: url("/android_asset/www/assets/img/red.png"),
-
-        align: 'left',
-
-      },*/
-    };
-    const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_blank', options);
-=======
     if (((this.langue === "francais") || (this.langue === "anglais")) && (this.connection)) {
       const options: ThemeableBrowserOptions = {
         statusbar: {
@@ -239,7 +191,7 @@ export class ExamenRadioPage {
           showPageTitle: false
         },
         backButton: {
-          wwwImage: '/android_asset/www/assets/img/green.png',
+          wwwImage: '{{pathimage}}/green.png',
           align: 'left'
         }
       };
@@ -261,7 +213,7 @@ export class ExamenRadioPage {
           showPageTitle: false
         },
         backButton: {
-          wwwImage: '/android_asset/www/assets/img/red.png',
+          wwwImage: '{{pathimage}}/red.png',
           align: 'left'
         }
       };
@@ -283,7 +235,7 @@ export class ExamenRadioPage {
           showPageTitle: false,
         },
         backButton: {
-          wwwImage: '/android_asset/www/assets/img/green.png',
+          wwwImage: '{{pathimage}}/green.png',
           align: 'left'
         }
       };
@@ -307,13 +259,12 @@ export class ExamenRadioPage {
         },
 
         backButton: {
-          wwwImage: '/android_asset/www/assets/img/red.png',
+          wwwImage: '{{pathimage}}/red.png',
           align: 'left'
         }
       };
       const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_blank', options);
     }
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   }
 
   downloadImage(url, doc) {
@@ -417,36 +368,4 @@ export class ExamenRadioPage {
       });
   }
 
-<<<<<<< HEAD
-  historiqueDoc(numDoss, file, codeClinique) {
-    this.histdocserv = new HistDocService();
-    var hi  = new HistDoc();
-    var d = new Date();
-    hi.setnumDoss(numDoss);
-    hi.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
-    hi.setcodeClinique(codeClinique);
-    hi.setnom(file);
-    this.histDoc.push(hi);
-    try {
-      this.histdocserv.deleteHistDocs(numDoss, codeClinique, file);
-      this.histdocserv.getHistDocs(this.histDoc, numDoss, codeClinique, file).then(result => {
-        this.histdoc = result.getdate();
-      });
-    }
-    catch (Error) {
-      this.histdocserv.getHistDocs(this.histDoc, numDoss, codeClinique, file).then(result => {
-        this.histdoc = result.getdate();
-      });
-    }
-
-  }
-
-  historiqueDocOff(hist, numDoss, file, codeClinique) {
-    this.histdocserv = new HistDocService();
-    this.histdocserv.getHistDocs(hist, numDoss, codeClinique, file).then(result => {
-      this.histdoc = result.getdate();
-    });
-  }
-=======
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 }

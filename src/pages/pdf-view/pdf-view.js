@@ -16,10 +16,7 @@ import { Variables } from "../../providers/variables";
 import { HistDossier } from "../../models/HistDossier";
 import { HistPdfService } from "../../services/HistPdfService";
 import { HistDoc } from "../../models/HistDoc";
-<<<<<<< HEAD
-=======
 import { SQLite } from "@ionic-native/sqlite";
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 var PdfViewPage = (function () {
     function PdfViewPage(navCtrl, navParams, PdfViewerComponent, platform, alertCtrl, transfer, file, sqlite) {
         var _this = this;
@@ -135,11 +132,7 @@ var PdfViewPage = (function () {
     };
     PdfViewPage.prototype.historique = function (numDoss, file, codeClinique) {
         var _this = this;
-<<<<<<< HEAD
-        this.histserv = new HistPdfService();
-=======
         this.histserv = new HistPdfService(this.sqlite);
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         var h = new HistDoc();
         var d = new Date();
         h.setnumDoss(numDoss);
@@ -161,11 +154,7 @@ var PdfViewPage = (function () {
     };
     PdfViewPage.prototype.historiqueOff = function (hist, numDoss, file, codeClinique) {
         var _this = this;
-<<<<<<< HEAD
-        this.histserv = new HistPdfService();
-=======
         this.histserv = new HistPdfService(this.sqlite);
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         this.histserv.getHistPdfs(hist, numDoss, codeClinique, file).then(function (res) {
             _this.histp = res.getdate();
         });

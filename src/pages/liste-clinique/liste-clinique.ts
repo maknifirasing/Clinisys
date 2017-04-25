@@ -29,6 +29,7 @@ export class ListeCliniquePage {
   langserv: any;
   langes: Array<Langue> = [];
   test: boolean;
+  pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private viewCtrl: ViewController, public platform: Platform,private sqlite: SQLite) {
     this.viewCtrl.showBackButton(false);

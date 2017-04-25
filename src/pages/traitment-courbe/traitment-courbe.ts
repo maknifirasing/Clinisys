@@ -6,11 +6,12 @@ import {HistTraitCourbeService} from "../../services/HistTraitCourbeService";
 import {HistDossier} from "../../models/HistDossier";
 import {TraitCourbeService} from "../../services/TraitCourbeService";
 import {SQLite} from "@ionic-native/sqlite";
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 @Component({
   selector: 'page-traitment-courbe',
   templateUrl: 'traitment-courbe.html',
-  providers: [Variables]
+  providers: [ScreenOrientation,Variables]
 })
 export class TraitmentCourbe {
   codeClinique: any;
@@ -25,8 +26,9 @@ export class TraitmentCourbe {
   histserv: any;
   private traitserv: any;
   chartData: any;
+  pathimage=Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite,private screenOrientation: ScreenOrientation) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
@@ -47,10 +49,12 @@ export class TraitmentCourbe {
 
   ionViewDidLoad() {
     this.tabBarElement.style.display = 'none';
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
   }
 
   ionViewWillLeave() {
     this.tabBarElement.style.display = 'flex';
+    this.screenOrientation.unlock();
   }
 
   getChartSurveillance(numdoss, codeClinique) {

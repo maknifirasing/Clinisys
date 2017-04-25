@@ -8,16 +8,16 @@
   <ion-content class="contentMenu" *ngIf="langue==='francais' || langue==='anglais'">
     <div class="divFRANG">
       <button menuClose ion-item class="buttonItem" (click)="changerPassword()"><img
-        src="/android_asset/www/assets/img/modifIcon.png" width="30" height="30"> {{tabLangue.titreMod}}
+        src="{{pathimage}}/modifIcon.png" width="30" height="30"> {{tabLangue.titreMod}}
       </button>
       <button menuClose ion-item class="buttonItem" (click)="openListeCliniquePage()"><img
-        src="/android_asset/www/assets/img/clini.png" width="30" height="30"> {{tabLangue.titreChangClini}}
+        src="{{pathimage}}/clini.png" width="30" height="30"> {{tabLangue.titreChangClini}}
       </button>
       <button menuClose ion-item class="buttonItem" (click)="changerlangue()"><img
-        src="/android_asset/www/assets/img/changeLang.png" width="30" height="30"> {{tabLangue.titreChangLangue}}
+        src="{{pathimage}}/changeLang.png" width="30" height="30"> {{tabLangue.titreChangLangue}}
       </button>
       <button menuClose ion-item class="buttonItem" (click)="deconnexion()"><img
-        src="/android_asset/www/assets/img/deconn.png" width="30" height="30"> {{tabLangue.titreDeconnexion}}
+        src="{{pathimage}}/deconn.png" width="30" height="30"> {{tabLangue.titreDeconnexion}}
       </button>
 
     </div>
@@ -25,16 +25,16 @@
   <ion-content class="contentMenu" *ngIf="langue==='arabe'">
     <div class="divAr">
       <button menuClose ion-item class="buttonItem" (click)="changerPassword()"><img
-        src="/android_asset/www/assets/img/modifIcon.png" width="30" height="30"> {{tabLangue.titreMod}}
+        src="{{pathimage}}/modifIcon.png" width="30" height="30"> {{tabLangue.titreMod}}
       </button>
       <button menuClose ion-item class="buttonItem" (click)="openListeCliniquePage()"><img
-        src="/android_asset/www/assets/img/clini.png" width="30" height="30"> {{tabLangue.titreChangClini}}
+        src="{{pathimage}}/clini.png" width="30" height="30"> {{tabLangue.titreChangClini}}
       </button>
       <button menuClose ion-item class="buttonItem" (click)="changerlangue()"><img
-        src="/android_asset/www/assets/img/changeLang.png" width="30" height="30"> {{tabLangue.titreChangLangue}}
+        src="{{pathimage}}/changeLang.png" width="30" height="30"> {{tabLangue.titreChangLangue}}
       </button>
       <button menuClose ion-item class="buttonItem" (click)="deconnexion()"><img
-        src="/android_asset/www/assets/img/deconn.png" width="30" height="30"> {{tabLangue.titreDeconnexion}}
+        src="{{pathimage}}/deconn.png" width="30" height="30"> {{tabLangue.titreDeconnexion}}
       </button>
 
     </div>
@@ -44,27 +44,27 @@
 <ion-header class="headerListe" #content>
   <md-card class="md-cardListe">
     <div fxLayout="row" fxLayoutWrap *ngIf="langue==='arabe'">
-      <div fxFlex="13" dir="ltr" style="padding-left: -10px"><img src="/android_asset/www/assets/img/menu.png" class="menuImg" menuToggle></div>
+      <div fxFlex="13" dir="ltr" style="padding-left: -10px"><img src="{{pathimage}}/menu.png" class="menuImg" menuToggle></div>
       <div fxFlex="73" style="margin-top: 20px;direction:rtl;" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histl}}
       </div>
       <div fxFlex="73" style="margin-top: 20px;direction:rtl;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histl}}
       </div>
       <div fxFlex="13" style="margin-top: 10px;direction:rtl;" *ngIf="connection===true"><img
-        src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>
+        src="{{pathimage}}/green.png" width="30" height="30"></div>
       <div fxFlex="13" style="margin-top: 10px;direction:rtl;" *ngIf="connection===false"><img
-        src="/android_asset/www/assets/img/red.png" width="30" height="30"></div>
+        src="{{pathimage}}/red.png" width="30" height="30"></div>
     </div>
     <div fxLayout="row" fxLayoutWrap *ngIf="langue==='francais' || langue==='anglais'">
       <div fxFlex="13" style="margin-top: 10px;" *ngIf="connection===true"><img
-        src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>
+        src="{{pathimage}}/green.png" width="30" height="30"></div>
       <div fxFlex="13" style="margin-top: 10px;" *ngIf="connection===false"><img
-        src="/android_asset/www/assets/img/red.png" width="30" height="30"></div>
+        src="{{pathimage}}/red.png" width="30" height="30"></div>
       <div fxFlex="73" style="margin-top: 10px;" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histl}}
       </div>
       <div fxFlex="73" style="margin-top: 10px;" *ngIf="connection===false">
         <strong>{{tabLangue.titreHorsLigne}} </strong>{{histl}}
       </div>
-      <div fxFlex="13" dir="rtl"><img src="/android_asset/www/assets/img/menu.png" class="menuImg" menuToggle></div>
+      <div fxFlex="13" dir="rtl"><img src="{{pathimage}}/menu.png" class="menuImg" menuToggle></div>
 
     </div>
 
@@ -121,7 +121,7 @@
 
         </div>
         <div fxFlex="23" dir="rtl">
-          <img src='/android_asset/www/assets/img/{{pas.getimg()}}' md-card-avatar class="list">
+          <img src='{{pathimage}}/{{pas.getimg()}}' md-card-avatar class="list">
 
         </div>
         <hr/>
@@ -132,7 +132,7 @@
 
       <div *ngFor="let pas of patientliste " fxLayout="row" fxLayoutWrap>
         <div fxFlex="23" dir="ltr">
-          <img src='/android_asset/www/assets/img/{{pas.getimg()}}' md-card-avatar class="list">
+          <img src='{{pathimage}}/{{pas.getimg()}}' md-card-avatar class="list">
 
         </div>
         <div (click)="goToDossierPage(pas)" fxFlex="76" style="margin-top:15px">

@@ -29,6 +29,7 @@ export class ClientDetailPage {
   medecinserv: any;
   patient: any;
   connection: boolean;
+  pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,private sqlite: SQLite) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');

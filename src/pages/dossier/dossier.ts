@@ -27,11 +27,12 @@ import {ClientDetailPage} from "../client-detail/client-detail";
 import {TraitmentCourbe} from "../traitment-courbe/traitment-courbe";
 import {Patient} from "../../models/Patient";
 import {SQLite} from "@ionic-native/sqlite";
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 @Component({
   selector: 'page-dossier',
   templateUrl: 'dossier.html',
-  providers: [Variables]
+  providers: [ScreenOrientation,Variables]
 })
 
 export class DossierPage {
@@ -90,13 +91,15 @@ export class DossierPage {
   dateFeuille: any;
   langue: any;
   static motifhh = new MotifHospitalisation();
+  pathimage=Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite,private screenOrientation: ScreenOrientation) {
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.pass = navParams.get("pass");
     this.dateFeuille = navParams.get("dateFeuille");
     this.langue = navParams.get("langue");
+    this.screenOrientation.unlock();
 
     if (this.pass.getnature() === "REA") {
       this.codeType = "'1','G','L','E','7','I','9','A','3'";
@@ -948,3 +951,4 @@ export class DossierPage {
     });
   }
 }
+

@@ -1,24 +1,22 @@
 <ion-header style="height: 95px;color: white">
   <div fxLayout="row" fxLayoutWrap *ngIf="langue==='francais' || langue==='anglais'" class="md-card">
-    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/{{pass.getimg()}}" width="40" height="40"></div>
+    <div fxFlex="13" dir="ltr"><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
     <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
-    <div fxFlex="13" style="margin-top: 0px;direction:rtl;"><img src="/android_asset/www/assets/img/microb.png"
+    <div fxFlex="13" style="margin-top: 0px;direction:rtl;"><img src="{{pathimage}}/microb.png"
                                                                  class="roundedImage" (click)="goToInfPage(pass)"/>
     </div>
   </div>
 
 
-<<<<<<< HEAD
-=======
   <md-card class="md-card2" *ngIf="langue==='francais' || langue==='anglais'">
     <div fxLayout="row" fxLayoutWrap>
       <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px"><img
-        src="/android_asset/www/assets/img/green.png"
+        src="{{pathimage}}/green.png"
         width="25" height="25"></div>
       <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px"><img
-        src="/android_asset/www/assets/img/red.png"
+        src="{{pathimage}}/red.png"
         width="25" height="25"></div>
 
       <div fxFlex="86" style="margin-top: -10px;font-size:10px;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}}</strong>
@@ -33,12 +31,12 @@
 
 
   <div fxLayout="row" fxLayoutWrap *ngIf="langue==='arabe'" class="md-card">
-    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/microb.png" class="roundedImage"
+    <div fxFlex="13" dir="ltr"><img src="{{pathimage}}/microb.png" class="roundedImage"
                                     (click)="goToInfPage(pass)"/></div>
     <div fxFlex="73" style="margin-top: 10px;direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
-    <div fxFlex="13" style="margin-top: 5px;direction:rtl;"><img src="/android_asset/www/assets/img/{{pass.getimg()}}"
+    <div fxFlex="13" style="margin-top: 5px;direction:rtl;"><img src="{{pathimage}}/{{pass.getimg()}}"
                                                                  width="40"
                                                                  height="40"></div>
   </div>
@@ -53,13 +51,12 @@
       </div>
 
       <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px;direction:rtl;"><img
-        src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>
+        src="{{pathimage}}/green.png" width="30" height="30"></div>
       <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px;direction:rtl;"><img
-        src="/android_asset/www/assets/img/red.png" width="30" height="30"></div>
+        src="{{pathimage}}/red.png" width="30" height="30"></div>
 
     </div>
   </md-card>
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
 
 </ion-header>
@@ -69,7 +66,7 @@
   <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='NL') || (con.getetat()==='AF')">
 
     <div fxFlex="99" dir="ltr">
-      <img src="/android_asset/www/assets/img/uncheck.png" width="20" height="20">
+      <img src="{{pathimage}}/uncheck.png" width="20" height="20">
       <strong  style="color: #ac2925">
         {{con.getuserCreate()}}
       </strong>
@@ -94,7 +91,7 @@
     <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='F')" dir="rtl">
 
     <div fxFlex="99">
-      <img src="/android_asset/www/assets/img/check.png" width="20" height="20">
+      <img src="{{pathimage}}/check.png" width="20" height="20">
 
       <strong style="color: #ac2925">
         {{con.getuserCreate()}}
@@ -121,51 +118,13 @@
 
 </div>
 
-<<<<<<< HEAD
-<ion-content>
-<div *ngFor="let con of consigne ">
-  <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='NL') || (con.getetat()==='AF')">
-
-    <div fxFlex="99" dir="ltr">
-      <img src="/android_asset/www/assets/img/uncheck.png" width="20" height="20">
-      <strong  style="color: #ac2925">
-        {{con.getuserCreate()}}
-      </strong>
-     <br/>
-    </div>
-    <div fxFlex="97">
-      <div class="left">
-        {{con.getdetails()}}
-      </div>
-
-    </div>
-    <div fxFlex="2">
-<p></p>
-    </div>
-  </div>
-
-    <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='F')" dir="rtl">
-
-    <div fxFlex="99">
-      <img src="/android_asset/www/assets/img/check.png" width="20" height="20">
-
-      <strong style="color: #ac2925">
-        {{con.getuserCreate()}}
-      </strong>
-      <br/>
-    </div>
-
-      <div fxFlex="97">
-        <div class="right">
-          {{con.getdetails()}}
-=======
 </ion-content>
 <ion-content *ngIf="langue==='arabe'" #content class="consignePage">
   <div *ngFor="let con of consigne ">
     <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='NL') || (con.getetat()==='AF')" dir="rtl">
 
       <div fxFlex="99" dir="rtl">
-        <img src="/android_asset/www/assets/img/uncheck.png" width="20" height="20">
+        <img src="{{pathimage}}/uncheck.png" width="20" height="20">
         <strong  style="color: #ac2925;direction:rtl;">
           {{con.getuserCreate()}}
         </strong>
@@ -190,7 +149,7 @@
     <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='F')" dir="rtl">
 
       <div fxFlex="99" dir="ltr">
-        <img src="/android_asset/www/assets/img/check.png" width="20" height="20">
+        <img src="{{pathimage}}/check.png" width="20" height="20">
         <strong style="color: #ac2925 ;direction:rtl;">
           {{con.getuserCreate()}}
         </strong>
@@ -204,52 +163,12 @@
           {{con.getdetails()}}<br/>
           <span style="color: #3e8e41">{{con.getdatetache().substr(8,2)}}/{{con.getdatetache().substr(5,2)}}/{{con.getdatetache().substr(0,4)}}
             {{con.getheurtache().substr(11,5)}}</span>
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         </div>
 
       </div>
       <div fxFlex="2">
         <p></p>
       </div>
-<<<<<<< HEAD
-
-  </div>
-
-</div>
-
-  <!--
-
-  <div *ngIf="(test)==='F'" class="chatlogsrtl">
-
-    <div class="chat friend"  *ngFor="let con of consigne ">
-      <img src="../../assets/img/check.png" width="30" height="30">{{con.getuserCreate()}}
-     <!-- <div class="user-photo"></div>-->
-   <!--   <p class="chat-message">{{con.getdetails()}}</p>
-    </div>
-
-  </div>
-
-  <div class="chat-form">
-    <textarea></textarea>
-    <button><img src="../../assets/img/send.png"></button>
-  </div>
--->
-
-</ion-content>
-
-<ion-footer>
-
-  <div fxLayout="row" fxLayoutWrap style="background-color: #1ddced;">
-    <div fxFlex="2" style="background-color:#1ddced;">
-
-    </div>
-    <div fxFlex="82" style="background-color:#1ddced;">
-      <input type="text" placeHolder="Ecrire ici ...">
-    </div>
-
-    <div fxFlex="15" style="background-color: #1ddced; direction: rtl;">
-      <button><img src="../../assets/img/send.png" class="img"></button>
-=======
       <div fxFlex="99">
         <p>&nbsp;</p>
       </div>
@@ -269,7 +188,7 @@
     </div>
 
     <div fxFlex="15" style="background-color: #F5F5F5; direction: rtl;">
-      <button><img src="/android_asset/www/assets/img/send2.png" class="img"></button>
+      <button><img src="{{pathimage}}/send2.png" class="img"></button>
     </div>
   </div>
 </ion-footer>
@@ -284,8 +203,7 @@
     </div>
 
     <div fxFlex="15" style="background-color: #F5F5F5; direction: rtl;">
-      <button><img src="/android_asset/www/assets/img/send.png" class="img" (click)="CreatePlanificationTacheInfirmiereForTablette(details.value)"></button>
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
+      <button><img src="{{pathimage}}/send.png" class="img" (click)="CreatePlanificationTacheInfirmiereForTablette(details.value)"></button>
     </div>
   </div>
 </ion-footer>

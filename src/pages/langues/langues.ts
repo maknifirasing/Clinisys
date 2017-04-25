@@ -5,12 +5,9 @@ import {ListeCliniquePage} from "../liste-clinique/liste-clinique";
 import {Langue} from "../../models/Langue";
 import {LangueService} from "../../services/LangueService";
 import {ListePage} from "../liste/liste";
-<<<<<<< HEAD
-=======
 import {UserService} from "../../services/UserService";
 import {SQLite} from "@ionic-native/sqlite";
 
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
 @Component({
   selector: 'page-langues',
@@ -25,7 +22,7 @@ export class LanguesPage {
   codeClinique: string;
   langue: string;
   private userserv: any;
-
+  pathimage=Variables.path;
 
   constructor(public navCtrl: NavController,private sqlite: SQLite) {
     //  Variables.auth();
@@ -45,26 +42,6 @@ export class LanguesPage {
       this.tabLangue = Variables.anglais;
     }
 
-<<<<<<< HEAD
- /*  this.langserv = new LangueService();
-    this.langserv.verifLangue().then(res => {
-      if (res === true) {
-        this.langserv.getLangues(this.langes).then(lg => {
-          var l = new Langue();
-          l.setlangue(lang);
-          l.setmatricule(lg.getmatricule());
-          l.setcodeClinique(lg.getcodeClinique());
-          l.setnomClinique(lg.getnomClinique());
-          this.langes.push(l);
-          this.langserv.deleteLangues().then(delet=>{
-            if(delet===true) {
-              this.langserv.getLangues(this.langes);
-              this.navCtrl.setRoot(ListePage, {
-                tabLangue: this.tabLangue,
-                langue: lang,
-                codeClinique: lg.getcodeClinique(),
-                nomClinique: lg.getnomClinique()
-=======
     this.userserv = new UserService(this.sqlite);
     this.userserv.getAllUser().then(user => {
       if (user.length === 0) {
@@ -92,7 +69,6 @@ export class LanguesPage {
                     nomClinique: lg.getnomClinique()
                   });
                 }
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
               });
             });
 
@@ -101,7 +77,6 @@ export class LanguesPage {
           }
         });
       }
-    });*/
-    this.navCtrl.push(ListePage, {tabLangue: this.tabLangue, langue: lang});
+    });
   }
 }

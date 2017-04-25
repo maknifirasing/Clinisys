@@ -23,11 +23,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {SigneCourbePage} from "../pages/signe-courbe/signe-courbe";
 import {ClientDetailPage} from "../pages/client-detail/client-detail";
-<<<<<<< HEAD
-import {TryPage} from "../pages/try/try";
-import {ConsignePage} from "../pages/consigne/consigne";
-
-=======
 import {TraitmentCourbe} from "../pages/traitment-courbe/traitment-courbe";
 import {ConsignePage} from "../pages/consigne/consigne";
 import {ModifPassPage} from "../pages/modif-pass/modif-pass";
@@ -38,7 +33,6 @@ import {RealisationPage} from "../pages/realisation/realisation";
 import {Variables} from "../providers/variables";
 import {HttpModule} from '@angular/http';
 import {MenuPage} from "../pages/menu/menu";
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
 @NgModule({
   declarations: [
@@ -55,13 +49,6 @@ import {MenuPage} from "../pages/menu/menu";
     LanguesPage,
     ListeCliniquePage,
     SigneCourbePage,
-<<<<<<< HEAD
-    NotificationPage,
-    ClientDetailPage,
-    TryPage,
-    ConsignePage
-
-=======
     ClientDetailPage,
     TraitmentCourbe,
     ConsignePage,
@@ -69,14 +56,10 @@ import {MenuPage} from "../pages/menu/menu";
     RealisationPage,
     MenuPage,
     TryPage
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   ],
   imports: [
     BrowserModule,
     FlexLayoutModule,
-<<<<<<< HEAD
-    MaterialModule
-=======
     CustomIconsModule,
     Ng2HighchartsModule,
     BrowserAnimationsModule,
@@ -86,7 +69,6 @@ import {MenuPage} from "../pages/menu/menu";
     MaterialModule.forRoot(),
     HttpModule,
     IonicModule.forRoot(MyApp)
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -103,12 +85,6 @@ import {MenuPage} from "../pages/menu/menu";
     LanguesPage,
     ListeCliniquePage,
     SigneCourbePage,
-<<<<<<< HEAD
-    NotificationPage,
-    ClientDetailPage,
-    TryPage,
-    ConsignePage
-=======
     ClientDetailPage,
     TraitmentCourbe,
     ConsignePage,
@@ -116,7 +92,6 @@ import {MenuPage} from "../pages/menu/menu";
     RealisationPage,
     MenuPage,
     TryPage
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   ],
   providers: [
     StatusBar,

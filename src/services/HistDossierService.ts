@@ -13,11 +13,7 @@ export class HistDossierService {
       this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-<<<<<<< HEAD
-      }).then(() => {
-=======
       }).then((db: SQLiteObject) => {
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         db.executeSql("select count(*) as sum from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -47,11 +43,7 @@ export class HistDossierService {
       this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-<<<<<<< HEAD
-      }).then(() => {
-=======
       }).then((db: SQLiteObject) => {
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         db.executeSql("select * from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.length === 0) {
@@ -96,22 +88,6 @@ export class HistDossierService {
   }
 
 
-<<<<<<< HEAD
-  public deleteHistDossiers(numDoss, codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("delete from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
-        .then(() => {
-          //  alert("Suppression de table Patient est terminé avec succes");
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 HistDossier  ' + error);
-        })
-=======
   public deleteHistDossiers(numDoss, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
 
@@ -134,7 +110,6 @@ export class HistDossierService {
       });
 
       return this;
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
     });
   }
 }

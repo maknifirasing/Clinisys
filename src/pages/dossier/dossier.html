@@ -1,10 +1,10 @@
 <ion-header style="height: 95px;color: white">
   <div fxLayout="row" fxLayoutWrap *ngIf="langue==='francais' || langue==='anglais'" class="md-card">
-    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/{{pass.getimg()}}" width="40" height="40"></div>
+    <div fxFlex="13" dir="ltr"><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
     <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
-    <div fxFlex="13" style="margin-top: 0px;direction:rtl;"><img src="/android_asset/www/assets/img/info.png"
+    <div fxFlex="13" style="margin-top: 0px;direction:rtl;"><img src="{{pathimage}}/info.png"
                                                                  class="roundedImage" (click)="goToInfPage(pass)"/>
     </div>
   </div>
@@ -13,10 +13,10 @@
   <md-card class="md-card2" *ngIf="langue==='francais' || langue==='anglais'">
     <div fxLayout="row" fxLayoutWrap>
       <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px"><img
-        src="/android_asset/www/assets/img/green.png"
+        src="{{pathimage}}/green.png"
         width="25" height="25"></div>
       <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px"><img
-        src="/android_asset/www/assets/img/red.png"
+        src="{{pathimage}}/red.png"
         width="25" height="25"></div>
 
       <div fxFlex="86" style="margin-top: -10px;font-size:10px;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}}</strong>
@@ -31,12 +31,12 @@
 
 
   <div fxLayout="row" fxLayoutWrap *ngIf="langue==='arabe'" class="md-card">
-    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/info.png" class="roundedImage"
+    <div fxFlex="13" dir="ltr"><img src="{{pathimage}}/info.png" class="roundedImage"
                                     (click)="goToInfPage(pass)"/></div>
     <div fxFlex="73" style="margin-top: 10px;direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
-    <div fxFlex="13" style="margin-top: 5px;direction:rtl;"><img src="/android_asset/www/assets/img/{{pass.getimg()}}"
+    <div fxFlex="13" style="margin-top: 5px;direction:rtl;"><img src="{{pathimage}}/{{pass.getimg()}}"
                                                                  width="40"
                                                                  height="40"></div>
   </div>
@@ -51,9 +51,9 @@
       </div>
 
       <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px;direction:rtl;"><img
-        src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>
+        src="{{pathimage}}/green.png" width="30" height="30"></div>
       <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px;direction:rtl;"><img
-        src="/android_asset/www/assets/img/red.png" width="30" height="30"></div>
+        src="{{pathimage}}/red.png" width="30" height="30"></div>
 
     </div>
   </md-card>
@@ -71,15 +71,9 @@
             {{tabLangue.titreMotif}}
           </strong><br/>
 
-<<<<<<< HEAD
-          <span class="strong2" *ngFor="let m of motifh ">
-
-            {{ m.getmotifhospitalisation()}}<br/>
-=======
           <span class="strong2" >
 
             {{ motifh.getmotifhospitalisation()}}<br/>
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
         </div>
@@ -128,7 +122,7 @@
 
           </span>
         </div>
-        <div fxFlex="23" dir="ltr" (click)="gotoSigneCourbe()"><img src="/android_asset/www/assets/img/line.png" width="50" height="50"></div>
+        <div fxFlex="23" dir="ltr" (click)="gotoSigneCourbe()"><img src="{{pathimage}}/line.png" width="50" height="50"></div>
         <p></p>
       </div>
 
@@ -140,11 +134,7 @@
           </strong><br/>
           <span class="strong2" *ngFor="let en of Entrees ">
 
-<<<<<<< HEAD
-            <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong> {{en.getdate()}}<br/>
-=======
             <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong><span style="font-size: 10px"> {{en.getdate()}}</span><br/>
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
         </div>
@@ -161,19 +151,11 @@
           <span class="strong2" *ngFor="let tra of traitement ">
 
             <strong>{{ tra.getdesignation() }}</strong>
-<<<<<<< HEAD
-            {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.<br/>
-
-          </span>
-        </div>
-        <div fxFlex="23" dir="ltr"><img src="/android_asset/www/assets/img/line.png" width="50" height="50"></div>
-=======
             <span style="font-size: 10px">     {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.</span><br/>
 
           </span>
         </div>
-        <div fxFlex="23" dir="ltr" (click)="gotoTraitementCourbe()"><img src="/android_asset/www/assets/img/line.png" width="50" height="50"></div>
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
+        <div fxFlex="23" dir="ltr" (click)="gotoTraitementCourbe()"><img src="{{pathimage}}/line.png" width="50" height="50"></div>
         <p></p>
       </div>
       <div><p></p></div>
@@ -185,11 +167,7 @@
           </strong><br/>
           <span class="strong2" *ngFor="let so of Sorties ">
 
-<<<<<<< HEAD
-            <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> {{so.getdate()}}<br/>
-=======
             <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong><span style="font-size: 10px"> {{so.getdate()}}</span><br/>
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
         </div>
@@ -203,11 +181,7 @@
           </strong><br/>
           <span class="strong2" *ngFor="let pas of signe ">
 
-<<<<<<< HEAD
-            <strong>{{pas.getdesignation()}}</strong> {{pas.getquantite()}} {{pas.getdate()}}<br/>
-=======
             <strong>{{pas.getdesignation()}}</strong> <span style="font-size: 10px">{{pas.getquantite()}} {{pas.getdate()}}</span><br/>
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
         </div>
@@ -299,15 +273,9 @@
              {{tabLangue.titreMotif}}
            </strong><br/>
 
-<<<<<<< HEAD
-           <span class="strong2" *ngFor="let m of motifh ">
-
-            {{ m.getmotifhospitalisation()}}<br/>
-=======
            <span class="strong2" >
 
             {{ motifh.getmotifhospitalisation()}}<br/>
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
          </div>
@@ -352,15 +320,11 @@
            </strong><br/>
            <span class="strong2" *ngFor="let sig of signec ">
 
-<<<<<<< HEAD
-            <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong> {{sig.getdate()}}<br/>
-=======
              <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong><span style="font-size: 10px"> {{sig.getdate()}}</span><br/>
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
          </div>
-         <div fxFlex="23" dir="rtl" (click)="gotoSigneCourbe()"><img src="/android_asset/www/assets/img/line.png" width="50" height="50"></div>
+         <div fxFlex="23" dir="rtl" (click)="gotoSigneCourbe()"><img src="{{pathimage}}/line.png" width="50" height="50"></div>
          <p></p>
        </div>
 
@@ -372,11 +336,7 @@
            </strong><br/>
            <span class="strong2" *ngFor="let en of Entrees ">
 
-<<<<<<< HEAD
-            <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong> {{en.getdate()}}<br/>
-=======
              <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong><span style="font-size: 10px"> {{en.getdate()}}</span><br/>
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
          </div>
@@ -393,19 +353,11 @@
            <span class="strong2" *ngFor="let tra of traitement ">
 
             <strong>{{ tra.getdesignation() }}</strong>
-<<<<<<< HEAD
-            {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.<br/>
-
-          </span>
-         </div>
-         <div fxFlex="23" dir="rtl"><img src="/android_asset/www/assets/img/line.png" width="50" height="50"></div>
-=======
              <span style="font-size: 10px">  {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.</span><br/>
 
           </span>
          </div>
-         <div fxFlex="23" dir="rtl" (click)="gotoTraitementCourbe()"><img src="/android_asset/www/assets/img/line.png" width="50" height="50"></div>
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
+         <div fxFlex="23" dir="rtl" (click)="gotoTraitementCourbe()"><img src="{{pathimage}}/line.png" width="50" height="50"></div>
          <p></p>
        </div>
        <div><p></p></div>
@@ -417,11 +369,7 @@
            </strong><br/>
            <span class="strong2" *ngFor="let so of Sorties ">
 
-<<<<<<< HEAD
-            <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> {{so.getdate()}}<br/>
-=======
              <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> <span style="font-size: 10px">{{so.getdate()}}</span><br/>
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
          </div>
@@ -435,11 +383,7 @@
            </strong><br/>
            <span class="strong2" *ngFor="let pas of signe ">
 
-<<<<<<< HEAD
-            <strong>{{pas.getdesignation()}}</strong> {{pas.getquantite()}} {{pas.getdate()}}<br/>
-=======
              <strong>{{pas.getdesignation()}}</strong> <span style="font-size: 10px">{{pas.getquantite()}} {{pas.getdate()}}</span><br/>
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
          </div>

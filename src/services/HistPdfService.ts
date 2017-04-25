@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import {SQLite} from 'ionic-native';
-=======
 import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 import {HistDoc} from "../models/HistDoc";
 
 export class HistPdfService {
@@ -11,21 +7,13 @@ export class HistPdfService {
   constructor(private sqlite: SQLite) {
   }
 
-<<<<<<< HEAD
-  public verifHistPdf(numDoss, codeClinique,file): Promise<boolean> {
-=======
   public verifHistPdf(numDoss, codeClinique, file): Promise<boolean> {
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
     return new Promise<boolean>(resolve => {
 
       this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-<<<<<<< HEAD
-      }).then(() => {
-=======
       }).then((db: SQLiteObject) => {
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         db.executeSql("select count(*) as sum from HistPdf where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and nom like '" + file + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -49,15 +37,6 @@ export class HistPdfService {
     });
   }
 
-<<<<<<< HEAD
-  public getHistPdfs(histDossiers: any, numDoss, codeClinique,file): Promise<HistDoc> {
-    return new Promise<HistDoc>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
-        name: 'clinisys.db',
-        location: 'default' // the location field is required
-      }).then(() => {
-=======
   public getHistPdfs(histDossiers: any, numDoss, codeClinique, file): Promise<HistDoc> {
     return new Promise<HistDoc>(resolve => {
 
@@ -65,7 +44,6 @@ export class HistPdfService {
         name: 'clinisys.db',
         location: 'default' // the location field is required
       }).then((db: SQLiteObject) => {
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         db.executeSql("select * from HistPdf where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and nom like '" + file + "'", [])
           .then(result => {
             if (result.rows.length === 0) {
@@ -98,13 +76,8 @@ export class HistPdfService {
   }
 
   private _insertHistPdfs(histDossiers: Array<HistDoc>): void {
-<<<<<<< HEAD
-    let db = new SQLite();
-    db.openDatabase({
-=======
 
     this.sqlite.create({
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then((db: SQLiteObject) => {
@@ -128,15 +101,6 @@ export class HistPdfService {
   }
 
 
-<<<<<<< HEAD
-  public deleteHistPdfs(numDoss, codeClinique,file) {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("delete from HistPdf where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique  + "'and nom like '" + file + "'", [])
-=======
   public deleteHistPdfs(numDoss, codeClinique, file) {
 
     this.sqlite.create({
@@ -144,7 +108,6 @@ export class HistPdfService {
       location: 'default' // the location field is required
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from HistPdf where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and nom like '" + file + "'", [])
->>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         .then(() => {
           //  alert("Suppression de table Patient est terminé avec succes");
         })

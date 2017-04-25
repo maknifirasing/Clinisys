@@ -27,6 +27,7 @@ export class ExamenLaboPage {
   langue: any;
   LabosFs: any;
   LabosTs: any;
+  pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,public platform: Platform,private sqlite: SQLite) {
     this.tabLangue = navParams.get("tabLangue");
