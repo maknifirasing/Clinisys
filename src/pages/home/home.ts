@@ -6,6 +6,7 @@ import {Variables} from "../../providers/variables";
 import {UserService} from "../../services/UserService";
 import {Langue} from "../../models/Langue";
 import {LangueService} from "../../services/LangueService";
+import {SQLite} from "@ionic-native/sqlite";
 
 
 @Component({
@@ -23,21 +24,23 @@ export class HomePage {
   codeClinique: string;
   langue: any;
   nomClinique: string;
+  url: string;
   langserv: any;
   langes: Array<Langue> = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private sqlite: SQLite) {
     this.codeClinique = this.navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
     this.nomClinique = navParams.get("nomClinique");
+    this.url = navParams.get("url");
 
   }
 
   connecter(userName, passWord) {
     try {
       var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+      xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
       var sr =
         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
         '<soapenv:Header/>' +
@@ -57,37 +60,27 @@ export class HomePage {
               var x, user;
               x = this.xml.getElementsByTagName("return");
               user = new Users();
-              user.setactif(x[0].children[0].textContent);
-              user.setchStat(x[0].children[1].textContent);
-              user.setcodeMedecinInfirmier(x[0].children[2].textContent);
-              user.setcodePin(x[0].children[3].textContent);
-              user.setdateModPwd(x[0].children[4].textContent);
-              user.setdernierDateCnx(x[0].children[5].textContent);
-              user.setdescription(x[0].children[6].textContent);
-              user.setgrp(x[0].children[7].textContent);
               user.setmatricule(x[0].children[8].textContent);
-              user.setnatureUserDS(x[0].children[9].textContent);
-              user.setoldGrp(x[0].children[10].textContent);
               user.setpassWord(x[0].children[11].textContent);
               user.setuserName(x[0].children[12].textContent);
-              user.setvalidCptRend(x[0].children[13].textContent);
-              user.setvalidPHNuit(x[0].children[14].textContent);
               user.setcodeClinique(this.codeClinique);
               this.users.push(user);
               if (this.users.length > 0) {
-                this.userserv = new UserService();
+                this.userserv = new UserService(this.sqlite);
                 this.userserv.verifUser(this.codeClinique).then(res => {
                   if (res === false) {
                     this.userserv.getUser(this.users, this.codeClinique);
                   }
                 });
-                this.langserv = new LangueService();
+                this.langserv = new LangueService(this.sqlite);
                 this.langserv.verifLangue().then(result => {
                   var l = new Langue();
                   l.setlangue(this.langue);
+                  l.setnom(user.getuserName());
                   l.setmatricule(user.getmatricule());
                   l.setcodeClinique(this.codeClinique);
                   l.setnomClinique(this.nomClinique);
+                  l.seturl(this.url);
                   this.langes.push(l);
                   if (result === true) {
                     this.langserv.getLangues(this.langes).then(lg => {

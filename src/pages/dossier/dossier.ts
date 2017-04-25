@@ -1,7 +1,6 @@
 import {Component} from "@angular/core";
 import {NavController, NavParams, Platform} from "ionic-angular";
 import {MotifHospitalisation} from "../../models/motifHospitalisation";
-import {Antec} from "../../models/Antec";
 import {SigneClinique} from "../../models/SigneClinique";
 import {Traitement} from "../../models/Traitement";
 import {Evenement} from "../../models/Evenement";
@@ -25,7 +24,9 @@ import {HistDossierService} from "../../services/HistDossierService";
 import {HistDossier} from "../../models/HistDossier";
 import {SigneCourbePage} from "../signe-courbe/signe-courbe";
 import {ClientDetailPage} from "../client-detail/client-detail";
-import {DetailPerPagePage} from "../detail-per-page/detail-per-page";
+import {TraitmentCourbe} from "../traitment-courbe/traitment-courbe";
+import {Patient} from "../../models/Patient";
+import {SQLite} from "@ionic-native/sqlite";
 
 @Component({
   selector: 'page-dossier',
@@ -34,10 +35,8 @@ import {DetailPerPagePage} from "../detail-per-page/detail-per-page";
 })
 
 export class DossierPage {
-  motifh: Array<MotifHospitalisation> = [];
+  motifh = new MotifHospitalisation();
   mserv: any;
-  antec: Array<Antec> = [];
-  aleg: Array<Antec> = [];
   alechl: Array<AntecCh> = [];
   antechl: Array<AntecCh> = [];
   antecserv: any;
@@ -83,16 +82,16 @@ export class DossierPage {
   EvenementExaS: any;
   EvenementHisS: any;
   histserv: any;
-  histD: Array<HistDossier> = [];
   histd = new HistDossier();
+  static hist: any;
   codeClinique: any;
   tabLangue: any;
-  pass: any;
+  pass=new Patient();
   dateFeuille: any;
   langue: any;
-  static motifhh: Array<MotifHospitalisation> = [];
+  static motifhh = new MotifHospitalisation();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.pass = navParams.get("pass");
@@ -107,26 +106,24 @@ export class DossierPage {
       this.codeType = "'1','3','4'";
       this.codeTypeOf = "134";
     }
-    this.platform.ready().then(() => {
-      Variables.checconnection().then(res => {
-        if (res === false) {
-          this.connection = false;
-          this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
-          this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
-          this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
-          this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
-          this.GetTraitementsOff(this.traitement, this.pass.getdossier(), this.dateFeuille, this.codeClinique);
-          this.GetEvenementByDossierOff(this.pass.getdossier(), this.codeClinique);
-          this.GetListRegimeOff(this.rigime, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
-          this.GetSigneCliniqueOff(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeTypeOf, this.codeClinique);
+    Variables.checconnection().then(res => {
+      if (res === false) {
+        this.connection = false;
+        this.historiqueOff(this.histd, this.pass.getdossier(), this.codeClinique);
+        this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
+        this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
+        this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+        this.GetTraitementsOff(this.traitement, this.pass.getdossier(), this.dateFeuille, this.codeClinique);
+        this.GetEvenementByDossierOff(this.pass.getdossier(), this.codeClinique);
+        this.GetListRegimeOff(this.rigime, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+        this.GetSigneCliniqueOff(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeTypeOf, this.codeClinique);
 
-        }
-        else {
-          this.connection = true;
-          this.historique(this.pass.getdossier(), this.codeClinique);
-          this.update();
-        }
-      });
+      }
+      else {
+        this.connection = true;
+        this.historique(this.pass.getdossier(), this.codeClinique);
+        this.update();
+      }
     });
   }
 
@@ -135,7 +132,7 @@ export class DossierPage {
     this.signe = [];
     this.signe.length = 0;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -171,7 +168,7 @@ export class DossierPage {
           } catch (Error) {
             this.AlerteSigneCliniqueTest = false;
           }
-          this.signeCliniqueAlertS = new SigneCliniqueAlertService();
+          this.signeCliniqueAlertS = new SigneCliniqueAlertService(this.sqlite);
           this.signeCliniqueAlertS.verifSigneCliniqueAlert(this.signe, numDoss, dateFeuille, nature, codeClinique).then(res => {
             if (res === false) {
               this.signeCliniqueAlertS.getSigneCliniquesAlert(this.signe, numDoss, dateFeuille, nature, codeClinique);
@@ -187,7 +184,7 @@ export class DossierPage {
 
   GetAlerteSigneCliniqueOff(signe, numDoss, dateFeuille, nature, codeClinique) {
 
-    this.signeCliniqueAlertS = new SigneCliniqueAlertService();
+    this.signeCliniqueAlertS = new SigneCliniqueAlertService(this.sqlite);
     this.signeCliniqueAlertS.verifSigneCliniqueAlert(signe, numDoss, dateFeuille, nature, codeClinique).then(res => {
       if (res === true) {
         this.signe = this.signeCliniqueAlertS.getSigneCliniquesAlert(signe, numDoss, dateFeuille, nature, codeClinique);
@@ -198,27 +195,21 @@ export class DossierPage {
 
   DeleteGetAlerteSigneClinique(numDoss, dateFeuille, nature, codeClinique) {
 
-    this.traitementServ = new TraitementService();
+    this.traitementServ = new TraitementService(this.sqlite);
     this.traitementServ.deleteTraitements(numDoss, dateFeuille, nature, codeClinique);
   }
 
   getAntecedentAllergieByIdentifiant(idpass, codeClinique) {
     this.stringAlerg = "";
     this.stringAntec = "";
-    this.aleg.pop();
-    this.aleg = [];
-    this.aleg.length = 0;
     this.alechl.pop();
     this.alechl = [];
     this.alechl.length = 0;
-    this.antec.pop();
-    this.antec = [];
-    this.antec.length = 0;
     this.antechl.pop();
     this.antechl = [];
     this.antechl.length = 0;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -238,60 +229,36 @@ export class DossierPage {
             var xml = xmlhttp.responseXML;
             var x, i;
             x = xml.getElementsByTagName("return");
-            var a;
             for (i = 0; i < x.length; i++) {
-              a = new Antec();
-              a.setcodeAntecedent(x[i].children[0].children[0].textContent);
-              a.setcodeFamille(x[i].children[0].children[1].textContent);
-              a.setdesignation(x[i].children[0].children[2].textContent);
-              a.setidDetailAntec(x[i].children[0].children[3].textContent);
-              a.setordre(x[i].children[0].children[4].textContent);
-              a.setvisiblePreAnes(x[i].children[0].children[5].textContent);
-              a.setid(x[i].children[1].textContent);
-              a.setidentifiant(x[i].children[2].textContent);
-              a.setnumeroDossier(x[i].children[3].textContent);
-              a.setobservation(x[i].children[4].textContent);
-              a.setutilisateurAnt(x[i].children[5].textContent);
-
-              /* if (i === x.length - 1)
-               this.disig += a.getdesignation();
-               else
-               this.disig += a.getdesignation() + ", ";*/
-
-              if (!(a.getcodeAntecedent() === ("A000")) && (!(a.getcodeAntecedent() === ("A255")))) {
-                if (a.getcodeFamille() === ("FA02")) // Allergie
+              if (!((x[i].children[0].children[0].textContent) === ("A000")) && (!((x[i].children[0].children[0].textContent) === ("A255")))) {
+                if ((x[i].children[0].children[1].textContent) === ("FA02")) // Allergie
                 {
-                  if (a.getcodeAntecedent().toUpperCase() === ("ALER")) {
-                    this.stringAlerg += a.getobservation() + ", ";
+                  if ((x[i].children[0].children[0].textContent).toUpperCase() === ("ALER")) {
+                    this.stringAlerg += (x[i].children[4].textContent) + ", ";
                     this.Alerg = true;
 
                   }
                   else {
-                    this.stringAlerg += a.getdesignation() + ", ";
+                    this.stringAlerg += (x[i].children[0].children[2].textContent) + ", ";
                     this.Alerg = true;
                   }
-                  this.aleg.push(a);
                 }
                 else // Antécédent
                 {
-                  if (a.getcodeFamille().toUpperCase() === ("AUTR")) {
-                    this.stringAntec += a.getobservation() + ", ";
+                  if ((x[i].children[0].children[1].textContent).toUpperCase() === ("AUTR")) {
+                    this.stringAntec += (x[i].children[4].textContent) + ", ";
                     this.Ante = true;
                   }
                   else {
-                    this.stringAntec += a.getdesignation() + ", ";
+                    this.stringAntec += (x[i].children[0].children[2].textContent) + ", ";
                     this.Ante = true;
                   }
                 }
-                this.antec.push(a);
+
               }
 
 
             }
-            if (this.antec.length === 0) {
-              this.AntecedentAllergieTest = false;
-            }
-
 
             var antech = new AntecCh();
 
@@ -300,7 +267,7 @@ export class DossierPage {
 
             this.antechl.push(antech);
 
-            this.antecserv = new AntechService();
+            this.antecserv = new AntechService(this.sqlite);
             this.antecserv.verifAntec(this.antechl, idpass, codeClinique).then(res => {
               if (res === false) {
                 this.antecserv.getAntecs(this.antechl, idpass, codeClinique);
@@ -314,7 +281,7 @@ export class DossierPage {
 
             this.alechl.push(alech);
 
-            this.alegserv = new AlegchService();
+            this.alegserv = new AlegchService(this.sqlite);
             this.alegserv.verifAleg(this.alechl, idpass, codeClinique).then(res => {
               if (res === false) {
                 this.alegserv.getAlegs(this.alechl, idpass, codeClinique);
@@ -322,7 +289,7 @@ export class DossierPage {
             });
 
           } catch (Error) {
-            this.AntecedentAllergieTest = false;
+
           }
         }
       }
@@ -333,8 +300,7 @@ export class DossierPage {
   }
 
   getAntecedentAllergieByIdentifiantOff(antec, aleg, idpass, codeClinique) {
-    this.AntecedentAllergieTest = true;
-    this.antecserv = new AntechService();
+    this.antecserv = new AntechService(this.sqlite);
     this.antecserv.verifAntec(this.antechl, idpass, codeClinique).then(res => {
       if (res === true) {
         this.antechl = this.antecserv.getAntecs(antec, idpass, codeClinique);
@@ -342,7 +308,7 @@ export class DossierPage {
       }
     });
 
-    this.alegserv = new AlegchService();
+    this.alegserv = new AlegchService(this.sqlite);
     this.alegserv.verifAleg(this.alechl, idpass, codeClinique).then(res => {
       if (res === true) {
         this.alechl = this.alegserv.getAlegs(aleg, idpass, codeClinique);
@@ -352,20 +318,17 @@ export class DossierPage {
   }
 
   DeletegetAntecedentAllergieByIdentifiant(idpass, codeClinique) {
-    this.antecserv = new AntechService();
+    this.antecserv = new AntechService(this.sqlite);
     this.antecserv.deleteAntecs(idpass, codeClinique);
 
-    this.alegserv = new AlegchService();
+    this.alegserv = new AlegchService(this.sqlite);
     this.alegserv.deleteAlegs(idpass, codeClinique);
   }
 
   GetAllMotifHospitalisationByNumDoss(numDoss, codeClinique) {
-    this.motifh.pop();
-    this.motifh = [];
-    this.motifh.length = 0;
     this.test = false;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -382,57 +345,19 @@ export class DossierPage {
           try {
             this.test = true;
             var xml = xmlhttp.responseXML;
-            var x, i, drdv, dsortie, hrdv, hsortie;
-            var day = "";
-            var month = "";
-            var year = "";
-            var minu = "";
-            var second = "";
-            var hour = "";
+            var x;
             x = xml.getElementsByTagName("return");
-            var a;
-            for (i = 0; i < x.length; i++) {
-              a = new MotifHospitalisation();
-              a.setconclusion(x[0].children[0].textContent);
-              drdv = new Date(x[0].children[1].textContent);
-              day = drdv.getDate();
-              month = drdv.getMonth() + 1;
-              year = drdv.getFullYear();
-              a.setdateRdv(day + "/" + month + "/" + year);
-              dsortie = new Date(x[0].children[2].textContent);
-              day = dsortie.getDate();
-              month = dsortie.getMonth() + 1;
-              year = dsortie.getFullYear();
-              a.setdateSortie(day + "/" + month + "/" + year);
-              a.setgroupeSang(x[0].children[3].textContent);
-              hrdv = new Date(x[0].children[4].textContent);
-              minu = hrdv.getMinutes();
-              hour = hrdv.getHours();
-              second = hrdv.getSeconds();
-              a.setheureRdv(hour + " : " + minu + " : " + second);
-              hsortie = new Date(x[0].children[5].textContent);
-              minu = hrdv.getMinutes();
-              hour = hrdv.getHours();
-              second = hrdv.getSeconds();
-              a.setheureSortie(hour + " : " + minu + " : " + second);
-              a.sethistoiremaladie(x[0].children[6].textContent);
-              a.setmotifhospitalisation(x[0].children[7].textContent);
-              a.setnumdoss(x[0].children[8].textContent);
-              a.setobservationSejour(x[0].children[9].textContent);
-              a.setpoid(x[0].children[10].textContent);
-              a.settaille(x[0].children[11].textContent);
-              a.settraitementHabituelle(x[0].children[12].textContent);
-              a.settraitementSejour(x[0].children[13].textContent);
-              a.settraitementSortie(x[0].children[14].textContent);
-              a.setutilisateurMotif(x[0].children[15].textContent);
-              this.motifh.push(a);
-            }
+            this.motifh.setgroupeSang(x[0].children[3].textContent);
+            this.motifh.setmotifhospitalisation(x[0].children[7].textContent);
+            this.motifh.setnumdoss(x[0].children[8].textContent);
+            this.motifh.setpoid(x[0].children[10].textContent);
+            this.motifh.settaille(x[0].children[11].textContent);
+
             DossierPage.motifhh = this.motifh;
-            if (this.motifh.length === 0) {
+            if (this.motifh.getnumdoss() === "") {
               this.test = false;
             }
-            //  return this.m;
-            this.mserv = new motifHospitalisationService();
+            this.mserv = new motifHospitalisationService(this.sqlite);
             this.mserv.verifmotifHospitalisation(this.motifh, numDoss, codeClinique).then(res => {
               if (res === false) {
                 this.mserv.getmotifHospitalisations(this.motifh, numDoss, codeClinique);
@@ -451,11 +376,13 @@ export class DossierPage {
   }
 
   GetAllMotifHospitalisationByNumDossOff(motif, numdoss, codeClinique) {
-    this.mserv = new motifHospitalisationService();
-    this.mserv.verifmotifHospitalisation(motif, numdoss, codeClinique).then(res => {
-      if (res === true) {
-        this.motifh = this.mserv.getmotifHospitalisations(motif, numdoss, codeClinique);
-        DossierPage.motifhh = this.motifh;
+    this.mserv = new motifHospitalisationService(this.sqlite);
+    this.mserv.getmotifHospitalisations(motif, numdoss, codeClinique).then(res => {
+      DossierPage.motifhh = this.motifh = res;
+      if (res.getnumdoss() === "") {
+        this.test = false;
+      }
+      else {
         this.test = true;
       }
     });
@@ -464,7 +391,7 @@ export class DossierPage {
   }
 
   DeleteGetAllMotifHospitalisationByNumDoss(numDoss, codeClinique) {
-    this.mserv = new motifHospitalisationService();
+    this.mserv = new motifHospitalisationService(this.sqlite);
     this.mserv.deleteMotifhospitalisations(numDoss, codeClinique);
   }
 
@@ -474,7 +401,7 @@ export class DossierPage {
     this.traitement.length = 0;
     this.trait = false;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -497,49 +424,16 @@ export class DossierPage {
             for (i = 0; i < x.length; i++) {
               t = new Traitement();
               if (x[i].childElementCount === 20) {
-                t.setcodePosologie(x[i].children[0].textContent);
-                t.setdate(x[i].children[1].textContent);
-                t.setdateFinTrait(x[i].children[2].textContent);
-                t.setdci(x[i].children[3].textContent);
                 t.setdesignation(x[i].children[4].textContent);
-                t.setdureEnJour(x[i].children[5].textContent);
-                t.setheure(x[i].children[6].textContent);
-                t.setheureDebut(x[i].children[7].textContent);
                 t.setjour(x[i].children[8].textContent);
-                t.setnbFois(x[i].children[9].textContent);
                 t.setnumDoss(x[i].children[10].textContent);
-                t.setnumTraitement(x[i].children[11].textContent);
-                t.setnumbon(x[i].children[12].textContent);
                 t.setposologie(x[i].children[13].textContent);
-                t.setprescripteur(x[i].children[14].textContent);
-                t.setquantite(x[i].children[15].textContent);
-                t.setunite(x[i].children[16].textContent);
-                t.setvitesse(x[i].children[17].textContent);
-                t.setvoie(x[i].children[18].textContent);
-                t.setvolume(x[i].children[19].textContent);
               }
               else if (x[i].childElementCount === 19) {
-                t.setcodePosologie(x[i].children[0].textContent);
-                t.setdate(x[i].children[1].textContent);
-                t.setdateFinTrait(x[i].children[2].textContent);
-                t.setdci("");
-                t.setdesignation(x[i].children[3].textContent);
-                t.setdureEnJour(x[i].children[4].textContent);
-                t.setheure(x[i].children[5].textContent);
-                t.setheureDebut(x[i].children[6].textContent);
-                t.setjour(x[i].children[7].textContent);
-                t.setnbFois(x[i].children[8].textContent);
+                t.setdesignation(x[i].children[4].textContent);
+                t.setjour(x[i].children[8].textContent);
                 t.setnumDoss(x[i].children[9].textContent);
-                t.setnumTraitement(x[i].children[10].textContent);
-                t.setnumbon(x[i].children[11].textContent);
-                t.setposologie(x[i].children[12].textContent);
-                t.setprescripteur(x[i].children[13].textContent);
-                t.setquantite(x[i].children[14].textContent);
-                t.setunite(x[i].children[15].textContent);
-                t.setvitesse(x[i].children[16].textContent);
-                t.setvoie(x[i].children[17].textContent);
-                t.setvolume(x[i].children[18].textContent);
-
+                t.setposologie(x[i].children[13].textContent);
               }
               this.traitement.push(t);
             }
@@ -548,7 +442,7 @@ export class DossierPage {
             }
 
 
-            this.traitementServ = new TraitementService();
+            this.traitementServ = new TraitementService(this.sqlite);
             this.traitementServ.verifTraitement(this.traitement, this.pass.getdossier(), this.dateFeuille, codeClinique).then(res => {
               if (res === false) {
                 this.traitementServ.getTraitements(this.traitement, this.pass.getdossier(), this.dateFeuille, codeClinique);
@@ -566,7 +460,7 @@ export class DossierPage {
   }
 
   GetTraitementsOff(traitement, numdoss, datefeuille, codeClinique) {
-    this.traitementServ = new TraitementService();
+    this.traitementServ = new TraitementService(this.sqlite);
     this.traitementServ.verifTraitement(this.traitement, this.pass.getdossier(), this.dateFeuille, codeClinique).then(res => {
       if (res === true) {
         this.traitement = this.traitementServ.getTraitements(this.traitement, this.pass.getdossier(), this.dateFeuille, codeClinique);
@@ -577,7 +471,7 @@ export class DossierPage {
 
   DeleteTraitement(numdoss, dateFeuille, codeClinique) {
 
-    this.traitementServ = new TraitementService();
+    this.traitementServ = new TraitementService(this.sqlite);
     this.traitementServ.deleteTraitements(numdoss, dateFeuille, codeClinique);
   }
 
@@ -604,7 +498,7 @@ export class DossierPage {
     this.Con = false;
     this.Evo = false;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -630,11 +524,7 @@ export class DossierPage {
             var hour = "";
             for (i = 0; i < x.length; i++) {
               e = new Evenement();
-              e.setaccess(x[i].children[0].textContent);
-              e.setcode(x[i].children[1].children[0].textContent);
               e.setevenements(x[i].children[1].children[1].textContent);
-              e.setorderEvenement(x[i].children[1].children[2].textContent);
-              e.setvisible(x[i].children[1].children[3].textContent);
               drdv = new Date(x[i].children[2].textContent);
               day = drdv.getDay();
               month = drdv.getMonth();
@@ -643,9 +533,8 @@ export class DossierPage {
               hour = drdv.getHours();
               e.setdate(day + "/" + month + "/" + year + " - " + hour + ":" + minu);
               e.setdetail(this.convertHTMLtoRTF(x[i].children[3].textContent));
-              e.setIDEvenement(x[i].children[4].textContent);
-              e.setnumdoss(x[i].children[5].textContent);
               e.setuserCreat(x[i].children[6].textContent);
+              e.setnumdoss(x[i].children[5].textContent);
               if (e.getevenements() === "Evolution") {
                 this.Evolution.push(e);
                 this.Evo = true;
@@ -666,7 +555,7 @@ export class DossierPage {
             if (this.Conclusion.length === 0) {
               this.Con = false;
             } else {
-              this.EvenementConS = new EvenementConService();
+              this.EvenementConS = new EvenementConService(this.sqlite);
               this.EvenementConS.verifEvenement(this.Conclusion, this.pass.getdossier(), codeClinique).then(res => {
                 if (res === false) {
                   this.EvenementConS.getEvenements(this.Conclusion, this.pass.getdossier(), codeClinique);
@@ -676,7 +565,7 @@ export class DossierPage {
             if (this.Examenclinique.length === 0) {
               this.Exa = false;
             } else {
-              this.EvenementExaS = new EvenementExaService();
+              this.EvenementExaS = new EvenementExaService(this.sqlite);
               this.EvenementExaS.verifEvenement(this.Examenclinique, this.pass.getdossier(), codeClinique).then(res => {
                 if (res === false) {
                   this.EvenementExaS.getEvenements(this.Examenclinique, this.pass.getdossier(), codeClinique);
@@ -686,7 +575,7 @@ export class DossierPage {
             if (this.Histoiremaladie.length === 0) {
               this.His = false;
             } else {
-              this.EvenementHisS = new EvenementHisService();
+              this.EvenementHisS = new EvenementHisService(this.sqlite);
               this.EvenementHisS.verifEvenement(this.Histoiremaladie, this.pass.getdossier(), codeClinique).then(res => {
                 if (res === false) {
                   this.EvenementHisS.getEvenements(this.Histoiremaladie, this.pass.getdossier(), codeClinique);
@@ -697,7 +586,7 @@ export class DossierPage {
               this.Evo = false;
             }
             else {
-              this.EvenementEvoS = new EvenementEvoService();
+              this.EvenementEvoS = new EvenementEvoService(this.sqlite);
               this.EvenementEvoS.verifEvenement(this.Evolution, this.pass.getdossier(), codeClinique).then(res => {
                 if (res === false) {
                   this.EvenementEvoS.getEvenements(this.Evolution, this.pass.getdossier(), codeClinique);
@@ -715,7 +604,7 @@ export class DossierPage {
   }
 
   GetEvenementByDossierOff(numdoss, codeClinique) {
-    this.EvenementConS = new EvenementConService();
+    this.EvenementConS = new EvenementConService(this.sqlite);
     this.EvenementConS.verifEvenement(this.Conclusion, numdoss, codeClinique).then(res => {
       if (res === true) {
         this.Conclusion = this.EvenementConS.getEvenements(this.Conclusion, numdoss, codeClinique);
@@ -723,7 +612,7 @@ export class DossierPage {
       }
     });
 
-    this.EvenementExaS = new EvenementExaService();
+    this.EvenementExaS = new EvenementExaService(this.sqlite);
     this.EvenementExaS.verifEvenement(this.Examenclinique, this.pass.getdossier(), codeClinique).then(res => {
       if (res === true) {
         this.Examenclinique = this.EvenementExaS.getEvenements(this.Examenclinique, numdoss, codeClinique);
@@ -731,7 +620,7 @@ export class DossierPage {
       }
     });
 
-    this.EvenementHisS = new EvenementHisService();
+    this.EvenementHisS = new EvenementHisService(this.sqlite);
     this.EvenementHisS.verifEvenement(this.Histoiremaladie, this.pass.getdossier(), codeClinique).then(res => {
       if (res === true) {
         this.Histoiremaladie = this.EvenementHisS.getEvenements(this.Histoiremaladie, this.pass.getdossier(), codeClinique);
@@ -739,7 +628,7 @@ export class DossierPage {
       }
     });
 
-    this.EvenementEvoS = new EvenementEvoService();
+    this.EvenementEvoS = new EvenementEvoService(this.sqlite);
     this.EvenementEvoS.verifEvenement(this.Evolution, this.pass.getdossier(), codeClinique).then(res => {
       if (res === true) {
         this.Evolution = this.EvenementEvoS.getEvenements(this.Evolution, this.pass.getdossier(), codeClinique);
@@ -749,16 +638,16 @@ export class DossierPage {
   }
 
   DeleteGetEvenementByDossier(numdoss, codeClinique) {
-    this.EvenementConS = new EvenementConService();
+    this.EvenementConS = new EvenementConService(this.sqlite);
     this.EvenementConS.deleteEvenementCons(numdoss, codeClinique);
 
-    this.EvenementExaS = new EvenementExaService();
+    this.EvenementExaS = new EvenementExaService(this.sqlite);
     this.EvenementExaS.deleteEvenementExas(numdoss, codeClinique);
 
-    this.EvenementHisS = new EvenementHisService();
+    this.EvenementHisS = new EvenementHisService(this.sqlite);
     this.EvenementHisS.deleteEvenementHis(numdoss, codeClinique);
 
-    this.EvenementEvoS = new EvenementEvoService();
+    this.EvenementEvoS = new EvenementEvoService(this.sqlite);
     this.EvenementEvoS.deleteEvenementEvos(numdoss, codeClinique);
   }
 
@@ -768,7 +657,7 @@ export class DossierPage {
     this.rigime.length = 0;
     var xmlhttp = new XMLHttpRequest();
     this.Ri = false;
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -791,7 +680,6 @@ export class DossierPage {
             x = xml.getElementsByTagName("return");
             for (i = 0; i < x.length; i++) {
               r = new Rigime();
-              r.setcodeRegime(x[0].children[0].textContent);
               r.setdesignation(x[0].children[1].textContent);
               this.rigime.push(r);
             }
@@ -801,7 +689,7 @@ export class DossierPage {
             else {
               this.Ri = true;
             }
-            this.rigimeserv = new RigimeService();
+            this.rigimeserv = new RigimeService(this.sqlite);
             this.rigimeserv.verifRigime(this.rigime, numdoss, datefeuille, nature, codeClinique).then(res => {
               if (res === false) {
                 this.rigimeserv.getRigimes(this.rigime, numdoss, datefeuille, nature, codeClinique);
@@ -819,7 +707,7 @@ export class DossierPage {
   }
 
   GetListRegimeOff(rigime, numdoss, datefeuille, nature, codeClinique) {
-    this.rigimeserv = new RigimeService();
+    this.rigimeserv = new RigimeService(this.sqlite);
     this.rigimeserv.verifRigime(this.rigime, numdoss, datefeuille, nature, codeClinique).then(res => {
       if (res === true) {
         this.rigimeserv.getRigimes(this.rigime, numdoss, datefeuille, nature, codeClinique);
@@ -829,7 +717,7 @@ export class DossierPage {
   }
 
   DeleteGetListRegime(numdoss, datefeuille, nature, codeClinique) {
-    this.rigimeserv = new RigimeService();
+    this.rigimeserv = new RigimeService(this.sqlite);
     this.rigimeserv.deleteRigimes(numdoss, datefeuille, nature, codeClinique);
   }
 
@@ -845,7 +733,7 @@ export class DossierPage {
     this.Sorties.length = 0;
     var xmlhttp = new XMLHttpRequest();
     this.Ri = false;
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -893,21 +781,21 @@ export class DossierPage {
               this.Ent = false;
             }
 
-            this.signeCliniqueEntS = new SigneCliniqueEntService();
+            this.signeCliniqueEntS = new SigneCliniqueEntService(this.sqlite);
             this.signeCliniqueEntS.verifSigneClinique(this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(res => {
               if (res === false) {
                 this.signeCliniqueEntS.getSigneCliniques(this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
               }
             });
 
-            this.signeCliniqueSorS = new SigneCliniqueSorService();
+            this.signeCliniqueSorS = new SigneCliniqueSorService(this.sqlite);
             this.signeCliniqueSorS.verifSigneClinique(this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(res => {
               if (res === false) {
                 this.signeCliniqueSorS.getSigneCliniques(this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
               }
             });
 
-            this.signeCliniqueSigS = new SigneCliniqueSigService();
+            this.signeCliniqueSigS = new SigneCliniqueSigService(this.sqlite);
             this.signeCliniqueSigS.verifSigneClinique(this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(res => {
               if (res === false) {
                 this.signeCliniqueSigS.getSigneCliniques(this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
@@ -927,7 +815,7 @@ export class DossierPage {
   }
 
   GetSigneCliniqueOff(numdoss, dateFeuille, nature, codeTypeOf, codeClinique) {
-    this.signeCliniqueEntS = new SigneCliniqueEntService();
+    this.signeCliniqueEntS = new SigneCliniqueEntService(this.sqlite);
     this.signeCliniqueEntS.verifSigneClinique(this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(res => {
       if (res === true) {
         this.Entrees = this.signeCliniqueEntS.getSigneCliniques(this.Entrees, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
@@ -935,7 +823,7 @@ export class DossierPage {
       }
     });
 
-    this.signeCliniqueSorS = new SigneCliniqueSorService();
+    this.signeCliniqueSorS = new SigneCliniqueSorService(this.sqlite);
     this.signeCliniqueSorS.verifSigneClinique(this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(res => {
       if (res === true) {
         this.Sorties = this.signeCliniqueSorS.getSigneCliniques(this.Sorties, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
@@ -943,7 +831,7 @@ export class DossierPage {
       }
     });
 
-    this.signeCliniqueSigS = new SigneCliniqueSigService();
+    this.signeCliniqueSigS = new SigneCliniqueSigService(this.sqlite);
     this.signeCliniqueSigS.verifSigneClinique(this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique).then(res => {
       if (res === true) {
         this.signec = this.signeCliniqueSigS.getSigneCliniques(this.signec, numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
@@ -953,13 +841,13 @@ export class DossierPage {
   }
 
   DeleteGetSigneClinique(numdoss, dateFeuille, nature, codeTypeOf, codeClinique) {
-    this.signeCliniqueEntS = new SigneCliniqueEntService();
+    this.signeCliniqueEntS = new SigneCliniqueEntService(this.sqlite);
     this.signeCliniqueEntS.deleteSigneCliniques(numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
 
-    this.signeCliniqueSorS = new SigneCliniqueSorService();
+    this.signeCliniqueSorS = new SigneCliniqueSorService(this.sqlite);
     this.signeCliniqueSorS.deleteSigneCliniques(numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
 
-    this.signeCliniqueSigS = new SigneCliniqueSigService();
+    this.signeCliniqueSigS = new SigneCliniqueSigService(this.sqlite);
     this.signeCliniqueSigS.deleteSigneCliniques(numdoss, dateFeuille, nature, codeTypeOf, codeClinique);
   }
 
@@ -996,31 +884,38 @@ export class DossierPage {
   }
 
   historique(numDoss, codeClinique) {
-    this.histserv = new HistDossierService();
-    var h = new HistDossier();
+
+    this.histserv = new HistDossierService(this.sqlite);
+    this.histd = new HistDossier();
     var d = new Date();
-    h.setnumDoss(numDoss);
-    h.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
-    h.setcodeClinique(codeClinique);
-    this.histD.push(h);
+    this.histd.setnumDoss(numDoss);
+    this.histd.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+    this.histd.setcodeClinique(codeClinique);
     try {
-      this.histserv.deleteHistDossiers(numDoss, codeClinique);
-      this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(res => {
-        this.histd = res.getdate();
+      this.histserv.deleteHistDossiers(numDoss, codeClinique).then(delet => {
+        if (delet === true) {
+          this.histserv.getHistDossiers(this.histd, numDoss, codeClinique).then(res => {
+            this.histd = res.getdate();
+            DossierPage.hist = res.getdate();
+          });
+        }
       });
+
     }
     catch (Error) {
-      this.histserv.getHistDossiers(this.histD, numDoss, codeClinique).then(res => {
+      this.histserv.getHistDossiers(this.histd, numDoss, codeClinique).then(res => {
         this.histd = res.getdate();
+        DossierPage.hist = res.getdate();
       });
     }
 
   }
 
   historiqueOff(hist, numDoss, codeClinique) {
-    this.histserv = new HistDossierService();
+    this.histserv = new HistDossierService(this.sqlite);
     this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(res => {
       this.histd = res.getdate();
+      DossierPage.hist = res.getdate();
     });
   }
 
@@ -1037,6 +932,15 @@ export class DossierPage {
 
   gotoSigneCourbe() {
     this.navCtrl.push(SigneCourbePage, {
+      codeClinique: this.codeClinique,
+      tabLangue: this.tabLangue,
+      pass: this.pass,
+      langue: this.langue
+    });
+  }
+
+  gotoTraitementCourbe() {
+    this.navCtrl.push(TraitmentCourbe, {
       codeClinique: this.codeClinique,
       tabLangue: this.tabLangue,
       pass: this.pass,

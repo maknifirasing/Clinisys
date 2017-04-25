@@ -9,6 +9,7 @@ import {UserService} from "../../services/UserService";
 import {ListePage} from "../liste/liste";
 import {Langue} from "../../models/Langue";
 import {LangueService} from "../../services/LangueService";
+import {SQLite} from "@ionic-native/sqlite";
 
 @Component({
   selector: 'page-liste-clinique',
@@ -16,8 +17,9 @@ import {LangueService} from "../../services/LangueService";
   providers: [Variables]
 })
 export class ListeCliniquePage {
+  cliniqueact: Array<Clinique> = [];
+  cliniqueaut: Array<Clinique> = [];
   clinique: Array<Clinique> = [];
-  c: any;
   clinserv: any;
   connection: boolean;
   tabLangue: any;
@@ -26,30 +28,27 @@ export class ListeCliniquePage {
   users: Array<Users> = [];
   langserv: any;
   langes: Array<Langue> = [];
+  test: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private viewCtrl: ViewController, public platform: Platform) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private viewCtrl: ViewController, public platform: Platform,private sqlite: SQLite) {
     this.viewCtrl.showBackButton(false);
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
-    this.platform.ready().then(() => {
-      Variables.checconnection().then(connexion => {
-        if (connexion === false) {
-          this.connection = false;
-          this.ListCliniqueOff(this.clinique);
-        }
-        else {
-          this.connection = true;
-          this.ListClinique();
-        }
-      });
+    Variables.checconnection().then(connexion => {
+      if (connexion === false) {
+        this.connection = false;
+        this.ListCliniqueOff(this.clinique);
+      }
+      else {
+        this.connection = true;
+        this.ListClinique();
+      }
     });
-
   }
-
 
   ListClinique() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -61,52 +60,99 @@ export class ListeCliniquePage {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
           var xml = xmlhttp.responseXML;
-          var x, i;
+          var x, i, c;
           x = xml.getElementsByTagName("return");
           for (i = 0; i < x.length; i++) {
-            this.c = new Clinique();
-            this.c.setcode(x[i].children[0].textContent);
-            this.c.setid(x[i].children[1].textContent);
-            this.c.setnom(x[i].children[2].textContent);
-            this.c.seturl(x[i].children[3].textContent);
-            this.clinique.push(this.c);
+            c = new Clinique();
+            c.setcode(x[i].children[0].textContent);
+            c.setnom(x[i].children[2].textContent);
+            c.seturl(x[i].children[3].textContent);
+            this.clinique.push(c);
           }
-          this.clinserv = new CliniqueService();
-          this.clinserv.getCliniques(this.clinique);
+          this.getcliniques(this.clinique);
+          this.clinserv = new CliniqueService(this.sqlite);
+          this.clinserv.verifClinique(this.clinique).then(res => {
+            if (res === false) {
+              this.clinserv.getCliniques(this.clinique);
+            }
+          });
         }
       }
     }
-
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
   }
 
+  getcliniques(cliniques) {
+    this.cliniqueact = [];
+    this.cliniqueact.length = 0;
+    this.cliniqueaut = [];
+    this.cliniqueaut.length = 0;
+    this.test = false;
+
+    this.userserv = new UserService(this.sqlite);
+    this.userserv.getAllUser().then(res => {
+        if (res.length > 0) {
+          for (var i = 0; i < cliniques.length; i++) {
+            if (this.exist(res, cliniques[i].getcode()) === true) {
+              this.cliniqueact.push(cliniques[i]);
+            }
+            else {
+              this.cliniqueaut.push(cliniques[i]);
+            }
+          }
+        } else {
+          this.cliniqueaut = cliniques;
+        }
+        if (this.cliniqueact.length > 0) {
+          this.test = true;
+        }
+
+      }
+    );
+  }
+
+
+  exist(t, code): boolean {
+    for (var j = 0; j < t.length; j++) {
+      if (t[j].getcodeClinique() === code) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   ListCliniqueOff(cliniques) {
-    this.clinserv = new CliniqueService();
-    this.clinique = this.clinserv.getCliniques(cliniques);
+    this.clinserv = new CliniqueService(this.sqlite);
+    this.clinserv.getCliniques(cliniques).then(resact => {
+      this.getcliniques(resact);
+    });
   }
 
   goToHomePage(codeC) {
-    this.userserv = new UserService();
+    this.userserv = new UserService(this.sqlite);
     this.userserv.verifUser(codeC.getcode()).then(user => {
       if (user === false) {
         this.navCtrl.push(HomePage, {
           tabLangue: this.tabLangue,
           langue: this.langue,
           codeClinique: codeC.getcode(),
-          nomClinique: codeC.getnom()
+          nomClinique: codeC.getnom(),
+          url: codeC.geturl()
         });
       } else {
-        this.langserv = new LangueService();
+        this.langserv = new LangueService(this.sqlite);
         this.langserv.verifLangue().then(res => {
           if (res === true) {
             this.langserv.getLangues(this.langes).then(lg => {
               var l = new Langue();
               l.setlangue(lg.getlangue());
+              l.setnom(lg.getnom());
               l.setmatricule(lg.getmatricule());
               l.setcodeClinique(codeC.getcode());
               l.setnomClinique(codeC.getnom());
+              l.seturl(lg.geturl());
               this.langes.push(l);
               this.langserv.deleteLangues().then(delet => {
                 if (delet === true) {
@@ -120,7 +166,8 @@ export class ListeCliniquePage {
             tabLangue: this.tabLangue,
             langue: this.langue,
             codeClinique: codeC.getcode(),
-            nomClinique: codeC.getnom()
+            nomClinique: codeC.getnom(),
+            url: codeC.geturl()
           });
         });
       }

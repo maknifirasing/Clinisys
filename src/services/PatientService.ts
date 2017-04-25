@@ -1,19 +1,19 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {Patient} from "../models/Patient";
 
 export class PatientService {
   public patient: Array<Patient> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
   public  verifPatient(patients: any, user, searchText, etage, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sums from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -32,17 +32,17 @@ export class PatientService {
             return false;
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   public getPatients(patients: any, user, searchText, etage, codeClinique) {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("select * from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
@@ -72,16 +72,16 @@ export class PatientService {
           alert('Error 1 Patient  ' + error);
         })
     });
-    db.close();
+
     return this.patient;
   }
 
   private _insertPatients(patients: Array<Patient>, user, searchText, etage, codeClinique): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in patients) {
         if (!patients.hasOwnProperty(key)) {
           continue;
@@ -110,17 +110,17 @@ export class PatientService {
       console.error('Error opening database', error);
       alert('Error 2 Patient ' + error);
     });
-    db.close();
+
   }
 
 
   public deletePatients(user, searchText, etage, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           //  alert("Suppression de table Patient est terminé avec succes");
@@ -130,7 +130,7 @@ export class PatientService {
           alert('Error 3 Patient  ' + error);
         })
     });
-    db.close();
+
     return this.patient;
   }
 }

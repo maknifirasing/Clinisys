@@ -8,7 +8,11 @@ page-consigne {
   }
 
   ion-content {
+<<<<<<< HEAD
     background: #1ddced;
+=======
+    background: #F5F5F5;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   }
 
   .chatbox {
@@ -18,7 +22,11 @@ page-consigne {
     background: #fff;
     padding: 25px;
     margin: 20px auto;
+<<<<<<< HEAD
     box-shadow: 0 3px #ccc;
+=======
+    box-shadow: 0 3px #eee;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   }
 
   .chatlogs {
@@ -57,7 +65,11 @@ page-consigne {
   .chat .user-photo {
     width: 60px;
     height: 60px;
+<<<<<<< HEAD
     background: #ccc;
+=======
+    background: #F5F5F5;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
     border-radius: 50%;
   }
 
@@ -78,7 +90,11 @@ page-consigne {
   }
 
   .self .chat-message {
+<<<<<<< HEAD
     background: #1ddced;
+=======
+    background: #F5F5F5;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
     order: -1;
   }
 
@@ -88,6 +104,7 @@ page-consigne {
     align-items: flex-start;
   }
 
+<<<<<<< HEAD
   .chat-form textarea {
     background: #fbfbfb;
     width: 75%;
@@ -112,6 +129,32 @@ page-consigne {
     border-radius: 5px;
     background: rgba(0,0,0,-1);
   }
+=======
+  /*  .chat-form textarea {
+      background: #fbfbfb;
+      width: 75%;
+      height: 70px;
+      border: 2px solid #eee;
+      border-radius: 3px;
+      resize: none;
+      padding: 10px;
+      font-size: 18px;
+      lor: #333;
+    }
+
+  /*  .chat-form textarea:focus {
+      background: #fff;
+    }
+
+    .chat-form textarea::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .chat-form textarea::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background: rgba(0,0,0,-1);
+    }*/
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   .roundedImage{
     overflow:hidden;
     -webkit-border-radius:50px;
@@ -121,8 +164,13 @@ page-consigne {
     height:40px;
     background-color: transparent;
   }
+<<<<<<< HEAD
   .chat-form button {
    /* background: #1ddced;
+=======
+ /* .chat-form button {
+   /* background: #F5F5F5;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
     padding: 5px 15px;
     font-size: 30px;
     color: #fff;
@@ -130,7 +178,11 @@ page-consigne {
     margin: 0 10px;
     border-radius: 3px;
     box-shadow: 0 3px 0 #0eb2c1;*/
+<<<<<<< HEAD
     cursor: pointer;
+=======
+ /*   cursor: pointer;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
     overflow:hidden;
     -webkit-border-radius:50px;
     -moz-border-radius:50px;
@@ -139,7 +191,11 @@ page-consigne {
     height:50px;
     margin-top: 10px;
 
+<<<<<<< HEAD
   }
+=======
+  }*/
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
   .chat-form button:hover {
 
@@ -151,10 +207,17 @@ page-consigne {
     width: 350px;
     margin-top:10px;
     padding-left: 5px;
+<<<<<<< HEAD
     background-color:#1ddced;
   }
   .img {
     background-color:  #1ddced;
+=======
+    background-color:#F5F5F5;
+  }
+  .img {
+    background-color:  #F5F5F5;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
     width:30px;height:30px;
 
 
@@ -169,14 +232,25 @@ page-consigne {
 
   .right {
     position: relative;
+<<<<<<< HEAD
     background: #c8c7cc;
+=======
+    background: #F5F5F5;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
     text-align: left;
    // min-width: 45%;
     padding: 10px 15px;
     border-radius: 6px;
+<<<<<<< HEAD
     border: 1px solid #ccc;
     float: right;
     right: 20px;
+=======
+    border: 1px solid #F5F5F5;
+    float: right;
+    right: 20px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   }
 
   .right::before {
@@ -186,7 +260,11 @@ page-consigne {
     top: -1px;
     right: -10px;
     border: 10px solid transparent;
+<<<<<<< HEAD
     border-top: 10px solid #ccc;
+=======
+    border-top: 10px solid #F5F5F5;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   }
 
   .right::after {
@@ -196,7 +274,11 @@ page-consigne {
     top: 0px;
     right: -8px;
     border: 10px solid transparent;
+<<<<<<< HEAD
     border-top: 10px solid #ccc;
+=======
+    border-top: 10px solid #F5F5F5;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
     clear: both;
   }
 
@@ -204,14 +286,25 @@ page-consigne {
 
   .left {
     position: relative;
+<<<<<<< HEAD
     background: #c8c7cc;
+=======
+    background: #F5F5F5;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
     text-align: left;
     // min-width: 45%;
     padding: 10px 15px;
     border-radius: 6px;
+<<<<<<< HEAD
     border: 1px solid #ccc;
     float: left;
     left: 20px;
+=======
+    border: 1px solid #F5F5F5;
+    float: left;
+    left: 20px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   }
 
   .left::before {
@@ -221,7 +314,11 @@ page-consigne {
     top: -1px;
     left: -10px;
     border: 10px solid transparent;
+<<<<<<< HEAD
     border-top: 10px solid #ccc;
+=======
+    border-top: 10px solid #F5F5F5;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   }
 
   .left::after {
@@ -231,8 +328,27 @@ page-consigne {
     top: 0px;
     left: -8px;
     border: 10px solid transparent;
+<<<<<<< HEAD
     border-top: 10px solid #ccc;
     clear: both;
   }
 
+=======
+    border-top: 10px solid #F5F5F5;
+    clear: both;
+  }
+  .md-card{
+    margin-top: 0px;
+    padding-top: 0px;
+    background-color: #0277bd;
+    height: 47px;
+  }
+  .md-card2 {
+    margin-top: 0px;
+
+    background-color: #0277bd;
+    opacity: 0.9;
+    height: 45px;
+  }
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 }

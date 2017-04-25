@@ -1,10 +1,16 @@
-import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import {NavController} from "ionic-angular";
 
+/*
+ Generated class for the Variables provider.
+ See https://angular.io/docs/ts/latest/guide/dependency-injection.html
+ for more info on providers and Angular 2 DI.
+ */
 declare var navigator: any;
 declare var Connection: any;
+
 @Injectable()
 export class Variables {
 
@@ -66,7 +72,13 @@ export class Variables {
     titreAns: "سنة",
     titreGroupeSanguim: "فصيلة الدم",
     titrePoid: "الوزن",
-    titreTaille: "الحجم"
+    titreTaille: "الحجم",
+    titreecrireICI: "أكتب هنا ...",
+    titreancienm2p: "كلمة السر القديمة",
+    titrenvm2p: "كلمة المرور الجديدة",
+    titreconfirmerm2p: " أكد الكلمة",
+    titreconfirmerbtn: "تأكيد",
+    titreAutreCliniques:"عيادات أخرى"
   }
 
   static francais: any = {
@@ -128,7 +140,13 @@ export class Variables {
     titreAns: "ans",
     titreGroupeSanguim: "Groupe Sanguim",
     titrePoid: "Poids",
-    titreTaille: "Taille"
+    titreTaille: "Taille",
+    titreecrireICI: "Ecrire ici ...",
+    titreancienm2p: "Ancien Mot de passe",
+    titrenvm2p: "Nouveau mot de passe",
+    titreconfirmerm2p: "Confirmé Mot de passe",
+    titreconfirmerbtn: "Confirmer",
+    titreAutreCliniques:"Autre Cliniques"
   }
 
   static anglais: any = {
@@ -190,15 +208,24 @@ export class Variables {
     titreAns: "year(s)",
     titreGroupeSanguim: "Blood group",
     titrePoid: "Weight",
-    titreTaille: "Size"
+    titreTaille: "Size",
+    titreecrireICI: "Write Here ...",
+    titreancienm2p: "Old password",
+    titrenvm2p: "New Password",
+    titreconfirmerm2p: "Confirmed Password",
+    titreconfirmerbtn: "To confirm",
+    titreAutreCliniques:"Other Clinics"
   }
 
-  url: string = "";
   static uRL = "";
 
   constructor(public http: Http, public navCtrl: NavController) {
+<<<<<<< HEAD
     this.url = "http://192.168.0.56:8084/";
     Variables.uRL = this.url;
+=======
+    Variables.uRL = "http://192.168.0.63:8084/";
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   }
 
 
@@ -215,7 +242,7 @@ export class Variables {
       states[Connection.CELL] = 'Cell generic connection';
       states[Connection.NONE] = 'No network connection';
       if (states[networkState] !== "No network connection") {
-        Variables.checservice().then(res => {
+        Variables.checservice(Variables.uRL).then(res => {
           if (res === false) {
             resolve(false);
             return false;
@@ -233,11 +260,10 @@ export class Variables {
     });
   }
 
-  public static  checservice(): Promise<boolean> {
-
+  public static  checservice(url): Promise<boolean> {
     return new Promise<boolean>(resolve => {
       var xhr = new XMLHttpRequest();
-      var file = Variables.uRL;
+      var file = url;
 
       xhr.timeout = 200;
       xhr.open('HEAD', file, true);
@@ -260,5 +286,26 @@ export class Variables {
     });
   }
 
+
+  public static auth() {
+    var url = 'http://192.168.0.5:8084/dmi-core/DossierSoinWSService?wsdl';
+    var xhr = new XMLHttpRequest();
+    xhr.timeout = 200;
+    xhr.open('HEAD', url, true, "adminWS", "pom");
+    xhr.send();
+    xhr.addEventListener("readystatechange", processRequest, false);
+
+    function processRequest(e) {
+      if (xhr.readyState == 4) {
+        if (xhr.status >= 200 && xhr.status < 304) {
+
+          alert("ok");
+        } else {
+
+          alert("no");
+        }
+      }
+    }
+  }
 
 }

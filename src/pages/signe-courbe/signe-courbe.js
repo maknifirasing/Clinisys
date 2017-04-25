@@ -7,33 +7,58 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Platform } from 'ionic-angular';
-import { Chart } from 'chart.js';
-import { SigCourbe } from "../../models/SigCourbe";
+import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
+import { SigneCourbe } from "../../models/SigneCourbe";
 import { Variables } from "../../providers/variables";
+import { SigneCourbePoulsService } from "../../services/SigneCourbePoulsService";
+import { HistDossier } from "../../models/HistDossier";
+import { SigneCourbeFrqService } from "../../services/SigneCourbeFrqService";
+import { SigneCourbeSaturationService } from "../../services/SigneCourbeSaturationService";
+import { SigneCourbeTAService } from "../../services/SigneCourbeTAService";
+import { SigneCourbeTempService } from "../../services/SigneCourbeTempService";
+import { HistSigneCourbeService } from "../../services/HistSigneCourbeService";
+import { SQLite } from "@ionic-native/sqlite";
 var SigneCourbePage = (function () {
-    function SigneCourbePage(navCtrl, navParams, Url, platform) {
+    function SigneCourbePage(navCtrl, navParams, sqlite) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.Url = Url;
-        this.platform = platform;
+        this.sqlite = sqlite;
         this.courbePouls = [];
         this.courbeTA = [];
         this.courbeTemp = [];
         this.courbeSaturation = [];
         this.courbeFrq = [];
+        this.histC = [];
+        this.histc = new HistDossier();
+        this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
         this.codeClinique = navParams.get("codeClinique");
         this.tabLangue = navParams.get("tabLangue");
         this.pass = navParams.get("pass");
-        this.getChartSurveillance(this.pass.getdossier(), this.codeClinique);
+        this.langue = navParams.get("langue");
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+                _this.getChartSurveillanceOff(_this.pass.getdossier(), _this.codeClinique);
+                _this.historiqueOff(_this.histC, _this.pass.getdossier(), _this.codeClinique);
+            }
+            else {
+                _this.connection = true;
+                _this.update();
+            }
+        });
     }
     SigneCourbePage.prototype.ionViewDidLoad = function () {
+        this.tabBarElement.style.display = 'none';
+    };
+    SigneCourbePage.prototype.ionViewWillLeave = function () {
+        this.tabBarElement.style.display = 'flex';
     };
     SigneCourbePage.prototype.getChartSurveillance = function (numdoss, codeClinique) {
         var _this = this;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -49,8 +74,8 @@ var SigneCourbePage = (function () {
                     var x;
                     x = xml.getElementsByTagName("return");
                     var courbe, i;
-                    for (i = 0; i < x.length; i++) {
-                        courbe = new SigCourbe();
+                    for (i = x.length - 1; i > 0; i--) {
+                        courbe = new SigneCourbe();
                         courbe.setcodePosologie(x[i].children[0].textContent);
                         courbe.setdesignation(x[i].children[1].textContent);
                         courbe.setseuilMin(x[i].children[2].textContent);
@@ -76,7 +101,37 @@ var SigneCourbePage = (function () {
                             _this.courbeFrq.push(courbe);
                         }
                     }
-                    _this.cPouls(_this.courbePouls);
+                    _this.sgcPserv = new SigneCourbePoulsService(_this.sqlite);
+                    _this.sgcPserv.verifSigneCourbe(_this.courbePouls, numdoss, codeClinique).then(function (res) {
+                        if (res === false) {
+                            _this.sgcPserv.getSigneCourbes(_this.courbePouls, numdoss, codeClinique);
+                        }
+                    });
+                    _this.sgcTAserv = new SigneCourbeTAService(_this.sqlite);
+                    _this.sgcTAserv.verifSigneCourbe(_this.courbeTA, numdoss, codeClinique).then(function (res) {
+                        if (res === false) {
+                            _this.sgcTAserv.getSigneCourbes(_this.courbeTA, numdoss, codeClinique);
+                        }
+                    });
+                    _this.sgcTserv = new SigneCourbeTempService(_this.sqlite);
+                    _this.sgcTserv.verifSigneCourbe(_this.courbeTemp, numdoss, codeClinique).then(function (res) {
+                        if (res === false) {
+                            _this.sgcTserv.getSigneCourbes(_this.courbeTemp, numdoss, codeClinique);
+                        }
+                    });
+                    _this.sgcSserv = new SigneCourbeSaturationService(_this.sqlite);
+                    _this.sgcSserv.verifSigneCourbe(_this.courbeSaturation, numdoss, codeClinique).then(function (res) {
+                        if (res === false) {
+                            _this.sgcSserv.getSigneCourbes(_this.courbeSaturation, numdoss, codeClinique);
+                        }
+                    });
+                    _this.sgcFserv = new SigneCourbeFrqService(_this.sqlite);
+                    _this.sgcFserv.verifSigneCourbe(_this.courbeFrq, numdoss, codeClinique).then(function (res) {
+                        if (res === false) {
+                            _this.sgcFserv.getSigneCourbes(_this.courbeFrq, numdoss, codeClinique);
+                        }
+                    });
+                    _this.doublecourbes(_this.courbePouls, _this.courbeTA, _this.courbeTemp, _this.courbeSaturation, _this.courbeFrq);
                 }
             }
         };
@@ -84,60 +139,208 @@ var SigneCourbePage = (function () {
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };
-    SigneCourbePage.prototype.cPouls = function (courbes) {
-        var label = [];
-        var date;
-        for (var i = 0; i < courbes.length; i++) {
-            date = (courbes[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbes[i].getdateHeurePrise()).substr(5, 2) + "-" + courbes[i].getheurePrise();
-            label.push(date);
-        }
-        console.log(label);
+    SigneCourbePage.prototype.DeletegetChartSurveillance = function (numdoss, codeClinique) {
+        this.sgcPserv = new SigneCourbePoulsService(this.sqlite);
+        this.sgcPserv.deleteSigneCourbes(numdoss, codeClinique);
+        this.sgcTAserv = new SigneCourbeTAService(this.sqlite);
+        this.sgcTAserv.deleteSigneCourbes(numdoss, codeClinique);
+        this.sgcTserv = new SigneCourbeTempService(this.sqlite);
+        this.sgcTserv.deleteSigneCourbes(numdoss, codeClinique);
+        this.sgcSserv = new SigneCourbeSaturationService(this.sqlite);
+        this.sgcSserv.deleteSigneCourbes(numdoss, codeClinique);
+        this.sgcFserv = new SigneCourbeFrqService(this.sqlite);
+        this.sgcFserv.deleteSigneCourbes(numdoss, codeClinique);
     };
-    SigneCourbePage.prototype.exmp = function () {
-        this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-            type: 'line',
-            data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
-                datasets: [
-                    {
-                        label: "My First dataset",
-                        fill: false,
-                        lineTension: 0.1,
-                        backgroundColor: "rgba(75,192,192,0.4)",
-                        borderColor: "rgba(75,192,192,1)",
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: "rgba(75,192,192,1)",
-                        pointBackgroundColor: "#fff",
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                        pointHoverBorderColor: "rgba(220,220,220,1)",
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 1,
-                        pointHitRadius: 10,
-                        data: [65, 59, 80, 81, 56, 55, 40],
-                        spanGaps: false,
-                    }
-                ]
-            }
+    SigneCourbePage.prototype.getChartSurveillanceOff = function (numdoss, codeClinique) {
+        var _this = this;
+        this.sgcPserv = new SigneCourbePoulsService(this.sqlite);
+        this.sgcPserv.getSigneCourbes(this.courbePouls, numdoss, codeClinique).then(function (resp) {
+            _this.courbePouls = resp;
+            _this.sgcTAserv = new SigneCourbeTAService(_this.sqlite);
+            _this.sgcTAserv.getSigneCourbes(_this.courbeTA, numdoss, codeClinique).then(function (resta) {
+                _this.courbeTA = resta;
+                _this.sgcTserv = new SigneCourbeTempService(_this.sqlite);
+                _this.sgcTserv.getSigneCourbes(_this.courbeTemp, numdoss, codeClinique).then(function (rest) {
+                    _this.courbeTemp = rest;
+                    _this.sgcSserv = new SigneCourbeSaturationService(_this.sqlite);
+                    _this.sgcSserv.getSigneCourbes(_this.courbeSaturation, numdoss, codeClinique).then(function (ress) {
+                        _this.courbeSaturation = ress;
+                        _this.sgcFserv = new SigneCourbeFrqService(_this.sqlite);
+                        _this.sgcFserv.getSigneCourbes(_this.courbeFrq, numdoss, codeClinique).then(function (resf) {
+                            _this.courbeFrq = resf;
+                            _this.doublecourbes(_this.courbePouls, _this.courbeTA, _this.courbeTemp, _this.courbeSaturation, _this.courbeFrq);
+                        });
+                    });
+                });
+            });
         });
+    };
+    SigneCourbePage.prototype.doublecourbes = function (courbePouls, courbeTA, courbeTemp, courbeSaturation, courbeFrq) {
+        var labelcourbePouls = [];
+        var labelcourbeTA = [];
+        var labelcourbeTemp = [];
+        var labelcourbeSaturation = [];
+        var labelcourbeFrq = [];
+        var dataPouls = [];
+        var dataTA1 = [];
+        var dataTA2 = [];
+        var dataTemp = [];
+        var dataSaturation = [];
+        var dataFrq = [];
+        for (var i = 0; i < courbePouls.length; i++) {
+            labelcourbePouls.push((courbePouls[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbePouls[i].getdateHeurePrise()).substr(5, 2) + "-" + courbePouls[i].getheurePrise());
+            dataPouls.push(Number(courbePouls[i].getquantite()));
+        }
+        var x, y;
+        for (var i = 0; i < courbeTA.length; i++) {
+            labelcourbeTA.push((courbeTA[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeTA[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeTA[i].getheurePrise());
+            x = Number(courbeTA[i].getquantite().split("/")[0]);
+            y = Number(courbeTA[i].getquantite().split("/")[1]);
+            if (x < 45) {
+                x *= 10;
+            }
+            if (y < 45) {
+                y *= 10;
+            }
+            dataTA1.push(x);
+            dataTA2.push(y);
+        }
+        for (var i = 0; i < courbeTemp.length; i++) {
+            labelcourbeTemp.push((courbeTemp[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeTemp[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeTemp[i].getheurePrise());
+            dataTemp.push(Number(courbeTemp[i].getquantite()));
+        }
+        for (var i = 0; i < courbeSaturation.length; i++) {
+            labelcourbeSaturation.push((courbeSaturation[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeSaturation[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeSaturation[i].getheurePrise());
+            dataSaturation.push(Number(courbeSaturation[i].getquantite()));
+        }
+        for (var i = 0; i < courbeFrq.length; i++) {
+            labelcourbeFrq.push((courbeFrq[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeFrq[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeFrq[i].getheurePrise());
+            dataFrq.push(Number(courbeFrq[i].getquantite()));
+        }
+        this.chartData = {
+            chart: {
+                type: 'line',
+                zoomType: 'x',
+                marginTop: 50,
+                backgroundColor: 'transparent'
+            },
+            title: {
+                text: ''
+            },
+            rangeSelector: {
+                enabled: false,
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'top',
+                verticalAlign: 'top',
+            },
+            xAxis: {
+                categories: labelcourbePouls,
+                min: labelcourbePouls.length - 3,
+                scrollbar: {
+                    enabled: true,
+                    barBorderRadius: 2,
+                    barBorderWidth: 0,
+                    buttonBorderWidth: 0,
+                    buttonBorderRadius: 2,
+                    trackBackgroundColor: 'none',
+                    trackBorderWidth: 0,
+                    trackBorderRadius: 2,
+                    trackBorderColor: 'rgba(0,0,0,-1)'
+                },
+                title: {
+                    text: '',
+                }
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
+            tooltip: { enabled: false },
+            navigator: {
+                enabled: false
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            series: [
+                {
+                    name: courbePouls[0].getdesignation(),
+                    data: dataPouls,
+                    color: "rgb(" + courbePouls[0].getcolor() + ")"
+                }, {
+                    name: courbeTA[0].getdesignation() + " max",
+                    data: dataTA1,
+                    color: "rgb(" + courbeTA[0].getcolor() + ")"
+                }, {
+                    name: courbeTA[0].getdesignation() + " min",
+                    data: dataTA2,
+                    color: "rgba(75,192,192,0.4)"
+                },
+                {
+                    name: courbeTemp[0].getdesignation(),
+                    data: dataTemp,
+                    color: "rgb(" + courbeTemp[0].getcolor() + ")"
+                }, {
+                    name: courbeSaturation[0].getdesignation(),
+                    data: dataSaturation,
+                    color: "rgb(" + courbeSaturation[0].getcolor() + ")"
+                }, {
+                    name: courbeFrq[0].getdesignation(),
+                    data: dataFrq,
+                    color: "rgb(" + courbeFrq[0].getcolor() + ")"
+                }
+            ]
+        };
+    };
+    SigneCourbePage.prototype.historique = function (numDoss, codeClinique) {
+        var _this = this;
+        this.histserv = new HistSigneCourbeService(this.sqlite);
+        var h = new HistDossier();
+        var d = new Date();
+        h.setnumDoss(numDoss);
+        h.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+        h.setcodeClinique(codeClinique);
+        this.histC.push(h);
+        try {
+            this.histserv.deleteHistSigneCourbes(numDoss, codeClinique);
+            this.histserv.getHistSigneCourbes(this.histC, numDoss, codeClinique).then(function (res) {
+                _this.histc = res.getdate();
+            });
+        }
+        catch (Error) {
+            this.histserv.getHistSigneCourbes(this.histC, numDoss, codeClinique).then(function (res) {
+                _this.histc = res.getdate();
+            });
+        }
+    };
+    SigneCourbePage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
+        var _this = this;
+        this.histserv = new HistSigneCourbeService(this.sqlite);
+        this.histserv.getHistSigneCourbes(hist, numDoss, codeClinique).then(function (res) {
+            _this.histc = res.getdate();
+        });
+    };
+    SigneCourbePage.prototype.update = function () {
+        this.DeletegetChartSurveillance(this.pass.getdossier(), this.codeClinique);
+        this.getChartSurveillance(this.pass.getdossier(), this.codeClinique);
+        this.historique(this.pass.getdossier(), this.codeClinique);
     };
     return SigneCourbePage;
 }());
-__decorate([
-    ViewChild('lineCanvas'),
-    __metadata("design:type", Object)
-], SigneCourbePage.prototype, "lineCanvas", void 0);
 SigneCourbePage = __decorate([
     Component({
         selector: 'page-signe-courbe',
         templateUrl: 'signe-courbe.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform])
+    __metadata("design:paramtypes", [NavController, NavParams, SQLite])
 ], SigneCourbePage);
 export { SigneCourbePage };
 //# sourceMappingURL=signe-courbe.js.map

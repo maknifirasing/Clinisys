@@ -1,19 +1,19 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {SigneClinique} from "../models/SigneClinique";
 
 export class SigneCliniqueSorService {
   public signeClinique: Array<SigneClinique> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
   public verifSigneClinique(signeCliniques: any, numDoss, dateFeuille, nature, codeType, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sum from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
           + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
@@ -33,18 +33,18 @@ export class SigneCliniqueSorService {
             return false;
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   public getSigneCliniques(signeCliniques: any, numDoss, dateFeuille, nature, codeType, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("select * from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille
         + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
@@ -54,7 +54,6 @@ export class SigneCliniqueSorService {
             var s;
             for (var i = 0; i < result.rows.length; i++) {
               s = new SigneClinique();
-              s.setcodeType(result.rows.item(i).codeType);
               s.setdate(result.rows.item(i).date);
               s.setdesignation(result.rows.item(i).designation);
               s.setquantite(result.rows.item(i).quantite);
@@ -67,23 +66,22 @@ export class SigneCliniqueSorService {
           alert('Error 1 SigneCliniqueSor  ' + error);
         })
     });
-    db.close();
+
     return this.signeClinique;
   }
 
   private _insertSigneCliniques(signeCliniques: Array<SigneClinique>, numDoss, dateFeuille, nature, codeType, codeClinique): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in signeCliniques) {
         if (!signeCliniques.hasOwnProperty(key)) {
           continue;
         }
         let s = signeCliniques[key];
-        db.executeSql('insert into SigneCliniqueSor (codeType ,date ,designation ,quantite ,numDoss ,dateFeuille, nature ,codetypeof, codeClinique) values (?,?,?,?,?,?,?,?,?)', [
-          s.getcodeType(),
+        db.executeSql('insert into SigneCliniqueSor (date ,designation ,quantite ,numDoss ,dateFeuille, nature ,codetypeof, codeClinique) values (?,?,?,?,?,?,?,?)', [
           s.getdate(),
           s.getdesignation(),
           s.getquantite(),
@@ -98,16 +96,16 @@ export class SigneCliniqueSorService {
       console.error('Error opening database', error);
       alert('Error 2 SigneCliniqueSor ' + error);
     });
-    db.close();
+
   }
 
   public deleteSigneCliniques(numDoss, dateFeuille, nature, codeType, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
           //    alert("Suppression de table SigneCliniqueSor est terminé avec succes");
@@ -117,7 +115,7 @@ export class SigneCliniqueSorService {
           alert('Error 3 SigneCliniqueSor  ' + error);
         })
     });
-    db.close();
+
     return this.signeClinique;
   }
 }

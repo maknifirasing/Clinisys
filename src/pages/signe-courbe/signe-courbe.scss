@@ -23,5 +23,10 @@ page-signe-courbe {
     margin-top: 10px;
     margin-left: 20px;
   }
-
+   .courbe {
+    display: table-cell;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
 }

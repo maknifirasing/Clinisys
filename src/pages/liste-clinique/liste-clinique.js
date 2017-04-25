@@ -13,35 +13,43 @@ import { Variables } from "../../providers/variables";
 import { Clinique } from "../../models/Clinique";
 import { HomePage } from "../home/home";
 import { CliniqueService } from "../../services/CliniqueService";
+import { UserService } from "../../services/UserService";
+import { ListePage } from "../liste/liste";
+import { Langue } from "../../models/Langue";
+import { LangueService } from "../../services/LangueService";
+import { SQLite } from "@ionic-native/sqlite";
 var ListeCliniquePage = (function () {
-    function ListeCliniquePage(navCtrl, navParams, Url, viewCtrl, platform) {
+    function ListeCliniquePage(navCtrl, navParams, Url, viewCtrl, platform, sqlite) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
         this.viewCtrl = viewCtrl;
         this.platform = platform;
+        this.sqlite = sqlite;
+        this.cliniqueact = [];
+        this.cliniqueaut = [];
         this.clinique = [];
+        this.users = [];
+        this.langes = [];
         this.viewCtrl.showBackButton(false);
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
-        this.platform.ready().then(function () {
-            Variables.checconnection().then(function (connexion) {
-                if (connexion === false) {
-                    _this.connection = false;
-                    _this.ListCliniqueOff(_this.clinique);
-                }
-                else {
-                    _this.connection = true;
-                    _this.ListClinique();
-                }
-            });
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+                _this.ListCliniqueOff(_this.clinique);
+            }
+            else {
+                _this.connection = true;
+                _this.ListClinique();
+            }
         });
     }
     ListeCliniquePage.prototype.ListClinique = function () {
         var _this = this;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -52,18 +60,22 @@ var ListeCliniquePage = (function () {
             if (xmlhttp.readyState == 4) {
                 if (xmlhttp.status == 200) {
                     var xml = xmlhttp.responseXML;
-                    var x, i;
+                    var x, i, c;
                     x = xml.getElementsByTagName("return");
                     for (i = 0; i < x.length; i++) {
-                        _this.c = new Clinique();
-                        _this.c.setcode(x[i].children[0].textContent);
-                        _this.c.setid(x[i].children[1].textContent);
-                        _this.c.setnom(x[i].children[2].textContent);
-                        _this.c.seturl(x[i].children[3].textContent);
-                        _this.clinique.push(_this.c);
+                        c = new Clinique();
+                        c.setcode(x[i].children[0].textContent);
+                        c.setnom(x[i].children[2].textContent);
+                        c.seturl(x[i].children[3].textContent);
+                        _this.clinique.push(c);
                     }
-                    _this.clinserv = new CliniqueService();
-                    _this.clinserv.getCliniques(_this.clinique);
+                    _this.getcliniques(_this.clinique);
+                    _this.clinserv = new CliniqueService(_this.sqlite);
+                    _this.clinserv.verifClinique(_this.clinique).then(function (res) {
+                        if (res === false) {
+                            _this.clinserv.getCliniques(_this.clinique);
+                        }
+                    });
                 }
             }
         };
@@ -71,16 +83,90 @@ var ListeCliniquePage = (function () {
         xmlhttp.responseType = "document";
         xmlhttp.send(sr);
     };
+    ListeCliniquePage.prototype.getcliniques = function (cliniques) {
+        var _this = this;
+        this.cliniqueact = [];
+        this.cliniqueact.length = 0;
+        this.cliniqueaut = [];
+        this.cliniqueaut.length = 0;
+        this.test = false;
+        this.userserv = new UserService(this.sqlite);
+        this.userserv.getAllUser().then(function (res) {
+            if (res.length > 0) {
+                for (var i = 0; i < cliniques.length; i++) {
+                    if (_this.exist(res, cliniques[i].getcode()) === true) {
+                        _this.cliniqueact.push(cliniques[i]);
+                    }
+                    else {
+                        _this.cliniqueaut.push(cliniques[i]);
+                    }
+                }
+            }
+            else {
+                _this.cliniqueaut = cliniques;
+            }
+            if (_this.cliniqueact.length > 0) {
+                _this.test = true;
+            }
+        });
+    };
+    ListeCliniquePage.prototype.exist = function (t, code) {
+        for (var j = 0; j < t.length; j++) {
+            if (t[j].getcodeClinique() === code) {
+                return true;
+            }
+        }
+        return false;
+    };
     ListeCliniquePage.prototype.ListCliniqueOff = function (cliniques) {
-        this.clinserv = new CliniqueService();
-        this.clinique = this.clinserv.getCliniques(cliniques);
+        var _this = this;
+        this.clinserv = new CliniqueService(this.sqlite);
+        this.clinserv.getCliniques(cliniques).then(function (resact) {
+            _this.getcliniques(resact);
+        });
     };
     ListeCliniquePage.prototype.goToHomePage = function (codeC) {
-        this.navCtrl.push(HomePage, {
-            tabLangue: this.tabLangue,
-            langue: this.langue,
-            codeClinique: codeC.getcode(),
-            nomClinique: codeC.getnom()
+        var _this = this;
+        this.userserv = new UserService(this.sqlite);
+        this.userserv.verifUser(codeC.getcode()).then(function (user) {
+            if (user === false) {
+                _this.navCtrl.push(HomePage, {
+                    tabLangue: _this.tabLangue,
+                    langue: _this.langue,
+                    codeClinique: codeC.getcode(),
+                    nomClinique: codeC.getnom(),
+                    url: codeC.geturl()
+                });
+            }
+            else {
+                _this.langserv = new LangueService(_this.sqlite);
+                _this.langserv.verifLangue().then(function (res) {
+                    if (res === true) {
+                        _this.langserv.getLangues(_this.langes).then(function (lg) {
+                            var l = new Langue();
+                            l.setlangue(lg.getlangue());
+                            l.setnom(lg.getnom());
+                            l.setmatricule(lg.getmatricule());
+                            l.setcodeClinique(codeC.getcode());
+                            l.setnomClinique(codeC.getnom());
+                            l.seturl(lg.geturl());
+                            _this.langes.push(l);
+                            _this.langserv.deleteLangues().then(function (delet) {
+                                if (delet === true) {
+                                    _this.langserv._insertLangues(_this.langes);
+                                }
+                            });
+                        });
+                    }
+                    _this.navCtrl.setRoot(ListePage, {
+                        tabLangue: _this.tabLangue,
+                        langue: _this.langue,
+                        codeClinique: codeC.getcode(),
+                        nomClinique: codeC.getnom(),
+                        url: codeC.geturl()
+                    });
+                });
+            }
         });
     };
     return ListeCliniquePage;
@@ -91,7 +177,7 @@ ListeCliniquePage = __decorate([
         templateUrl: 'liste-clinique.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables, ViewController, Platform])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, ViewController, Platform, SQLite])
 ], ListeCliniquePage);
 export { ListeCliniquePage };
 //# sourceMappingURL=liste-clinique.js.map

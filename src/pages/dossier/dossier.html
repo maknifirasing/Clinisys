@@ -71,9 +71,15 @@
             {{tabLangue.titreMotif}}
           </strong><br/>
 
+<<<<<<< HEAD
           <span class="strong2" *ngFor="let m of motifh ">
 
             {{ m.getmotifhospitalisation()}}<br/>
+=======
+          <span class="strong2" >
+
+            {{ motifh.getmotifhospitalisation()}}<br/>
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
         </div>
@@ -134,7 +140,11 @@
           </strong><br/>
           <span class="strong2" *ngFor="let en of Entrees ">
 
+<<<<<<< HEAD
             <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong> {{en.getdate()}}<br/>
+=======
+            <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong><span style="font-size: 10px"> {{en.getdate()}}</span><br/>
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
         </div>
@@ -151,11 +161,19 @@
           <span class="strong2" *ngFor="let tra of traitement ">
 
             <strong>{{ tra.getdesignation() }}</strong>
+<<<<<<< HEAD
             {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.<br/>
 
           </span>
         </div>
         <div fxFlex="23" dir="ltr"><img src="/android_asset/www/assets/img/line.png" width="50" height="50"></div>
+=======
+            <span style="font-size: 10px">     {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.</span><br/>
+
+          </span>
+        </div>
+        <div fxFlex="23" dir="ltr" (click)="gotoTraitementCourbe()"><img src="/android_asset/www/assets/img/line.png" width="50" height="50"></div>
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         <p></p>
       </div>
       <div><p></p></div>
@@ -167,7 +185,11 @@
           </strong><br/>
           <span class="strong2" *ngFor="let so of Sorties ">
 
+<<<<<<< HEAD
             <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> {{so.getdate()}}<br/>
+=======
+            <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong><span style="font-size: 10px"> {{so.getdate()}}</span><br/>
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
         </div>
@@ -181,7 +203,11 @@
           </strong><br/>
           <span class="strong2" *ngFor="let pas of signe ">
 
+<<<<<<< HEAD
             <strong>{{pas.getdesignation()}}</strong> {{pas.getquantite()}} {{pas.getdate()}}<br/>
+=======
+            <strong>{{pas.getdesignation()}}</strong> <span style="font-size: 10px">{{pas.getquantite()}} {{pas.getdate()}}</span><br/>
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
         </div>
@@ -273,9 +299,15 @@
              {{tabLangue.titreMotif}}
            </strong><br/>
 
+<<<<<<< HEAD
            <span class="strong2" *ngFor="let m of motifh ">
 
             {{ m.getmotifhospitalisation()}}<br/>
+=======
+           <span class="strong2" >
+
+            {{ motifh.getmotifhospitalisation()}}<br/>
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
          </div>
@@ -320,7 +352,11 @@
            </strong><br/>
            <span class="strong2" *ngFor="let sig of signec ">
 
+<<<<<<< HEAD
             <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong> {{sig.getdate()}}<br/>
+=======
+             <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong><span style="font-size: 10px"> {{sig.getdate()}}</span><br/>
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
          </div>
@@ -336,7 +372,11 @@
            </strong><br/>
            <span class="strong2" *ngFor="let en of Entrees ">
 
+<<<<<<< HEAD
             <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong> {{en.getdate()}}<br/>
+=======
+             <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong><span style="font-size: 10px"> {{en.getdate()}}</span><br/>
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
          </div>
@@ -353,11 +393,19 @@
            <span class="strong2" *ngFor="let tra of traitement ">
 
             <strong>{{ tra.getdesignation() }}</strong>
+<<<<<<< HEAD
             {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.<br/>
 
           </span>
          </div>
          <div fxFlex="23" dir="rtl"><img src="/android_asset/www/assets/img/line.png" width="50" height="50"></div>
+=======
+             <span style="font-size: 10px">  {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.</span><br/>
+
+          </span>
+         </div>
+         <div fxFlex="23" dir="rtl" (click)="gotoTraitementCourbe()"><img src="/android_asset/www/assets/img/line.png" width="50" height="50"></div>
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
          <p></p>
        </div>
        <div><p></p></div>
@@ -369,7 +417,11 @@
            </strong><br/>
            <span class="strong2" *ngFor="let so of Sorties ">
 
+<<<<<<< HEAD
             <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> {{so.getdate()}}<br/>
+=======
+             <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> <span style="font-size: 10px">{{so.getdate()}}</span><br/>
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
          </div>
@@ -383,7 +435,11 @@
            </strong><br/>
            <span class="strong2" *ngFor="let pas of signe ">
 
+<<<<<<< HEAD
             <strong>{{pas.getdesignation()}}</strong> {{pas.getquantite()}} {{pas.getdate()}}<br/>
+=======
+             <strong>{{pas.getdesignation()}}</strong> <span style="font-size: 10px">{{pas.getquantite()}} {{pas.getdate()}}</span><br/>
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
           </span>
          </div>

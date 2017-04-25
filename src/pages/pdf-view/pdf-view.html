@@ -22,8 +22,8 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-scroll scrollY="true" scrollX="true">
-  <pdf-viewer [src]="pdfSrc"
+  <ion-scroll scrollY="true" scrollX="true" zoom="true" zooming="true" direction="xy" >
+ <pdf-viewer [src]="pdfSrc"
               [page]="page"
               [original-size]="true"
               [show-all]="true"

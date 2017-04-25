@@ -1,14 +1,19 @@
 export class Consigne{
+<<<<<<< HEAD
   private _codeExamen: string;
   private _codeMedecin: string;
   private _codeinf: string;
   private _date: string;
   private _dateDelete: string;
   private _dateRealisation: string;
+=======
+  private _type: string;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   private _datetache: string;
   private _details: string;
   private _etat: string;
   private _heurtache: string;
+<<<<<<< HEAD
   private _id: string;
   private _listCode: string;
   private _nomMed: string;
@@ -18,16 +23,31 @@ export class Consigne{
   private _userCreate: string;
   private _userDelete: string;
   private _userRealise: string;
+=======
+  private _userCreate: string;
+  private _numeroDossier: string;
+  private _codeMedecin: string;
+    private _codeClinique: string;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
   constructor() {
   }
 
+<<<<<<< HEAD
   getcodeExamen(): string {
     return this._codeExamen;
   }
 
   setcodeExamen(value: string) {
     this._codeExamen = value;
+=======
+  getnumeroDossier(): string {
+    return this._numeroDossier;
+  }
+
+  setnumeroDossier(value: string) {
+    this._numeroDossier = value;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   }
 
   getcodeMedecin(): string {
@@ -36,6 +56,7 @@ export class Consigne{
 
   setcodeMedecin(value: string) {
     this._codeMedecin = value;
+<<<<<<< HEAD
   }
 
   getcodeinf(): string {
@@ -44,16 +65,19 @@ export class Consigne{
 
   setcodeinf(value: string) {
     this._codeinf = value;
+=======
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   }
 
-  getdate(): string {
-    return this._date;
+  gettype(): string {
+    return this._type;
   }
 
-  setdate(value: string) {
-    this._date = value;
+  settype(value: string) {
+    this._type = value;
   }
 
+<<<<<<< HEAD
   getdateDelete(): string {
     return this._dateDelete;
   }
@@ -74,6 +98,12 @@ export class Consigne{
     return this._datetache;
   }
 
+=======
+  getdatetache(): string {
+    return this._datetache;
+  }
+
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   setdatetache(value: string) {
     this._datetache = value;
   }
@@ -88,6 +118,7 @@ export class Consigne{
 
   getetat(): string {
     return this._etat;
+<<<<<<< HEAD
   }
 
   setetat(value: string) {
@@ -112,12 +143,15 @@ export class Consigne{
 
   getlistCode(): string {
     return this._listCode;
+=======
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   }
 
-  setlistCode(value: string) {
-    this._listCode = value;
+  setetat(value: string) {
+    this._etat = value;
   }
 
+<<<<<<< HEAD
   getnomMed(): string {
     return this._nomMed;
   }
@@ -172,5 +206,29 @@ export class Consigne{
 
   setuserRealise(value: string) {
     this._userRealise = value;
+=======
+  getheurtache(): string {
+    return this._heurtache;
+  }
+
+  setheurtache(value: string) {
+    this._heurtache = value;
+  }
+
+  getuserCreate(): string {
+    return this._userCreate;
+  }
+
+  setuserCreate(value: string) {
+    this._userCreate = value;
+  }
+
+  getcodeClinique(): string {
+    return this._codeClinique;
+  }
+
+  setcodeClinique(value: string) {
+    this._codeClinique = value;
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
   }
 }

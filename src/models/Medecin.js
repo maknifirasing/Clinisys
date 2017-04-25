@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var Medecin = (function () {
     function Medecin() {
     }
@@ -29,4 +27,5 @@ var Medecin = (function () {
     };
     return Medecin;
 }());
-exports.Medecin = Medecin;
+export { Medecin };
+//# sourceMappingURL=Medecin.js.map

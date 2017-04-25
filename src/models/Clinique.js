@@ -7,12 +7,6 @@ var Clinique = (function () {
     Clinique.prototype.setcode = function (value) {
         this._code = value;
     };
-    Clinique.prototype.getid = function () {
-        return this._id;
-    };
-    Clinique.prototype.setid = function (value) {
-        this._id = value;
-    };
     Clinique.prototype.getnom = function () {
         return this._nom;
     };

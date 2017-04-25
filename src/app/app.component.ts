@@ -1,18 +1,26 @@
 import {Component, ViewChild} from '@angular/core';
-import {Platform, Nav} from 'ionic-angular';
-import {LanguesPage} from '../pages/langues/langues';
-import {StatusBar, Splashscreen, SQLite} from 'ionic-native';
-import {LangueService} from "../services/LangueService";
+import {Nav, Platform} from 'ionic-angular';
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
+import {SQLite} from '@ionic-native/sqlite';
+import {UserService} from "../services/UserService";
+import {TryPage} from "../pages/try/try";
 import {Langue} from "../models/Langue";
-import {Variables} from "../providers/variables";
+import {LanguesPage} from "../pages/langues/langues";
 import {ListePage} from "../pages/liste/liste";
+<<<<<<< HEAD
 import {TryPage} from "../pages/try/try";
 import {ConsignePage} from "../pages/consigne/consigne";
+=======
+import {Variables} from "../providers/variables";
+import {LangueService} from "../services/LangueService";
+import {Database} from "../providers/database";
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [Database]
 })
-
 export class MyApp {
   rootPage: any;
   @ViewChild(Nav) nav: Nav;
@@ -24,12 +32,14 @@ export class MyApp {
   private langue: any;
   tabLangue: any;
   nomClinique: any;
+  private userserv: any;
 
-  constructor(platform: Platform) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private sqlite: SQLite, private database: Database) {
     this.pages = [
       {title: 'Langues', component: LanguesPage}
     ];
     platform.ready().then(() => {
+<<<<<<< HEAD
       SQLite.openDatabase({
         name: 'clinisys.db',
         location: 'default'
@@ -199,13 +209,50 @@ export class MyApp {
       this.nav.setRoot(ConsignePage);
       StatusBar.styleDefault();
       Splashscreen.hide();
+=======
+/*
+      this.userserv = new UserService(this.sqlite);
+      this.userserv.getAllUser().then(user => {
+        if (user.length === 0) {
+          this.nav.setRoot(LanguesPage);
+        } else {
+          this.langserv = new LangueService(this.sqlite);
+          this.langserv.verifLangue().then(res => {
+            if (res === true) {
+              this.langserv.getLangues(this.langes).then(lang => {
+                this.codeClinique = lang.getcodeClinique();
+                this.nomClinique = lang.getnomClinique();
+                this.langue = lang.getlangue();
+                if (this.langue === "arabe") {
+                  this.tabLangue = Variables.arabe;
+                }
+                else if (this.langue === "francais") {
+                  this.tabLangue = Variables.francais;
+                }
+                else if (this.langue === "anglais") {
+                  this.tabLangue = Variables.anglais;
+                }
+
+                this.nav.setRoot(ListePage, {
+                  tabLangue: this.tabLangue,
+                  langue: this.langue,
+                  codeClinique: this.codeClinique,
+                  nomClinique: this.nomClinique
+                });
+              });
+            } else {
+              this.nav.setRoot(LanguesPage);
+            }
+          });
+        }
+      });
+*/
+          this.nav.setRoot(TryPage);
+      statusBar.styleDefault();
+      setTimeout(() => {
+        splashScreen.hide();
+      }, 10);
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
     });
-
-  }
-
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
   }
 }

@@ -1,20 +1,21 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-require("rxjs/add/operator/map");
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/map';
+import { NavController } from "ionic-angular";
 var Variables = Variables_1 = (function () {
     function Variables(http, navCtrl) {
         this.http = http;
         this.navCtrl = navCtrl;
-        this.url = "";
-        this.url = "http://192.168.0.138:8084/";
-        Variables_1.uRL = this.url;
+        Variables_1.uRL = "http://192.168.0.63:8084/";
     }
     Variables.checconnection = function () {
         var _this = this;
@@ -30,7 +31,7 @@ var Variables = Variables_1 = (function () {
             states[Connection.CELL] = 'Cell generic connection';
             states[Connection.NONE] = 'No network connection';
             if (states[networkState] !== "No network connection") {
-                Variables_1.checservice().then(function (res) {
+                Variables_1.checservice(Variables_1.uRL).then(function (res) {
                     if (res === false) {
                         resolve(false);
                         return false;
@@ -48,11 +49,11 @@ var Variables = Variables_1 = (function () {
             return _this;
         });
     };
-    Variables.checservice = function () {
+    Variables.checservice = function (url) {
         var _this = this;
         return new Promise(function (resolve) {
             var xhr = new XMLHttpRequest();
-            var file = Variables_1.uRL;
+            var file = url;
             xhr.timeout = 200;
             xhr.open('HEAD', file, true);
             xhr.send();
@@ -71,6 +72,24 @@ var Variables = Variables_1 = (function () {
             }
             return _this;
         });
+    };
+    Variables.auth = function () {
+        var url = 'http://192.168.0.5:8084/dmi-core/DossierSoinWSService?wsdl';
+        var xhr = new XMLHttpRequest();
+        xhr.timeout = 200;
+        xhr.open('HEAD', url, true, "adminWS", "pom");
+        xhr.send();
+        xhr.addEventListener("readystatechange", processRequest, false);
+        function processRequest(e) {
+            if (xhr.readyState == 4) {
+                if (xhr.status >= 200 && xhr.status < 304) {
+                    alert("ok");
+                }
+                else {
+                    alert("no");
+                }
+            }
+        }
     };
     return Variables;
 }());
@@ -132,7 +151,13 @@ Variables.arabe = {
     titreAns: "سنة",
     titreGroupeSanguim: "فصيلة الدم",
     titrePoid: "الوزن",
-    titreTaille: "الحجم"
+    titreTaille: "الحجم",
+    titreecrireICI: "أكتب هنا ...",
+    titreancienm2p: "كلمة السر القديمة",
+    titrenvm2p: "كلمة المرور الجديدة",
+    titreconfirmerm2p: " أكد الكلمة",
+    titreconfirmerbtn: "تأكيد",
+    titreAutreCliniques: "عيادات أخرى"
 };
 Variables.francais = {
     titreSync: "Synchroniser",
@@ -193,7 +218,13 @@ Variables.francais = {
     titreAns: "ans",
     titreGroupeSanguim: "Groupe Sanguim",
     titrePoid: "Poids",
-    titreTaille: "Taille"
+    titreTaille: "Taille",
+    titreecrireICI: "Ecrire ici ...",
+    titreancienm2p: "Ancien Mot de passe",
+    titrenvm2p: "Nouveau mot de passe",
+    titreconfirmerm2p: "Confirmé Mot de passe",
+    titreconfirmerbtn: "Confirmer",
+    titreAutreCliniques: "Autre Cliniques"
 };
 Variables.anglais = {
     titreSync: "Synchronize",
@@ -254,11 +285,19 @@ Variables.anglais = {
     titreAns: "year(s)",
     titreGroupeSanguim: "Blood group",
     titrePoid: "Weight",
-    titreTaille: "Size"
+    titreTaille: "Size",
+    titreecrireICI: "Write Here ...",
+    titreancienm2p: "Old password",
+    titrenvm2p: "New Password",
+    titreconfirmerm2p: "Confirmed Password",
+    titreconfirmerbtn: "To confirm",
+    titreAutreCliniques: "Other Clinics"
 };
 Variables.uRL = "";
 Variables = Variables_1 = __decorate([
-    core_1.Injectable()
+    Injectable(),
+    __metadata("design:paramtypes", [Http, NavController])
 ], Variables);
-exports.Variables = Variables;
+export { Variables };
 var Variables_1;
+//# sourceMappingURL=variables.js.map

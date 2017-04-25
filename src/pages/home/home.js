@@ -13,22 +13,28 @@ import { Users } from '../../models/Users';
 import { ListePage } from "../liste/liste";
 import { Variables } from "../../providers/variables";
 import { UserService } from "../../services/UserService";
+import { Langue } from "../../models/Langue";
+import { LangueService } from "../../services/LangueService";
+import { SQLite } from "@ionic-native/sqlite";
 var HomePage = (function () {
-    function HomePage(navCtrl, navParams, Url) {
+    function HomePage(navCtrl, navParams, Url, sqlite) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
+        this.sqlite = sqlite;
         this.users = [];
+        this.langes = [];
         this.codeClinique = this.navParams.get("codeClinique");
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
         this.nomClinique = navParams.get("nomClinique");
+        this.url = navParams.get("url");
     }
     HomePage.prototype.connecter = function (userName, passWord) {
         var _this = this;
         try {
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+            xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
             var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
                 '<soapenv:Header/>' +
                 '<soapenv:Body>' +
@@ -46,37 +52,45 @@ var HomePage = (function () {
                             var x, user;
                             x = _this.xml.getElementsByTagName("return");
                             user = new Users();
-                            user.setactif(x[0].children[0].textContent);
-                            user.setchStat(x[0].children[1].textContent);
-                            user.setcodeMedecinInfirmier(x[0].children[2].textContent);
-                            user.setcodePin(x[0].children[3].textContent);
-                            user.setdateModPwd(x[0].children[4].textContent);
-                            user.setdernierDateCnx(x[0].children[5].textContent);
-                            user.setdescription(x[0].children[6].textContent);
-                            user.setgrp(x[0].children[7].textContent);
                             user.setmatricule(x[0].children[8].textContent);
-                            user.setnatureUserDS(x[0].children[9].textContent);
-                            user.setoldGrp(x[0].children[10].textContent);
                             user.setpassWord(x[0].children[11].textContent);
                             user.setuserName(x[0].children[12].textContent);
-                            user.setvalidCptRend(x[0].children[13].textContent);
-                            user.setvalidPHNuit(x[0].children[14].textContent);
                             user.setcodeClinique(_this.codeClinique);
                             _this.users.push(user);
                             if (_this.users.length > 0) {
-                                _this.userserv = new UserService();
-                                //   this.userserv.verifUser(userName, passWord, this.codeClinique).then(res => {
-                                _this.userserv.verifUser().then(function (res) {
+                                _this.userserv = new UserService(_this.sqlite);
+                                _this.userserv.verifUser(_this.codeClinique).then(function (res) {
                                     if (res === false) {
-                                        //       this.userserv.getUser(this.users, userName, passWord, this.codeClinique);
-                                        _this.userserv.getUser(_this.users);
+                                        _this.userserv.getUser(_this.users, _this.codeClinique);
                                     }
                                 });
-                                _this.navCtrl.setRoot(ListePage, {
-                                    tabLangue: _this.tabLangue,
-                                    langue: _this.langue,
-                                    codeClinique: _this.codeClinique,
-                                    nomClinique: _this.nomClinique
+                                _this.langserv = new LangueService(_this.sqlite);
+                                _this.langserv.verifLangue().then(function (result) {
+                                    var l = new Langue();
+                                    l.setlangue(_this.langue);
+                                    l.setmatricule(user.getmatricule());
+                                    l.setcodeClinique(_this.codeClinique);
+                                    l.setnomClinique(_this.nomClinique);
+                                    l.seturl(_this.url);
+                                    _this.langes.push(l);
+                                    if (result === true) {
+                                        _this.langserv.getLangues(_this.langes).then(function (lg) {
+                                            _this.langserv.deleteLangues().then(function (delet) {
+                                                if (delet === true) {
+                                                    _this.langserv._insertLangues(_this.langes);
+                                                }
+                                            });
+                                        });
+                                    }
+                                    else {
+                                        _this.langserv.getLangues(_this.langes);
+                                    }
+                                    _this.navCtrl.setRoot(ListePage, {
+                                        tabLangue: _this.tabLangue,
+                                        langue: _this.langue,
+                                        codeClinique: _this.codeClinique,
+                                        nomClinique: _this.nomClinique
+                                    });
                                 });
                             }
                             else {
@@ -97,30 +111,12 @@ var HomePage = (function () {
             this.errConn = this.tabLangue.errConn;
         }
     };
-    HomePage.prototype.verifuser = function () {
-        this.userserv = new UserService();
-        alert("ee4 " + this.userserv.verifUser(this.codeClinique));
-    };
-    /* checkNetwork() {
-       Variables.checconnection().then(connexion=> {
-      alert("connexion " +connexion);
-         });
-     }
-   */
-    HomePage.prototype.checkNetwork = function () {
-        console.log("connexion " + Variables.checconnection());
-        //  alert("connexion " + Variables.checconnection());
-    };
-    HomePage.prototype.doesConnectionExist = function () {
-        Variables.checservice().then(function (res) {
-            alert("serv " + res);
-        });
-    };
     HomePage.prototype.conn = function () {
         this.navCtrl.push(ListePage, {
             tabLangue: this.tabLangue,
             langue: this.langue,
-            codeClinique: this.codeClinique
+            codeClinique: this.codeClinique,
+            nomClinique: this.nomClinique
         });
     };
     return HomePage;
@@ -131,7 +127,7 @@ HomePage = __decorate([
         templateUrl: 'home.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, SQLite])
 ], HomePage);
 export { HomePage };
 //# sourceMappingURL=home.js.map

@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import {Component, ViewChild} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {Chart} from 'chart.js';
+=======
+import {Component} from '@angular/core';
+import {NavController, NavParams} from 'ionic-angular';
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 import {SigneCourbe} from "../../models/SigneCourbe";
 import {Variables} from "../../providers/variables";
 import {SigneCourbePoulsService} from "../../services/SigneCourbePoulsService";
@@ -10,7 +15,11 @@ import {SigneCourbeSaturationService} from "../../services/SigneCourbeSaturation
 import {SigneCourbeTAService} from "../../services/SigneCourbeTAService";
 import {SigneCourbeTempService} from "../../services/SigneCourbeTempService";
 import {HistSigneCourbeService} from "../../services/HistSigneCourbeService";
+<<<<<<< HEAD
 //import {ScreenOrientation} from '@ionic-native/screen-orientation';
+=======
+import {SQLite} from "@ionic-native/sqlite";
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
 @Component({
   selector: 'page-signe-courbe',
@@ -18,10 +27,6 @@ import {HistSigneCourbeService} from "../../services/HistSigneCourbeService";
   providers: [Variables]
 })
 export class SigneCourbePage {
-
-  @ViewChild('lineCanvas') lineCanvas;
-  lineChart: any;
-
   codeClinique: any;
   tabLangue: any;
   pass: any;
@@ -39,10 +44,19 @@ export class SigneCourbePage {
   private sgcTserv: any;
   private sgcSserv: any;
   private sgcFserv: any;
+<<<<<<< HEAD
   private langue: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables) {
     //   this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+=======
+  langue: any;
+  tabBarElement: any;
+  chartData: any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite) {
+    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
@@ -68,7 +82,7 @@ export class SigneCourbePage {
 
   getChartSurveillance(numdoss, codeClinique) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -115,41 +129,45 @@ export class SigneCourbePage {
             }
           }
 
-          this.sgcPserv = new SigneCourbePoulsService();
+          this.sgcPserv = new SigneCourbePoulsService(this.sqlite);
           this.sgcPserv.verifSigneCourbe(this.courbePouls, numdoss, codeClinique).then(res => {
             if (res === false) {
               this.sgcPserv.getSigneCourbes(this.courbePouls, numdoss, codeClinique);
             }
           });
 
-          this.sgcTAserv = new SigneCourbeTAService();
+          this.sgcTAserv = new SigneCourbeTAService(this.sqlite);
           this.sgcTAserv.verifSigneCourbe(this.courbeTA, numdoss, codeClinique).then(res => {
             if (res === false) {
               this.sgcTAserv.getSigneCourbes(this.courbeTA, numdoss, codeClinique);
             }
           });
 
-          this.sgcTserv = new SigneCourbeTempService();
+          this.sgcTserv = new SigneCourbeTempService(this.sqlite);
           this.sgcTserv.verifSigneCourbe(this.courbeTemp, numdoss, codeClinique).then(res => {
             if (res === false) {
               this.sgcTserv.getSigneCourbes(this.courbeTemp, numdoss, codeClinique);
             }
           });
 
-          this.sgcSserv = new SigneCourbeSaturationService();
+          this.sgcSserv = new SigneCourbeSaturationService(this.sqlite);
           this.sgcSserv.verifSigneCourbe(this.courbeSaturation, numdoss, codeClinique).then(res => {
             if (res === false) {
               this.sgcSserv.getSigneCourbes(this.courbeSaturation, numdoss, codeClinique);
             }
           });
 
-          this.sgcFserv = new SigneCourbeFrqService();
+          this.sgcFserv = new SigneCourbeFrqService(this.sqlite);
           this.sgcFserv.verifSigneCourbe(this.courbeFrq, numdoss, codeClinique).then(res => {
             if (res === false) {
               this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique);
             }
           });
+<<<<<<< HEAD
           this.cPouls(this.courbePouls);
+=======
+          this.doublecourbes(this.courbePouls, this.courbeTA, this.courbeTemp, this.courbeSaturation, this.courbeFrq);
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         }
       }
     }
@@ -159,41 +177,47 @@ export class SigneCourbePage {
   }
 
   DeletegetChartSurveillance(numdoss, codeClinique) {
-    this.sgcPserv = new SigneCourbePoulsService();
+    this.sgcPserv = new SigneCourbePoulsService(this.sqlite);
     this.sgcPserv.deleteSigneCourbes(numdoss, codeClinique);
 
-    this.sgcTAserv = new SigneCourbeTAService();
+    this.sgcTAserv = new SigneCourbeTAService(this.sqlite);
     this.sgcTAserv.deleteSigneCourbes(numdoss, codeClinique);
 
 
-    this.sgcTserv = new SigneCourbeTempService();
+    this.sgcTserv = new SigneCourbeTempService(this.sqlite);
     this.sgcTserv.deleteSigneCourbes(numdoss, codeClinique);
 
 
-    this.sgcSserv = new SigneCourbeSaturationService();
+    this.sgcSserv = new SigneCourbeSaturationService(this.sqlite);
     this.sgcSserv.deleteSigneCourbes(numdoss, codeClinique);
 
 
-    this.sgcFserv = new SigneCourbeFrqService();
+    this.sgcFserv = new SigneCourbeFrqService(this.sqlite);
     this.sgcFserv.deleteSigneCourbes(numdoss, codeClinique);
   }
 
   getChartSurveillanceOff(numdoss, codeClinique) {
-    this.sgcPserv = new SigneCourbePoulsService();
-    this.courbePouls = this.sgcPserv.getSigneCourbes(this.courbePouls, numdoss, codeClinique);
+    this.sgcPserv = new SigneCourbePoulsService(this.sqlite);
+    this.sgcPserv.getSigneCourbes(this.courbePouls, numdoss, codeClinique).then(resp => {
+      this.courbePouls = resp;
 
-    this.sgcTAserv = new SigneCourbeTAService();
-    this.courbeTA = this.sgcTAserv.getSigneCourbes(this.courbeTA, numdoss, codeClinique);
+      this.sgcTAserv = new SigneCourbeTAService(this.sqlite);
+      this.sgcTAserv.getSigneCourbes(this.courbeTA, numdoss, codeClinique).then(resta => {
+        this.courbeTA = resta;
 
+        this.sgcTserv = new SigneCourbeTempService(this.sqlite);
+        this.sgcTserv.getSigneCourbes(this.courbeTemp, numdoss, codeClinique).then(rest => {
+          this.courbeTemp = rest;
 
-    this.sgcTserv = new SigneCourbeTempService();
-    this.courbeTemp = this.sgcTserv.getSigneCourbes(this.courbeTemp, numdoss, codeClinique);
+          this.sgcSserv = new SigneCourbeSaturationService(this.sqlite);
+          this.sgcSserv.getSigneCourbes(this.courbeSaturation, numdoss, codeClinique).then(ress => {
+            this.courbeSaturation = ress;
 
+            this.sgcFserv = new SigneCourbeFrqService(this.sqlite);
+            this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique).then(resf => {
+              this.courbeFrq = resf;
 
-    this.sgcSserv = new SigneCourbeSaturationService();
-    this.courbeSaturation = this.sgcSserv.getSigneCourbes(this.courbeSaturation, numdoss, codeClinique);
-
-
+<<<<<<< HEAD
     this.sgcFserv = new SigneCourbeFrqService();
     this.courbeFrq = this.sgcFserv.getSigneCourbes(this.courbeFrq, numdoss, codeClinique);
 
@@ -202,15 +226,70 @@ export class SigneCourbePage {
 
   cPouls(courbe) {
     var labelcourbe: Array<string> = [];
+=======
+              this.doublecourbes(this.courbePouls, this.courbeTA, this.courbeTemp, this.courbeSaturation, this.courbeFrq);
+            });
+          });
+        });
+      });
+    });
+  }
 
-    var data: Array<string> = [];
+  doublecourbes(courbePouls, courbeTA, courbeTemp, courbeSaturation, courbeFrq) {
+    var labelcourbePouls: Array<string> = [];
+    var labelcourbeTA: Array<string> = [];
+    var labelcourbeTemp: Array<string> = [];
+    var labelcourbeSaturation: Array<string> = [];
+    var labelcourbeFrq: Array<string> = [];
+    var dataPouls: Array<Number> = [];
+    var dataTA1: Array<Number> = [];
+    var dataTA2: Array<Number> = [];
+    var dataTemp: Array<Number> = [];
+    var dataSaturation: Array<Number> = [];
+    var dataFrq: Array<Number> = [];
 
+    for (var i = 0; i < courbePouls.length; i++) {
+      labelcourbePouls.push((courbePouls[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbePouls[i].getdateHeurePrise()).substr(5, 2) + "-" + courbePouls[i].getheurePrise());
+      dataPouls.push(Number(courbePouls[i].getquantite()));
+    }
+    var x, y;
+    for (var i = 0; i < courbeTA.length; i++) {
+      labelcourbeTA.push((courbeTA[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeTA[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeTA[i].getheurePrise());
+      x = Number(courbeTA[i].getquantite().split("/")[0]);
+      y = Number(courbeTA[i].getquantite().split("/")[1]);
+      if (x < 45) {
+        x *= 10;
+      }
+      if (y < 45) {
+        y *= 10;
+      }
+      dataTA1.push(x);
+      dataTA2.push(y);
+    }
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
+
+    for (var i = 0; i < courbeTemp.length; i++) {
+      labelcourbeTemp.push((courbeTemp[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeTemp[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeTemp[i].getheurePrise());
+      dataTemp.push(Number(courbeTemp[i].getquantite()));
+    }
+
+<<<<<<< HEAD
     for (var i = 0; i < courbe.length; i++) {
       labelcourbe.push((courbe[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbe[i].getdateHeurePrise()).substr(5, 2) + "-" + courbe[i].getheurePrise());
       data.push(courbe[i].getquantite())
+=======
+    for (var i = 0; i < courbeSaturation.length; i++) {
+      labelcourbeSaturation.push((courbeSaturation[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeSaturation[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeSaturation[i].getheurePrise());
+      dataSaturation.push(Number(courbeSaturation[i].getquantite()));
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
     }
 
+    for (var i = 0; i < courbeFrq.length; i++) {
+      labelcourbeFrq.push((courbeFrq[i].getdateHeurePrise()).substr(8, 2) + "/" + (courbeFrq[i].getdateHeurePrise()).substr(5, 2) + "-" + courbeFrq[i].getheurePrise());
+      dataFrq.push(Number(courbeFrq[i].getquantite()));
+    }
 
+<<<<<<< HEAD
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: 'line',
       data: {
@@ -251,51 +330,99 @@ export class SigneCourbePage {
             ticks: {min: data[0], max: data[data.length]},
             //       scaleStartValue: data[data.length - 3]
           }]
+=======
+    this.chartData = {
+      chart: {
+        type: 'line',
+        zoomType: 'x',
+        marginTop: 50,
+        backgroundColor: 'transparent'
+      },
+      title: {
+        text: ''
+      },
+      rangeSelector: {
+        enabled: false,
+
+      },
+      legend: {
+        layout: 'horizontal',
+        align: 'top',
+        verticalAlign: 'top',
+
+      },
+      xAxis: {
+        categories: labelcourbePouls,
+        min: labelcourbePouls.length-3,
+        scrollbar: {
+          enabled: true,
+          barBorderRadius: 2,
+          barBorderWidth: 0,
+          buttonBorderWidth: 0,
+          buttonBorderRadius: 2,
+          trackBackgroundColor: 'none',
+          trackBorderWidth: 0,
+          trackBorderRadius: 2,
+          trackBorderColor: 'rgba(0,0,0,-1)'
+        },
+        title: {
+          text: '',
+
         }
-      }
 
-    });
-  }
+      },
+      yAxis: {
+        title: {
+          text: ''
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
+        }
 
+      },
+      tooltip: {enabled: false},
 
-  exmp() {
-    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-
-      type: 'line',
-      data: {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
-        datasets: [
-          {
-            label: "My First dataset",
-            fill: false,
-            lineTension: 0.1,
-            backgroundColor: "rgba(75,192,192,0.4)",
-            borderColor: "rgba(75,192,192,1)",
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            pointBorderColor: "rgba(75,192,192,1)",
-            pointBackgroundColor: "#fff",
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: "rgba(75,192,192,1)",
-            pointHoverBorderColor: "rgba(220,220,220,1)",
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: [65, 59, 80, 81, 56, 55, 40],
-            spanGaps: false,
+      navigator: {
+        enabled: false
+      },
+      plotOptions: {
+        line: {
+          dataLabels: {
+            enabled: true
           }
-        ]
-      }
-
-    });
+        }
+      },
+      series: [
+        {
+          name: courbePouls[0].getdesignation(),
+          data: dataPouls,
+          color: "rgb(" + courbePouls[0].getcolor() + ")"
+        }, {
+          name: courbeTA[0].getdesignation() + " max",
+          data: dataTA1,
+          color: "rgb(" + courbeTA[0].getcolor() + ")"
+        }, {
+          name: courbeTA[0].getdesignation() + " min",
+          data: dataTA2,
+          color: "rgba(75,192,192,0.4)"
+        },
+        {
+          name: courbeTemp[0].getdesignation(),
+          data: dataTemp,
+          color: "rgb(" + courbeTemp[0].getcolor() + ")"
+        }, {
+          name: courbeSaturation[0].getdesignation(),
+          data: dataSaturation,
+          color: "rgb(" + courbeSaturation[0].getcolor() + ")"
+        }, {
+          name: courbeFrq[0].getdesignation(),
+          data: dataFrq,
+          color: "rgb(" + courbeFrq[0].getcolor() + ")"
+        }
+      ]
+    }
   }
-
 
   historique(numDoss, codeClinique) {
-    this.histserv = new HistSigneCourbeService();
+    this.histserv = new HistSigneCourbeService(this.sqlite);
     var h = new HistDossier();
     var d = new Date();
     h.setnumDoss(numDoss);
@@ -316,9 +443,8 @@ export class SigneCourbePage {
 
   }
 
-
   historiqueOff(hist, numDoss, codeClinique) {
-    this.histserv = new HistSigneCourbeService();
+    this.histserv = new HistSigneCourbeService(this.sqlite);
     this.histserv.getHistSigneCourbes(hist, numDoss, codeClinique).then(res => {
       this.histc = res.getdate();
     });
@@ -330,6 +456,9 @@ export class SigneCourbePage {
     this.historique(this.pass.getdossier(), this.codeClinique);
     this.cPouls(this.courbePouls);
   }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 }

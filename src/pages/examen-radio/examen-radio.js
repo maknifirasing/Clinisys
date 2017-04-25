@@ -11,15 +11,19 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, Platform } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
 import { Document } from "../../models/Document";
-import { HistDossier } from "../../models/HistDossier";
-import { HistDossierService } from "../../services/HistDossierService";
-import { File, Transfer } from 'ionic-native';
+import { File } from '@ionic-native/file';
+import { Transfer } from '@ionic-native/transfer';
 import { ThemeableBrowser } from '@ionic-native/themeable-browser';
 import { DocumentService } from "../../services/DocumentService";
 import { ExamenRadioTService } from "../../services/ExamenRadioTService";
 import { ExamenRadioFService } from "../../services/ExamenRadioFService";
+import { ClientDetailPage } from "../client-detail/client-detail";
+import { DossierPage } from "../dossier/dossier";
+import { HistDoc } from "../../models/HistDoc";
+import { HistDocService } from "../../services/HistDocService";
+import { SQLite } from "@ionic-native/sqlite";
 var ExamenRadioPage = (function () {
-    function ExamenRadioPage(navCtrl, navParams, Url, platform, themeableBrowser, alertCtrl) {
+    function ExamenRadioPage(navCtrl, navParams, Url, platform, themeableBrowser, alertCtrl, transfer, file, sqlite) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
@@ -27,13 +31,16 @@ var ExamenRadioPage = (function () {
         this.platform = platform;
         this.themeableBrowser = themeableBrowser;
         this.alertCtrl = alertCtrl;
+        this.transfer = transfer;
+        this.file = file;
+        this.sqlite = sqlite;
         this.GetExamenRadioByNumDossResponseTest = false;
         this.examenRT = [];
         this.examenRF = [];
         this.document = [];
-        this.histD = [];
-        this.histd = new HistDossier();
         this.storageDirectory = '';
+        this.histDoc = [];
+        this.histdoc = new HistDoc();
         this.tabLangue = navParams.get("tabLangue");
         this.pass = navParams.get("pass");
         this.examenRF = navParams.get("examenRF");
@@ -49,13 +56,14 @@ var ExamenRadioPage = (function () {
                 _this.connection = true;
             }
         });
-        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
+        this.histd = DossierPage.hist;
     }
     ExamenRadioPage.prototype.ionViewDidLoad = function () {
     };
     ExamenRadioPage.prototype.getdocumentById = function (observ) {
         var _this = this;
         observ += ".html";
+        //  observ += "a2a01d9b-684b-478f-824e-5ae8a95bcc0b.html";
         this.platform.ready().then(function () {
             // make sure this is on a device, not an emulation (e.g. chrome tools device mode)
             if (!_this.platform.is('cordova')) {
@@ -74,93 +82,173 @@ var ExamenRadioPage = (function () {
             Variables.checconnection().then(function (connexion) {
                 if (connexion === false) {
                     _this.connection = false;
-                    _this.docserv = new DocumentService();
-                    _this.docserv.getDocuments(_this.document, observ, _this.codeClinique).then(function (res) {
-                        _this.retrieveImageOff(res);
+                    _this.histdocserv = new HistDocService(_this.sqlite);
+                    _this.histdocserv.getHistDocs(_this.histDoc, _this.pass.getdossier(), observ, _this.codeClinique).then(function (result) {
+                        _this.histdoc = result.getdate();
+                        _this.docserv = new DocumentService(_this.sqlite);
+                        _this.docserv.getDocuments(_this.document, observ, _this.codeClinique).then(function (res) {
+                            _this.retrieveImageOff(res);
+                        });
                     });
                 }
                 else {
                     _this.connection = true;
-                    var d = new Document();
-                    d.seturl(_this.storageDirectory + observ);
-                    d.setobserv(observ);
-                    d.setcodeClinique(_this.codeClinique);
-                    _this.document.push(d);
-                    _this.docserv = new DocumentService();
-                    _this.docserv.verifDocument(_this.document, observ, _this.codeClinique).then(function (res) {
-                        if (res === false) {
-                            _this.docserv.getDocuments(_this.document, observ, _this.codeClinique);
-                        }
-                    });
-                    _this.url = "http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
-                    _this.open(_this.url);
-                    _this.retrieveImage(_this.url, d);
+                    _this.histdocserv = new HistDocService(_this.sqlite);
+                    var hi = new HistDoc();
+                    var d = new Date();
+                    hi.setnumDoss(_this.pass.getdossier());
+                    hi.setdate(d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+                    hi.setcodeClinique(_this.codeClinique);
+                    hi.setnom(observ);
+                    _this.histDoc.push(hi);
+                    var doc = new Document();
+                    doc.seturl(_this.storageDirectory + observ);
+                    doc.setobserv(observ);
+                    doc.setcodeClinique(_this.codeClinique);
+                    _this.url = "http://37.59.230.40:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
+                    var url = "http://37.59.230.40:8084/";
+                    _this.document.push(doc);
+                    try {
+                        _this.histdocserv.deleteHistDocs(_this.pass.getdossier(), _this.codeClinique, observ);
+                        _this.histdocserv.getHistDocs(_this.histDoc, _this.pass.getdossier(), _this.codeClinique, observ).then(function (result) {
+                            _this.histdoc = result.getdate();
+                            _this.docserv = new DocumentService(_this.sqlite);
+                            _this.docserv.verifDocument(_this.document, observ, _this.codeClinique).then(function (res) {
+                                if (res === false) {
+                                    _this.docserv.getDocuments(_this.document, observ, _this.codeClinique);
+                                }
+                            });
+                            Variables.checservice(url).then(function (res) {
+                                if (res === true) {
+                                    _this.open(_this.url);
+                                    _this.retrieveImage(_this.url, doc);
+                                }
+                                else {
+                                    alert("document introuvable");
+                                }
+                            });
+                        });
+                    }
+                    catch (Error) {
+                        _this.histdocserv.getHistDocs(_this.histDoc, _this.pass.getdossier(), _this.codeClinique, observ).then(function (result) {
+                            _this.histdoc = result.getdate();
+                            _this.docserv = new DocumentService(_this.sqlite);
+                            _this.docserv.verifDocument(_this.document, observ, _this.codeClinique).then(function (res) {
+                                if (res === false) {
+                                    _this.docserv.getDocuments(_this.document, observ, _this.codeClinique);
+                                }
+                            });
+                            Variables.checservice(url).then(function (res) {
+                                if (res === true) {
+                                    _this.open(_this.url);
+                                    _this.retrieveImage(_this.url, doc);
+                                }
+                                else {
+                                    alert("document introuvable");
+                                }
+                            });
+                        });
+                    }
                 }
             });
         });
     };
-    ExamenRadioPage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
-        var _this = this;
-        this.histserv = new HistDossierService();
-        this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(function (res) {
-            _this.histd = res.getdate();
-        });
-    };
     ExamenRadioPage.prototype.open = function (url) {
-        var options = {
-            statusbar: {
-                color: '#ffffffff'
-            },
-            toolbar: {
-                height: 44,
-                color: '#f0f0f0ff'
-            },
-            title: {
-                color: '#003264ff',
-                staticText: "Doc",
-                showPageTitle: false
-            },
-            backButton: {
-                image: 'back',
-                imagePressed: 'back_pressed',
-                align: 'left',
-                event: 'backPressed'
-            },
-            forwardButton: {
-                image: 'forward',
-                imagePressed: 'forward_pressed',
-                align: 'left',
-                event: 'forwardPressed'
-            },
-            closeButton: {
-                image: 'close',
-                imagePressed: 'close_pressed',
-                align: 'left',
-                event: 'closePressed'
-            },
-            customButtons: [
-                {
-                    image: 'share',
-                    imagePressed: 'share_pressed',
-                    align: 'right',
-                    event: 'sharePressed'
+        if (((this.langue === "francais") || (this.langue === "anglais")) && (this.connection)) {
+            var options = {
+                statusbar: {
+                    color: '#0277bd',
+                },
+                toolbar: {
+                    height: 44,
+                    color: '#0277bd'
+                },
+                title: {
+                    color: '#FFFFFF',
+                    staticText: this.tabLangue.titreEnligne + " " + this.histdoc,
+                    showPageTitle: false
+                },
+                backButton: {
+                    wwwImage: '/android_asset/www/assets/img/green.png',
+                    align: 'left'
                 }
-            ],
-            backButtonCanClose: true
-        };
-        var browser = this.themeableBrowser.create(url, '_blank', options);
+            };
+            var browser = this.themeableBrowser.create(url, '_blank', options);
+        }
+        if (((this.langue === "francais") || (this.langue === "anglais")) && (!this.connection)) {
+            var options = {
+                statusbar: {
+                    color: '#0277bd',
+                },
+                toolbar: {
+                    height: 44,
+                    color: '#0277bd'
+                },
+                title: {
+                    color: '#FFFFFF',
+                    staticText: this.tabLangue.titreHorsLigne + " " + this.histdoc,
+                    showPageTitle: false
+                },
+                backButton: {
+                    wwwImage: '/android_asset/www/assets/img/red.png',
+                    align: 'left'
+                }
+            };
+            var browser = this.themeableBrowser.create(url, '_blank', options);
+        }
+        if ((this.langue === "arabe") && (this.connection)) {
+            var options = {
+                statusbar: {
+                    color: '#0277bd',
+                },
+                toolbar: {
+                    height: 44,
+                    color: '#0277bd'
+                },
+                title: {
+                    color: '#FFFFFF',
+                    staticText: this.histdoc + " " + this.tabLangue.titreEnligne,
+                    showPageTitle: false,
+                },
+                backButton: {
+                    wwwImage: '/android_asset/www/assets/img/green.png',
+                    align: 'left'
+                }
+            };
+            var browser = this.themeableBrowser.create(url, '_blank', options);
+        }
+        if ((this.langue === "arabe") && (!this.connection)) {
+            var options = {
+                statusbar: {
+                    color: '#0277bd',
+                },
+                toolbar: {
+                    height: 44,
+                    color: '#0277bd'
+                },
+                title: {
+                    color: '#FFFFFF',
+                    staticText: this.histdoc + " " + this.tabLangue.titreHorsLigne,
+                    showPageTitle: false
+                },
+                backButton: {
+                    wwwImage: '/android_asset/www/assets/img/red.png',
+                    align: 'left'
+                }
+            };
+            var browser = this.themeableBrowser.create(url, '_blank', options);
+        }
     };
     ExamenRadioPage.prototype.downloadImage = function (url, doc) {
         var _this = this;
         this.platform.ready().then(function () {
-            var fileTransfer = new Transfer();
+            var fileTransfer = _this.transfer.create();
             fileTransfer.download(url, _this.storageDirectory + doc.getobserv()).then(function (entry) {
                 /*    const alertSuccess = this.alertCtrl.create({
                  title: `Download Succeeded!`,
                  subTitle: `${doc.getobserv()} was successfully downloaded to: ${entry.toURL()}`,
                  buttons: ['Ok']
                  });
-        
                  alertSuccess.present();
                  */
             }, function (error) {
@@ -170,7 +258,6 @@ var ExamenRadioPage = (function () {
                  subTitle: `${doc.getobserv()} was not successfully downloaded. Error code: ${error.code}`,
                  buttons: ['Ok']
                  });
-        
                  alertFailure.present();
                  */
             });
@@ -179,14 +266,13 @@ var ExamenRadioPage = (function () {
     ExamenRadioPage.prototype.retrieveImage = function (url, doc) {
         var _this = this;
         var file = doc.getobserv();
-        File.checkFile(this.storageDirectory, file)
+        this.file.checkFile(this.storageDirectory, file)
             .then(function () {
             /*    const alertSuccess = this.alertCtrl.create({
              title: `File retrieval Succeeded!`,
              subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
              buttons: ['Ok']
              });
-    
              return alertSuccess.present();
              */
         })
@@ -204,7 +290,7 @@ var ExamenRadioPage = (function () {
     ExamenRadioPage.prototype.retrieveImageOff = function (doc) {
         var _this = this;
         var file = doc.getobserv();
-        File.checkFile(this.storageDirectory, file)
+        this.file.checkFile(this.storageDirectory, file)
             .then(function () {
             _this.url = doc.geturl();
             _this.open(_this.url);
@@ -213,7 +299,6 @@ var ExamenRadioPage = (function () {
              subTitle: `${file} was successfully retrieved from: ${this.storageDirectory}`,
              buttons: ['Ok']
              });
-    
              return alertSuccess.present();
              */
         })
@@ -228,10 +313,19 @@ var ExamenRadioPage = (function () {
         });
     };
     ExamenRadioPage.prototype.GetExamenRadioByNumDossResponseOff = function (numDoss, codeClinique) {
-        this.RadiosTs = new ExamenRadioTService();
+        this.RadiosTs = new ExamenRadioTService(this.sqlite);
         this.examenRT = this.RadiosTs.getExamenRadios(this.examenRT, numDoss, codeClinique);
-        this.RadiosFs = new ExamenRadioFService();
+        this.RadiosFs = new ExamenRadioFService(this.sqlite);
         this.examenRF = this.RadiosFs.getExamenRadios(this.examenRF, numDoss, codeClinique);
+    };
+    ExamenRadioPage.prototype.goToInfPage = function (patient) {
+        this.navCtrl.push(ClientDetailPage, {
+            patient: patient,
+            motif: DossierPage.motifhh,
+            tabLangue: this.tabLangue,
+            langue: this.langue,
+            codeClinique: this.codeClinique
+        });
     };
     return ExamenRadioPage;
 }());
@@ -241,7 +335,8 @@ ExamenRadioPage = __decorate([
         templateUrl: 'examen-radio.html',
         providers: [Variables, ThemeableBrowser]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform, ThemeableBrowser, AlertController])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform, ThemeableBrowser, AlertController,
+        Transfer, File, SQLite])
 ], ExamenRadioPage);
 export { ExamenRadioPage };
 //# sourceMappingURL=examen-radio.js.map

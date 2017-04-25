@@ -4,8 +4,38 @@ var Langue = (function () {
     Langue.prototype.getlangue = function () {
         return this._langue;
     };
+    Langue.prototype.getnom = function () {
+        return this._nom;
+    };
+    Langue.prototype.setnom = function (value) {
+        this._nom = value;
+    };
     Langue.prototype.setlangue = function (value) {
         this._langue = value;
+    };
+    Langue.prototype.getmatricule = function () {
+        return this._matricule;
+    };
+    Langue.prototype.setmatricule = function (value) {
+        this._matricule = value;
+    };
+    Langue.prototype.getcodeClinique = function () {
+        return this._codeClinique;
+    };
+    Langue.prototype.setcodeClinique = function (value) {
+        this._codeClinique = value;
+    };
+    Langue.prototype.getnomClinique = function () {
+        return this._nomClinique;
+    };
+    Langue.prototype.setnomClinique = function (value) {
+        this._nomClinique = value;
+    };
+    Langue.prototype.geturl = function () {
+        return this._url;
+    };
+    Langue.prototype.seturl = function (value) {
+        this._url = value;
     };
     return Langue;
 }());

@@ -1,17 +1,16 @@
-import { SQLite } from 'ionic-native';
 import { Evenement } from "../models/Evenement";
 var EvenementEvoService = (function () {
-    function EvenementEvoService() {
+    function EvenementEvoService(sqlite) {
+        this.sqlite = sqlite;
         this.evenement = [];
     }
     EvenementEvoService.prototype.verifEvenement = function (evenements, numdoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum  from EvenementEvo where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -30,17 +29,15 @@ var EvenementEvoService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     EvenementEvoService.prototype.getEvenements = function (evenements, numdoss, codeClinique) {
         var _this = this;
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from EvenementEvo where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
@@ -50,14 +47,10 @@ var EvenementEvoService = (function () {
                     var e;
                     for (var i = 0; i < result.rows.length; i++) {
                         e = new Evenement();
-                        e.setaccess(result.rows.item(i).access);
-                        e.setcode(result.rows.item(i).code);
+                        e = new Evenement();
                         e.setevenements(result.rows.item(i).evenements);
-                        e.setorderEvenement(result.rows.item(i).orderEvenement);
-                        e.setvisible(result.rows.item(i).visible);
                         e.setdate(result.rows.item(i).date);
                         e.setdetail(result.rows.item(i).detail);
-                        e.setIDEvenement(result.rows.item(i).IDEvenement);
                         e.setnumdoss(result.rows.item(i).numdoss);
                         e.setuserCreat(result.rows.item(i).userCreat);
                         _this.evenement.push(e);
@@ -69,30 +62,23 @@ var EvenementEvoService = (function () {
                 alert('Error 1 EvenementEvo  ' + error);
             });
         });
-        db.close();
         return this.evenement;
     };
     EvenementEvoService.prototype._insertEvenements = function (evenements, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in evenements) {
                 if (!evenements.hasOwnProperty(key)) {
                     continue;
                 }
                 var evenement = evenements[key];
-                db.executeSql('insert into EvenementEvo (access ,code ,evenements ' +
-                    ',orderEvenement ,visible ,date ,detail ,IDEvenement ,numdoss ,userCreat,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?)', [
-                    evenement.getaccess(),
-                    evenement.getcode(),
+                db.executeSql('insert into EvenementEvo (evenements ' +
+                    ',date ,detail ,numdoss ,userCreat,codeClinique) values (?,?,?,?,?,?)', [
                     evenement.getevenements(),
-                    evenement.getorderEvenement(),
-                    evenement.getvisible(),
                     evenement.getdate(),
                     evenement.getdetail(),
-                    evenement.getIDEvenement(),
                     evenement.getnumdoss(),
                     evenement.getuserCreat(),
                     codeClinique
@@ -102,14 +88,12 @@ var EvenementEvoService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 EvenementEvo ' + error);
         });
-        db.close();
     };
     EvenementEvoService.prototype.deleteEvenementEvos = function (numdoss, codeClinique) {
-        var db = new SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from EvenementEvo where  numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 //   alert("Suppression de table EvenementEvo est terminé avec succes");
@@ -119,7 +103,6 @@ var EvenementEvoService = (function () {
                 alert('Error 3 EvenementEvo  ' + error);
             });
         });
-        db.close();
         return this.evenement;
     };
     return EvenementEvoService;

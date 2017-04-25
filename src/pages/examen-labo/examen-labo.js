@@ -11,44 +11,42 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, Platform } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
 import { PdfViewPage } from "../pdf-view/pdf-view";
-import { HistDossier } from "../../models/HistDossier";
-import { HistDossierService } from "../../services/HistDossierService";
 import { LaboFService } from "../../services/LaboFService";
 import { LaboTService } from "../../services/LaboTService";
+import { ClientDetailPage } from "../client-detail/client-detail";
+import { DossierPage } from "../dossier/dossier";
+import { SQLite } from "@ionic-native/sqlite";
 var ExamenLaboPage = (function () {
-    function ExamenLaboPage(navCtrl, navParams, Url, platform) {
+    function ExamenLaboPage(navCtrl, navParams, Url, platform, sqlite) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
         this.platform = platform;
+        this.sqlite = sqlite;
         this.LabosT = [];
         this.LabosF = [];
-        this.histD = [];
-        this.histd = new HistDossier();
         this.tabLangue = navParams.get("tabLangue");
         this.codeClinique = navParams.get("codeClinique");
         this.pass = navParams.get("pass");
         this.langue = navParams.get("langue");
         this.LabosT = navParams.get("Labost");
         this.LabosF = navParams.get("Labosf");
-        this.platform.ready().then(function () {
-            Variables.checconnection().then(function (connexion) {
-                if (connexion === false) {
-                    _this.connection = false;
-                    _this.findAllLaboByNumDossierOff(_this.pass.getdossier(), _this.codeClinique);
-                }
-                else {
-                    _this.connection = true;
-                }
-            });
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+                _this.findAllLaboByNumDossierOff(_this.pass.getdossier(), _this.codeClinique);
+            }
+            else {
+                _this.connection = true;
+            }
         });
-        this.historiqueOff(this.histD, this.pass.getdossier(), this.codeClinique);
+        this.histd = DossierPage.hist;
     }
     ExamenLaboPage.prototype.openURL = function (numAdmission) {
         var _this = this;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -64,7 +62,7 @@ var ExamenLaboPage = (function () {
                         var xml = xmlhttp.responseXML;
                         var x;
                         x = xml.getElementsByTagName("return");
-                        _this.pdf = _this.Url.url + "dmi-web/LaboPDF/" + x[0].childNodes[0].nodeValue.split("1.")[0] + ".pdf";
+                        _this.pdf = Variables.uRL + "dmi-web/LaboPDF/" + x[0].childNodes[0].nodeValue.split("1.")[0] + ".pdf";
                         console.log("p   " + x[0].childNodes[0].nodeValue);
                         console.log("pdf   " + _this.pdf);
                         _this.navCtrl.push(PdfViewPage, { pdf: _this.pdf });
@@ -79,20 +77,23 @@ var ExamenLaboPage = (function () {
         xmlhttp.send(sr);
     };
     ExamenLaboPage.prototype.gotPdf = function (pdf) {
-        this.navCtrl.push(PdfViewPage, { pdf: pdf.getpdf() });
-    };
-    ExamenLaboPage.prototype.historiqueOff = function (hist, numDoss, codeClinique) {
-        var _this = this;
-        this.histserv = new HistDossierService();
-        this.histserv.getHistDossiers(hist, numDoss, codeClinique).then(function (res) {
-            _this.histd = res.getdate();
-        });
+        this.navCtrl.push(PdfViewPage, { pdf: pdf.getpdf(), tabLangue: this.tabLangue,
+            langue: this.langue, codeClinique: this.codeClinique, pass: this.pass });
     };
     ExamenLaboPage.prototype.findAllLaboByNumDossierOff = function (numDoss, codeClinique) {
-        this.LabosFs = new LaboFService();
+        this.LabosFs = new LaboFService(this.sqlite);
         this.LabosF = this.LabosFs.getLabos(this.LabosF, numDoss, codeClinique);
-        this.LabosTs = new LaboTService();
+        this.LabosTs = new LaboTService(this.sqlite);
         this.LabosT = this.LabosTs.getLabos(this.LabosT, numDoss, codeClinique);
+    };
+    ExamenLaboPage.prototype.goToInfPage = function (patient) {
+        this.navCtrl.push(ClientDetailPage, {
+            patient: patient,
+            motif: DossierPage.motifhh,
+            tabLangue: this.tabLangue,
+            langue: this.langue,
+            codeClinique: this.codeClinique
+        });
     };
     return ExamenLaboPage;
 }());
@@ -102,7 +103,7 @@ ExamenLaboPage = __decorate([
         templateUrl: 'examen-labo.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, Platform, SQLite])
 ], ExamenLaboPage);
 export { ExamenLaboPage };
 //# sourceMappingURL=examen-labo.js.map

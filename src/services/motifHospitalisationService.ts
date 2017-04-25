@@ -1,143 +1,114 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {MotifHospitalisation} from "../models/motifHospitalisation";
 
 export class motifHospitalisationService {
-  public motifhospitalisation: Array<MotifHospitalisation> = [];
+  public motifhospitalisation = new MotifHospitalisation();
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
-  public verifmotifHospitalisation(motifhospitalisations: any, numdoss,codeClinique) : Promise<boolean> {
+  public verifmotifHospitalisation(motifhospitalisations: any, numdoss, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select count(*) as sum from motifHospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.item(0).sum > 0) {
-            resolve(true);
-            return true;
-          }
-          else {
+
+      this.sqlite.create({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then((db: SQLiteObject) => {
+        db.executeSql("select count(*) as sum from motifHospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.item(0).sum > 0) {
+              resolve(true);
+              return true;
+            }
+            else {
+              resolve(false);
+              return false;
+            }
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 0 motifHospitalisation  ' + error);
             resolve(false);
             return false;
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 0 motifHospitalisation  ' + error);
-          resolve(false);
-          return false;
-        })
-    });
-      db.close();
+          })
+      });
+
       return this;
     });
   }
 
-  public getmotifHospitalisations(motifhospitalisations: any, numdoss,codeClinique) {
+  public getmotifHospitalisations(motifhospitalisations: any, numdoss, codeClinique): Promise<MotifHospitalisation> {
+    return new Promise<MotifHospitalisation>(resolve => {
 
-    let db = new SQLite();
-    db.openDatabase({
-      name: 'clinisys.db',
-      location: 'default' // the location field is required
-    }).then(() => {
-      db.executeSql("select * from motifHospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
-        .then(result => {
-          if (result.rows.length === 0) {
-            this._insertmotifHospitalisations(motifhospitalisations,codeClinique);
-          } else {
-            var m;
-            for (var i = 0; i < result.rows.length; i++) {
-              m = new MotifHospitalisation();
-              m.setconclusion(result.rows.item(0).conclusion);
-              m.setdateRdv(result.rows.item(0).dateRdv);
-              m.setdateSortie(result.rows.item(0).dateSortie);
-              m.setgroupeSang(result.rows.item(0).groupeSang);
-              m.setheureRdv(result.rows.item(0).heureRdv);
-              m.setheureSortie(result.rows.item(0).heureSortie);
-              m.sethistoiremaladie(result.rows.item(0).histoiremaladie);
-              m.setmotifhospitalisation(result.rows.item(0).motifhospitalisation);
-              m.setnumdoss(result.rows.item(0).numdoss);
-              m.setobservationSejour(result.rows.item(0).observationSejour);
-              m.setpoid(result.rows.item(0).poid);
-              m.settaille(result.rows.item(0).taille);
-              m.settraitementHabituelle(result.rows.item(0).traitementHabituelle);
-              m.settraitementSejour(result.rows.item(0).traitementSejour);
-              m.settraitementSortie(result.rows.item(0).traitementSortie);
-              m.setutilisateurMotif(result.rows.item(0).utilisateurMotif);
-              this.motifhospitalisation.push(m);
+      this.sqlite.create({
+        name: 'clinisys.db',
+        location: 'default' // the location field is required
+      }).then((db: SQLiteObject) => {
+        db.executeSql("select * from motifHospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
+          .then(result => {
+            if (result.rows.length === 0) {
+              this._insertmotifHospitalisations(motifhospitalisations, codeClinique);
+            } else {
+              this.motifhospitalisation.setgroupeSang(result.rows.item(0).groupeSang);
+              this.motifhospitalisation.setmotifhospitalisation(result.rows.item(0).motifhospitalisation);
+              this.motifhospitalisation.setnumdoss(result.rows.item(0).numdoss);
+              this.motifhospitalisation.setpoid(result.rows.item(0).poid);
+              this.motifhospitalisation.settaille(result.rows.item(0).taille);
+              resolve(this.motifhospitalisation);
+              return this.motifhospitalisation;
             }
-          }
-        })
-        .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 motifHospitalisation  ' + error);
-        })
+          })
+          .catch(error => {
+            console.error('Error opening database', error);
+            alert('Error 1 motifHospitalisation  ' + error);
+          })
+      });
+
+      return this;
     });
-    db.close();
-    return this.motifhospitalisation;
   }
 
-  private _insertmotifHospitalisations(motifhospitalisations,codeClinique): void {
-    let db = new SQLite();
-    db.openDatabase({
+  private _insertmotifHospitalisations(motifhospitalisation, codeClinique): void {
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
-      for (let key in motifhospitalisations) {
-        if (!motifhospitalisations.hasOwnProperty(key)) {
-          continue;
-        }
-        let motifhospitalisation = motifhospitalisations[key];
-        db.executeSql('insert into motifHospitalisation (conclusion ,dateRdv ,dateSortie' +
-          ',groupeSang ,heureRdv, heureSortie ,histoiremaladie ,motifhospitalisation ,numdoss ,observationSejour ,poid ,taille ,traitementHabituelle ,traitementSejour ,traitementSortie ,utilisateurMotif,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
+    }).then((db: SQLiteObject) => {
 
-          motifhospitalisation.getconclusion(),
-          motifhospitalisation.getdateRdv(),
-          motifhospitalisation.getdateSortie(),
-          motifhospitalisation.getgroupeSang(),
-          motifhospitalisation.getheureRdv(),
-          motifhospitalisation.getheureSortie(),
-          motifhospitalisation.gethistoiremaladie(),
-          motifhospitalisation.getmotifhospitalisation(),
-          motifhospitalisation.getnumdoss(),
-          motifhospitalisation.getobservationSejour(),
-          motifhospitalisation.getpoid(),
-          motifhospitalisation.gettaille(),
-          motifhospitalisation.gettraitementHabituelle(),
-          motifhospitalisation.gettraitementSejour(),
-          motifhospitalisation.gettraitementSortie(),
-          motifhospitalisation.getutilisateurMotif(),
-          codeClinique
-        ]);
-      }
+      db.executeSql('insert into motifHospitalisation (groupeSang ,motifhospitalisation ,numdoss ,poid ,taille ,codeClinique)' +
+        ' values (?,?,?,?,?,?)', [
+        motifhospitalisation.getgroupeSang(),
+        motifhospitalisation.getmotifhospitalisation(),
+        motifhospitalisation.getnumdoss(),
+        motifhospitalisation.getpoid(),
+        motifhospitalisation.gettaille(),
+        codeClinique
+      ]);
+
     }).catch(error => {
       console.error('Error opening database', error);
       alert('Error 2 motifHospitalisation ' + error);
     });
-    db.close();
+
   }
 
-  public deleteMotifhospitalisations(numdoss,codeClinique) {
+  public deleteMotifhospitalisations(numdoss, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from Motifhospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-    //      alert("Suppression de table Motifhospitalisation est terminé avec succes");
+          //      alert("Suppression de table Motifhospitalisation est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 3 Motifhospitalisation  ' + error);
         })
     });
-    db.close();
+
     return this.motifhospitalisation;
   }
 }

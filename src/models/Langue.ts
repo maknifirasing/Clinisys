@@ -1,14 +1,24 @@
 export class Langue {
   private _langue: string;
+  private _nom: string;
   private _matricule: string;
   private _codeClinique: string;
   private _nomClinique: string;
+  private _url: string;
 
   constructor() {
   }
 
   getlangue(): string {
     return this._langue;
+  }
+
+  getnom(): string {
+    return this._nom;
+  }
+
+  setnom(value: string) {
+    this._nom = value;
   }
 
   setlangue(value: string) {
@@ -37,5 +47,13 @@ export class Langue {
 
   setnomClinique(value: string) {
     this._nomClinique = value;
+  }
+
+  geturl(): string {
+    return this._url;
+  }
+
+  seturl(value: string) {
+    this._url = value;
   }
 }

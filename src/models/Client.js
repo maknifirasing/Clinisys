@@ -1,8 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var Client = (function () {
     function Client() {
     }
+    Client.prototype.getcodeClinique = function () {
+        return this._codeClinique;
+    };
+    Client.prototype.setcodeClinique = function (value) {
+        this._codeClinique = value;
+    };
     Client.prototype.getadrCli = function () {
         return this._adrCli;
     };
@@ -51,12 +55,13 @@ var Client = (function () {
     Client.prototype.setidentifiant = function (value) {
         this._identifiant = value;
     };
-    Client.prototype.getcodeClinique = function () {
-        return this._codeClinique;
+    Client.prototype.getdateArr = function () {
+        return this._dateArr;
     };
-    Client.prototype.setcodeClinique = function (value) {
-        this._codeClinique = value;
+    Client.prototype.setdateArr = function (value) {
+        this._dateArr = value;
     };
     return Client;
 }());
-exports.Client = Client;
+export { Client };
+//# sourceMappingURL=Client.js.map

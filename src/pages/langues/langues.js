@@ -10,20 +10,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Variables } from "../../providers/variables";
-import { NativeStorage } from "ionic-native";
 import { ListeCliniquePage } from "../liste-clinique/liste-clinique";
 import { Langue } from "../../models/Langue";
 import { LangueService } from "../../services/LangueService";
+import { ListePage } from "../liste/liste";
+import { UserService } from "../../services/UserService";
+import { SQLite } from "@ionic-native/sqlite";
 var LanguesPage = (function () {
-    function LanguesPage(navCtrl) {
+    function LanguesPage(navCtrl, Url, sqlite) {
         this.navCtrl = navCtrl;
+        this.Url = Url;
+        this.sqlite = sqlite;
         this.langes = [];
-        this.users = [];
-        NativeStorage.setItem("name", "basma");
+        //  Variables.auth();
     }
-    LanguesPage.prototype.ionViewDidLoad = function () {
-    };
     LanguesPage.prototype.choixLang = function (lang) {
+        var _this = this;
         if (lang === "arabe") {
             this.tabLangue = Variables.arabe;
         }
@@ -33,45 +35,53 @@ var LanguesPage = (function () {
         else if (lang === "anglais") {
             this.tabLangue = Variables.anglais;
         }
-        var l = new Langue();
-        l.setlangue(lang);
-        this.langes.push(l);
-        this.langserv = new LangueService();
-        try {
-            this.langserv.deleteLangues();
-            this.langserv.getLangues(this.langes);
-        }
-        catch (Error) {
-            this.langserv.getLangues(this.langes);
-        }
-        this.langserv.getLangues(this.langes);
-        /*
-            this.userserv = new UserService();
-            this.userserv.verifUser().then(res => {
-              if (res === true) {
-                this.userserv.getUser(this.users).then(user => {
-                  this.codeClinique = user.getcodeClinique();
-                  this.navCtrl.push(ListePage, {
-                    tabLangue: this.tabLangue,
-                    langue: lang,
-                    codeClinique: this.codeClinique
-                  });
+        this.userserv = new UserService(this.sqlite);
+        this.userserv.getAllUser().then(function (user) {
+            if (user.length === 0) {
+                _this.navCtrl.push(ListeCliniquePage, { tabLangue: _this.tabLangue, langue: lang });
+            }
+            else {
+                _this.langserv = new LangueService(_this.sqlite);
+                _this.langserv.verifLangue().then(function (res) {
+                    if (res === true) {
+                        _this.langserv.getLangues(_this.langes).then(function (lg) {
+                            var l = new Langue();
+                            l.setlangue(lang);
+                            l.setnom(lg.getnom());
+                            l.setmatricule(lg.getmatricule());
+                            l.setcodeClinique(lg.getcodeClinique());
+                            l.setnomClinique(lg.getnomClinique());
+                            l.seturl(lg.geturl());
+                            _this.langes.push(l);
+                            _this.langserv.deleteLangues().then(function (delet) {
+                                if (delet === true) {
+                                    _this.langserv.getLangues(_this.langes);
+                                    _this.navCtrl.setRoot(ListePage, {
+                                        tabLangue: _this.tabLangue,
+                                        langue: lang,
+                                        codeClinique: lg.getcodeClinique(),
+                                        nomClinique: lg.getnomClinique()
+                                    });
+                                }
+                            });
+                        });
+                    }
+                    else {
+                        _this.navCtrl.push(ListeCliniquePage, { tabLangue: _this.tabLangue, langue: lang });
+                    }
                 });
-              } else {
-                this.navCtrl.push(ListeCliniquePage, {tabLangue: this.tabLangue, langue: lang});
-              }
-            });
-        */
-        this.navCtrl.push(ListeCliniquePage, { tabLangue: this.tabLangue, langue: lang });
+            }
+        });
     };
     return LanguesPage;
 }());
 LanguesPage = __decorate([
     Component({
         selector: 'page-langues',
-        templateUrl: 'langues.html'
+        templateUrl: 'langues.html',
+        providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController])
+    __metadata("design:paramtypes", [NavController, Variables, SQLite])
 ], LanguesPage);
 export { LanguesPage };
 //# sourceMappingURL=langues.js.map

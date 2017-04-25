@@ -1,20 +1,20 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {Langue} from "../models/Langue";
 
 
 export class LangueService {
   public langue: Array<Langue> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
   public verifLangue(): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sum from Langue ", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -33,18 +33,18 @@ export class LangueService {
             return false;
           })
       });
-      db.close();
+
       return this;
     })
   }
 
   public getLangues(langues: any): Promise<Langue> {
     return new Promise<Langue>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select * from Langue ", [])
           .then(result => {
             if (result.rows.length === 0) {
@@ -55,6 +55,7 @@ export class LangueService {
               for (var i = 0; i < result.rows.length; i++) {
                 l = new Langue();
                 l.setlangue(result.rows.item(i).langue);
+                l.setnom(result.rows.item(i).nom);
                 l.setmatricule(result.rows.item(i).matricule);
                 l.setcodeClinique(result.rows.item(i).codeClinique);
                 l.setnomClinique(result.rows.item(i).nomClinique);
@@ -68,24 +69,25 @@ export class LangueService {
             alert('Error 1 Langue  ' + error);
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   private _insertLangues(langues: Array<Langue>): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in langues) {
         if (!langues.hasOwnProperty(key)) {
           continue;
         }
         let langue = langues[key];
-        db.executeSql('insert into Langue (langue,matricule,codeClinique,nomClinique) values (?,?,?,?)', [
+        db.executeSql('insert into Langue (langue,nom,matricule,codeClinique,nomClinique) values (?,?,?,?,?)', [
           langue.getlangue(),
+          langue.getnom(),
           langue.getmatricule(),
           langue.getcodeClinique(),
           langue.getnomClinique()
@@ -95,19 +97,19 @@ export class LangueService {
       console.error('Error opening database', error);
       alert('Error 2 Langue ' + error);
     });
-    db.close();
+
   }
 
   public deleteLangues(): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("delete from Langue ", [])
           .then(() => {
-         //   alert("Suppression de table Aleg est terminé avec succes");
+            //   alert("Suppression de table Aleg est terminé avec succes");
             resolve(true);
             return true;
           })
@@ -118,7 +120,7 @@ export class LangueService {
             return false;
           })
       });
-      db.close();
+
       return this;
     });
   }

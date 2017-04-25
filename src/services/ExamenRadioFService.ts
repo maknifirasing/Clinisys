@@ -1,19 +1,19 @@
-import {SQLite} from 'ionic-native';
+import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 import {ExamenRadio} from "../models/ExamenRadio";
 
 export class ExamenRadioFService {
   public examenRadio: Array<ExamenRadio> = [];
 
-  constructor() {
+  constructor(private sqlite: SQLite)  {
   }
 
   public verifExamenRadio(examenRadios: any, numeroDossier, codeClinique): Promise<boolean> {
     return new Promise<boolean>(resolve => {
-      let db = new SQLite();
-      db.openDatabase({
+
+      this.sqlite.create({
         name: 'clinisys.db',
         location: 'default' // the location field is required
-      }).then(() => {
+      }).then((db: SQLiteObject) => {
         db.executeSql("select count(*) as sum from ExamenRadioF where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
@@ -32,18 +32,18 @@ export class ExamenRadioFService {
             return false;
           })
       });
-      db.close();
+
       return this;
     });
   }
 
   public getExamenRadios(examenRadios: any, numeroDossier, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("select * from ExamenRadioF where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === 0) {
@@ -52,20 +52,11 @@ export class ExamenRadioFService {
             var ex;
             for (var i = 0; i < result.rows.length; i++) {
               ex = new ExamenRadio();
-              ex.setcodeExamen(result.rows.item(i).codeExamen);
               ex.setcompterendu(result.rows.item(i).compterendu);
               ex.setdateExamen(result.rows.item(i).dateExamen);
-              ex.setdatePrevu(result.rows.item(i).datePrevu);
-              ex.setdate_RDV(result.rows.item(i).date_RDV);
               ex.setdesignationExamen(result.rows.item(i).designationExamen);
-              ex.setheurePrevu(result.rows.item(i).heurePrevu);
-              ex.setidres(result.rows.item(i).idres);
-              ex.setmedecin(result.rows.item(i).medecin);
-              ex.setnature(result.rows.item(i).nature);
               ex.setnumeroDossier(result.rows.item(i).numeroDossier);
-              ex.setnumeroExamen(result.rows.item(i).numeroExamen);
               ex.setobserv(result.rows.item(i).observ);
-              ex.setresultat(result.rows.item(i).resultat);
               this.examenRadio.push(ex);
             }
           }
@@ -75,37 +66,27 @@ export class ExamenRadioFService {
           alert('Error 1 ExamenRadioF  ' + error);
         })
     });
-    db.close();
+
     return this.examenRadio;
   }
 
   private _insertExamenRadios(examenRadios: Array<ExamenRadio>, codeClinique): void {
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       for (let key in examenRadios) {
         if (!examenRadios.hasOwnProperty(key)) {
           continue;
         }
         let examenRadio = examenRadios[key];
-        db.executeSql('insert into ExamenRadioF (codeExamen,compterendu ,dateExamen ' +
-          ',datePrevu, date_RDV,designationExamen,heurePrevu,idres,medecin,nature,numeroDossier,numeroExamen,observ,resultat,codeClinique) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
-          examenRadio.getcodeExamen(),
+        db.executeSql('insert into ExamenRadioF (compterendu,dateExamen,designationExamen,numeroDossier,observ,codeClinique) values (?,?,?,?,?,?)', [
           examenRadio.getcompterendu(),
           examenRadio.getdateExamen(),
-          examenRadio.getdatePrevu(),
-          examenRadio.getdate_RDV(),
           examenRadio.getdesignationExamen(),
-          examenRadio.getheurePrevu(),
-          examenRadio.getidres(),
-          examenRadio.getmedecin(),
-          examenRadio.getnature(),
           examenRadio.getnumeroDossier(),
-          examenRadio.getnumeroExamen(),
           examenRadio.getobserv(),
-          examenRadio.getresultat(),
           codeClinique
         ]);
       }
@@ -113,26 +94,26 @@ export class ExamenRadioFService {
       console.error('Error opening database', error);
       alert('Error 2 ExamenRadioF ' + error);
     });
-    db.close();
+
   }
 
   public deleteExamenRadios(numeroDossier, codeClinique) {
 
-    let db = new SQLite();
-    db.openDatabase({
+
+    this.sqlite.create({
       name: 'clinisys.db',
       location: 'default' // the location field is required
-    }).then(() => {
+    }).then((db: SQLiteObject) => {
       db.executeSql("delete from ExamenRadioF where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          alert("Suppression de table ExamenRadioF est terminé avec succes");
+          //   alert("Suppression de table ExamenRadioF est terminé avec succes");
         })
         .catch(error => {
           console.error('Error opening database', error);
           alert('Error 3 ExamenRadioF  ' + error);
         })
     });
-    db.close();
+
     return this.examenRadio;
   }
 }

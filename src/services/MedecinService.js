@@ -1,19 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var ionic_native_1 = require("ionic-native");
-var Medecin_1 = require("../models/Medecin");
+import { Medecin } from "../models/Medecin";
 var MedecinService = (function () {
-    function MedecinService() {
+    function MedecinService(sqlite) {
+        this.sqlite = sqlite;
         this.medecin = [];
     }
     MedecinService.prototype.verifMedecin = function (medecins, numdoss, codeClinique) {
         var _this = this;
         return new Promise(function (resolve) {
-            var db = new ionic_native_1.SQLite();
-            db.openDatabase({
+            _this.sqlite.create({
                 name: 'clinisys.db',
                 location: 'default' // the location field is required
-            }).then(function () {
+            }).then(function (db) {
                 db.executeSql("select count(*) as sum from Medecin where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                     .then(function (result) {
                     if (result.rows.item(0).sum > 0) {
@@ -32,17 +29,15 @@ var MedecinService = (function () {
                     return false;
                 });
             });
-            db.close();
             return _this;
         });
     };
     MedecinService.prototype.getMedecins = function (medecins, numdoss, codeClinique) {
         var _this = this;
-        var db = new ionic_native_1.SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("select * from Medecin where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
@@ -51,7 +46,7 @@ var MedecinService = (function () {
                 else {
                     var med;
                     for (var i = 0; i < result.rows.length; i++) {
-                        med = new Medecin_1.Medecin();
+                        med = new Medecin();
                         med.setcodMed(result.rows.item(i).codMed);
                         med.setnomMed(result.rows.item(i).nomMed);
                         med.setdesignationSpecialite(result.rows.item(i).designationSpecialite);
@@ -65,15 +60,13 @@ var MedecinService = (function () {
                 alert('Error 1 medecin  ' + error);
             });
         });
-        db.close();
         return this.medecin;
     };
     MedecinService.prototype._insertMedecins = function (medecins, numdoss) {
-        var db = new ionic_native_1.SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             for (var key in medecins) {
                 if (!medecins.hasOwnProperty(key)) {
                     continue;
@@ -92,14 +85,12 @@ var MedecinService = (function () {
             console.error('Error opening database', error);
             alert('Error 2 medecin ' + error);
         });
-        db.close();
     };
     MedecinService.prototype.deleteMedecins = function (numdoss, codeClinique) {
-        var db = new ionic_native_1.SQLite();
-        db.openDatabase({
+        this.sqlite.create({
             name: 'clinisys.db',
             location: 'default' // the location field is required
-        }).then(function () {
+        }).then(function (db) {
             db.executeSql("delete from Medecin where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
                 alert("Suppression de table medecin est terminé avec succes");
@@ -109,9 +100,9 @@ var MedecinService = (function () {
                 alert('Error 3 medecin  ' + error);
             });
         });
-        db.close();
         return this.medecin;
     };
     return MedecinService;
 }());
-exports.MedecinService = MedecinService;
+export { MedecinService };
+//# sourceMappingURL=MedecinService.js.map

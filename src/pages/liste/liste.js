@@ -21,52 +21,53 @@ import { UserService } from "../../services/UserService";
 import { LanguesPage } from "../langues/langues";
 import { MenuController } from 'ionic-angular';
 import { MdMenuTrigger } from "@angular/material";
+import { ListeCliniquePage } from "../liste-clinique/liste-clinique";
+import { ModifPassPage } from "../modif-pass/modif-pass";
+import { LangueService } from "../../services/LangueService";
+import { SQLite } from "@ionic-native/sqlite";
 var ListePage = (function () {
-    function ListePage(navCtrl, navParams, Url, menuCtrl, platform) {
+    function ListePage(navCtrl, navParams, Url, menuCtrl, platform, sqlite) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.Url = Url;
         this.menuCtrl = menuCtrl;
         this.platform = platform;
+        this.sqlite = sqlite;
         this.patient = [];
         this.patientliste = [];
         this.datefeuille = [];
         this.hist = [];
         this.histl = new HistPatient();
+        this.langes = [];
         this.dtFeuille = new DateFeuille();
         this.codeClinique = navParams.get("codeClinique");
         this.nomClinique = navParams.get("nomClinique");
         this.tabLangue = navParams.get("tabLangue");
         this.langue = navParams.get("langue");
-        this.platform.ready().then(function () {
-            Variables.checconnection().then(function (connexion) {
-                if (connexion === false) {
-                    _this.connection = false;
-                    _this.historiqueOff(_this.hist, "admin", "", "all", _this.codeClinique);
-                    _this.listeOff(_this.patient, "admin", "", "all", _this.codeClinique);
-                    _this.DateFeuilleOff(_this.datefeuille, _this.codeClinique);
-                }
-                else {
-                    _this.connection = true;
-                    _this.historique("admin", "", "all", _this.codeClinique);
-                    _this.liste("admin", "", "all", _this.codeClinique);
-                    _this.DateFeuille(_this.codeClinique);
-                }
-                _this.patientliste = _this.patient;
-            });
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === false) {
+                _this.connection = false;
+                _this.historiqueOff(_this.hist, "admin", "", "all", _this.codeClinique);
+                _this.listeOff(_this.patient, "admin", "", "all", _this.codeClinique);
+                _this.DateFeuilleOff(_this.datefeuille, _this.codeClinique);
+            }
+            else {
+                _this.connection = true;
+                _this.historique("admin", "", "all", _this.codeClinique);
+                _this.liste("admin", "", "all", _this.codeClinique);
+                _this.DateFeuille(_this.codeClinique);
+            }
+            _this.patientliste = _this.patient;
         });
     }
-    ListePage.prototype.someMethod = function () {
-        this.trigger.openMenu();
-    };
     ListePage.prototype.liste = function (user, searchText, etage, codeClinique) {
         var _this = this;
         this.patient.pop();
         this.patient = [];
         this.patient.length = 0;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/ReaWSService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -131,7 +132,7 @@ var ListePage = (function () {
                     }
                     if (searchText === "")
                         searchText = "vide";
-                    _this.patienserv = new PatientService();
+                    _this.patienserv = new PatientService(_this.sqlite);
                     _this.patienserv.verifPatient(_this.patient, user, searchText, etage, codeClinique).then(function (res) {
                         if (res === false) {
                             _this.patienserv.getPatients(_this.patient, user, searchText, etage, codeClinique);
@@ -147,7 +148,7 @@ var ListePage = (function () {
     ListePage.prototype.listeOff = function (patient, user, searchText, etage, codeClinique) {
         if (searchText === "")
             searchText = "vide";
-        this.patienserv = new PatientService();
+        this.patienserv = new PatientService(this.sqlite);
         this.patient = this.patienserv.getPatients(patient, user, searchText, etage, codeClinique);
         this.patientliste = this.patient;
     };
@@ -157,7 +158,7 @@ var ListePage = (function () {
         this.datefeuille = [];
         this.datefeuille.length = 0;
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('POST', this.Url.url + 'dmi-core/DossierSoinWSService?wsdl', true);
+        xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
         var sr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
             '<soapenv:Header/>' +
             '<soapenv:Body>' +
@@ -175,7 +176,7 @@ var ListePage = (function () {
                         d.setdatefeuille(x[i].childNodes[0].nodeValue);
                         _this.datefeuille.push(d);
                     }
-                    _this.dtFeuilleserv = new DateFeuilleService();
+                    _this.dtFeuilleserv = new DateFeuilleService(_this.sqlite);
                     _this.dtFeuilleserv.verifDateFeuille(codeClinique).then(function (res) {
                         if (res === false) {
                             _this.dtFeuilleserv.getDateFeuille(_this.datefeuille, codeClinique);
@@ -189,7 +190,7 @@ var ListePage = (function () {
         xmlhttp.send(sr);
     };
     ListePage.prototype.DateFeuilleOff = function (datefeuille, codeClinique) {
-        this.dtFeuilleserv = new DateFeuilleService();
+        this.dtFeuilleserv = new DateFeuilleService(this.sqlite);
         this.datefeuille = this.dtFeuilleserv.getDateFeuille(this.datefeuille, codeClinique);
     };
     ListePage.prototype.goToDossierPage = function (patient) {
@@ -227,27 +228,32 @@ var ListePage = (function () {
         });
     };
     ListePage.prototype.deleteListe = function (user, searchText, etage, codeClinique) {
-        this.patienserv = new PatientService();
+        this.patienserv = new PatientService(this.sqlite);
         this.patienserv.deletePatients(user, searchText, etage, codeClinique);
     };
     ListePage.prototype.deleteDateFeuille = function (codeClinique) {
-        this.dtFeuilleserv = new DateFeuilleService();
+        this.dtFeuilleserv = new DateFeuilleService(this.sqlite);
         this.dtFeuilleserv.deleteDateFeuille(codeClinique);
     };
     ListePage.prototype.doRefresh = function (refresher, codeClinique) {
-        this.historique("admin", "", "all", codeClinique);
-        this.deleteListe("admin", "", "all", codeClinique);
-        this.liste("admin", "", "all", codeClinique);
-        this.deleteDateFeuille(codeClinique);
-        this.DateFeuille(codeClinique);
-        setTimeout(function () {
-            //   alert('Async operation has ended');
-            refresher.complete();
-        }, 2000);
+        var _this = this;
+        Variables.checconnection().then(function (connexion) {
+            if (connexion === true) {
+                _this.historique("admin", "", "all", codeClinique);
+                _this.deleteListe("admin", "", "all", codeClinique);
+                _this.liste("admin", "", "all", codeClinique);
+                _this.deleteDateFeuille(codeClinique);
+                _this.DateFeuille(codeClinique);
+                setTimeout(function () {
+                    //   alert('Async operation has ended');
+                    refresher.complete();
+                }, 2000);
+            }
+        });
     };
     ListePage.prototype.historique = function (user, searchText, etage, codeClinique) {
         var _this = this;
-        this.histserv = new HistPatientService();
+        this.histserv = new HistPatientService(this.sqlite);
         var h = new HistPatient();
         var d = new Date();
         h.setuser(user);
@@ -270,22 +276,37 @@ var ListePage = (function () {
     };
     ListePage.prototype.historiqueOff = function (hist, user, searchText, etage, codeClinique) {
         var _this = this;
-        this.histserv = new HistPatientService();
+        this.histserv = new HistPatientService(this.sqlite);
         this.histserv.getHistPatients(hist, user, searchText, etage, codeClinique).then(function (res) {
             _this.histl = res.getdate();
         });
     };
-    ListePage.prototype.openMenu = function () {
-        console.log("open");
-        this.menuCtrl.open();
-    };
     ListePage.prototype.deconnexion = function () {
-        this.userserv = new UserService();
-        this.userserv.deleteUsers();
-        this.navCtrl.push(LanguesPage);
+        var _this = this;
+        this.userserv = new UserService(this.sqlite);
+        this.userserv.deleteUsers(this.codeClinique).then(function (res) {
+            if (res === true) {
+                _this.navCtrl.setRoot(ListeCliniquePage, { tabLangue: _this.tabLangue, langue: _this.langue });
+            }
+        });
     };
     ListePage.prototype.changerlangue = function () {
-        this.navCtrl.push(LanguesPage);
+        this.navCtrl.setRoot(LanguesPage);
+    };
+    ListePage.prototype.changerPassword = function () {
+        var _this = this;
+        this.langserv = new LangueService(this.sqlite);
+        this.langserv.getLangues(this.langes).then(function (lg) {
+            _this.navCtrl.setRoot(ModifPassPage, {
+                tabLangue: _this.tabLangue,
+                langue: _this.langue,
+                codeClinique: lg.getcodeClinique(),
+                nomClinique: lg.getmatricule()
+            });
+        });
+    };
+    ListePage.prototype.openListeCliniquePage = function () {
+        this.navCtrl.setRoot(ListeCliniquePage, { tabLangue: this.tabLangue, langue: this.langue });
     };
     return ListePage;
 }());
@@ -299,7 +320,7 @@ ListePage = __decorate([
         templateUrl: 'liste.html',
         providers: [Variables]
     }),
-    __metadata("design:paramtypes", [NavController, NavParams, Variables, MenuController, Platform])
+    __metadata("design:paramtypes", [NavController, NavParams, Variables, MenuController, Platform, SQLite])
 ], ListePage);
 export { ListePage };
 //# sourceMappingURL=liste.js.map

@@ -1,18 +1,23 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams, Platform, AlertController} from 'ionic-angular';
 import {PdfViewerComponent} from 'ng2-pdf-viewer';
-import {File, Transfer} from 'ionic-native';
+import { File} from '@ionic-native/file';
+import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
 import {Variables} from "../../providers/variables";
 import {HistDossier} from "../../models/HistDossier";
 import {HistPdfService} from "../../services/HistPdfService";
 import {HistDoc} from "../../models/HistDoc";
+<<<<<<< HEAD
+=======
+import {SQLite} from "@ionic-native/sqlite";
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
 
 declare var cordova: any;
 
 @Component({
   selector: 'page-pdf-view',
   templateUrl: 'pdf-view.html',
-  providers: [PdfViewerComponent]
+  providers: [PdfViewerComponent,File,Transfer]
 })
 export class PdfViewPage {
   pdfSrc: string;
@@ -29,7 +34,8 @@ export class PdfViewPage {
   pass: any;
   langue: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private PdfViewerComponent: PdfViewerComponent, public platform: Platform, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private PdfViewerComponent: PdfViewerComponent, public platform: Platform, public alertCtrl: AlertController
+    ,private transfer: Transfer, private file: File,private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.pass = navParams.get("pass");
@@ -57,13 +63,21 @@ export class PdfViewPage {
         if (connexion === false) {
           this.connection = false;
           this.pdfSrc = this.storageDirectory + fields[5];
+<<<<<<< HEAD
           this.historiqueOff(this.histC, this.pass.getdossier(),fields[5] ,this.codeClinique);
+=======
+          this.historiqueOff(this.histC, this.pass.getdossier(), fields[5], this.codeClinique);
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         }
         else {
           this.connection = true;
           this.pdfSrc = this.pdf;
           this.retrieveImage(this.pdfSrc);
+<<<<<<< HEAD
           this.historique(this.pass.getdossier(),fields[5], this.codeClinique);
+=======
+          this.historique(this.pass.getdossier(), fields[5], this.codeClinique);
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         }
       });
     });
@@ -82,7 +96,7 @@ export class PdfViewPage {
   downloadImage(file) {
 
     this.platform.ready().then(() => {
-      const fileTransfer = new Transfer();
+      const fileTransfer: TransferObject = this.transfer.create();
 
       fileTransfer.download(this.pdf, this.storageDirectory + file).then((entry) => {
         /*
@@ -115,7 +129,7 @@ export class PdfViewPage {
     const imageLocation = `${src}`;
     var fields = imageLocation.split('/');
     const file = fields[5];
-    File.checkFile(this.storageDirectory, file)
+    this.file.checkFile(this.storageDirectory, file)
       .then(() => {
 
 
@@ -143,8 +157,13 @@ export class PdfViewPage {
 
   }
 
+<<<<<<< HEAD
   historique(numDoss,file ,codeClinique) {
     this.histserv = new HistPdfService();
+=======
+  historique(numDoss, file, codeClinique) {
+    this.histserv = new HistPdfService(this.sqlite);
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
     var h = new HistDoc();
     var d = new Date();
     h.setnumDoss(numDoss);
@@ -153,13 +172,22 @@ export class PdfViewPage {
     h.setnom(file);
     this.histC.push(h);
     try {
+<<<<<<< HEAD
       this.histserv.deleteHistPdfs(numDoss, codeClinique,file);
       this.histserv.getHistPdfs(this.histC, numDoss, codeClinique,file).then(res => {
+=======
+      this.histserv.deleteHistPdfs(numDoss, codeClinique, file);
+      this.histserv.getHistPdfs(this.histC, numDoss, codeClinique, file).then(res => {
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         this.histp = res.getdate();
       });
     }
     catch (Error) {
+<<<<<<< HEAD
       this.histserv.getHistPdfs(this.histC, numDoss, codeClinique,file).then(res => {
+=======
+      this.histserv.getHistPdfs(this.histC, numDoss, codeClinique, file).then(res => {
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
         this.histp = res.getdate();
       });
     }
@@ -167,9 +195,15 @@ export class PdfViewPage {
   }
 
 
+<<<<<<< HEAD
   historiqueOff(hist, numDoss,file, codeClinique) {
     this.histserv = new HistPdfService();
     this.histserv.getHistPdfs(hist, numDoss, codeClinique,file).then(res => {
+=======
+  historiqueOff(hist, numDoss, file, codeClinique) {
+    this.histserv = new HistPdfService(this.sqlite);
+    this.histserv.getHistPdfs(hist, numDoss, codeClinique, file).then(res => {
+>>>>>>> 9c5f10abfd96f15679a024fa49f5abcf1d64585e
       this.histp = res.getdate();
     });
   }
