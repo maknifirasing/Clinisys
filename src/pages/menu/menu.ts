@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {RealisationPage} from "../realisation/realisation";
+import {Variables} from "../../providers/variables";
 
 @Component({
   selector: 'page-menu',
@@ -14,6 +15,8 @@ export class MenuPage {
   langue: any;
   dateFeuille: any;
   heureActuelle: any;
+  pathimage=Variables.path;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.tabLangue = navParams.get("tabLangue");
     this.codeClinique = navParams.get("codeClinique");

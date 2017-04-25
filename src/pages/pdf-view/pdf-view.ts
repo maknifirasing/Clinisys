@@ -16,6 +16,7 @@ declare var cordova: any;
   templateUrl: 'pdf-view.html',
   providers: [PdfViewerComponent,File,Transfer]
 })
+
 export class PdfViewPage {
   pdfSrc: string;
   page: number = 1;
@@ -30,6 +31,7 @@ export class PdfViewPage {
   tabLangue: any;
   pass: any;
   langue: any;
+  pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private PdfViewerComponent: PdfViewerComponent, public platform: Platform, public alertCtrl: AlertController
     ,private transfer: Transfer, private file: File,private sqlite: SQLite) {

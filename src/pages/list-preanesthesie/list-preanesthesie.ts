@@ -23,6 +23,7 @@ export class ListPreanesthesiePage {
   langue: any;
   tabLangue: any;
   ListePserv: any;
+  pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {
     this.ListeP = navParams.get("ListeP");

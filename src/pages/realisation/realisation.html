@@ -1,11 +1,11 @@
-<!--
+
 <ion-header style="height: 95px;color: white">
   <div fxLayout="row" fxLayoutWrap *ngIf="langue==='francais' || langue==='anglais'" class="md-card">
-    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/{{pass.getimg()}}" width="40" height="40"></div>
+    <div fxFlex="13" dir="ltr"><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
     <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
-    <div fxFlex="13" style="margin-top: 0px;direction:rtl;"><img src="/android_asset/www/assets/img/info.png"
+    <div fxFlex="13" style="margin-top: 0px;direction:rtl;"><img src="{{pathimage}}/info.png"
                                                                  class="roundedImage" (click)="goToInfPage(pass)"/>
     </div>
   </div>
@@ -14,10 +14,10 @@
   <md-card class="md-card2" *ngIf="langue==='francais' || langue==='anglais'">
     <div fxLayout="row" fxLayoutWrap>
       <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px"><img
-        src="/android_asset/www/assets/img/green.png"
+        src="{{pathimage}}/green.png"
         width="25" height="25"></div>
       <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px"><img
-        src="/android_asset/www/assets/img/red.png"
+        src="{{pathimage}}/red.png"
         width="25" height="25"></div>
 
       <div fxFlex="86" style="margin-top: -10px;font-size:10px;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}}</strong>
@@ -32,12 +32,12 @@
 
 
   <div fxLayout="row" fxLayoutWrap *ngIf="langue==='arabe'" class="md-card">
-    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/info.png" class="roundedImage"
+    <div fxFlex="13" dir="ltr"><img src="{{pathimage}}/info.png" class="roundedImage"
                                     (click)="goToInfPage(pass)"/></div>
     <div fxFlex="73" style="margin-top: 10px;direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
-    <div fxFlex="13" style="margin-top: 5px;direction:rtl;"><img src="/android_asset/www/assets/img/{{pass.getimg()}}"
+    <div fxFlex="13" style="margin-top: 5px;direction:rtl;"><img src="{{pathimage}}/{{pass.getimg()}}"
                                                                  width="40"
                                                                  height="40"></div>
   </div>
@@ -52,9 +52,9 @@
       </div>
 
       <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px;direction:rtl;"><img
-        src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>
+        src="{{pathimage}}/green.png" width="30" height="30"></div>
       <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px;direction:rtl;"><img
-        src="/android_asset/www/assets/img/red.png" width="30" height="30"></div>
+        src="{{pathimage}}/red.png" width="30" height="30"></div>
 
     </div>
   </md-card>
@@ -62,67 +62,98 @@
 
 </ion-header>
 
--->
+
 <ion-content padding>
-  <div>
-    <p>{{dateFeuille}}</p>
-  </div>
+
   <div fxLayout="row" class="teclado2">
-    <div fxFlex="19,8">
+
+    <div fxFlex="31,8"  *ngIf="moins===true">
+      <a href="#" (click)="removeHeure()"><</a>
+    </div>
+    <div fxFlex="6,8">
 
     </div>
-    <div fxFlex="19,8">
-      <a href="#"><</a>
+    <div fxFlex="20,8">
+      <a href="#" class="a2">{{heure}}H</a>
     </div>
-    <div fxFlex="19,8">
-      <a href="#" class="a2">{{heureActuelle}}H</a>
-    </div>
-    <div fxFlex="19,8">
-      <a href="#"> ></a>
-    </div>
-    <div fxFlex="19,8">
+    <div fxFlex="8,8">
 
     </div>
+    <div fxFlex="29,8" *ngIf="plus===true">
+      <a href="#" (click)="addHeure()"> ></a>
+    </div>
+
   </div>
-  <table border="0">
-    <tr>
-      <th>Désignation</th>
-      <th>Valeur</th>
-    </tr>
-    <tr *ngFor="let pla of planification ">
-      <td>{{pla.getdesignation()}}
-      <td>
-        <ion-input type="text" #{{pla.getrang()}} class="input"
-                   (click)="keyboardShow(pla.getrang(),pla.getdesignation()); "
-                   value="{{planificationvalue[pla.getrang()]}}"></ion-input>
-      </td>
-
-      <td>
-        <button ion-button class="login-button" (click)="CreatePlusieursRealisation(pla.getnum(),yy.value)">
-          ok
-        </button>
-      </td>
-    </tr>
-  </table>
 
 
-  <div *ngIf="keyboar===1">
+  <div   fxLayout="row">
+    <div fxFlex="79" style="color: #0f7ec0 ">
+      Designation
+    </div>
+    <div fxFlex="20" style="color: #0f7ec0 ">
+      Valeurs
+    </div>
+
+  </div>
+
+  <ion-list>
+
+
+
+
+    <ion-item-sliding *ngFor="let pla of planification ">
+      <ion-item><span width="70">{{pla.getdesignation()}}</span>
+
+        <input *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'" type="text" #{{pla.getrang()}}  (keyup.enter)="luck()"  disabled
+               (click)="keyboardShow(pla.getrang()); "
+               value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
+
+
+          <input *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" type="text" #{{pla.getrang()}}  (keyup.enter)="luck()"
+                 (click)="keyboardShow(pla.getrang()); "
+                 value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
+
+        <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'"  src="{{pathimage}}/valid.png" height="14" width="14" item-right>
+        <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" src="{{pathimage}}/unvalid.png" height="14" width="14" item-right>
+      </ion-item>
+
+
+      <ion-item-options side="right">
+        {{pla.getdesignation()}}
+        <button ion-button style="color: whitesmoke;background-color: rgb(243, 156, 18);" (click)="presentConfirm(pla.getdesignation(),pla.getnum(),pla.getrang())">Annuler</button>
+      </ion-item-options>
+
+    </ion-item-sliding>
+  </ion-list>
+
+
+
+
+
+
+
+</ion-content>
+<ion-footer>
+
+  <div *ngIf="keyboar===1" class="slider">
+
     <div fxLayout="row" class="teclado">
       <div fxFlex="19,8">
-
         <a href="#" (click)="updateInput('R')">R</a>
+
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('1')">1</a>
+        <a href="#" (click)="updateInput('1')" style="color: gray;">1</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('2')">2</a>
+        <a href="#" (click)="updateInput('2')" style="color: gray;">2</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('3')">3</a>
+        <a href="#" (click)="updateInput('3')" style="color: gray;">3</a>
       </div>
       <div fxFlex="19,8">
-        <img src="../../assets/img/basic_backspace.png" (click)="updateInput('delete')">
+        <img src="{{pathimage}}/basic_backspace.png" (click)="updateInput('delete')">
+
       </div>
 
     </div>
@@ -132,49 +163,131 @@
         <a href="#" (click)="updateInput('X')">X</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('4')">4</a>
+        <a href="#" (click)="updateInput('4')" style="color: gray;"> 4</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('5')">5</a>
+        <a href="#" (click)="updateInput('5')" style="color: gray;">5</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('6')">6</a>
+        <a href="#" (click)="updateInput('6')" style="color: gray;">6</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('OK')">OK</a>
+        <a href="#" (click)="updateInput('OK')" style="color: #009688 ;">OK</a>
       </div>
 
     </div>
 
     <div fxLayout="row" class="teclado">
       <div fxFlex="19,8">
-        <a href="#" class="dark" (click)="updateInput('//')">//</a>
+        <a href="#" (click)="updateInput('//')">//</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('7')">7</a>
+        <a href="#" style="color: gray;" (click)="updateInput('7')">7</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('8')">8</a>
+        <a href="#" style="color: gray;" (click)="updateInput('8')">8</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('9')">9</a>
+        <a href="#" style="color: gray;" (click)="updateInput('9')">9</a>
       </div>
       <div fxFlex="19,8">
-        <img src="../../assets/img/basic_keybord.png" (click)="updateInput('clavier')">
-
+        <img src="{{pathimage}}/basic_keybord.png" (click)="updateInput('clavier')">
       </div>
     </div>
 
     <div fxLayout="row" class="teclado">
       <div fxFlex="19,8">
-        <a href="#" class="dark" (click)="updateInput('/')">/</a>
+        <a href="#" (click)="updateInput('/')">/</a>
       </div>
       <div fxFlex="19,8">
+        <a href="#" style="color: gray;" (click)="updateInput('.')">.</a>
       </div>
       <div fxFlex="19,8">
-        <a href="" (click)="updateInput('0')">0</a>
+        <a href="#" style="color: gray;" (click)="updateInput('0')">0</a>
       </div>
       <div fxFlex="19,8">
+
+      </div>
+      <div fxFlex="19,8">
+
+      </div>
+    </div>
+
+
+  </div>
+
+  <div *ngIf="keyboar===2" class="slider">
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('')">&nbsp;</a>
+
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('1')" style="color: gray;">1</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('2')" style="color: gray;">2</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('3')" style="color: gray;">3</a>
+      </div>
+      <div fxFlex="19,8">
+        <img src="{{pathimage}}/basic_backspace.png" (click)="updateInput('delete')">
+
+      </div>
+
+    </div>
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+
+        <a href="#" (click)="updateInput('')">&nbsp;</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('4')" style="color: gray;"> 4</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('5')" style="color: gray;">5</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('6')" style="color: gray;">6</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('OK')" style="color: #009688 ;">OK</a>
+      </div>
+
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('//')">&nbsp;</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: gray;" (click)="updateInput('7')">7</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: gray;" (click)="updateInput('8')">8</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: gray;" (click)="updateInput('9')">9</a>
+      </div>
+      <div fxFlex="19,8">
+        <img src="{{pathimage}}/basic_keybord.png" (click)="updateInput('clavier')">
+      </div>
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('/')">/</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: gray;" (click)="updateInput('.')">.</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: gray;" (click)="updateInput('0')">0</a>
+      </div>
+      <div fxFlex="19,8">
+
       </div>
       <div fxFlex="19,8">
 
@@ -182,88 +295,176 @@
     </div>
   </div>
 
-  <div *ngIf="keyboar===2">
+  <div *ngIf="keyboar===3" class="slider">
     <div fxLayout="row" class="teclado">
       <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('60')">60</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('61')">61</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('62')">62</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('63')">63</a>
+      </div>
+      <div fxFlex="19,8">
+        <img src="{{pathimage}}/basic_keybord.png" (click)="updateInput('clavier')">
 
-
-      </div>
-      <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('1')">1</a>
-      </div>
-      <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('2')">2</a>
-      </div>
-      <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('3')">3</a>
-      </div>
-      <div fxFlex="19,8">
-        <img src="../../assets/img/basic_backspace.png" (click)="updateInput('delete')">
       </div>
 
     </div>
     <div fxLayout="row" class="teclado">
       <div fxFlex="19,8">
 
-
+        <a href="#" (click)="updateInput('64')">64</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('4')">4</a>
+        <a href="#" (click)="updateInput('65')"> 65</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('5')">5</a>
+        <a href="#" (click)="updateInput('66')">66</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('6')">6</a>
+        <a href="#" (click)="updateInput('67')">67</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('OK')">OK</a>
+        <a href="#" (click)="updateInput('68')">68</a>
       </div>
 
     </div>
 
     <div fxLayout="row" class="teclado">
       <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('69')">69</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('7')">7</a>
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('70')">70</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('8')">8</a>
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('71')">71</a>
       </div>
       <div fxFlex="19,8">
-        <a href="#" (click)="updateInput('9')">9</a>
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('72')">72</a>
       </div>
       <div fxFlex="19,8">
-        <img src="../../assets/img/basic_keybord.png" (click)="updateInput('clavier')">
-
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('73')">73</a>
       </div>
     </div>
 
     <div fxLayout="row" class="teclado">
       <div fxFlex="19,8">
-        <a href="#" class="dark" (click)="updateInput('/')">/</a>
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('74')">74</a>
       </div>
       <div fxFlex="19,8">
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('75')">75</a>
       </div>
       <div fxFlex="19,8">
-        <a href="" (click)="updateInput('0')">0</a>
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('76')">76</a>
       </div>
       <div fxFlex="19,8">
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('77')">77</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('78')">78</a>
+      </div>
+    </div>
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(3, 167, 23);" (click)="updateInput('79')">79</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('80')">80</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color:rgb(243, 156, 18);" (click)="updateInput('81')">81</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('82')">82</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('83')">83</a>
+      </div>
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('84')">84</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('85')">85</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('86')">86</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('87')">87</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('88')">88</a>
+      </div>
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" style="color: rgb(243, 156, 18);" (click)="updateInput('89')">89</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('90')" style="color: red;">90</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('91')" style="color: red;">91</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('92')" style="color: red;">92</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('93')" style="color: red;">93</a>
+      </div>
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('94')" style="color: red;">94</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('95')" style="color: red;">95</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('96')" style="color: red;">96</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('97')" style="color: red;">97</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('98')" style="color: red;">98</a>
+      </div>
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('99')" style="color: red;">99</a>
       </div>
       <div fxFlex="19,8">
 
+      </div>
+      <div fxFlex="19,8">
+
+      </div>
+      <div fxFlex="19,8">
+      </div>
+      <div fxFlex="19,8">
       </div>
     </div>
   </div>
 
-
-  <div *ngIf="keyboar===4">
+  <div *ngIf="keyboar===4" class="slider">
 
     <div fxLayout="row" class="teclado">
       <div fxFlex="19,8">
 
-        <img src="../../assets/img/basic_keybord.png" (click)="updateInput('clavier')">
+        <img src="{{pathimage}}/basic_keybord.png" (click)="updateInput('clavier')">
       </div>
       <div fxFlex="19,8">
         <a href="#" (click)="updateInput('36')" style="color: red;">36</a>
@@ -462,4 +663,127 @@
 
   </div>
 
-</ion-content>
+  <div *ngIf="keyboar===5" class="slider">
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+
+        <img src="{{pathimage}}/basic_keybord.png" (click)="updateInput('clavier')">
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('27')">27</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('28')">28</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('29')">29</a>
+      </div>
+      <div fxFlex="19,8">
+
+        <a href="#" (click)="updateInput('30')">30</a>
+      </div>
+
+    </div>
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+
+        <a href="#" (click)="updateInput('31')">31</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('32')"> 32</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('33')">33</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('34')">34</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('35')">35</a>
+      </div>
+
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('36')">36</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('37')">37</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('71')">71</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('72')">72</a>
+      </div>
+      <div fxFlex="19,8">
+
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="keyboar===6" class="slider">
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('91')">91</a>
+
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('92')">92</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('93')">93</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('94')">94</a>
+      </div>
+      <div fxFlex="19,8">
+        <img src="{{pathimage}}/basic_keybord.png" (click)="updateInput('clavier')">
+
+      </div>
+
+    </div>
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+
+        <a href="#" (click)="updateInput('95')">95</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('96')"> 96</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('97')">97</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('98')">98</a>
+      </div>
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('99')">99</a>
+      </div>
+
+    </div>
+
+    <div fxLayout="row" class="teclado">
+      <div fxFlex="19,8">
+        <a href="#" (click)="updateInput('100')">100</a>
+      </div>
+      <div fxFlex="19,8">
+
+      </div>
+      <div fxFlex="19,8">
+
+      </div>
+      <div fxFlex="19,8">
+
+      </div>
+      <div fxFlex="19,8">
+
+      </div>
+    </div>
+
+  </div>
+</ion-footer>

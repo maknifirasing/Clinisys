@@ -7,15 +7,15 @@
       <div fxFlex="86" style="margin-top: 10px;direction:rtl;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histc}}
       </div>
       <div fxFlex="13" style="margin-top: 10px;direction:rtl;" *ngIf="connection===true"><img
-        src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>
+        src="{{pathimage}}/green.png" width="30" height="30"></div>
       <div fxFlex="13" style="margin-top: 10px;direction:rtl;" *ngIf="connection===false"><img
-        src="/android_asset/www/assets/img/red.png" width="30" height="30"></div>
+        src="{{pathimage}}/red.png" width="30" height="30"></div>
     </div>
     <div fxLayout="row" fxLayoutWrap *ngIf="langue==='francais' || langue==='anglais'">
       <div fxFlex="13" style="margin-top: 10px;" *ngIf="connection===true"><img
-        src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>
+        src="{{pathimage}}/green.png" width="30" height="30"></div>
       <div fxFlex="13" style="margin-top: 10px;" *ngIf="connection===false"><img
-        src="/android_asset/www/assets/img/red.png" width="30" height="30"></div>
+        src="{{pathimage}}/red.png" width="30" height="30"></div>
       <div fxFlex="86" style="margin-top: 10px;" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histc}}
       </div>
       <div fxFlex="86" style="margin-top: 10px;" *ngIf="connection===false">

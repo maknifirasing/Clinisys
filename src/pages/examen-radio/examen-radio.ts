@@ -44,6 +44,7 @@ export class ExamenRadioPage {
   private histDoc: Array<HistDoc> = [];
   private histdoc = new HistDoc();
   private histdocserv: any;
+  pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private themeableBrowser: ThemeableBrowser, public alertCtrl: AlertController
     ,private transfer: Transfer, private file: File,private sqlite: SQLite) {
@@ -190,7 +191,7 @@ export class ExamenRadioPage {
           showPageTitle: false
         },
         backButton: {
-          wwwImage: '/android_asset/www/assets/img/green.png',
+          wwwImage: '{{pathimage}}/green.png',
           align: 'left'
         }
       };
@@ -212,7 +213,7 @@ export class ExamenRadioPage {
           showPageTitle: false
         },
         backButton: {
-          wwwImage: '/android_asset/www/assets/img/red.png',
+          wwwImage: '{{pathimage}}/red.png',
           align: 'left'
         }
       };
@@ -234,7 +235,7 @@ export class ExamenRadioPage {
           showPageTitle: false,
         },
         backButton: {
-          wwwImage: '/android_asset/www/assets/img/green.png',
+          wwwImage: '{{pathimage}}/green.png',
           align: 'left'
         }
       };
@@ -258,7 +259,7 @@ export class ExamenRadioPage {
         },
 
         backButton: {
-          wwwImage: '/android_asset/www/assets/img/red.png',
+          wwwImage: '{{pathimage}}/red.png',
           align: 'left'
         }
       };

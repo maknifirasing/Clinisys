@@ -1,19 +1,19 @@
 <ion-header style="height: 95px;color: white">
   <div fxLayout="row" fxLayoutWrap *ngIf="langue==='francais' || langue==='anglais'" class="md-card">
-    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/{{pass.getimg()}}" width="40" height="40"></div>
+    <div fxFlex="13" dir="ltr"><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
     <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
-    <div fxFlex="13" style="margin-top: 0px;direction:rtl;"><img src="/android_asset/www/assets/img/info.png" class="roundedImage" (click)="goToInfPage(pass)"/>
+    <div fxFlex="13" style="margin-top: 0px;direction:rtl;"><img src="{{pathimage}}/info.png" class="roundedImage" (click)="goToInfPage(pass)"/>
     </div>
   </div>
 
 
   <md-card class="md-card2" *ngIf="langue==='francais' || langue==='anglais'">
     <div fxLayout="row" fxLayoutWrap>
-      <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px"><img src="/android_asset/www/assets/img/green.png"
+      <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px"><img src="{{pathimage}}/green.png"
                                                                                width="25" height="25"></div>
-      <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px"><img src="/android_asset/www/assets/img/red.png"
+      <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px"><img src="{{pathimage}}/red.png"
                                                                                 width="25" height="25"></div>
 
       <div fxFlex="86" style="margin-top: -10px;font-size:10px;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}}</strong> {{histd}} </div>
@@ -24,11 +24,11 @@
 
 
   <div fxLayout="row" fxLayoutWrap *ngIf="langue==='arabe'" class="md-card">
-    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/info.png" class="roundedImage" (click)="goToInfPage(pass)"/></div>
+    <div fxFlex="13" dir="ltr"><img src="{{pathimage}}/info.png" class="roundedImage" (click)="goToInfPage(pass)"/></div>
     <div fxFlex="73" style="margin-top: 10px;direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
-    <div fxFlex="13" style="margin-top: 5px;direction:rtl;"><img src="/android_asset/www/assets/img/{{pass.getimg()}}" width="40"
+    <div fxFlex="13" style="margin-top: 5px;direction:rtl;"><img src="{{pathimage}}/{{pass.getimg()}}" width="40"
                                                                  height="40"></div>
   </div>
   <md-card *ngIf="langue==='arabe'" class="md-card2">
@@ -38,9 +38,9 @@
       <div fxFlex="86" style="margin-top: -10px;font-size:10px;direction:rtl;" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}}</strong> {{histd}}</div>
 
       <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px;direction:rtl;"><img
-        src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>
+        src="{{pathimage}}/green.png" width="30" height="30"></div>
       <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px;direction:rtl;"><img
-        src="/android_asset/www/assets/img/red.png" width="30" height="30"></div>
+        src="{{pathimage}}/red.png" width="30" height="30"></div>
 
     </div>
   </md-card>
@@ -56,7 +56,7 @@
 
     <md-card-header *ngFor="let ExRad of examenRT " (click)="getdocumentById2('http://192.168.0.5:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc='+observ.value)"  >
       <input type="hidden" #observ value="{{ExRad.getobserv()}}">
-      <img md-card-avatar src="/android_asset/www/assets/img/word.png">
+      <img md-card-avatar src="{{pathimage}}/word.png">
       <md-card-subtitle><strong>{{tabLangue.titreDemande}}:</strong> {{ExRad.getdateExamen()}}</md-card-subtitle>
       <md-card-subtitle style="color: #0c60ee"> <strong>{{tabLangue.titreExamen}}: </strong>{{ExRad.getdesignationExamen()}}</md-card-subtitle>
 
@@ -64,7 +64,7 @@
 
     <md-card-header *ngFor="let ExRadF of examenRF " (click)="getdocumentById(observF.value)">
       <input type="hidden" #observF value="{{ExRadF.getobserv()}}">
-      <img md-card-avatar src="/android_asset/www/assets/img/wordoff.png">
+      <img md-card-avatar src="{{pathimage}}/wordoff.png">
       <md-card-subtitle><strong>{{tabLangue.titreDemande}}:</strong> {{ExRadF.getdateExamen()}}</md-card-subtitle>
       <md-card-subtitle style="color: #0c60ee"> <strong>{{tabLangue.titreExamen}}: </strong>{{ExRadF.getdesignationExamen()}}</md-card-subtitle>
     </md-card-header>
@@ -73,7 +73,7 @@
   <md-card *ngIf="langue==='arabe'" dir="rtl">
     <div fxLayout="row" fxLayoutWrap *ngFor="let ExRad of examenRT" (click)="getdocumentById(observ.value)">
       <input type="hidden" #observ value="{{ExRad.getobserv()}}">
-      <div fxFlex="15" dir="rtl"><img src="/android_asset/www/assets/img/word.png" style="width:40px;height:40px;margin-top:5px;"></div>
+      <div fxFlex="15" dir="rtl"><img src="{{pathimage}}/word.png" style="width:40px;height:40px;margin-top:5px;"></div>
       <div fxFlex="84"><strong>{{tabLangue.titreDemande}}:</strong> {{ExRad.getdateExamen()}}<br/>
         <strong style="color: #0c60ee">{{tabLangue.titreExamen}}:</strong> <span style="color: #0c60ee">{{ExRad.getdesignationExamen()}}</span>
         <p></p>
@@ -83,7 +83,7 @@
     </div>
     <div fxLayout="row" fxLayoutWrap *ngFor="let ExRadF of examenRF " (click)="getdocumentById(observF.value)">
       <input type="hidden" #observF value="{{ExRadF.getobserv()}}">
-      <div fxFlex="15" dir="rtl"><img src="/android_asset/www/assets/img/wordoff.png" style="width:40px;height:40px;margin-top:5px;"></div>
+      <div fxFlex="15" dir="rtl"><img src="{{pathimage}}/wordoff.png" style="width:40px;height:40px;margin-top:5px;"></div>
       <div fxFlex="84"><strong>{{tabLangue.titreDemande}}:</strong> {{ExRadF.getdateExamen()}}<br/>
         <strong style="color: #0c60ee">{{tabLangue.titreExamen}}:</strong> <span style="color: #0c60ee">{{ExRadF.getdesignationExamen()}}</span>
         <p></p>
@@ -95,7 +95,7 @@
   <md-card *ngIf="langue==='francais' || langue==='anglais'">
     <div fxLayout="row" fxLayoutWrap *ngFor="let ExRad of examenRT  ">
       <input type="hidden" #observ value="{{ExRad.getobserv()}}">
-      <div fxFlex="15" dir="ltr"><img src="/android_asset/www/assets/img/word.png" style="width:40px;height:40px;margin-top:0px;"></div>
+      <div fxFlex="15" dir="ltr"><img src="{{pathimage}}/word.png" style="width:40px;height:40px;margin-top:0px;"></div>
       <div fxFlex="84" (click)="getdocumentById(observ.value)"><strong>{{tabLangue.titreDemande}}:</strong> {{ExRad.getdateExamen()}}<br/>
         <strong>{{tabLangue.titreExamen}}: </strong>{{ExRad.getdesignationExamen()}}
         <p></p>
@@ -104,7 +104,7 @@
     </div>
     <div fxLayout="row" fxLayoutWrap *ngFor="let ExRadF of examenRF " (click)="getdocumentById(observF.value)">
       <input type="hidden" #observF value="{{ExRadF.getobserv()}}">
-      <div fxFlex="15" dir="ltr"><img src="/android_asset/www/assets/img/wordoff.png" style="width:40px;height:40px;margin-top:0px;"></div>
+      <div fxFlex="15" dir="ltr"><img src="{{pathimage}}/wordoff.png" style="width:40px;height:40px;margin-top:0px;"></div>
       <div fxFlex="84" (click)="getdocumentById(observ.value)"><strong>{{tabLangue.titreDemande}}:</strong> {{ExRadF.getdateExamen()}}<br/>
         <strong>{{tabLangue.titreExamen}}: </strong>{{ExRadF.getdesignationExamen()}}
         <p></p>

@@ -34,7 +34,7 @@ export class MyApp {
       {title: 'Langues', component: LanguesPage}
     ];
     platform.ready().then(() => {
-/*
+
       this.userserv = new UserService(this.sqlite);
       this.userserv.getAllUser().then(user => {
         if (user.length === 0) {
@@ -70,8 +70,25 @@ export class MyApp {
           });
         }
       });
-*/
-          this.nav.setRoot(TryPage);
+
+      //       this.nav.setRoot(TryPage);
+
+      if (!platform.is('cordova')) {
+        Variables.path = '../../assets/img';
+      }
+
+      if (platform.is('ios')) {
+        Variables.path = '';
+      }
+      else if (platform.is('android')) {
+        Variables.path = '/android_asset/www/assets/img';
+      }
+      else {
+        // exit otherwise, but you could add further types here e.g. Windows
+        Variables.path = '../../assets/img';
+      }
+
+
       statusBar.styleDefault();
       setTimeout(() => {
         splashScreen.hide();

@@ -30,6 +30,7 @@ export class ConsignePage {
   coountConsigneT: any = 0;
   tabgConsigne: Array<tabBadge> = [];
   countConsigneserv: any;
+  pathimage=Variables.path;
   @ViewChild(Content) content: Content;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {

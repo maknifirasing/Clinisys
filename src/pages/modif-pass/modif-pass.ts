@@ -27,6 +27,7 @@ export class ModifPassPage {
   langserv: any;
   langes: Array<Langue> = [];
   user: Users;
+  pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,private sqlite: SQLite) {
     this.codeClinique = this.navParams.get("codeClinique");

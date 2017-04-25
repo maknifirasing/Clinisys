@@ -256,7 +256,7 @@ page-realisation {
   .teclado img:active{ top:0;
     box-shadow:0 3px 6px -1px rgba(0, 0, 0, 1)}
   .teclado a{ text-decoration:none;
-    width:60px;
+    width:65px;
     height:40px;
     letter-spacing:5px;
     font-family: Arial, Helvetica, sans-serif;
@@ -297,4 +297,55 @@ page-realisation {
   }
   .teclado a.dark.down{font-size:15px;
     padding:4px 16px 4px;}
+
+  input {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    //display: block;
+    width: 15%;
+    //  padding: 7px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    background: transparent;
+    // margin-bottom: 10px;
+    font: 16px Arial, Helvetica, sans-serif;
+    height: 20px;
+    text-align: center;
+
+  }
+
+  input:focus {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    //display: block;
+    width: 15%;
+    //  padding: 7px;
+    border: none;
+    border-bottom: 1px solid rgb(3, 167, 23);
+    background: transparent;
+    // margin-bottom: 10px;
+    font: 16px Arial, Helvetica, sans-serif;
+    height: 20px;
+    text-align: center;
+
+  }
+  .slider {
+    //overflow-y: hidden;
+    overflow-y: scroll;
+    height: 190px;
+    max-height: 500px; /* approximate max height */
+
+    transition-property: all;
+    transition-duration: .5s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+
+  }
+
+  .dis{
+    disabled: true;
+  }
 }

@@ -44,7 +44,7 @@ export class TabsPage {
   pass: Patient;
   pdf: string;
   dateFeuille: string;
-  heureActuelle: any;
+  heureActuelle: number;
   tabLangue: any;
   countPdfT: number;
   countPdf: number;
@@ -78,6 +78,7 @@ export class TabsPage {
   private consigne: Array<Consigne> = [];
   private coountConsigneT: number;
   private countConsigneserv: any;
+  pathimage=Variables.path;
 
   constructor(public navParams: NavParams, private Url: Variables, public platform: Platform,public modalCtrl: ModalController, private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
@@ -94,7 +95,6 @@ export class TabsPage {
     this.tabLangue = {
       pass: navParams.get("mypatient"),
       dateFeuille: navParams.get("dateFeuille"),
-      heureActuelle: this.heureActuelle,
       Labost: this.LabosT,
       Labosf: this.LabosF,
       ListeP: this.ListeP,
@@ -104,7 +104,8 @@ export class TabsPage {
       langue: this.langue,
       tabLangue: this.tabLangue, codeClinique: this.codeClinique,
       typeconsigne: "all",
-      etatconsigne: "all"
+      etatconsigne: "all",
+      heureActuelle: this.heureActuelle
     };
 
     platform.ready().then(() => {
@@ -554,7 +555,7 @@ export class TabsPage {
           var xml = xmlhttp.responseXML;
           var x;
           x = xml.getElementsByTagName("return");
-          this.heureActuelle = x[0].childNodes[0].nodeValue;
+          this.heureActuelle = Number(x[0].childNodes[0].nodeValue);
         }
       }
     }

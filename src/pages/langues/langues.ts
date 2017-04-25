@@ -22,7 +22,7 @@ export class LanguesPage {
   codeClinique: string;
   langue: string;
   private userserv: any;
-
+  pathimage=Variables.path;
 
   constructor(public navCtrl: NavController,private sqlite: SQLite) {
     //  Variables.auth();

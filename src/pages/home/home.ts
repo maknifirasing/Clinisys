@@ -27,6 +27,7 @@ export class HomePage {
   url: string;
   langserv: any;
   langes: Array<Langue> = [];
+  pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private sqlite: SQLite) {
     this.codeClinique = this.navParams.get("codeClinique");
