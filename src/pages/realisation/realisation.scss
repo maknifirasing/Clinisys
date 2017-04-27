@@ -181,18 +181,29 @@ page-realisation {
     letter-spacing:5px;
     line-height:1.6;
   }
+  .md-raised:not([disabled]) {
+    box-shadow:0 1px 1px rgba(255, 255, 255, .6) inset, 0 3px 3px -1px rgba(0, 0, 0, 1), 0 6px 6px rgba(0, 0, 0, .5);
+    background-image: -webkit-linear-gradient(#fefefe , red );
+    width:-5px;
+    height:30px;
 
+  }
+  .md-raised2:not([disabled]) {
+    box-shadow:0 1px 1px rgba(255, 255, 255, .6) inset, 0 3px 3px -1px rgba(0, 0, 0, 1), 0 6px 6px rgba(0, 0, 0, .5);
+    background-image: -webkit-linear-gradient(#fefefe , blue );
 
+  }
 
-  .teclado2 a{ text-decoration:none;
-    width:50px;
-    height:50px;
-    //  font-family: Arial, Helvetica, sans-serif;
-    //font-weight:bold;
-    font-size:25px;
-    color:white;
+  .teclado2 a{  text-decoration:none;
+    width:65px;
+    height:40px;
+    letter-spacing:5px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight:bold;
+    font-size:15px;
+    color:#000;
     text-shadow:0 2px 0 white;
-    background-image: -webkit-linear-gradient(#fefefe, red);
+    background-image: -webkit-linear-gradient(#fefefe , #cfd0d3 );
     padding:7px 1px 7px 9px;
     margin-bottom:4px;
     border-radius:6px;
@@ -212,7 +223,7 @@ page-realisation {
     padding:7px 1px 7px 9px;
     margin-bottom:4px;
     border-radius:6px;
-    display:inline-block;
+   display:inline-block;
     box-shadow:0 1px 1px rgba(255, 255, 255, .6) inset, 0 3px 3px -1px rgba(0, 0, 0, 1), 0 6px 6px rgba(0, 0, 0, .5);
     position:relative;
   }

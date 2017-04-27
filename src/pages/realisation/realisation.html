@@ -64,44 +64,60 @@
 
 
 <ion-content padding>
-
-<!--  <div fxLayout="row" class="teclado2">
-
-    <div fxFlex="31,8"  *ngIf="moins===true">
-      <a href="#" (click)="removeHeure()"><</a>
+ <!-- <div fxLayout="row" >
+    <div fxFlex="31,8">
+      <button md-button class="md-raised">Button</button>
     </div>
-    <div fxFlex="6,8">
-
-    </div>
-    <div fxFlex="20,8">
-      <a href="#" class="a2">{{heure}}H</a>
-    </div>
-    <div fxFlex="8,8">
-
-    </div>
-    <div fxFlex="29,8" *ngIf="plus===true">
-      <a href="#" (click)="addHeure()"> ></a>
-    </div>
-
   </div>
+-->
+
+<div fxLayout="row" >
+
+     <div fxFlex="6,8"  *ngIf="moins===true">
+       <button md-button class="md-raised" (click)="removeHeure()"><</button>
+     </div>
+     <div fxFlex="31,8">
+
+     </div>
+     <div fxFlex="20,8">
+       <button md-button class="md-raised2">{{heure}}H</button>
+     </div>
+     <div fxFlex="8,8">
+
+     </div>
+     <div fxFlex="29,8" *ngIf="plus===true">
+       <button md-button class="md-raised" (click)="addHeure()"> ></button>
+     </div>
+
+   </div>
 
 
-  <div   fxLayout="row">
-    <div fxFlex="79" style="color: #0f7ec0 ">
-      Designation
-    </div>
-    <div fxFlex="20" style="color: #0f7ec0 ">
-      Valeurs
-    </div>
 
-  </div>-->
+ <div   fxLayout="row" style="margin-top: 20px">
+     <div fxFlex="79" style="color: #0f7ec0 ">
+       Designation
+     </div>
+     <div fxFlex="20" style="color: #0f7ec0 ">
+       Valeurs
+     </div>
 
-  <ion-list>
+   </div>
+
+ <ion-list>
+<ion-item-sliding>
+  <ion-item>
+    aaaaaaaaaaaaaaaaa
+  </ion-item>
+  <ion-item-options style="background-color: #FFF3E0;">
+    <span style=" margin-top: 15px;color: #BDBDBD">bbbbbbbbbbbbbbbbbb</span>
+    <button ion-button style="color: whitesmoke;background-color: rgb(243, 156, 18);" >Annuler</button>
+
+  </ion-item-options>
+</ion-item-sliding>
 
 
 
-
-    <ion-item-sliding *ngFor="let pla of planification ">
+<!--    <ion-item-sliding *ngFor="let pla of planification ">
       <ion-item><span width="70">{{pla.getdesignation()}}</span>
 
         <input *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'" type="text" #{{pla.getrang()}}  (keyup.enter)="luck()"  disabled
@@ -109,9 +125,9 @@
                value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
 
 
-          <input *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" type="text" #{{pla.getrang()}}  (keyup.enter)="luck()"
-                 (click)="keyboardShow(pla.getrang()); "
-                 value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
+        <input *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" type="text" #{{pla.getrang()}}  (keyup.enter)="luck()"
+               (click)="keyboardShow(pla.getrang()); "
+               value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
 
         <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'"  src="{{pathimage}}/valid.png" height="14" width="14" item-right>
         <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" src="{{pathimage}}/unvalid.png" height="14" width="14" item-right>
@@ -123,7 +139,7 @@
         <button ion-button style="color: whitesmoke;background-color: rgb(243, 156, 18);" (click)="presentConfirm(pla.getdesignation(),pla.getnum(),pla.getrang())">Annuler</button>
       </ion-item-options>
 
-    </ion-item-sliding>
+    </ion-item-sliding>-->
   </ion-list>
 
 
