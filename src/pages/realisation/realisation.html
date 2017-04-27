@@ -1,4 +1,3 @@
-
 <ion-header style="height: 95px;color: white">
   <div fxLayout="row" fxLayoutWrap *ngIf="langue==='francais' || langue==='anglais'" class="md-card">
     <div fxFlex="13" dir="ltr"><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
@@ -64,29 +63,25 @@
 
 
 <ion-content padding>
-
-  <div fxLayout="row" class="teclado2">
-
-    <div fxFlex="31,8"  *ngIf="moins===true">
-      <a href="#" (click)="removeHeure()"><</a>
+  <div>
+    <div fxFlex="6,8" *ngIf="moins===true" (click)="removeHeure()">
+      <button md-button class="md-raised" ><</button>
     </div>
-    <div fxFlex="6,8">
+    <div fxFlex="31,8">
 
     </div>
     <div fxFlex="20,8">
-      <a href="#" class="a2">{{heure}}H</a>
+      <button md-button class="md-raised2">{{heure}}H</button>
     </div>
     <div fxFlex="8,8">
 
     </div>
-    <div fxFlex="29,8" *ngIf="plus===true">
-      <a href="#" (click)="addHeure()"> ></a>
+    <div fxFlex="29,8" *ngIf="plus===true" (click)="addHeure()">
+      <button md-button class="md-raised" > ></button>
     </div>
 
   </div>
-
-
-  <div   fxLayout="row">
+  <div fxLayout="row" style="margin-top: 20px">
     <div fxFlex="79" style="color: #0f7ec0 ">
       Designation
     </div>
@@ -97,39 +92,39 @@
   </div>
 
   <ion-list>
-
-
-
-
     <ion-item-sliding *ngFor="let pla of planification ">
       <ion-item><span width="70">{{pla.getdesignation()}}</span>
 
-        <input *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'" type="text" #{{pla.getrang()}}  (keyup.enter)="luck()"  disabled
+        <input *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'" type="text" #{{pla.getrang()}}
+               (keyup.enter)="luck()" disabled
                (click)="keyboardShow(pla.getrang()); "
                value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
 
 
-          <input *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" type="text" #{{pla.getrang()}}  (keyup.enter)="luck()"
-                 (click)="keyboardShow(pla.getrang()); "
-                 value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
+        <input *ngIf="(planificationvalue[pla.getrang()].getdisabled()==='false')&&(pla.getdesignation()==='OXYGENE' || pla.getdesignation()==='Insuline')" type="text" #{{pla.getrang()}}
+               (keyup.enter)="luck()"
+               (click)="keyboardShow(pla.getrang()); "
+               value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
+        <input *ngIf="(planificationvalue[pla.getrang()].getdisabled()==='false')&&(pla.getdesignation()!=='OXYGENE' && pla.getdesignation()!=='Insuline')" type="text" #{{pla.getrang()}}
+               (keyup.enter)="luck()"
+               (click)="keyboardShow(pla.getrang()); "
+               value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
 
-        <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'"  src="{{pathimage}}/valid.png" height="14" width="14" item-right>
-        <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" src="{{pathimage}}/unvalid.png" height="14" width="14" item-right>
+        <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'" src="{{pathimage}}/valid.png" height="14"
+             width="14" item-right>
+        <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" src="{{pathimage}}/unvalid.png"
+             height="14" width="14" item-right>
       </ion-item>
+      <ion-item-options style="background-color: #FFF3E0 ;" *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'">
+        <span style=" margin-top: 15px;color: #BDBDBD ">{{pla.getdesignation()}}</span>
+        <button ion-button style="color: whitesmoke;background-color: rgb(243, 156, 18);"
+                (click)="presentConfirm(pla.getdesignation(),pla.getnum(),pla.getrang())">Annuler
+        </button>
 
-
-      <ion-item-options side="right">
-        {{pla.getdesignation()}}
-        <button ion-button style="color: whitesmoke;background-color: rgb(243, 156, 18);" (click)="presentConfirm(pla.getdesignation(),pla.getnum(),pla.getrang())">Annuler</button>
       </ion-item-options>
-
     </ion-item-sliding>
+
   </ion-list>
-
-
-
-
-
 
 
 </ion-content>

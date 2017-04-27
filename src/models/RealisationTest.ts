@@ -1,4 +1,4 @@
-export class Realisation {
+export class RealisationTest {
   private _valeur: string;
   private _clavier: string;
   private _disabled: string;

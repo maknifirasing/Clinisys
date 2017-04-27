@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, ViewChildren} from '@angular/core';
 import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {MdMenuTrigger} from "@angular/material";
@@ -8,11 +8,13 @@ import {ClientDetailPage} from "../client-detail/client-detail";
 import {LangueService} from "../../services/LangueService";
 import {Langue} from "../../models/Langue";
 import {Keyboard} from '@ionic-native/keyboard';
-import {Realisation} from "../../models/realisation";
 import {Subscription} from "rxjs/Subscription";
 import {SQLite} from "@ionic-native/sqlite";
+import {RealisationTest} from "../../models/RealisationTest";
+import {TabsPage} from "../tabs/tabs";
 
 
+declare var cordova: any;
 @Component({
   selector: 'page-realisation',
   templateUrl: 'realisation.html',
@@ -35,16 +37,14 @@ export class RealisationPage {
   langes: Array<Langue> = [];
   user: any;
   keyboar = 0;
-  planificationvalue: Array<Realisation> = [];
-  input = -1;
+  planificationvalue: Array<RealisationTest> = [];
+  inputrange: number;
   plus = true;
   moins = true;
   heure: number;
   clavier = true;
-  private onShowSubscription: Subscription;
-  private onHideSubscription: Subscription;
   pathimage = Variables.path;
-  a: any = false;
+
 
   constructor(private keyboard: Keyboard, public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite) {
     this.tabLangue = navParams.get("tabLangue");
@@ -52,11 +52,12 @@ export class RealisationPage {
     this.pass = navParams.get("pass");
     this.langue = navParams.get("langue");
     this.dateFeuille = navParams.get("dateFeuille");
-    //   this.heureActuelle = navParams.get("heureActuelle");
+    this.heureActuelle = TabsPage.heureActuelle;
+    cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
+    cordova.plugins.Keyboard.disableScroll(true);
+    cordova.plugins.Keyboard.disableScroll(false);
 
-    this.heureActuelle = "16";
-    alert("d " + this.dateFeuille);
-    alert("h " + this.heureActuelle);
 
     /*
      this.user = "admin";
@@ -118,7 +119,7 @@ export class RealisationPage {
             p.settype(x[i].children[5].textContent);
             p.setrang(i);
             this.planification.push(p);
-            r = new Realisation();
+            r = new RealisationTest();
             r.setclavier("false");
             r.setdisabled("false");
             r.setvaleur("");
@@ -255,56 +256,80 @@ export class RealisationPage {
 
 
   keyboardShow(rang) {
-    this.input = rang;
 
 
-    this.keyboard.onKeyboardShow().subscribe(e => {
-      if (this.planificationvalue[rang].getclavier() === "false") {
+    this.inputrange = rang;
+    var c = this.planificationvalue[this.inputrange].getclavier();
+
+    window.addEventListener('native.keyboardshow', keyboardShowHandler);
+
+    function keyboardShowHandler(e) {
+      // alert('Keyboard height is: ' + e.keyboardHeight);
+      if (c === "false") {
+        cordova.plugins.Keyboard.close();
         this.keyboard.close();
       }
-    });
+      else {
+        cordova.plugins.Keyboard.show();
+        this.keyboard.show();
+      }
+    }
 
+    /*
+     this.keyboard.onKeyboardShow().subscribe(e => {
+     if (this.planificationvalue[rang].getclavier() === "false") {
+     cordova.plugins.Keyboard.close();
+     this.keyboard.close();
+     }
+     });
+     */
     this.keyboar = this.planificationvalue[rang].getkeyboard();
 
   }
 
   luck() {
     this.clavier = true;
-    this.CreatePlusieursRealisation(this.planification[this.input].getnum(), this.planificationvalue[this.input].getvaleur());
-    this.planificationvalue[this.input].setdisabled('true');
+    this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+    this.planificationvalue[this.inputrange].setdisabled('true');
   }
 
   updateInput(value) {
     if (value === 'clavier') {
       this.clavier = false;
-      this.keyboard.onKeyboardShow().subscribe(e => {
-        this.planificationvalue[this.input].setclavier("true");
-        this.keyboard.show();
-      });
+      this.planificationvalue[this.inputrange].setclavier("true");
+      /*   this.keyboard.onKeyboardShow().subscribe(e => {
+       this.planificationvalue[this.inputrange].setclavier("true");
+       this.keyboard.hideKeyboardAccessoryBar(true);
+       this.keyboard.show();
+       });
+       */
     }
     else if (value !== 'clavier') {
+/*
       this.keyboard.onKeyboardShow().subscribe(e => {
+        cordova.plugins.Keyboard.close();
         this.keyboard.close();
       });
-      this.planificationvalue[this.input].setclavier("false");
+      */
+      this.planificationvalue[this.inputrange].setclavier("false");
       if (this.keyboar > 2) {
-        this.planificationvalue[this.input].setvaleur(value);
-        this.input = -1;
+        this.planificationvalue[this.inputrange].setvaleur(value);
+        this.inputrange = -1;
         this.keyboar = 0;
       } else {
         switch (value) {
           case "OK":
             this.keyboar = 0;
-            this.CreatePlusieursRealisation(this.planification[this.input].getnum(), this.planificationvalue[this.input].getvaleur());
-            this.planificationvalue[this.input].setdisabled('true');
+            this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+            this.planificationvalue[this.inputrange].setdisabled('true');
             break;
           case "delete":
-            if (this.planificationvalue[this.input].getvaleur().length > 0) {
-              this.planificationvalue[this.input].setvaleur(this.planificationvalue[this.input].getvaleur().substr(0, this.planificationvalue[this.input].getvaleur().length - 1));
+            if (this.planificationvalue[this.inputrange].getvaleur().length > 0) {
+              this.planificationvalue[this.inputrange].setvaleur(this.planificationvalue[this.inputrange].getvaleur().substr(0, this.planificationvalue[this.inputrange].getvaleur().length - 1));
             }
             break;
           default:
-            this.planificationvalue[this.input].setvaleur(this.planificationvalue[this.input].getvaleur() + value);
+            this.planificationvalue[this.inputrange].setvaleur(this.planificationvalue[this.inputrange].getvaleur() + value);
             break;
         }
       }
@@ -316,31 +341,28 @@ export class RealisationPage {
     if (this.heure === Number(this.heureActuelle) + 1) {
       this.plus = false;
     }
-    if (this.heure > 4 || this.heure < 4) {
+    if (this.heure > Number(this.heureActuelle) - 6) {
       this.moins = true;
     }
-    this.planification.length = 0;
-    this.planification = [];
-    this.planificationvalue.length = 0;
-    this.planificationvalue = [];
-    this.getAllPlanification("16002649", this.dateFeuille, "REA", this.heure);
-    // this.getAllPlanification(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.heure);
+    this.update();
   }
 
   removeHeure() {
     this.heure--;
-    if (this.heure === 4) {
+    if (this.heure === Number(this.heureActuelle) - 6) {
       this.moins = false;
     }
     if (this.heure < Number(this.heureActuelle) + 1) {
       this.plus = true;
     }
+    this.update();
+  }
 
+  update() {
     this.planification.length = 0;
     this.planification = [];
     this.planificationvalue.length = 0;
     this.planificationvalue = [];
-    this.getAllPlanification("16002649", this.dateFeuille, "REA", this.heure);
-    //  this.getAllPlanification(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.heure);
+    this.getAllPlanification(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.heure);
   }
 }

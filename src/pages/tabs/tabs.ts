@@ -44,7 +44,7 @@ export class TabsPage {
   pass: Patient;
   pdf: string;
   dateFeuille: string;
-  heureActuelle: number;
+  static heureActuelle: number;
   tabLangue: any;
   countPdfT: number;
   countPdf: number;
@@ -105,7 +105,7 @@ export class TabsPage {
       tabLangue: this.tabLangue, codeClinique: this.codeClinique,
       typeconsigne: "all",
       etatconsigne: "all",
-      heureActuelle: this.heureActuelle
+      heureActuelle: TabsPage.heureActuelle
     };
 
     platform.ready().then(() => {
@@ -555,7 +555,7 @@ export class TabsPage {
           var xml = xmlhttp.responseXML;
           var x;
           x = xml.getElementsByTagName("return");
-          this.heureActuelle = Number(x[0].childNodes[0].nodeValue);
+          TabsPage.heureActuelle = Number(x[0].childNodes[0].nodeValue);
         }
       }
     }
@@ -582,7 +582,7 @@ export class TabsPage {
 
   presentProfileModal() {
     let profileModal = this.modalCtrl.create(MenuPage, {userId: 8675309,pass: this.pass,langue:this.langue,tabLangue:this.tabLangue,dateFeuille:this.dateFeuille
-      ,heureActuelle:this.heureActuelle,codeClinique:this.codeClinique});
+      ,heureActuelle:TabsPage.heureActuelle,codeClinique:this.codeClinique});
     profileModal.present();
   }
 }

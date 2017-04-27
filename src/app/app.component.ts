@@ -16,6 +16,7 @@ import {Database} from "../providers/database";
   templateUrl: 'app.html',
   providers: [Database]
 })
+
 export class MyApp {
   rootPage: any;
   @ViewChild(Nav) nav: Nav;
@@ -33,6 +34,7 @@ export class MyApp {
     this.pages = [
       {title: 'Langues', component: LanguesPage}
     ];
+
     platform.ready().then(() => {
 
       this.userserv = new UserService(this.sqlite);
