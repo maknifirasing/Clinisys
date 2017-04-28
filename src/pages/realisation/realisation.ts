@@ -1,4 +1,4 @@
-import {Component, ViewChild, ViewChildren} from '@angular/core';
+import {Component} from '@angular/core';
 import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {MdMenuTrigger} from "@angular/material";
@@ -18,7 +18,6 @@ import {TabsPage} from "../tabs/tabs";
 
 })
 export class RealisationPage {
-  @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   connection: boolean;
   tabLangue: any;
   pass: any;
@@ -270,22 +269,19 @@ export class RealisationPage {
 
   luck() {
     this.clavier = true;
-    var val = (<HTMLInputElement>document.getElementById(this.inputrange + "input")).value + "";
+    var val ;
+    if(this.langue==='arabe'){
+      val= (<HTMLInputElement>document.getElementById(this.inputrange + "inputt")).value + "";
+    }else {
+      val= (<HTMLInputElement>document.getElementById(this.inputrange + "input")).value + "";
+    }
+
     if (val.length > 0 && val!==" ") {
-      this.planificationvalue[this.inputrange].setvaleur((<HTMLInputElement>document.getElementById(this.inputrange + "input")).value + "");
+      this.planificationvalue[this.inputrange].setvaleur(val);
       this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
       this.planificationvalue[this.inputrange].setdisabled('true');
     }
     this.planificationvalue[this.inputrange].setclavier('false');
-    this.inputrange = -1;
-    this.keyboar = 0;
-
-  }
-
-  unluck() {
-    this.clavier = true;
-    this.planificationvalue[this.inputrange].setclavier("false");
-    document.getElementById(this.inputrange + "input").focus();
     this.inputrange = -1;
     this.keyboar = 0;
   }
