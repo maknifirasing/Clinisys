@@ -378,4 +378,26 @@ page-realisation {
     background-image: -webkit-linear-gradient(#fefefe, blue);
 
   }
+  .button {
+    background-color: #D50000 ;width: 50px;height: 40px;
+    box-shadow:0 3px 3px -1px rgba(0, 0, 0, 1), 0 6px 6px rgba(0, 0, 0, .5);
+    background-image: -webkit-linear-gradient(transparent, #D50000 );
+    text-align: center;color:white;font-weight: bold;
+  }
+
+
+  .button:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  }
+
+  .button2 {
+    background-color: #0D47A1 ;width: 60px;height: 40px;
+    box-shadow: 0 3px 3px -1px rgba(0, 0, 0, 1), 0 6px 6px rgba(0, 0, 0, .5);
+    background-image: -webkit-linear-gradient(transparent, #0D47A1 );text-align: center;
+  }
+
+
+  .button2:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  }
 }

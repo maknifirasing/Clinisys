@@ -7,18 +7,14 @@ import {DossierPage} from "../dossier/dossier";
 import {ClientDetailPage} from "../client-detail/client-detail";
 import {LangueService} from "../../services/LangueService";
 import {Langue} from "../../models/Langue";
-import {Keyboard} from '@ionic-native/keyboard';
-import {Subscription} from "rxjs/Subscription";
 import {SQLite} from "@ionic-native/sqlite";
 import {RealisationTest} from "../../models/RealisationTest";
 import {TabsPage} from "../tabs/tabs";
 
-
-declare var cordova: any;
 @Component({
   selector: 'page-realisation',
   templateUrl: 'realisation.html',
-  providers: [Keyboard, Variables]
+  providers: [Variables]
 
 })
 export class RealisationPage {
@@ -42,23 +38,17 @@ export class RealisationPage {
   plus = true;
   moins = true;
   heure: number;
-  clavier = true;
+  clavier: boolean;
   pathimage = Variables.path;
 
 
-  constructor(private keyboard: Keyboard, public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite) {
     this.tabLangue = navParams.get("tabLangue");
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("pass");
     this.langue = navParams.get("langue");
     this.dateFeuille = navParams.get("dateFeuille");
     this.heureActuelle = TabsPage.heureActuelle;
-    cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
-    cordova.plugins.Keyboard.disableScroll(true);
-    cordova.plugins.Keyboard.disableScroll(false);
-
-
     /*
      this.user = "admin";
      this.dateFeuille = "18/05/2016";
@@ -86,6 +76,9 @@ export class RealisationPage {
 
 
   getAllPlanification(numDoss, dateFeuille, nature, heure) {
+    this.clavier = true;
+    this.keyboar = 0;
+    this.inputrange = 0;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -118,6 +111,12 @@ export class RealisationPage {
             p.setseuilMin(x[i].children[4].textContent);
             p.settype(x[i].children[5].textContent);
             p.setrang(i);
+            if (p.getdesignation() === 'OXYGENE' || p.getdesignation() === 'Insuline') {
+              p.setpave('text');
+            } else {
+              //       p.setpave('number');
+              p.setpave('text');
+            }
             this.planification.push(p);
             r = new RealisationTest();
             r.setclavier("false");
@@ -209,7 +208,9 @@ export class RealisationPage {
   }
 
   AnnulerRealisation(numTr, rang) {
-
+    this.clavier = true;
+    this.keyboar = 0;
+    this.inputrange = 0;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -257,80 +258,106 @@ export class RealisationPage {
 
   keyboardShow(rang) {
 
-
     this.inputrange = rang;
-    var c = this.planificationvalue[this.inputrange].getclavier();
-
-    window.addEventListener('native.keyboardshow', keyboardShowHandler);
-
-    function keyboardShowHandler(e) {
-      // alert('Keyboard height is: ' + e.keyboardHeight);
-      if (c === "false") {
-        cordova.plugins.Keyboard.close();
-        this.keyboard.close();
-      }
-      else {
-        cordova.plugins.Keyboard.show();
-        this.keyboard.show();
-      }
+    if (this.planificationvalue[rang].getdisabled() === 'false') {
+      this.keyboar = this.planificationvalue[rang].getkeyboard();
+    } else {
+      this.keyboar = 0;
     }
 
-    /*
-     this.keyboard.onKeyboardShow().subscribe(e => {
-     if (this.planificationvalue[rang].getclavier() === "false") {
-     cordova.plugins.Keyboard.close();
-     this.keyboard.close();
-     }
-     });
-     */
-    this.keyboar = this.planificationvalue[rang].getkeyboard();
 
   }
 
   luck() {
     this.clavier = true;
-    this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
-    this.planificationvalue[this.inputrange].setdisabled('true');
+    var val = (<HTMLInputElement>document.getElementById(this.inputrange + "input")).value + "";
+    if (val.length > 0 && val!==" ") {
+      this.planificationvalue[this.inputrange].setvaleur((<HTMLInputElement>document.getElementById(this.inputrange + "input")).value + "");
+      this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+      this.planificationvalue[this.inputrange].setdisabled('true');
+    }
+    this.planificationvalue[this.inputrange].setclavier('false');
+    this.inputrange = -1;
+    this.keyboar = 0;
+
+  }
+
+  unluck() {
+    this.clavier = true;
+    this.planificationvalue[this.inputrange].setclavier("false");
+    document.getElementById(this.inputrange + "input").focus();
+    this.inputrange = -1;
+    this.keyboar = 0;
   }
 
   updateInput(value) {
-    if (value === 'clavier') {
-      this.clavier = false;
-      this.planificationvalue[this.inputrange].setclavier("true");
-      /*   this.keyboard.onKeyboardShow().subscribe(e => {
-       this.planificationvalue[this.inputrange].setclavier("true");
-       this.keyboard.hideKeyboardAccessoryBar(true);
-       this.keyboard.show();
-       });
-       */
-    }
-    else if (value !== 'clavier') {
-/*
-      this.keyboard.onKeyboardShow().subscribe(e => {
-        cordova.plugins.Keyboard.close();
-        this.keyboard.close();
-      });
-      */
-      this.planificationvalue[this.inputrange].setclavier("false");
-      if (this.keyboar > 2) {
-        this.planificationvalue[this.inputrange].setvaleur(value);
-        this.inputrange = -1;
+    this.clavier = true;
+    if (this.planificationvalue[this.inputrange].getdisabled() === 'false') {
+      if (value === 'clavier') {
+        this.clavier = false;
         this.keyboar = 0;
-      } else {
-        switch (value) {
-          case "OK":
-            this.keyboar = 0;
-            this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
-            this.planificationvalue[this.inputrange].setdisabled('true');
-            break;
-          case "delete":
-            if (this.planificationvalue[this.inputrange].getvaleur().length > 0) {
-              this.planificationvalue[this.inputrange].setvaleur(this.planificationvalue[this.inputrange].getvaleur().substr(0, this.planificationvalue[this.inputrange].getvaleur().length - 1));
-            }
-            break;
-          default:
-            this.planificationvalue[this.inputrange].setvaleur(this.planificationvalue[this.inputrange].getvaleur() + value);
-            break;
+        this.planificationvalue[this.inputrange].setclavier("true");
+        setTimeout(() => {
+          document.getElementById(this.inputrange + "input").focus();
+        }, 10);
+      }
+      else if (value !== 'clavier') {
+        this.clavier = true;
+        this.planificationvalue[this.inputrange].setclavier("false");
+        if (this.keyboar > 0 && this.keyboar < 3) {
+          switch (value) {
+            case "X":
+              this.keyboar = 0;
+              this.planificationvalue[this.inputrange].setvaleur(value);
+              this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+              this.planificationvalue[this.inputrange].setdisabled('true');
+              this.planificationvalue[this.inputrange].setclavier('false');
+              this.clavier = false;
+              this.inputrange = -1;
+              break;
+            case "R":
+              this.keyboar = 0;
+              this.planificationvalue[this.inputrange].setvaleur(value);
+              this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+              this.planificationvalue[this.inputrange].setdisabled('true');
+              this.planificationvalue[this.inputrange].setclavier('false');
+              this.clavier = false;
+              this.inputrange = -1;
+              break;
+            case "//":
+              this.keyboar = 0;
+              this.planificationvalue[this.inputrange].setvaleur(value);
+              this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+              this.planificationvalue[this.inputrange].setdisabled('true');
+              this.planificationvalue[this.inputrange].setclavier('false');
+              this.clavier = false;
+              this.inputrange = -1;
+              break;
+            case "OK":
+              this.keyboar = 0;
+              this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+              this.planificationvalue[this.inputrange].setdisabled('true');
+              this.planificationvalue[this.inputrange].setclavier('false');
+              this.clavier = false;
+              this.inputrange = -1;
+              break;
+            case "delete":
+              if (this.planificationvalue[this.inputrange].getvaleur().length > 0) {
+                this.planificationvalue[this.inputrange].setvaleur(this.planificationvalue[this.inputrange].getvaleur().substr(0, this.planificationvalue[this.inputrange].getvaleur().length - 1));
+              }
+              break;
+            default:
+              this.planificationvalue[this.inputrange].setvaleur(this.planificationvalue[this.inputrange].getvaleur() + value);
+              break;
+          }
+        } else if (this.keyboar > 2) {
+          this.planificationvalue[this.inputrange].setvaleur(value);
+          this.inputrange = -1;
+          this.keyboar = 0;
+          this.clavier = false;
+          this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+          this.planificationvalue[this.inputrange].setdisabled('true');
+          this.planificationvalue[this.inputrange].setclavier('false');
         }
       }
     }

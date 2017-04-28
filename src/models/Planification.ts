@@ -8,6 +8,7 @@ export class Planification {
   private _seuilMin: string;
   private _type: string;
   private _rang: number;
+  private _pave: string;
 
   constructor() {
   }
@@ -82,5 +83,13 @@ export class Planification {
 
   settype(value: string) {
     this._type = value;
+  }
+
+  getpave(): string {
+    return this._pave;
+  }
+
+  setpave(value: string) {
+    this._pave = value;
   }
 }
