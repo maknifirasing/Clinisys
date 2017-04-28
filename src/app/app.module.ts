@@ -18,7 +18,6 @@ import {PdfViewPage} from '../pages/pdf-view/pdf-view';
 import {ListPreanesthesiePage} from "../pages/list-preanesthesie/list-preanesthesie";
 import {LanguesPage} from "../pages/langues/langues";
 import {ListeCliniquePage} from "../pages/liste-clinique/liste-clinique";
-import {MaterialModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {SigneCourbePage} from "../pages/signe-courbe/signe-courbe";
@@ -59,16 +58,14 @@ import {MenuPage} from "../pages/menu/menu";
   ],
   imports: [
     BrowserModule,
-    FlexLayoutModule,
     CustomIconsModule,
     Ng2HighchartsModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
     CustomIconsModule,
     Ng2HighchartsModule,
-    MaterialModule.forRoot(),
     HttpModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp, { animate: false })
   ],
   bootstrap: [IonicApp],
   entryComponents: [

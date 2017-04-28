@@ -78,7 +78,9 @@ export class Variables {
     titrenvm2p: "كلمة المرور الجديدة",
     titreconfirmerm2p: " أكد الكلمة",
     titreconfirmerbtn: "تأكيد",
-    titreAutreCliniques:"عيادات أخرى"
+    titreAutreCliniques:"عيادات أخرى",
+    titreDesignation:"أغراض",
+    titreValeurs:"قيم الأعداد"
   }
 
   static francais: any = {
@@ -146,7 +148,9 @@ export class Variables {
     titrenvm2p: "Nouveau mot de passe",
     titreconfirmerm2p: "Confirmé Mot de passe",
     titreconfirmerbtn: "Confirmer",
-    titreAutreCliniques:"Autre Cliniques"
+    titreAutreCliniques:"Autre Cliniques",
+    titreDesignation:"Designation",
+    titreValeurs:"Valeurs"
   }
 
   static anglais: any = {
@@ -214,7 +218,9 @@ export class Variables {
     titrenvm2p: "New Password",
     titreconfirmerm2p: "Confirmed Password",
     titreconfirmerbtn: "To confirm",
-    titreAutreCliniques:"Other Clinics"
+    titreAutreCliniques:"Other Clinics",
+    titreDesignation:"Designation",
+    titreValeurs:"Values"
   }
 
   static uRL = "";

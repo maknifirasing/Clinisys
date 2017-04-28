@@ -16,6 +16,7 @@ import {Database} from "../providers/database";
   templateUrl: 'app.html',
   providers: [Database]
 })
+
 export class MyApp {
   rootPage: any;
   @ViewChild(Nav) nav: Nav;
@@ -33,6 +34,7 @@ export class MyApp {
     this.pages = [
       {title: 'Langues', component: LanguesPage}
     ];
+
     platform.ready().then(() => {
 
       this.userserv = new UserService(this.sqlite);
@@ -73,15 +75,8 @@ export class MyApp {
 
       //       this.nav.setRoot(TryPage);
 
-      if (!platform.is('cordova')) {
-        Variables.path = '../../assets/img';
-      }
-
-      if (platform.is('ios')) {
-        Variables.path = '';
-      }
-      else if (platform.is('android')) {
-        Variables.path = '/android_asset/www/assets/img';
+      if ((!platform.is('cordova'))|| (platform.is('ios'))|| (platform.is('android'))){
+        Variables.path = './assets/img';
       }
       else {
         // exit otherwise, but you could add further types here e.g. Windows

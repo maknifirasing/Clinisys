@@ -3,8 +3,8 @@ import {NavController, NavParams, AlertController, Platform} from 'ionic-angular
 import {Variables} from "../../providers/variables";
 import {ExamenRadio} from "../../models/ExamenRadio";
 import {Document} from "../../models/Document";
-import { File} from '@ionic-native/file';
-import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
+import {File} from '@ionic-native/file';
+import {Transfer, FileUploadOptions, TransferObject} from '@ionic-native/transfer';
 import {
   ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject,
   ThemeableBrowserButton
@@ -22,7 +22,7 @@ declare var cordova: any;
 @Component({
   selector: 'page-examen-radio',
   templateUrl: 'examen-radio.html',
-  providers: [Variables, ThemeableBrowser,File,Transfer]
+  providers: [Variables, ThemeableBrowser, File, Transfer]
 })
 
 export class ExamenRadioPage {
@@ -44,10 +44,10 @@ export class ExamenRadioPage {
   private histDoc: Array<HistDoc> = [];
   private histdoc = new HistDoc();
   private histdocserv: any;
-  pathimage=Variables.path;
+  pathimage = Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private themeableBrowser: ThemeableBrowser, public alertCtrl: AlertController
-    ,private transfer: Transfer, private file: File,private sqlite: SQLite) {
+    , private transfer: Transfer, private file: File, private sqlite: SQLite) {
     this.tabLangue = navParams.get("tabLangue");
     this.pass = navParams.get("pass");
     this.examenRF = navParams.get("examenRF");
@@ -71,8 +71,9 @@ export class ExamenRadioPage {
   }
 
   getdocumentById(observ) {
+
     observ += ".html";
-  //  observ += "a2a01d9b-684b-478f-824e-5ae8a95bcc0b.html";
+    //  observ += "a2a01d9b-684b-478f-824e-5ae8a95bcc0b.html";
     this.platform.ready().then(() => {
       // make sure this is on a device, not an emulation (e.g. chrome tools device mode)
       if (!this.platform.is('cordova')) {
@@ -121,7 +122,7 @@ export class ExamenRadioPage {
           doc.setcodeClinique(this.codeClinique);
 
           this.url = "http://37.59.230.40:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
-          var url="http://37.59.230.40:8084/";
+          var url = "http://37.59.230.40:8084/";
 
           this.document.push(doc);
           try {
@@ -141,7 +142,7 @@ export class ExamenRadioPage {
                 if (res === true) {
                   this.open(this.url);
                   this.retrieveImage(this.url, doc);
-                }else {
+                } else {
                   alert("document introuvable");
                 }
               });
@@ -162,7 +163,7 @@ export class ExamenRadioPage {
                 if (res === true) {
                   this.open(this.url);
                   this.retrieveImage(this.url, doc);
-                }else {
+                } else {
                   alert("document introuvable");
                 }
               });

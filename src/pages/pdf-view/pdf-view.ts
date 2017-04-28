@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, Platform, AlertController} from 'ionic-angular';
+import {NavController, NavParams, Platform, AlertController, LoadingController} from 'ionic-angular';
 import {PdfViewerComponent} from 'ng2-pdf-viewer';
 import { File} from '@ionic-native/file';
 import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
@@ -34,13 +34,14 @@ export class PdfViewPage {
   pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private PdfViewerComponent: PdfViewerComponent, public platform: Platform, public alertCtrl: AlertController
-    ,private transfer: Transfer, private file: File,private sqlite: SQLite) {
+    ,private transfer: Transfer, private file: File,private sqlite: SQLite,public loadingCtrl: LoadingController) {
     this.codeClinique = navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.pass = navParams.get("pass");
     this.langue = navParams.get("langue");
     this.pdf = this.navParams.get("pdf");
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+    this.presentLoadingDefault();
     this.platform.ready().then(() => {
       // make sure this is on a device, not an emulation (e.g. chrome tools device mode)
       if (!this.platform.is('cordova')) {
@@ -75,7 +76,18 @@ export class PdfViewPage {
 
 
   }
+  presentLoadingDefault() {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...',
+      spinner: 'bubbles'
+    });
 
+    loading.present();
+
+    setTimeout(() => {
+      loading.dismiss();
+    }, 5000);
+  }
   ionViewDidLoad() {
     this.tabBarElement.style.display = 'none';
   }

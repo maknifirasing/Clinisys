@@ -1,26 +1,25 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, ViewChildren} from '@angular/core';
 import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
-import {MdMenuTrigger} from "@angular/material";
 import {Planification} from "../../models/Planification";
 import {DossierPage} from "../dossier/dossier";
 import {ClientDetailPage} from "../client-detail/client-detail";
 import {LangueService} from "../../services/LangueService";
 import {Langue} from "../../models/Langue";
-import {Keyboard} from '@ionic-native/keyboard';
-import {Realisation} from "../../models/realisation";
 import {Subscription} from "rxjs/Subscription";
 import {SQLite} from "@ionic-native/sqlite";
+import {RealisationTest} from "../../models/RealisationTest";
+import {TabsPage} from "../tabs/tabs";
 
 
+declare var cordova: any;
 @Component({
   selector: 'page-realisation',
   templateUrl: 'realisation.html',
-  providers: [Keyboard, Variables]
+  providers: [Variables]
 
 })
 export class RealisationPage {
-  @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   connection: boolean;
   tabLangue: any;
   pass: any;
@@ -35,29 +34,22 @@ export class RealisationPage {
   langes: Array<Langue> = [];
   user: any;
   keyboar = 0;
-  planificationvalue: Array<Realisation> = [];
-  input = -1;
+  planificationvalue: Array<RealisationTest> = [];
+  inputrange: number;
   plus = true;
   moins = true;
   heure: number;
-  clavier = true;
-  private onShowSubscription: Subscription;
-  private onHideSubscription: Subscription;
+  clavier: boolean;
   pathimage = Variables.path;
-  a: any = false;
 
-  constructor(private keyboard: Keyboard, public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite) {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite) {
     this.tabLangue = navParams.get("tabLangue");
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("pass");
     this.langue = navParams.get("langue");
     this.dateFeuille = navParams.get("dateFeuille");
-    //   this.heureActuelle = navParams.get("heureActuelle");
-
-    this.heureActuelle = "16";
-    alert("d " + this.dateFeuille);
-    alert("h " + this.heureActuelle);
-
+    this.heureActuelle = TabsPage.heureActuelle;
     /*
      this.user = "admin";
      this.dateFeuille = "18/05/2016";
@@ -85,6 +77,9 @@ export class RealisationPage {
 
 
   getAllPlanification(numDoss, dateFeuille, nature, heure) {
+    this.clavier = true;
+    this.keyboar = 0;
+    this.inputrange = 0;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -117,8 +112,14 @@ export class RealisationPage {
             p.setseuilMin(x[i].children[4].textContent);
             p.settype(x[i].children[5].textContent);
             p.setrang(i);
+            if (p.getdesignation() === 'OXYGENE' || p.getdesignation() === 'Insuline') {
+              p.setpave('text');
+            } else {
+              //       p.setpave('number');
+              //       p.setpave('number');
+            }
             this.planification.push(p);
-            r = new Realisation();
+            r = new RealisationTest();
             r.setclavier("false");
             r.setdisabled("false");
             r.setvaleur("");
@@ -208,7 +209,9 @@ export class RealisationPage {
   }
 
   AnnulerRealisation(numTr, rang) {
-
+    this.clavier = true;
+    this.keyboar = 0;
+    this.inputrange = 0;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -255,57 +258,86 @@ export class RealisationPage {
 
 
   keyboardShow(rang) {
-    this.input = rang;
 
+    this.inputrange = rang;
+    if (this.planificationvalue[rang].getdisabled() === 'false') {
+      this.keyboar = this.planificationvalue[rang].getkeyboard();
+    } else {
+      this.keyboar = 0;
+    }
 
-    this.keyboard.onKeyboardShow().subscribe(e => {
-      if (this.planificationvalue[rang].getclavier() === "false") {
-        this.keyboard.close();
-      }
-    });
-
-    this.keyboar = this.planificationvalue[rang].getkeyboard();
 
   }
 
   luck() {
     this.clavier = true;
-    this.CreatePlusieursRealisation(this.planification[this.input].getnum(), this.planificationvalue[this.input].getvaleur());
-    this.planificationvalue[this.input].setdisabled('true');
+    var val = (<HTMLInputElement>document.getElementById(this.inputrange + "input")).value + "";
+    if (val.length > 0) {
+      this.planificationvalue[this.inputrange].setvaleur((<HTMLInputElement>document.getElementById(this.inputrange + "input")).value + "");
+      this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+      this.planificationvalue[this.inputrange].setdisabled('true');
+    }
+    this.planificationvalue[this.inputrange].setclavier('false');
+    this.inputrange = -1;
+    this.keyboar = 0;
+
+  }
+
+  unluck() {
+    this.clavier = true;
+    this.planificationvalue[this.inputrange].setclavier("false");
+    document.getElementById(this.inputrange + "input").focus();
+    this.inputrange = -1;
+    this.keyboar = 0;
   }
 
   updateInput(value) {
-    if (value === 'clavier') {
-      this.clavier = false;
-      this.keyboard.onKeyboardShow().subscribe(e => {
-        this.planificationvalue[this.input].setclavier("true");
-        this.keyboard.show();
-      });
-    }
-    else if (value !== 'clavier') {
-      this.keyboard.onKeyboardShow().subscribe(e => {
-        this.keyboard.close();
-      });
-      this.planificationvalue[this.input].setclavier("false");
-      if (this.keyboar > 2) {
-        this.planificationvalue[this.input].setvaleur(value);
-        this.input = -1;
+    if (this.planificationvalue[this.inputrange].getdisabled() === 'false') {
+      if (value === 'clavier') {
+        this.clavier = false;
         this.keyboar = 0;
-      } else {
-        switch (value) {
-          case "OK":
-            this.keyboar = 0;
-            this.CreatePlusieursRealisation(this.planification[this.input].getnum(), this.planificationvalue[this.input].getvaleur());
-            this.planificationvalue[this.input].setdisabled('true');
-            break;
-          case "delete":
-            if (this.planificationvalue[this.input].getvaleur().length > 0) {
-              this.planificationvalue[this.input].setvaleur(this.planificationvalue[this.input].getvaleur().substr(0, this.planificationvalue[this.input].getvaleur().length - 1));
-            }
-            break;
-          default:
-            this.planificationvalue[this.input].setvaleur(this.planificationvalue[this.input].getvaleur() + value);
-            break;
+        this.planificationvalue[this.inputrange].setclavier("true");
+        setTimeout(() => {
+          document.getElementById(this.inputrange + "input").focus();
+          //    this.keyboard.show();
+
+        }, 100);
+
+        /*   this.keyboard.onKeyboardShow().subscribe(e => {
+         this.planificationvalue[this.inputrange].setclavier("true");
+         this.keyboard.hideKeyboardAccessoryBar(true);
+         this.keyboard.show();
+         });
+         */
+
+      }
+      else if (value !== 'clavier') {
+        this.clavier = true;
+        this.planificationvalue[this.inputrange].setclavier("false");
+        if (this.keyboar > 2) {
+          this.planificationvalue[this.inputrange].setvaleur(value);
+          this.inputrange = -1;
+          this.keyboar = 0;
+          this.clavier = false;
+        } else {
+          switch (value) {
+            case "OK":
+              this.keyboar = 0;
+              this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+              this.planificationvalue[this.inputrange].setdisabled('true');
+              this.planificationvalue[this.inputrange].setclavier('false');
+              this.clavier = true;
+              this.inputrange = -1;
+              break;
+            case "delete":
+              if (this.planificationvalue[this.inputrange].getvaleur().length > 0) {
+                this.planificationvalue[this.inputrange].setvaleur(this.planificationvalue[this.inputrange].getvaleur().substr(0, this.planificationvalue[this.inputrange].getvaleur().length - 1));
+              }
+              break;
+            default:
+              this.planificationvalue[this.inputrange].setvaleur(this.planificationvalue[this.inputrange].getvaleur() + value);
+              break;
+          }
         }
       }
     }
@@ -316,31 +348,28 @@ export class RealisationPage {
     if (this.heure === Number(this.heureActuelle) + 1) {
       this.plus = false;
     }
-    if (this.heure > 4 || this.heure < 4) {
+    if (this.heure > Number(this.heureActuelle) - 6) {
       this.moins = true;
     }
-    this.planification.length = 0;
-    this.planification = [];
-    this.planificationvalue.length = 0;
-    this.planificationvalue = [];
-    this.getAllPlanification("16002649", this.dateFeuille, "REA", this.heure);
-    // this.getAllPlanification(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.heure);
+    this.update();
   }
 
   removeHeure() {
     this.heure--;
-    if (this.heure === 4) {
+    if (this.heure === Number(this.heureActuelle) - 6) {
       this.moins = false;
     }
     if (this.heure < Number(this.heureActuelle) + 1) {
       this.plus = true;
     }
+    this.update();
+  }
 
+  update() {
     this.planification.length = 0;
     this.planification = [];
     this.planificationvalue.length = 0;
     this.planificationvalue = [];
-    this.getAllPlanification("16002649", this.dateFeuille, "REA", this.heure);
-    //  this.getAllPlanification(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.heure);
+    this.getAllPlanification(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.heure);
   }
 }

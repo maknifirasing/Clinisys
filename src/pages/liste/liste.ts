@@ -11,7 +11,6 @@ import {HistPatientService} from "../../services/HistPatientService";
 import {UserService} from "../../services/UserService";
 import {LanguesPage} from "../langues/langues";
 import {MenuController} from 'ionic-angular';
-import {MdMenuTrigger} from "@angular/material";
 import {ListeCliniquePage} from "../liste-clinique/liste-clinique";
 import {ModifPassPage} from "../modif-pass/modif-pass";
 import {LangueService} from "../../services/LangueService";
@@ -25,7 +24,6 @@ import {SQLite} from "@ionic-native/sqlite";
 })
 
 export class ListePage {
-  @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   xml: any;
   patient: Array<Patient> = [];
   patientliste: Array<Patient> = [];
