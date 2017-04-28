@@ -99,7 +99,7 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
 
 
 <ion-content padding>
-
+<div class="slider1">
   <div fxLayout="row" style="margin-top: 10px" *ngIf="langue==='arabe'">
 
     <div fxFlex="20" style="color: #0f7ec0; direction: rtl;">
@@ -124,33 +124,34 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
 
   <ion-list *ngIf="langue==='arabe'" dir="rtl">
     <ion-item-sliding *ngFor="let pla of planification ">
-      <ion-item>
-
-        <input *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'" type="text" #{{pla.getrang()}}
-               (keyup.enter)="luck()" disabled
-               (click)="keyboardShow(pla.getrang()); "
+      <ion-item (click)="keyboardShow(pla.getrang()); ">
+        <input type="{{pla.getpave()}}"
+               *ngIf="(planificationvalue[pla.getrang()].getclavier()==='false')&&(pla.getrang()===inputrange)"
+               disabled style=" border-bottom: 1px solid rgb(3, 167, 23);"
                value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
 
-
-        <input *ngIf="(planificationvalue[pla.getrang()].getdisabled()==='false')&&(pla.getdesignation()==='OXYGENE' || pla.getdesignation()==='Insuline')" type="text" #{{pla.getrang()}}
-               (keyup.enter)="luck()"
-               (click)="keyboardShow(pla.getrang()); "
+        <input type="{{pla.getpave()}}"
+               *ngIf="(planificationvalue[pla.getrang()].getclavier()==='false')&&(pla.getrang()!==inputrange)"
+               disabled
                value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
-        <input *ngIf="(planificationvalue[pla.getrang()].getdisabled()==='false')&&(pla.getdesignation()!=='OXYGENE' && pla.getdesignation()!=='Insuline')" type="text" #{{pla.getrang()}}
-               (keyup.enter)="luck()"
-               (click)="keyboardShow(pla.getrang()); "
+
+        <input *ngIf="(planificationvalue[pla.getrang()].getclavier()==='true')&&(pla.getrang()===inputrange)" type="{{pla.getpave()}}"
+               id="{{pla.getrang()}}inputt" (blur)="luck()"
+               style=" border-bottom: 1px solid rgb(3, 167, 23);"
                value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
 
         <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'" src="{{pathimage}}/valid.png" height="14"
              width="14" item-right>
         <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" src="{{pathimage}}/unvalid.png"
              height="14" width="14" item-right>
-        <span width="70">{{pla.getdesignation()}}</span>
+        <span width="70" dir="rtl" item-left>{{pla.getdesignation()}}</span>
+
+
       </ion-item>
-      <ion-item-options side="left"  style="background-color: #FFF3E0 ;" *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'">
+      <ion-item-options side="left"  style="background-color: #FFF3E0 ;width: 100px;" *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'">
         <span style=" margin-top: 15px;color: #BDBDBD ">{{pla.getdesignation()}}</span>
-        <button ion-button style="color: whitesmoke;background-color: rgb(243, 156, 18);"
-                (click)="presentConfirm(pla.getdesignation(),pla.getnum(),pla.getrang())">Annuler
+        <button ion-button style="color: whitesmoke;background-color: rgb(243, 156, 18);width: 100px;"
+                (click)="presentConfirm(pla.getdesignation(),pla.getnum(),pla.getrang())">{{tabLangue.titreAnnuler}}
         </button>
 
       </ion-item-options>
@@ -185,10 +186,10 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
         <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" src="{{pathimage}}/unvalid.png"
              height="14" width="14" item-right>
       </ion-item>
-      <ion-item-options side="right"  style="background-color: #FFF3E0 ;" *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'">
+      <ion-item-options side="right"  style="background-color: #FFF3E0 ;width: 100px;" *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'">
         <span style=" margin-top: 15px;color: #BDBDBD ">{{pla.getdesignation()}}</span>
-        <button ion-button style="color: whitesmoke;background-color: rgb(243, 156, 18);"
-                (click)="presentConfirm(pla.getdesignation(),pla.getnum(),pla.getrang())">Annuler
+        <button ion-button style="color: whitesmoke;background-color: rgb(243, 156, 18);width: 100px;"
+                (click)="presentConfirm(pla.getdesignation(),pla.getnum(),pla.getrang())">{{tabLangue.titreAnnuler}}
         </button>
 
       </ion-item-options>
@@ -196,7 +197,7 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
 
   </ion-list>
 
-
+</div>
 </ion-content>
 <ion-footer>
   <div *ngIf="clavier===true">

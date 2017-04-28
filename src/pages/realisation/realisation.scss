@@ -362,7 +362,10 @@ page-realisation {
     transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 
   }
-
+  .slider1
+  .slider1::-webkit-scrollbar {
+    width: 10px;
+  }
   .dis {
     disabled: true;
   }

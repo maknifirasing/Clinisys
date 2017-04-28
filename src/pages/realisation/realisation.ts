@@ -1,4 +1,4 @@
-import {Component, ViewChild, ViewChildren} from '@angular/core';
+import {Component} from '@angular/core';
 import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {Planification} from "../../models/Planification";
@@ -6,13 +6,10 @@ import {DossierPage} from "../dossier/dossier";
 import {ClientDetailPage} from "../client-detail/client-detail";
 import {LangueService} from "../../services/LangueService";
 import {Langue} from "../../models/Langue";
-import {Subscription} from "rxjs/Subscription";
 import {SQLite} from "@ionic-native/sqlite";
 import {RealisationTest} from "../../models/RealisationTest";
 import {TabsPage} from "../tabs/tabs";
 
-
-declare var cordova: any;
 @Component({
   selector: 'page-realisation',
   templateUrl: 'realisation.html',
@@ -116,7 +113,7 @@ export class RealisationPage {
               p.setpave('text');
             } else {
               //       p.setpave('number');
-              //       p.setpave('number');
+              p.setpave('text');
             }
             this.planification.push(p);
             r = new RealisationTest();
@@ -187,18 +184,18 @@ export class RealisationPage {
 
   presentConfirm(designation, numTr, rang) {
     let alert = this.alertCtrl.create({
-      title: 'Confirm purchase',
-      message: 'Do you want to cancel this ' + designation,
+      title: this.tabLangue.titreconfirmation,
+      message: this.tabLangue.titremessConf + designation+" ?",
       buttons: [
         {
-          text: 'Cancel',
+          text: this.tabLangue.titreNon,
           role: 'cancel',
           handler: () => {
             console.log('Cancel clicked');
           }
         },
         {
-          text: 'OK',
+          text: this.tabLangue.titreoui,
           handler: () => {
             this.AnnulerRealisation(numTr, rang);
           }
@@ -271,27 +268,25 @@ export class RealisationPage {
 
   luck() {
     this.clavier = true;
-    var val = (<HTMLInputElement>document.getElementById(this.inputrange + "input")).value + "";
-    if (val.length > 0) {
-      this.planificationvalue[this.inputrange].setvaleur((<HTMLInputElement>document.getElementById(this.inputrange + "input")).value + "");
+    var val ;
+    if(this.langue==='arabe'){
+      val= (<HTMLInputElement>document.getElementById(this.inputrange + "inputt")).value + "";
+    }else {
+      val= (<HTMLInputElement>document.getElementById(this.inputrange + "input")).value + "";
+    }
+
+    if (val.length > 0 && val!==" ") {
+      this.planificationvalue[this.inputrange].setvaleur(val);
       this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
       this.planificationvalue[this.inputrange].setdisabled('true');
     }
     this.planificationvalue[this.inputrange].setclavier('false');
     this.inputrange = -1;
     this.keyboar = 0;
-
-  }
-
-  unluck() {
-    this.clavier = true;
-    this.planificationvalue[this.inputrange].setclavier("false");
-    document.getElementById(this.inputrange + "input").focus();
-    this.inputrange = -1;
-    this.keyboar = 0;
   }
 
   updateInput(value) {
+    this.clavier = true;
     if (this.planificationvalue[this.inputrange].getdisabled() === 'false') {
       if (value === 'clavier') {
         this.clavier = false;
@@ -299,34 +294,46 @@ export class RealisationPage {
         this.planificationvalue[this.inputrange].setclavier("true");
         setTimeout(() => {
           document.getElementById(this.inputrange + "input").focus();
-          //    this.keyboard.show();
-
-        }, 100);
-
-        /*   this.keyboard.onKeyboardShow().subscribe(e => {
-         this.planificationvalue[this.inputrange].setclavier("true");
-         this.keyboard.hideKeyboardAccessoryBar(true);
-         this.keyboard.show();
-         });
-         */
-
+        }, 10);
       }
       else if (value !== 'clavier') {
         this.clavier = true;
         this.planificationvalue[this.inputrange].setclavier("false");
-        if (this.keyboar > 2) {
-          this.planificationvalue[this.inputrange].setvaleur(value);
-          this.inputrange = -1;
-          this.keyboar = 0;
-          this.clavier = false;
-        } else {
+        if (this.keyboar > 0 && this.keyboar < 3) {
           switch (value) {
+            case "X":
+              this.keyboar = 0;
+              this.planificationvalue[this.inputrange].setvaleur(value);
+              this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+              this.planificationvalue[this.inputrange].setdisabled('true');
+              this.planificationvalue[this.inputrange].setclavier('false');
+              this.clavier = false;
+              this.inputrange = -1;
+              break;
+            case "R":
+              this.keyboar = 0;
+              this.planificationvalue[this.inputrange].setvaleur(value);
+              this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+              this.planificationvalue[this.inputrange].setdisabled('true');
+              this.planificationvalue[this.inputrange].setclavier('false');
+              this.clavier = false;
+              this.inputrange = -1;
+              break;
+            case "//":
+              this.keyboar = 0;
+              this.planificationvalue[this.inputrange].setvaleur(value);
+              this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+              this.planificationvalue[this.inputrange].setdisabled('true');
+              this.planificationvalue[this.inputrange].setclavier('false');
+              this.clavier = false;
+              this.inputrange = -1;
+              break;
             case "OK":
               this.keyboar = 0;
               this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
               this.planificationvalue[this.inputrange].setdisabled('true');
               this.planificationvalue[this.inputrange].setclavier('false');
-              this.clavier = true;
+              this.clavier = false;
               this.inputrange = -1;
               break;
             case "delete":
@@ -338,6 +345,14 @@ export class RealisationPage {
               this.planificationvalue[this.inputrange].setvaleur(this.planificationvalue[this.inputrange].getvaleur() + value);
               break;
           }
+        } else if (this.keyboar > 2) {
+          this.planificationvalue[this.inputrange].setvaleur(value);
+          this.inputrange = -1;
+          this.keyboar = 0;
+          this.clavier = false;
+          this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+          this.planificationvalue[this.inputrange].setdisabled('true');
+          this.planificationvalue[this.inputrange].setclavier('false');
         }
       }
     }
