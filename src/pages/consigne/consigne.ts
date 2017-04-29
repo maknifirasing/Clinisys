@@ -8,6 +8,7 @@ import {ConsigneService} from "../../services/ConsigneService";
 import {tabBadge} from "../../models/tabBadge";
 import {tabBadgeConsigneService} from "../../services/tabBadgeConsigneService";
 import {SQLite} from "@ionic-native/sqlite";
+import {TabsPage} from "../tabs/tabs";
 
 @Component({
   selector: 'page-consigne',
@@ -30,17 +31,17 @@ export class ConsignePage {
   coountConsigneT: any = 0;
   tabgConsigne: Array<tabBadge> = [];
   countConsigneserv: any;
-  pathimage=Variables.path;
+  pathimage = Variables.path;
   @ViewChild(Content) content: Content;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {
-    this.tabLangue = navParams.get("tabLangue");
-    this.codeClinique = navParams.get("codeClinique");
-    this.pass = navParams.get("pass");
-    this.langue = navParams.get("langue");
-    this.consigne = navParams.get("consigne");
-    this.type = navParams.get("typeconsigne");
-    this.etat = navParams.get("etatconsigne");
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private sqlite: SQLite) {
+    this.codeClinique = TabsPage.tabLangue.codeClinique;
+    this.tabLangue = TabsPage.tabLangue.tabLangue;
+    this.pass = TabsPage.tabLangue.pass;
+    this.langue = TabsPage.tabLangue.langue;
+    this.consigne = TabsPage.tabLangue.consigne;
+    this.type = TabsPage.tabLangue.typeconsigne;
+    this.etat = TabsPage.tabLangue.etatconsigne;
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
         this.connection = false;
@@ -49,7 +50,7 @@ export class ConsignePage {
         this.connection = true;
       }
     });
-    this.histd=DossierPage.hist;
+    this.histd = DossierPage.hist;
   }
 
   ionViewDidEnter() {
@@ -136,7 +137,7 @@ export class ConsignePage {
         if (xmlhttp.status == 200) {
           var xml;
           xml = xmlhttp.responseXML;
-          var x, i,c;
+          var x, i, c;
           x = xml.getElementsByTagName("return");
           for (i = 0; i < x.length; i++) {
             c = new Consigne();

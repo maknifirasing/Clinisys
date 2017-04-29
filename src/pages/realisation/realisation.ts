@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
-import {MdMenuTrigger} from "@angular/material";
 import {Planification} from "../../models/Planification";
 import {DossierPage} from "../dossier/dossier";
 import {ClientDetailPage} from "../client-detail/client-detail";
@@ -42,11 +41,11 @@ export class RealisationPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite) {
-    this.tabLangue = navParams.get("tabLangue");
-    this.codeClinique = navParams.get("codeClinique");
-    this.pass = navParams.get("pass");
-    this.langue = navParams.get("langue");
-    this.dateFeuille = navParams.get("dateFeuille");
+    this.codeClinique = TabsPage.tabLangue.codeClinique;
+    this.tabLangue = TabsPage.tabLangue.tabLangue;
+    this.pass = TabsPage.tabLangue.pass;
+    this.dateFeuille = TabsPage.tabLangue.dateFeuille;
+    this.langue = TabsPage.tabLangue.langue;
     this.heureActuelle = TabsPage.heureActuelle;
     /*
      this.user = "admin";
@@ -185,18 +184,18 @@ export class RealisationPage {
 
   presentConfirm(designation, numTr, rang) {
     let alert = this.alertCtrl.create({
-      title: 'Confirm purchase',
-      message: 'Do you want to cancel this ' + designation,
+      title: this.tabLangue.titreconfirmation,
+      message: this.tabLangue.titremessConf + designation + " ?",
       buttons: [
         {
-          text: 'Cancel',
+          text: this.tabLangue.titreNon,
           role: 'cancel',
           handler: () => {
             console.log('Cancel clicked');
           }
         },
         {
-          text: 'OK',
+          text: this.tabLangue.titreoui,
           handler: () => {
             this.AnnulerRealisation(numTr, rang);
           }
@@ -243,15 +242,8 @@ export class RealisationPage {
     xmlhttp.send(sr);
   }
 
-  goToInfPage(patient) {
-    this.navCtrl.push(ClientDetailPage,
-      {
-        patient: patient,
-        motif: DossierPage.motifhh,
-        tabLangue: this.tabLangue,
-        langue: this.langue,
-        codeClinique: this.codeClinique
-      });
+  goToInfPage() {
+    this.navCtrl.push(ClientDetailPage);
   }
 
 
@@ -259,24 +251,26 @@ export class RealisationPage {
 
     this.inputrange = rang;
     if (this.planificationvalue[rang].getdisabled() === 'false') {
+      this.clavier = true;
       this.keyboar = this.planificationvalue[rang].getkeyboard();
     } else {
       this.keyboar = 0;
+      this.clavier = false;
     }
 
 
   }
 
   luck() {
-    this.clavier = true;
-    var val ;
-    if(this.langue==='arabe'){
-      val= (<HTMLInputElement>document.getElementById(this.inputrange + "inputt")).value + "";
-    }else {
-      val= (<HTMLInputElement>document.getElementById(this.inputrange + "input")).value + "";
+    //  this.clavier = true;
+    var val;
+    if (this.langue === 'arabe') {
+      val = (<HTMLInputElement>document.getElementById(this.inputrange + "inputt")).value + "";
+    } else {
+      val = (<HTMLInputElement>document.getElementById(this.inputrange + "input")).value + "";
     }
 
-    if (val.length > 0 && val!==" ") {
+    if (val.length > 0 && val !== " ") {
       this.planificationvalue[this.inputrange].setvaleur(val);
       this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
       this.planificationvalue[this.inputrange].setdisabled('true');

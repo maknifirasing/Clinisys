@@ -17,6 +17,7 @@ import {DossierPage} from "../dossier/dossier";
 import {HistDoc} from "../../models/HistDoc";
 import {HistDocService} from "../../services/HistDocService";
 import {SQLite} from "@ionic-native/sqlite";
+import {TabsPage} from "../tabs/tabs";
 
 declare var cordova: any;
 @Component({
@@ -48,12 +49,13 @@ export class ExamenRadioPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private themeableBrowser: ThemeableBrowser, public alertCtrl: AlertController
     , private transfer: Transfer, private file: File, private sqlite: SQLite) {
-    this.tabLangue = navParams.get("tabLangue");
-    this.pass = navParams.get("pass");
-    this.examenRF = navParams.get("examenRF");
-    this.examenRT = navParams.get("examenRT");
-    this.codeClinique = navParams.get("codeClinique");
-    this.langue = navParams.get("langue");
+    this.codeClinique = TabsPage.tabLangue.codeClinique;
+    this.tabLangue = TabsPage.tabLangue.tabLangue;
+    this.pass = TabsPage.tabLangue.pass;
+    this.langue = TabsPage.tabLangue.langue;
+    this.examenRF = TabsPage.tabLangue.examenRF;
+    this.examenRT = TabsPage.tabLangue.examenRT;
+
 
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
@@ -71,9 +73,8 @@ export class ExamenRadioPage {
   }
 
   getdocumentById(observ) {
-
     observ += ".html";
-    //  observ += "a2a01d9b-684b-478f-824e-5ae8a95bcc0b.html";
+    //     observ += "a2a01d9b-684b-478f-824e-5ae8a95bcc0b";
     this.platform.ready().then(() => {
       // make sure this is on a device, not an emulation (e.g. chrome tools device mode)
       if (!this.platform.is('cordova')) {
@@ -121,8 +122,8 @@ export class ExamenRadioPage {
           doc.setobserv(observ);
           doc.setcodeClinique(this.codeClinique);
 
-          this.url = "http://37.59.230.40:8084/dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
-          var url = "http://37.59.230.40:8084/";
+          this.url = Variables.uRL + "dmi-web/DemandeRadio?type=consult&function=getdocumentById&idDoc=" + observ;
+          var url = Variables.uRL; //    "http://37.59.230.40"
 
           this.document.push(doc);
           try {
@@ -137,12 +138,11 @@ export class ExamenRadioPage {
                 }
               });
 
-
               Variables.checservice(url).then(res => {
                 if (res === true) {
                   this.open(this.url);
                   this.retrieveImage(this.url, doc);
-                } else {
+                } else if (res === false) {
                   alert("document introuvable");
                 }
               });
@@ -177,6 +177,7 @@ export class ExamenRadioPage {
   }
 
   open(url) {
+    var option;
     if (((this.langue === "francais") || (this.langue === "anglais")) && (this.connection)) {
       const options: ThemeableBrowserOptions = {
         statusbar: {
@@ -196,7 +197,7 @@ export class ExamenRadioPage {
           align: 'left'
         }
       };
-      const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_blank', options);
+      option = options;
     }
 
     if (((this.langue === "francais") || (this.langue === "anglais")) && (!this.connection)) {
@@ -218,7 +219,7 @@ export class ExamenRadioPage {
           align: 'left'
         }
       };
-      const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_blank', options);
+      option = options;
     }
 
     if ((this.langue === "arabe") && (this.connection)) {
@@ -240,8 +241,7 @@ export class ExamenRadioPage {
           align: 'left'
         }
       };
-
-      const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_blank', options);
+      option = options;
     }
 
     if ((this.langue === "arabe") && (!this.connection)) {
@@ -264,8 +264,10 @@ export class ExamenRadioPage {
           align: 'left'
         }
       };
-      const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_blank', options);
+      option = options;
     }
+
+    const browser: ThemeableBrowserObject = this.themeableBrowser.create(url, '_blank', option);
   }
 
   downloadImage(url, doc) {
@@ -358,15 +360,8 @@ export class ExamenRadioPage {
     this.examenRF = this.RadiosFs.getExamenRadios(this.examenRF, numDoss, codeClinique);
   }
 
-  goToInfPage(patient) {
-    this.navCtrl.push(ClientDetailPage,
-      {
-        patient: patient,
-        motif: DossierPage.motifhh,
-        tabLangue: this.tabLangue,
-        langue: this.langue,
-        codeClinique: this.codeClinique
-      });
+  goToInfPage() {
+    this.navCtrl.push(ClientDetailPage);
   }
 
 }

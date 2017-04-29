@@ -79,6 +79,7 @@ export class TabsPage {
   private coountConsigneT: number;
   private countConsigneserv: any;
   pathimage=Variables.path;
+  static  tabLangue:any;
 
   constructor(public navParams: NavParams, private Url: Variables, public platform: Platform,public modalCtrl: ModalController, private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
@@ -92,8 +93,8 @@ export class TabsPage {
     this.coountListPreanesthesie = 0;
     this.countPdfT = 0;
     this.countPdf = 0;
-    this.tabLangue = {
-      pass: navParams.get("mypatient"),
+    TabsPage.tabLangue = {
+      pass: this.pass,
       dateFeuille: navParams.get("dateFeuille"),
       Labost: this.LabosT,
       Labosf: this.LabosF,
@@ -580,9 +581,4 @@ export class TabsPage {
     this.getPlanificationTacheInfirmierByNumDossAndType(this.pass.getdossier(), "all", "all", this.codeClinique);
   }
 
-  presentProfileModal() {
-    let profileModal = this.modalCtrl.create(MenuPage, {userId: 8675309,pass: this.pass,langue:this.langue,tabLangue:this.tabLangue,dateFeuille:this.dateFeuille
-      ,heureActuelle:TabsPage.heureActuelle,codeClinique:this.codeClinique});
-    profileModal.present();
-  }
 }

@@ -6,6 +6,8 @@ import {Medecin} from "../../models/Medecin";
 import {ClientService} from "../../services/ClientService";
 import {MedecinService} from "../../services/MedecinService";
 import {SQLite} from "@ionic-native/sqlite";
+import {TabsPage} from "../tabs/tabs";
+import {DossierPage} from "../dossier/dossier";
 
 @Component({
   selector: 'page-client-detail',
@@ -33,11 +35,12 @@ export class ClientDetailPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,private sqlite: SQLite) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
-    this.patient = navParams.get("patient");
-    this.motif = navParams.get("motif");
-    this.tabLangue = navParams.get("tabLangue");
-    this.langue = navParams.get("langue");
-    this.codeClinique = navParams.get("codeClinique");
+    this.codeClinique = TabsPage.tabLangue.codeClinique;
+    this.tabLangue = TabsPage.tabLangue.tabLangue;
+    this.langue = TabsPage.tabLangue.langue;
+    this.patient = TabsPage.tabLangue.pass;
+    this.motif = DossierPage.motifhh;
+
     Variables.checconnection().then(res => {
       if (res === false) {
         this.connection = false;

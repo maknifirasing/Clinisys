@@ -7,6 +7,7 @@ import {HistDossier} from "../../models/HistDossier";
 import {TraitCourbeService} from "../../services/TraitCourbeService";
 import {SQLite} from "@ionic-native/sqlite";
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import {TabsPage} from "../tabs/tabs";
 
 @Component({
   selector: 'page-traitment-courbe',
@@ -30,10 +31,10 @@ export class TraitmentCourbe {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite,private screenOrientation: ScreenOrientation) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
-    this.codeClinique = navParams.get("codeClinique");
-    this.tabLangue = navParams.get("tabLangue");
-    this.pass = navParams.get("pass");
-    this.langue = navParams.get("langue");
+    this.codeClinique = TabsPage.tabLangue.codeClinique;
+    this.tabLangue = TabsPage.tabLangue.tabLangue;
+    this.pass = TabsPage.tabLangue.pass;
+    this.langue = TabsPage.tabLangue.langue;
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
         this.connection = false;

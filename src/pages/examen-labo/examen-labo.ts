@@ -7,8 +7,8 @@ import {LaboFService} from "../../services/LaboFService";
 import {LaboTService} from "../../services/LaboTService";
 import {ClientDetailPage} from "../client-detail/client-detail";
 import {DossierPage} from "../dossier/dossier";
-import {TabsPage} from "../tabs/tabs";
 import {SQLite} from "@ionic-native/sqlite";
+import {TabsPage} from "../tabs/tabs";
 
 @Component({
   selector: 'page-examen-labo',
@@ -30,12 +30,13 @@ export class ExamenLaboPage {
   pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,public platform: Platform,private sqlite: SQLite) {
-    this.tabLangue = navParams.get("tabLangue");
-    this.codeClinique = navParams.get("codeClinique");
-    this.pass = navParams.get("pass");
-    this.langue = navParams.get("langue");
-    this.LabosT = navParams.get("Labost");
-    this.LabosF = navParams.get("Labosf");
+    this.codeClinique = TabsPage.tabLangue.codeClinique;
+    this.tabLangue = TabsPage.tabLangue.tabLangue;
+    this.pass = TabsPage.tabLangue.pass;
+    this.langue = TabsPage.tabLangue.langue;
+    this.langue = TabsPage.tabLangue.langue;
+    this.LabosT = TabsPage.tabLangue.Labost;
+    this.LabosF = TabsPage.tabLangue.Labosf;
       Variables.checconnection().then(connexion => {
         if (connexion === false) {
           this.connection = false;
@@ -81,8 +82,7 @@ export class ExamenLaboPage {
   }
 
   gotPdf(pdf) {
-    this.navCtrl.push(PdfViewPage, {pdf: pdf.getpdf(),tabLangue: this.tabLangue,
-      langue: this.langue,codeClinique: this.codeClinique,pass:this.pass});
+    this.navCtrl.push(PdfViewPage, {pdf: pdf.getpdf()});
   }
 
   findAllLaboByNumDossierOff(numDoss, codeClinique) {
@@ -93,14 +93,7 @@ export class ExamenLaboPage {
     this.LabosT = this.LabosTs.getLabos(this.LabosT, numDoss, codeClinique);
   }
 
-  goToInfPage(patient) {
-    this.navCtrl.push(ClientDetailPage,
-      {
-        patient: patient,
-        motif: DossierPage.motifhh,
-        tabLangue: this.tabLangue,
-        langue: this.langue,
-        codeClinique: this.codeClinique
-      });
+  goToInfPage() {
+    this.navCtrl.push(ClientDetailPage);
   }
 }

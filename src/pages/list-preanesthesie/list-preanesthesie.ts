@@ -5,8 +5,8 @@ import {ListPreanesthesie} from "../../models/ListPreanesthesie";
 import {ListPreanesthesieService} from "../../services/ListPreanesthesieService";
 import {ClientDetailPage} from "../client-detail/client-detail";
 import {DossierPage} from "../dossier/dossier";
-import {TabsPage} from "../tabs/tabs";
 import {SQLite} from "@ionic-native/sqlite";
+import {TabsPage} from "../tabs/tabs";
 
 @Component({
   selector: 'page-list-preanesthesie',
@@ -26,11 +26,11 @@ export class ListPreanesthesiePage {
   pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {
-    this.ListeP = navParams.get("ListeP");
-    this.pass = navParams.get("pass");
-    this.tabLangue = navParams.get("tabLangue");
-    this.codeClinique = navParams.get("codeClinique");
-    this.langue = navParams.get("langue");
+    this.codeClinique = TabsPage.tabLangue.codeClinique;
+    this.tabLangue = TabsPage.tabLangue.tabLangue;
+    this.pass = TabsPage.tabLangue.pass;
+    this.langue = TabsPage.tabLangue.langue;
+    this.ListeP = TabsPage.tabLangue.ListeP;
       Variables.checconnection().then(connexion => {
         if (connexion === false) {
           this.connection = false;
@@ -52,14 +52,7 @@ export class ListPreanesthesiePage {
     this.ListeP = this.ListePserv.getListPreanesthesies(this.ListeP, numDoss, codeClinique);
   }
 
-  goToInfPage(patient) {
-    this.navCtrl.push(ClientDetailPage,
-      {
-        patient: patient,
-        motif: DossierPage.motifhh,
-        tabLangue: this.tabLangue,
-        langue: this.langue,
-        codeClinique: this.codeClinique
-      });
+  goToInfPage() {
+    this.navCtrl.push(ClientDetailPage);
   }
 }

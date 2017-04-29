@@ -80,7 +80,12 @@ export class Variables {
     titreconfirmerbtn: "تأكيد",
     titreAutreCliniques:"عيادات أخرى",
     titreDesignation:"أغراض",
-    titreValeurs:"قيم الأعداد"
+    titreValeurs:"قيم الأعداد",
+    titreconfirmation:"تأكيد",
+    titremessConf:"هل تريد الغاء",
+    titreoui:"نعم",
+    titreNon:"لا",
+    titreAnnuler:"الغاء"
   }
 
   static francais: any = {
@@ -150,7 +155,12 @@ export class Variables {
     titreconfirmerbtn: "Confirmer",
     titreAutreCliniques:"Autre Cliniques",
     titreDesignation:"Designation",
-    titreValeurs:"Valeurs"
+    titreValeurs:"Valeurs",
+    titreconfirmation:"Confirmation",
+    titremessConf:"Voulez vous annuler",
+    titreoui:"Oui",
+    titreNon:"Non",
+    titreAnnuler:"Annuler"
   }
 
   static anglais: any = {
@@ -220,7 +230,12 @@ export class Variables {
     titreconfirmerbtn: "To confirm",
     titreAutreCliniques:"Other Clinics",
     titreDesignation:"Designation",
-    titreValeurs:"Values"
+    titreValeurs:"Values",
+    titreconfirmation:"Confirmation",
+    titremessConf:"Want to cancel",
+    titreoui:"Yes",
+    titreNon:"No",
+    titreAnnuler:"Cancel"
   }
 
   static uRL = "";

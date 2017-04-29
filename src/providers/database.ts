@@ -126,8 +126,7 @@ export class Database {
 
       })
       .catch(error => {
-        console.error('Error opening database', error);
-        alert('Error opening database  ' + error);
+//        alert('Error opening database  ' + error);
       });
   }
 

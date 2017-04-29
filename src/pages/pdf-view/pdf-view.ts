@@ -8,6 +8,7 @@ import {HistDossier} from "../../models/HistDossier";
 import {HistPdfService} from "../../services/HistPdfService";
 import {HistDoc} from "../../models/HistDoc";
 import {SQLite} from "@ionic-native/sqlite";
+import {TabsPage} from "../tabs/tabs";
 
 declare var cordova: any;
 
@@ -35,10 +36,10 @@ export class PdfViewPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private PdfViewerComponent: PdfViewerComponent, public platform: Platform, public alertCtrl: AlertController
     ,private transfer: Transfer, private file: File,private sqlite: SQLite,public loadingCtrl: LoadingController) {
-    this.codeClinique = navParams.get("codeClinique");
-    this.tabLangue = navParams.get("tabLangue");
-    this.pass = navParams.get("pass");
-    this.langue = navParams.get("langue");
+    this.codeClinique = TabsPage.tabLangue.codeClinique;
+    this.tabLangue = TabsPage.tabLangue.tabLangue;
+    this.pass = TabsPage.tabLangue.pass;
+    this.langue = TabsPage.tabLangue.langue;
     this.pdf = this.navParams.get("pdf");
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.presentLoadingDefault();

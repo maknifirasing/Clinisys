@@ -1,84 +1,84 @@
-<ion-header style="height: 95px;color: white">
-  <div fxLayout="row" fxLayoutWrap *ngIf="langue==='francais' || langue==='anglais'" class="md-card">
-    <div fxFlex="13" dir="ltr"><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
+<ion-header style="height: 93px;color: white">
+
+  <div fxLayout="row" fxLayoutAlign="start start" class="md-card" *ngIf="langue==='francais' || langue==='anglais'">
+    <div><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
+    &nbsp;&nbsp;
     <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
-    <div fxFlex="13" style="margin-top: 0px;direction:rtl;"><img src="{{pathimage}}/info.png"
-                                                                 class="roundedImage" (click)="goToInfPage(pass)"/>
-    </div>
+    &nbsp;&nbsp;
+
+    <div><img src="{{pathimage}}/info.png" class="roundedImage" (click)="goToInfPage()"></div>
   </div>
 
 
-  <md-card class="md-card2" *ngIf="langue==='francais' || langue==='anglais'">
-    <div fxLayout="row" fxLayoutWrap>
-      <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px"><img
-        src="{{pathimage}}/green.png"
-        width="25" height="25"></div>
-      <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px"><img
-        src="{{pathimage}}/red.png"
-        width="25" height="25"></div>
-
-      <div fxFlex="86" style="margin-top: -10px;font-size:10px;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}}</strong>
-        {{histd}}
-      </div>
-      <div fxFlex="86" style="margin-top: -10px;font-size:10px;" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}}</strong>
-        {{histd}}
-      </div>
-
+  <div fxLayout="row" fxLayoutAlign="start start" class="md-card2" *ngIf="langue==='francais' || langue==='anglais'">
+    <div *ngIf="connection===true">
+      <ion-avatar ><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
     </div>
-  </md-card>
+    &nbsp;&nbsp;
+    <div *ngIf="connection===false">
 
+      <ion-avatar><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
+    </div>
+    &nbsp;&nbsp;
+    <div  *ngIf="connection===true"><span ><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</span></div>
+    &nbsp;&nbsp;
+    <div *ngIf="connection===false">
 
-  <div fxLayout="row" fxLayoutWrap *ngIf="langue==='arabe'" class="md-card">
-    <div fxFlex="13" dir="ltr"><img src="{{pathimage}}/info.png" class="roundedImage"
-                                    (click)="goToInfPage(pass)"/></div>
-    <div fxFlex="73" style="margin-top: 10px;direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
+      <span ><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}</span></div>
+    &nbsp;&nbsp;
+
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="end start" *ngIf="langue==='arabe'" class="md-card">
+    <div dir="rtl"><img src="{{pathimage}}/info.png" class="roundedImage" (click)="goToInfPage()"></div>
+    &nbsp;&nbsp;
+    <div fxFlex="73" style="margin-top: 10px; direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
-    <div fxFlex="13" style="margin-top: 5px;direction:rtl;"><img src="{{pathimage}}/{{pass.getimg()}}"
-                                                                 width="40"
-                                                                 height="40"></div>
+    &nbsp;&nbsp;
+
+    <div><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
   </div>
-  <md-card *ngIf="langue==='arabe'" class="md-card2">
-    <div fxLayout="row" fxLayoutWrap>
 
-      <div fxFlex="86" style="margin-top: -10px;font-size:10px;direction:rtl;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}}</strong>
-        {{histd}}
-      </div>
-      <div fxFlex="86" style="margin-top: -10px;font-size:10px;direction:rtl;" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}}</strong>
-        {{histd}}
-      </div>
-
-      <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px;direction:rtl;"><img
-        src="{{pathimage}}/green.png" width="30" height="30"></div>
-      <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px;direction:rtl;"><img
-        src="{{pathimage}}/red.png" width="30" height="30"></div>
-
+  <div fxLayout="row" fxLayoutAlign="end start" class="md-card2" *ngIf="langue==='arabe'">
+    <div margin-top="-3" dir="rtl" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</div>
+    &nbsp;&nbsp;
+    <div margin-top="-3" dir="rtl" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}
     </div>
-  </md-card>
+    &nbsp;&nbsp;
+    <div margin-top="-3" *ngIf="connection===true">
+      <ion-avatar><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
+    </div>
+    &nbsp;&nbsp;
+    <div margin-top="-3" *ngIf="connection===false">
+      <ion-avatar><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
+    </div>
+    &nbsp;&nbsp;
 
+  </div>
 
 </ion-header>
 
 <ion-content>
   <ion-navbar *ngIf="langue==='arabe'"
               dir="rtl">
-    <md-card>
+    <div>
       <div *ngIf="test===true" fxLayout="row" fxLayoutWrap>
         <div fxFlex="66" dir="rtl">
           <strong class="strong">
             {{tabLangue.titreMotif}}
           </strong><br/>
 
-          <span class="strong2" >
+          <span class="strong2">
 
             {{ motifh.getmotifhospitalisation()}}<br/>
 
           </span>
         </div>
       </div>
-<div><p></p></div>
+      <div><p></p></div>
       <div *ngIf="Ante===true" fxLayout="row" fxLayoutWrap>
         <div fxFlex="99" dir="rtl">
           <strong class="strong">
@@ -122,7 +122,8 @@
 
           </span>
         </div>
-        <div fxFlex="23" dir="ltr" (click)="gotoSigneCourbe()"><img src="{{pathimage}}/line.png" width="50" height="50"></div>
+        <div fxFlex="23" dir="ltr" (click)="gotoSigneCourbe()"><img src="{{pathimage}}/line.png" width="50" height="50">
+        </div>
         <p></p>
       </div>
 
@@ -155,7 +156,8 @@
 
           </span>
         </div>
-        <div fxFlex="23" dir="ltr" (click)="gotoTraitementCourbe()"><img src="{{pathimage}}/line.png" width="50" height="50"></div>
+        <div fxFlex="23" dir="ltr" (click)="gotoTraitementCourbe()"><img src="{{pathimage}}/line.png" width="50"
+                                                                         height="50"></div>
         <p></p>
       </div>
       <div><p></p></div>
@@ -260,210 +262,212 @@
           </span>
         </div>
       </div>
-    </md-card>
+    </div>
   </ion-navbar>
 
 
-   <ion-navbar *ngIf="langue==='francais' || langue==='anglais'">
+  <ion-navbar *ngIf="langue==='francais' || langue==='anglais'">
 
-     <md-card>
-       <div *ngIf="test===true" fxLayout="row" fxLayoutWrap>
-         <div fxFlex="66">
-           <strong class="strong">
-             {{tabLangue.titreMotif}}
-           </strong><br/>
+    <div>
+      <div *ngIf="test===true" fxLayout="row" fxLayoutWrap>
+        <div fxFlex="66">
+          <strong class="strong">
+            {{tabLangue.titreMotif}}
+          </strong><br/>
 
-           <span class="strong2" >
+          <span class="strong2">
 
             {{ motifh.getmotifhospitalisation()}}<br/>
 
           </span>
-         </div>
-       </div>
-       <div><p></p></div>
-       <div *ngIf="Ante===true" fxLayout="row" fxLayoutWrap>
-         <div fxFlex="99">
-           <strong class="strong">
-             {{tabLangue.titreAnt}}
-           </strong><br/>
+        </div>
+      </div>
+      <div><p></p></div>
+      <div *ngIf="Ante===true" fxLayout="row" fxLayoutWrap>
+        <div fxFlex="99">
+          <strong class="strong">
+            {{tabLangue.titreAnt}}
+          </strong><br/>
 
 
-           <span class="strong2" *ngFor="let an of antechl ">
+          <span class="strong2" *ngFor="let an of antechl ">
 
             {{an.getch()}}<br/>
 
           </span>
-         </div>
-         <p></p>
-       </div>
-       <div><p></p></div>
-       <div *ngIf="Alerg===true" fxLayout="row" fxLayoutWrap>
-         <div fxFlex="99">
-           <strong class="strong">
-             {{tabLangue.titreAll}}
-           </strong><br/>
+        </div>
+        <p></p>
+      </div>
+      <div><p></p></div>
+      <div *ngIf="Alerg===true" fxLayout="row" fxLayoutWrap>
+        <div fxFlex="99">
+          <strong class="strong">
+            {{tabLangue.titreAll}}
+          </strong><br/>
 
-           <span class="strong2" *ngFor="let al of alechl ">
+          <span class="strong2" *ngFor="let al of alechl ">
 
             {{al.getch()}}<br/>
 
           </span>
-         </div>
-         <p></p>
-       </div>
-       <div><p></p></div>
-       <div *ngIf="AlerteS===true" fxLayout="row" fxLayoutWrap>
+        </div>
+        <p></p>
+      </div>
+      <div><p></p></div>
+      <div *ngIf="AlerteS===true" fxLayout="row" fxLayoutWrap>
 
-         <div fxFlex="76">
-           <strong class="strong">
-             {{tabLangue.titreSigneV}}
-           </strong><br/>
-           <span class="strong2" *ngFor="let sig of signec ">
+        <div fxFlex="76">
+          <strong class="strong">
+            {{tabLangue.titreSigneV}}
+          </strong><br/>
+          <span class="strong2" *ngFor="let sig of signec ">
 
              <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong><span style="font-size: 10px"> {{sig.getdate()}}</span><br/>
 
           </span>
-         </div>
-         <div fxFlex="23" dir="rtl" (click)="gotoSigneCourbe()"><img src="{{pathimage}}/line.png" width="50" height="50"></div>
-         <p></p>
-       </div>
+        </div>
+        <div fxFlex="23" dir="rtl" (click)="gotoSigneCourbe()"><img src="{{pathimage}}/line.png" width="50" height="50">
+        </div>
+        <p></p>
+      </div>
 
-       <div><p></p></div>
-       <div *ngIf="Ent===true" fxLayout="row" fxLayoutWrap>
-         <div fxFlex="99">
-           <strong class="strong">
-             {{tabLangue.titreEnt}}
-           </strong><br/>
-           <span class="strong2" *ngFor="let en of Entrees ">
+      <div><p></p></div>
+      <div *ngIf="Ent===true" fxLayout="row" fxLayoutWrap>
+        <div fxFlex="99">
+          <strong class="strong">
+            {{tabLangue.titreEnt}}
+          </strong><br/>
+          <span class="strong2" *ngFor="let en of Entrees ">
 
              <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong><span style="font-size: 10px"> {{en.getdate()}}</span><br/>
 
           </span>
-         </div>
-         <p></p>
-       </div>
-       <div><p></p></div>
+        </div>
+        <p></p>
+      </div>
+      <div><p></p></div>
 
-       <div *ngIf="trait===true" fxLayout="row" fxLayoutWrap>
+      <div *ngIf="trait===true" fxLayout="row" fxLayoutWrap>
 
-         <div fxFlex="76">
-           <strong class="strong">
-             {{tabLangue.titreTrait}}
-           </strong><br/>
-           <span class="strong2" *ngFor="let tra of traitement ">
+        <div fxFlex="76">
+          <strong class="strong">
+            {{tabLangue.titreTrait}}
+          </strong><br/>
+          <span class="strong2" *ngFor="let tra of traitement ">
 
             <strong>{{ tra.getdesignation() }}</strong>
              <span style="font-size: 10px">  {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.</span><br/>
 
           </span>
-         </div>
-         <div fxFlex="23" dir="rtl" (click)="gotoTraitementCourbe()"><img src="{{pathimage}}/line.png" width="50" height="50"></div>
-         <p></p>
-       </div>
-       <div><p></p></div>
+        </div>
+        <div fxFlex="23" dir="rtl" (click)="gotoTraitementCourbe()"><img src="{{pathimage}}/line.png" width="50"
+                                                                         height="50"></div>
+        <p></p>
+      </div>
+      <div><p></p></div>
 
-       <div *ngIf="Sor===true" fxLayout="row" fxLayoutWrap>
-         <div fxFlex="99">
-           <strong class="strong">
-             {{tabLangue.titreSortie}}
-           </strong><br/>
-           <span class="strong2" *ngFor="let so of Sorties ">
+      <div *ngIf="Sor===true" fxLayout="row" fxLayoutWrap>
+        <div fxFlex="99">
+          <strong class="strong">
+            {{tabLangue.titreSortie}}
+          </strong><br/>
+          <span class="strong2" *ngFor="let so of Sorties ">
 
              <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> <span style="font-size: 10px">{{so.getdate()}}</span><br/>
 
           </span>
-         </div>
-         <p></p>
-       </div>
-       <div><p></p></div>
-       <div *ngIf="AlerteSigneCliniqueTest===true" fxLayout="row" fxLayoutWrap>
-         <div fxFlex="99">
-           <strong class="strong">
-             {{tabLangue.titreAlert}}
-           </strong><br/>
-           <span class="strong2" *ngFor="let pas of signe ">
+        </div>
+        <p></p>
+      </div>
+      <div><p></p></div>
+      <div *ngIf="AlerteSigneCliniqueTest===true" fxLayout="row" fxLayoutWrap>
+        <div fxFlex="99">
+          <strong class="strong">
+            {{tabLangue.titreAlert}}
+          </strong><br/>
+          <span class="strong2" *ngFor="let pas of signe ">
 
              <strong>{{pas.getdesignation()}}</strong> <span style="font-size: 10px">{{pas.getquantite()}} {{pas.getdate()}}</span><br/>
 
           </span>
-         </div>
-         <p></p>
-       </div>
-       <div><p></p></div>
-       <div *ngIf="His===true" fxLayout="row" fxLayoutWrap>
-         <div fxFlex="99">
-           <strong class="strong">
-             {{tabLangue.titreMaladie}}
-           </strong><br/>
-           <span class="strong2" *ngFor="let his of Histoiremaladie ">
+        </div>
+        <p></p>
+      </div>
+      <div><p></p></div>
+      <div *ngIf="His===true" fxLayout="row" fxLayoutWrap>
+        <div fxFlex="99">
+          <strong class="strong">
+            {{tabLangue.titreMaladie}}
+          </strong><br/>
+          <span class="strong2" *ngFor="let his of Histoiremaladie ">
 
             {{ his.getdetail() }}<br/>
 
 
 
           </span>
-         </div>
-         <p></p>
-       </div>
-       <div><p></p></div>
-       <div *ngIf="Exa===true" fxLayout="row" fxLayoutWrap>
-         <div fxFlex="99">
-           <strong class="strong">
-             {{tabLangue.titreClini}}
-           </strong><br/>
-           <span class="strong2" *ngFor="let exa of Examenclinique ">
+        </div>
+        <p></p>
+      </div>
+      <div><p></p></div>
+      <div *ngIf="Exa===true" fxLayout="row" fxLayoutWrap>
+        <div fxFlex="99">
+          <strong class="strong">
+            {{tabLangue.titreClini}}
+          </strong><br/>
+          <span class="strong2" *ngFor="let exa of Examenclinique ">
 
             [{{ exa.getdate() }}-{{exa.getuserCreat()}}]<br/>
             {{ exa.getdetail() }}<br/>
 
           </span>
-         </div>
-         <p></p>
-       </div>
-       <div><p></p></div>
-       <div *ngIf="Evo===true" fxLayout="row" fxLayoutWrap>
-         <div fxFlex="99">
-           <strong class="strong">
-             {{tabLangue.titreEvo}}
-           </strong><br/>
-           <span class="strong2" *ngFor="let evo of Evolution ">
+        </div>
+        <p></p>
+      </div>
+      <div><p></p></div>
+      <div *ngIf="Evo===true" fxLayout="row" fxLayoutWrap>
+        <div fxFlex="99">
+          <strong class="strong">
+            {{tabLangue.titreEvo}}
+          </strong><br/>
+          <span class="strong2" *ngFor="let evo of Evolution ">
 
             {{ evo.getdetail()}}<br/>
 
           </span>
-         </div>
-       </div>
-       <div><p></p></div>
-       <div *ngIf="Ri===true" fxLayout="row" fxLayoutWrap>
-         <div fxFlex="99">
-           <strong class="strong">
-             {{tabLangue.titreRegime}}
-           </strong><br/>
-           <span class="strong2" *ngFor="let r of rigime ">
+        </div>
+      </div>
+      <div><p></p></div>
+      <div *ngIf="Ri===true" fxLayout="row" fxLayoutWrap>
+        <div fxFlex="99">
+          <strong class="strong">
+            {{tabLangue.titreRegime}}
+          </strong><br/>
+          <span class="strong2" *ngFor="let r of rigime ">
 
             {{ r.getdesignation() }}<br/>
 
           </span>
-         </div>
-         <p></p>
-       </div>
-       <div><p></p></div>
-       <div *ngIf="Con===true" fxLayout="row" fxLayoutWrap>
-         <div fxFlex="99">
-           <strong class="strong">
-             {{tabLangue.titreConclu}}
-           </strong><br/>
+        </div>
+        <p></p>
+      </div>
+      <div><p></p></div>
+      <div *ngIf="Con===true" fxLayout="row" fxLayoutWrap>
+        <div fxFlex="99">
+          <strong class="strong">
+            {{tabLangue.titreConclu}}
+          </strong><br/>
 
-           <span class="strong2" *ngFor="let con of Conclusion ">
+          <span class="strong2" *ngFor="let con of Conclusion ">
 
             [{{ con.getdate() }}-{{con.getuserCreat()}}]<br/>
             {{ con.getdetail()}}<br/>
 
           </span>
-         </div>
-       </div>
-     </md-card>
-   </ion-navbar>
+        </div>
+      </div>
+    </div>
+  </ion-navbar>
 
 
 </ion-content>
