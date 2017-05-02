@@ -56,9 +56,10 @@ export class LangueService {
                 l = new Langue();
                 l.setlangue(result.rows.item(i).langue);
                 l.setnom(result.rows.item(i).nom);
-                l.setmatricule(result.rows.item(i).matricule);
+                l.setcodePin(result.rows.item(i).codePin);
                 l.setcodeClinique(result.rows.item(i).codeClinique);
                 l.setnomClinique(result.rows.item(i).nomClinique);
+                l.seturl(result.rows.item(i).url);
                 this.langue.push(l);
               }
               resolve(this.langue[0]);
@@ -85,12 +86,13 @@ export class LangueService {
           continue;
         }
         let langue = langues[key];
-        db.executeSql('insert into Langue (langue,nom,matricule,codeClinique,nomClinique) values (?,?,?,?,?)', [
+        db.executeSql('insert into Langue (langue,nom,codePin,codeClinique,nomClinique,url) values (?,?,?,?,?,?)', [
           langue.getlangue(),
           langue.getnom(),
-          langue.getmatricule(),
+          langue.getcodePin(),
           langue.getcodeClinique(),
-          langue.getnomClinique()
+          langue.getnomClinique(),
+          langue.geturl()
         ]);
       }
     }).catch(error => {

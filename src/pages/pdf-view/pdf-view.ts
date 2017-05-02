@@ -69,8 +69,8 @@ export class PdfViewPage {
         else {
           this.connection = true;
           this.pdfSrc = this.pdf;
-          this.retrieveImage(this.pdfSrc);
           this.historique(this.pass.getdossier(), fields[5], this.codeClinique);
+          this.retrieveImage(this.pdfSrc);
         }
       });
     });

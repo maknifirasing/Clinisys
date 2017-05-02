@@ -27,9 +27,9 @@ export class HomePage {
   url: string;
   langserv: any;
   langes: Array<Langue> = [];
-  pathimage=Variables.path;
+  pathimage = Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sqlite: SQLite) {
     this.codeClinique = this.navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
@@ -56,17 +56,17 @@ export class HomePage {
         if (xmlhttp.readyState == 4) {
           if (xmlhttp.status == 200) {
             try {
-
               this.xml = xmlhttp.responseXML;
               var x, user;
               x = this.xml.getElementsByTagName("return");
               user = new Users();
-              user.setmatricule(x[0].children[8].textContent);
+              user.setactif(x[0].children[0].textContent);
+              user.setcodePin(x[0].children[3].textContent);
               user.setpassWord(x[0].children[11].textContent);
               user.setuserName(x[0].children[12].textContent);
               user.setcodeClinique(this.codeClinique);
               this.users.push(user);
-              if (this.users.length > 0) {
+              if (this.users.length > 0 && user.getactif()==='1') {
                 this.userserv = new UserService(this.sqlite);
                 this.userserv.verifUser(this.codeClinique).then(res => {
                   if (res === false) {
@@ -78,7 +78,7 @@ export class HomePage {
                   var l = new Langue();
                   l.setlangue(this.langue);
                   l.setnom(user.getuserName());
-                  l.setmatricule(user.getmatricule());
+                  l.setcodePin(user.getcodePin());
                   l.setcodeClinique(this.codeClinique);
                   l.setnomClinique(this.nomClinique);
                   l.seturl(this.url);

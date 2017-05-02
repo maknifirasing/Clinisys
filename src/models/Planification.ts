@@ -1,9 +1,12 @@
 export class Planification {
   private _codeType: string;
   private _designation: string;
+  private _heureRealisation: string;
   private _date: string;
   private _heurePrise: string;
   private _num: string;
+  private _posologie: string;
+  private _quantite: string;
   private _seuilMax: string;
   private _seuilMin: string;
   private _type: string;
@@ -91,5 +94,29 @@ export class Planification {
 
   setpave(value: string) {
     this._pave = value;
+  }
+
+  getheureRealisation(): string {
+    return this._heureRealisation;
+  }
+
+  setheureRealisation(value: string) {
+    this._heureRealisation = value;
+  }
+
+  getposologie(): string {
+    return this._posologie;
+  }
+
+  setposologie(value: string) {
+    this._posologie = value;
+  }
+
+  getquantite(): string {
+    return this._quantite;
+  }
+
+  setquantite(value: string) {
+    this._quantite = value;
   }
 }

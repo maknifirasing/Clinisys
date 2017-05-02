@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {NavController} from "ionic-angular";
 
@@ -78,14 +78,14 @@ export class Variables {
     titrenvm2p: "كلمة المرور الجديدة",
     titreconfirmerm2p: " أكد الكلمة",
     titreconfirmerbtn: "تأكيد",
-    titreAutreCliniques:"عيادات أخرى",
-    titreDesignation:"أغراض",
-    titreValeurs:"قيم الأعداد",
-    titreconfirmation:"تأكيد",
-    titremessConf:"هل تريد الغاء",
-    titreoui:"نعم",
-    titreNon:"لا",
-    titreAnnuler:"الغاء"
+    titreAutreCliniques: "عيادات أخرى",
+    titreDesignation: "أغراض",
+    titreValeurs: "قيم الأعداد",
+    titreconfirmation: "تأكيد",
+    titremessConf: "هل تريد الغاء",
+    titreoui: "نعم",
+    titreNon: "لا",
+    titreAnnuler: "الغاء"
   }
 
   static francais: any = {
@@ -153,14 +153,14 @@ export class Variables {
     titrenvm2p: "Nouveau mot de passe",
     titreconfirmerm2p: "Confirmé Mot de passe",
     titreconfirmerbtn: "Confirmer",
-    titreAutreCliniques:"Autre Cliniques",
-    titreDesignation:"Designation",
-    titreValeurs:"Valeurs",
-    titreconfirmation:"Confirmation",
-    titremessConf:"Voulez vous annuler",
-    titreoui:"Oui",
-    titreNon:"Non",
-    titreAnnuler:"Annuler"
+    titreAutreCliniques: "Autre Cliniques",
+    titreDesignation: "Designation",
+    titreValeurs: "Valeurs",
+    titreconfirmation: "Confirmation",
+    titremessConf: "Voulez vous annuler",
+    titreoui: "Oui",
+    titreNon: "Non",
+    titreAnnuler: "Annuler"
   }
 
   static anglais: any = {
@@ -228,21 +228,20 @@ export class Variables {
     titrenvm2p: "New Password",
     titreconfirmerm2p: "Confirmed Password",
     titreconfirmerbtn: "To confirm",
-    titreAutreCliniques:"Other Clinics",
-    titreDesignation:"Designation",
-    titreValeurs:"Values",
-    titreconfirmation:"Confirmation",
-    titremessConf:"Want to cancel",
-    titreoui:"Yes",
-    titreNon:"No",
-    titreAnnuler:"Cancel"
+    titreAutreCliniques: "Other Clinics",
+    titreDesignation: "Designation",
+    titreValeurs: "Values",
+    titreconfirmation: "Confirmation",
+    titremessConf: "Want to cancel",
+    titreoui: "Yes",
+    titreNon: "No",
+    titreAnnuler: "Cancel"
   }
 
   static uRL = "";
   static path = "";
 
-  constructor(public http: Http, public navCtrl: NavController) {
-    Variables.uRL = "http://192.168.0.63:8084/";
+  constructor(public http: Http) {
   }
 
 
@@ -282,7 +281,7 @@ export class Variables {
       var xhr = new XMLHttpRequest();
       var file = url;
 
-      xhr.timeout = 200;
+      xhr.timeout = 1000;
       xhr.open('HEAD', file, true);
       xhr.send();
       xhr.addEventListener("readystatechange", processRequest, false);
@@ -304,25 +303,8 @@ export class Variables {
   }
 
 
-  public static auth() {
-    var url = 'http://192.168.0.5:8084/dmi-core/DossierSoinWSService?wsdl';
-    var xhr = new XMLHttpRequest();
-    xhr.timeout = 200;
-    xhr.open('HEAD', url, true, "adminWS", "pom");
-    xhr.send();
-    xhr.addEventListener("readystatechange", processRequest, false);
-
-    function processRequest(e) {
-      if (xhr.readyState == 4) {
-        if (xhr.status >= 200 && xhr.status < 304) {
-
-          alert("ok");
-        } else {
-
-          alert("no");
-        }
-      }
-    }
+  public static updateUrl(url) {
+  //  Variables.uRL = url.split('//')[0] + "//adminWS:pom@" + url.split('//')[1];
   }
 
 }

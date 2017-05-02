@@ -44,7 +44,7 @@ export class TabsPage {
   pass: Patient;
   pdf: string;
   dateFeuille: string;
-  static heureActuelle: number;
+  static heureActuelle: string;
   tabLangue: any;
   countPdfT: number;
   countPdf: number;
@@ -540,14 +540,14 @@ export class TabsPage {
     this.consigneserv.deleteConsignes(numDoss, codeClinique);
   }
 
-  GetHour() {
+  GetGetFullDate() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
       '<soapenv:Body>' +
-      '  <ser:GetHour/>' +
+      '  <ser:GetFullDate/>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
     xmlhttp.onreadystatechange = () => {
@@ -556,7 +556,7 @@ export class TabsPage {
           var xml = xmlhttp.responseXML;
           var x;
           x = xml.getElementsByTagName("return");
-          TabsPage.heureActuelle = Number(x[0].childNodes[0].nodeValue);
+          TabsPage.heureActuelle = x[0].childNodes[0].nodeValue;
         }
       }
     }
@@ -566,7 +566,7 @@ export class TabsPage {
   }
 
   update() {
-    this.GetHour();
+    this.GetGetFullDate();
 
     this.deleteAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
     this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);

@@ -114,14 +114,7 @@ export class DossierPage {
       if (res === false) {
         this.connection = false;
         this.historiqueOff(this.histd, this.pass.getdossier(), this.codeClinique);
-        this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
-        this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
-        this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
-        this.GetTraitementsOff(this.traitement, this.pass.getdossier(), this.dateFeuille, this.codeClinique);
-        this.GetEvenementByDossierOff(this.pass.getdossier(), this.codeClinique);
-        this.GetListRegimeOff(this.rigime, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
-        this.GetSigneCliniqueOff(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeTypeOf, this.codeClinique);
-
+        this.updateOff();
       }
       else {
         this.connection = true;
@@ -888,7 +881,6 @@ export class DossierPage {
   }
 
   historique(numDoss, codeClinique) {
-
     this.histserv = new HistDossierService(this.sqlite);
     this.histd = new HistDossier();
     var d = new Date();
@@ -922,6 +914,18 @@ export class DossierPage {
       DossierPage.hist = res.getdate();
     });
   }
+
+  updateOff(){
+    this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
+    this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
+    this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+    this.GetTraitementsOff(this.traitement, this.pass.getdossier(), this.dateFeuille, this.codeClinique);
+    this.GetEvenementByDossierOff(this.pass.getdossier(), this.codeClinique);
+    this.GetListRegimeOff(this.rigime, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+    this.GetSigneCliniqueOff(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeTypeOf, this.codeClinique);
+  }
+
+
 
   goToInfPage() {
     this.navCtrl.push(ClientDetailPage);

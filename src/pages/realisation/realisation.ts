@@ -35,10 +35,12 @@ export class RealisationPage {
   inputrange: number;
   plus = true;
   moins = true;
-  heure: number;
+  heure: any;
   clavier: boolean;
   pathimage = Variables.path;
-
+  p: number;
+  m: number;
+  d: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
@@ -46,14 +48,10 @@ export class RealisationPage {
     this.pass = TabsPage.tabLangue.pass;
     this.dateFeuille = TabsPage.tabLangue.dateFeuille;
     this.langue = TabsPage.tabLangue.langue;
-    this.heureActuelle = TabsPage.heureActuelle;
-    /*
-     this.user = "admin";
-     this.dateFeuille = "18/05/2016";
-     this.heureActuelle = "16";
-     this.getAllPlanification("16002649", this.dateFeuille, "REA", this.heureActuelle);
-     */
-    this.heure = Number(this.heureActuelle);
+    this.heureActuelle = new Date(TabsPage.heureActuelle);
+    this.p = Number(this.heureActuelle.getHours() + 1);
+    this.m = Number(this.heureActuelle.getHours() - 6);
+    this.heure = new Date(TabsPage.heureActuelle);
 
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
@@ -69,9 +67,7 @@ export class RealisationPage {
       }
     });
     this.histd = DossierPage.hist;
-
   }
-
 
   getAllPlanification(numDoss, dateFeuille, nature, heure) {
     this.clavier = true;
@@ -83,12 +79,12 @@ export class RealisationPage {
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
       '<soapenv:Body>' +
-      '<ser:getPlanificationNonRealise>' +
+      '<ser:getAllPlanification>' +
       '<numdoss>' + numDoss + '</numdoss>' +
       '<dateFeuille>' + dateFeuille + '</dateFeuille>' +
       '<nature>' + nature + '</nature>' +
       '<heure>' + heure + '</heure>' +
-      '</ser:getPlanificationNonRealise>' +
+      '</ser:getAllPlanification>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
     xmlhttp.onreadystatechange = () => {
@@ -97,29 +93,39 @@ export class RealisationPage {
           this.xml = xmlhttp.responseXML;
           var x, i, p, r;
           x = this.xml.getElementsByTagName("return");
-
           for (i = 0; i < x.length; i++) {
             p = new Planification();
             p.setcodeType(x[i].children[0].textContent);
             p.setdesignation(x[i].children[1].textContent);
-            p.getdate(x[i].children[2].children[0].textContent);
-            p.setheurePrise(x[i].children[2].children[1].textContent);
-            p.setnum(x[i].children[2].children[2].textContent);
-            p.setseuilMax(x[i].children[3].textContent);
-            p.setseuilMin(x[i].children[4].textContent);
-            p.settype(x[i].children[5].textContent);
+            p.setheureRealisation(x[i].children[2].textContent);
+            p.getdate(x[i].children[3].children[0].textContent);
+            p.setheurePrise(x[i].children[3].children[1].textContent);
+            p.setnum(x[i].children[3].children[2].textContent);
+            p.setposologie(x[i].children[4].textContent);
+            p.setquantite(x[i].children[5].textContent);
+            p.setseuilMax(x[i].children[6].textContent);
+            p.setseuilMin(x[i].children[7].textContent);
+            p.settype(x[i].children[8].textContent);
             p.setrang(i);
+            if (p.getdesignation().indexOf('@') > -1) {
+              p.setposologie(p.getdesignation().split('@')[1]);
+              p.setdesignation(p.getdesignation().split('@')[0]);
+            }
             if (p.getdesignation() === 'OXYGENE' || p.getdesignation() === 'Insuline') {
               p.setpave('text');
             } else {
-              //       p.setpave('number');
               p.setpave('text');
             }
             this.planification.push(p);
             r = new RealisationTest();
             r.setclavier("false");
-            r.setdisabled("false");
-            r.setvaleur("");
+            if (p.getquantite() !== "") {
+              r.setvaleur(p.getquantite());
+              r.setdisabled("true");
+            } else {
+              r.setvaleur("");
+              r.setdisabled("false");
+            }
             switch (p.getdesignation()) {
               case "T.A":
                 r.setkeyboard(2);
@@ -161,7 +167,7 @@ export class RealisationPage {
       '<ser:CreatePlusieursRealisation>' +
       '<numTr>' + traitsList + '</numTr>' +
       '<date_prise>' + this.dateFeuille + '</date_prise>' +
-      '<heure_prise>' + this.heure + '</heure_prise>' +
+      '<heure_prise>' + this.heure.getHours() + '</heure_prise>' +
       '<qnt>' + qtesList + '</qnt>' +
       '<user>' + this.user + '</user>' +
       '</ser:CreatePlusieursRealisation>' +
@@ -218,7 +224,7 @@ export class RealisationPage {
       '<ser:AnnulerRealisation>' +
       '<numTr>' + numTr + '</numTr>' +
       '<date>' + this.dateFeuille + '</date>' +
-      '<heure>' + this.heure + '</heure>' +
+      '<heure>' + this.heure.getHours() + '</heure>' +
       '<user>' + this.user + '</user>' +
       '<numDoss>' + this.pass.getdossier() + '</numDoss>' +
       '<codePosologie></codePosologie>' +
@@ -231,7 +237,6 @@ export class RealisationPage {
           this.xml = xmlhttp.responseXML;
           var x
           x = this.xml.getElementsByTagName("return");
-          console.log(x);
           this.planificationvalue[rang].setdisabled('false');
           this.planificationvalue[rang].setvaleur('');
         }
@@ -246,23 +251,36 @@ export class RealisationPage {
     this.navCtrl.push(ClientDetailPage);
   }
 
+  selectInput() {
+    var b = false;
+    var i = 0;
+    while (b === false || i < this.planificationvalue.length) {
+      if (this.planificationvalue[i].getdisabled() === 'false') {
+        b = true;
+        this.inputrange = i;
+        this.keyboar=this.planificationvalue[i].getkeyboard();
+      }
+      i++;
+    }
+  }
 
   keyboardShow(rang) {
-
     this.inputrange = rang;
     if (this.planificationvalue[rang].getdisabled() === 'false') {
-      this.clavier = true;
       this.keyboar = this.planificationvalue[rang].getkeyboard();
+      if (this.planificationvalue[rang].getclavier() === 'true') {
+        this.clavier = false;
+      }
+      else {
+        this.clavier = true;
+      }
     } else {
       this.keyboar = 0;
       this.clavier = false;
     }
-
-
   }
 
   luck() {
-    //  this.clavier = true;
     var val;
     if (this.langue === 'arabe') {
       val = (<HTMLInputElement>document.getElementById(this.inputrange + "inputt")).value + "";
@@ -274,6 +292,7 @@ export class RealisationPage {
       this.planificationvalue[this.inputrange].setvaleur(val);
       this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
       this.planificationvalue[this.inputrange].setdisabled('true');
+      this.selectInput();
     }
     this.planificationvalue[this.inputrange].setclavier('false');
     this.inputrange = -1;
@@ -304,6 +323,7 @@ export class RealisationPage {
               this.planificationvalue[this.inputrange].setclavier('false');
               this.clavier = false;
               this.inputrange = -1;
+              this.selectInput();
               break;
             case "R":
               this.keyboar = 0;
@@ -312,7 +332,7 @@ export class RealisationPage {
               this.planificationvalue[this.inputrange].setdisabled('true');
               this.planificationvalue[this.inputrange].setclavier('false');
               this.clavier = false;
-              this.inputrange = -1;
+              this.selectInput();
               break;
             case "//":
               this.keyboar = 0;
@@ -321,7 +341,7 @@ export class RealisationPage {
               this.planificationvalue[this.inputrange].setdisabled('true');
               this.planificationvalue[this.inputrange].setclavier('false');
               this.clavier = false;
-              this.inputrange = -1;
+              this.selectInput();
               break;
             case "OK":
               this.keyboar = 0;
@@ -329,7 +349,7 @@ export class RealisationPage {
               this.planificationvalue[this.inputrange].setdisabled('true');
               this.planificationvalue[this.inputrange].setclavier('false');
               this.clavier = false;
-              this.inputrange = -1;
+              this.selectInput();
               break;
             case "delete":
               if (this.planificationvalue[this.inputrange].getvaleur().length > 0) {
@@ -342,34 +362,36 @@ export class RealisationPage {
           }
         } else if (this.keyboar > 2) {
           this.planificationvalue[this.inputrange].setvaleur(value);
-          this.inputrange = -1;
           this.keyboar = 0;
           this.clavier = false;
           this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
           this.planificationvalue[this.inputrange].setdisabled('true');
           this.planificationvalue[this.inputrange].setclavier('false');
+          this.selectInput();
         }
       }
     }
   }
 
   addHeure() {
-    this.heure++;
-    if (this.heure === Number(this.heureActuelle) + 1) {
+    var x = this.heure.getHours();
+    this.heure.setHours(x + 1);
+    if (Number(this.heure.getHours()) === this.p) {
       this.plus = false;
     }
-    if (this.heure > Number(this.heureActuelle) - 6) {
+    if (Number(this.heure.getHours()) !== this.m) {
       this.moins = true;
     }
     this.update();
   }
 
   removeHeure() {
-    this.heure--;
-    if (this.heure === Number(this.heureActuelle) - 6) {
+    var x = this.heure.getHours();
+    this.heure.setHours(x - 1);
+    if (Number(this.heure.getHours()) === this.m) {
       this.moins = false;
     }
-    if (this.heure < Number(this.heureActuelle) + 1) {
+    if (Number(this.heure.getHours()) !== this.p) {
       this.plus = true;
     }
     this.update();
@@ -380,6 +402,6 @@ export class RealisationPage {
     this.planification = [];
     this.planificationvalue.length = 0;
     this.planificationvalue = [];
-    this.getAllPlanification(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.heure);
+    this.getAllPlanification(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.heure.getHours());
   }
 }

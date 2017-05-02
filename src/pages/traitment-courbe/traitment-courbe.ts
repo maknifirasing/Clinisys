@@ -38,11 +38,12 @@ export class TraitmentCourbe {
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
         this.connection = false;
-        this.getChartSurveillanceOff(this.traitcourbe, this.pass.getdossier(), this.codeClinique);
         this.historiqueOff(this.histC, this.pass.getdossier(), this.codeClinique);
+        this.getChartSurveillanceOff(this.traitcourbe, this.pass.getdossier(), this.codeClinique);
       }
       else {
         this.connection = true;
+        this.historique(this.pass.getdossier(), this.codeClinique);
         this.update();
       }
     });
@@ -270,7 +271,6 @@ export class TraitmentCourbe {
   update() {
     this.DeletegetChartSurveillance(this.pass.getdossier(), this.codeClinique);
     this.getChartSurveillance(this.pass.getdossier(), this.codeClinique);
-    this.historique(this.pass.getdossier(), this.codeClinique);
   }
 
 }

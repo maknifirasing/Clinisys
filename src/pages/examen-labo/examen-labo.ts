@@ -68,8 +68,6 @@ export class ExamenLaboPage {
             var x;
             x = xml.getElementsByTagName("return");
             this.pdf = Variables.uRL + "dmi-web/LaboPDF/" + x[0].childNodes[0].nodeValue.split("1.")[0] + ".pdf";
-            console.log("p   " + x[0].childNodes[0].nodeValue);
-            console.log("pdf   " + this.pdf);
             this.navCtrl.push(PdfViewPage, {pdf: this.pdf});
           } catch (Error) {
           }

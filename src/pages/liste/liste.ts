@@ -42,29 +42,28 @@ export class ListePage {
   langue: any;
   private langserv: any;
   langes: Array<Langue> = [];
-  pathimage=Variables.path;
+  pathimage = Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public menuCtrl: MenuController, public platform: Platform,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, private sqlite: SQLite) {
     this.dtFeuille = new DateFeuille();
     this.codeClinique = navParams.get("codeClinique");
     this.nomClinique = navParams.get("nomClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
-      Variables.checconnection().then(connexion => {
-        if (connexion === false) {
-          this.connection = false;
-          this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
-          this.listeOff(this.patient, "admin", "", "all", this.codeClinique);
-          this.DateFeuilleOff(this.datefeuille, this.codeClinique);
-        }
-        else {
-          this.connection = true;
-          this.historique("admin", "", "all", this.codeClinique);
-          this.liste("admin", "", "all", this.codeClinique);
-          this.DateFeuille(this.codeClinique);
-        }
-        this.patientliste = this.patient;
-      });
+
+    Variables.checconnection().then(connexion => {
+      if (connexion === false) {
+        this.connection = false;
+        this.historiqueOff(this.hist, "admin", "", "all", this.codeClinique);
+        this.updateOff();
+      }
+      else {
+        this.connection = true;
+        this.historique("admin", "", "all", this.codeClinique);
+        this.update();
+      }
+      this.patientliste = this.patient;
+    });
 
   }
 
@@ -263,7 +262,8 @@ export class ListePage {
           //   alert('Async operation has ended');
           refresher.complete();
         }, 2000);
-      }});
+      }
+    });
   }
 
   historique(user, searchText, etage, codeClinique) {
@@ -285,9 +285,15 @@ export class ListePage {
     catch (Error) {
       this.histserv.getHistPatients(this.hist, user, searchText, etage, codeClinique).then(res => {
         this.histl = res.getdate();
+
       });
     }
 
+  }
+
+  update() {
+    this.liste("admin", "", "all", this.codeClinique);
+    this.DateFeuille(this.codeClinique);
   }
 
   historiqueOff(hist, user, searchText, etage, codeClinique) {
@@ -297,11 +303,15 @@ export class ListePage {
     });
   }
 
+  updateOff() {
+    this.listeOff(this.patient, "admin", "", "all", this.codeClinique);
+    this.DateFeuilleOff(this.datefeuille, this.codeClinique);
+  }
+
   deconnexion() {
     this.userserv = new UserService(this.sqlite);
-    this.userserv.deleteUsers(this.codeClinique).then(res=>{
-      if(res===true)
-      {
+    this.userserv.deleteUsers(this.codeClinique).then(res => {
+      if (res === true) {
         this.navCtrl.setRoot(ListeCliniquePage, {tabLangue: this.tabLangue, langue: this.langue});
       }
     });
@@ -311,6 +321,7 @@ export class ListePage {
   changerlangue() {
     this.navCtrl.setRoot(LanguesPage);
   }
+
   changerPassword() {
     this.langserv = new LangueService(this.sqlite);
     this.langserv.getLangues(this.langes).then(lg => {

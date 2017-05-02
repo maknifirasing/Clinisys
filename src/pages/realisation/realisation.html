@@ -68,7 +68,7 @@ line-height: 40px;"> < </span>
     <div class="button2">
       <span style="text-align: center;
 vertical-align: middle;
-line-height: 40px;color:white;font-weight: bold;">{{heure}}س</span>
+line-height: 40px;color:white;font-weight: bold;">{{heure.getHours()}}س</span>
     </div>&nbsp;&nbsp;
     <div class="button" *ngIf="moins===true" (click)="removeHeure()">
       <span style="text-align: center;
@@ -86,7 +86,7 @@ line-height: 40px;"> < </span>
     <div class="button2">
       <span style="text-align: center;
 vertical-align: middle;
-line-height: 40px;color:white;font-weight: bold;">{{heure}}H</span>
+line-height: 40px;color:white;font-weight: bold;">{{heure.getHours()}}H</span>
     </div>&nbsp;&nbsp;
     <div class="button" *ngIf="plus===true" (click)="addHeure()">
       <span style="text-align: center;

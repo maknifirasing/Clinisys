@@ -10,13 +10,13 @@ import {SigneCourbeTAService} from "../../services/SigneCourbeTAService";
 import {SigneCourbeTempService} from "../../services/SigneCourbeTempService";
 import {HistSigneCourbeService} from "../../services/HistSigneCourbeService";
 import {SQLite} from "@ionic-native/sqlite";
-import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import {ScreenOrientation} from '@ionic-native/screen-orientation';
 import {TabsPage} from "../tabs/tabs";
 
 @Component({
   selector: 'page-signe-courbe',
   templateUrl: 'signe-courbe.html',
-  providers: [ScreenOrientation,Variables]
+  providers: [ScreenOrientation, Variables]
 })
 
 export class SigneCourbePage {
@@ -40,9 +40,9 @@ export class SigneCourbePage {
   langue: any;
   tabBarElement: any;
   chartData: any;
-  pathimage=Variables.path;
+  pathimage = Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite,private screenOrientation: ScreenOrientation) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sqlite: SQLite, private screenOrientation: ScreenOrientation) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.codeClinique = TabsPage.tabLangue.codeClinique;
     this.tabLangue = TabsPage.tabLangue.tabLangue;
@@ -51,11 +51,12 @@ export class SigneCourbePage {
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
         this.connection = false;
-        this.getChartSurveillanceOff(this.pass.getdossier(), this.codeClinique);
         this.historiqueOff(this.histC, this.pass.getdossier(), this.codeClinique);
+        this.getChartSurveillanceOff(this.pass.getdossier(), this.codeClinique);
       }
       else {
         this.connection = true;
+        this.historique(this.pass.getdossier(), this.codeClinique);
         this.update();
       }
     });
@@ -282,7 +283,7 @@ export class SigneCourbePage {
       },
       xAxis: {
         categories: labelcourbePouls,
-        min: labelcourbePouls.length-3,
+        min: labelcourbePouls.length - 3,
         scrollbar: {
           enabled: true,
           barBorderRadius: 2,
@@ -381,6 +382,5 @@ export class SigneCourbePage {
   update() {
     this.DeletegetChartSurveillance(this.pass.getdossier(), this.codeClinique);
     this.getChartSurveillance(this.pass.getdossier(), this.codeClinique);
-    this.historique(this.pass.getdossier(), this.codeClinique);
   }
 }
