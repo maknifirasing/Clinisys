@@ -239,6 +239,7 @@ export class RealisationPage {
           x = this.xml.getElementsByTagName("return");
           this.planificationvalue[rang].setdisabled('false');
           this.planificationvalue[rang].setvaleur('');
+          this.selectInput();
         }
       }
     }
