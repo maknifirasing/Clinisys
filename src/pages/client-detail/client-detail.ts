@@ -6,6 +6,8 @@ import {Medecin} from "../../models/Medecin";
 import {ClientService} from "../../services/ClientService";
 import {MedecinService} from "../../services/MedecinService";
 import {SQLite} from "@ionic-native/sqlite";
+import {TabsPage} from "../tabs/tabs";
+import {DossierPage} from "../dossier/dossier";
 
 @Component({
   selector: 'page-client-detail',
@@ -29,14 +31,16 @@ export class ClientDetailPage {
   medecinserv: any;
   patient: any;
   connection: boolean;
+  pathimage=Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
-    this.patient = navParams.get("patient");
-    this.motif = navParams.get("motif");
-    this.tabLangue = navParams.get("tabLangue");
-    this.langue = navParams.get("langue");
-    this.codeClinique = navParams.get("codeClinique");
+    this.codeClinique = TabsPage.tabLangue.codeClinique;
+    this.tabLangue = TabsPage.tabLangue.tabLangue;
+    this.langue = TabsPage.tabLangue.langue;
+    this.patient = TabsPage.tabLangue.pass;
+    this.motif = DossierPage.motifhh;
+
     Variables.checconnection().then(res => {
       if (res === false) {
         this.connection = false;
@@ -82,17 +86,15 @@ export class ClientDetailPage {
           this.client.setadrCli(x[0].children[0].textContent);
           d = (x[0].children[3].textContent).substr(0, 9);
           this.client.setdatNai(d);
-          this.client.setlibNat(x[0].children[74].children[1].textContent);
-          this.client.setnumTel(x[0].children[85].textContent);
-          this.client.setetage(x[0].children[83].children[0].children[3].textContent);
-          this.client.setnumCha(x[0].children[83].children[2].textContent);
-          this.client.setnumdoss(x[0].children[6].children[8].textContent);
+          this.client.setlibNat(x[0].children[27].children[1].textContent);
+          this.client.setnumTel(x[0].children[38].textContent);
+          this.client.setetage(x[0].children[36].children[0].children[3].textContent);
+          this.client.setnumCha(x[0].children[36].children[2].textContent);
+          this.client.setnumdoss(x[0].children[37].textContent);
           this.client.setidentifiant(x[0].children[18].textContent);
           d2 = (x[0].children[4].textContent).substr(0, 9);
           this.client.setdateArr(d2);
           this.client.setcodeClinique(this.codeClinique);
-          console.log(x[0].children[74].children[1].textContent);
-          console.log(x[0].children[85].textContent);
           this.clientserv = new ClientService(this.sqlite);
           this.clientserv.verifClient(this.client, numDoss, this.codeClinique).then(res => {
             if (res === false) {
@@ -136,9 +138,9 @@ export class ClientDetailPage {
           var medecin;
           for (i = 0; i < x.length; i++) {
             medecin = new Medecin();
-            medecin.setcodMed(x[i].children[1].children[0].textContent);
-            medecin.setnomMed(x[i].children[2].textContent);
-            medecin.setdesignationSpecialite(x[i].children[0].textContent);
+            medecin.setcodMed(x[i].children[1].children[3].textContent);
+            medecin.setnomMed(x[i].children[1].children[4].textContent);
+            medecin.setdesignationSpecialite(x[i].children[1].children[5].children[1].textContent);
             medecin.setcodeClinique(this.codeClinique);
             this.medecinList.push(medecin);
           }

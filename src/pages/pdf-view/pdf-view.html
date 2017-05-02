@@ -1,22 +1,21 @@
-<ion-header class="headerListe">
-  <md-card class="md-cardListe">
-    <div fxLayout="row" fxLayoutWrap *ngIf="langue==='arabe'">
+<ion-header class="headerListe" >
 
-      <div fxFlex="86" style="margin-top: 10px;direction:rtl;" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histp}}</div>
-      <div fxFlex="86" style="margin-top: 10px;direction:rtl;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histp}}</div>
-      <div fxFlex="13" style="margin-top: 10px;direction:rtl;" *ngIf="connection===true"><img src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>
-      <div fxFlex="13" style="margin-top: 10px;direction:rtl;" *ngIf="connection===false"><img src="/android_asset/www/assets/img/red.png" width="30" height="30"></div>
-    </div>
-    <div fxLayout="row" fxLayoutWrap *ngIf="langue==='francais' || langue==='anglais'">
-      <div fxFlex="13" style="margin-top: 10px;" *ngIf="connection===true"><img src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>
-      <div fxFlex="13" style="margin-top: 10px;" *ngIf="connection===false"><img src="/android_asset/www/assets/img/red.png" width="30" height="30"></div>
-      <div fxFlex="86" style="margin-top: 10px;" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histp}}</div>
-      <div fxFlex="86" style="margin-top: 10px;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histp}}</div>
+      <div fxLayout="row" fxLayoutAlign="start start" class="md-cardListe" *ngIf="langue==='francais' || langue==='anglais'">
+        <div margin-top="-4" *ngIf="connection===true"> <ion-avatar><img src="{{pathimage}}/green.png" width="30" height="30"></ion-avatar></div>&nbsp;&nbsp;
+        <div margin-top="-4" *ngIf="connection===false"> <ion-avatar><img src="{{pathimage}}/red.png" width="30" height="30"></ion-avatar></div>&nbsp;&nbsp;
+        <div margin-top="-4" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histp}}</div>&nbsp;&nbsp;
+        <div margin-top="-4" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histp}}</div>&nbsp;&nbsp;
 
+      </div>
 
-    </div>
+      <div fxLayout="row" fxLayoutAlign="end start" class="md-cardListe" *ngIf="langue==='arabe'">
+        <div margin-top="-4" *ngIf="connection===true"  dir="rtl"><strong>{{tabLangue.titreEnligne}} </strong>{{histp}}</div>&nbsp;&nbsp;
+        <div margin-top="-4" *ngIf="connection===false" dir="rtl"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histp}}</div>&nbsp;&nbsp;
+        <div margin-top="-4" *ngIf="connection===true" > <ion-avatar><img src="{{pathimage}}/green.png" width="30" height="30"></ion-avatar></div>&nbsp;&nbsp;
+        <div margin-top="-4" *ngIf="connection===false"> <ion-avatar><img src="{{pathimage}}/red.png" width="30" height="30"></ion-avatar></div>&nbsp;&nbsp;
 
-  </md-card>
+      </div>
+
 
 
 </ion-header>

@@ -1,18 +1,28 @@
 export class Users {
-  private _matricule: any;
+  private _codePin: any;
+  private _actif: any;
   private _passWord: string;
   private _userName: string;
-  private _codeClinique:string;
+  private _codeClinique: string;
 
   constructor() {
   }
 
-  getmatricule(): any {
-    return this._matricule;
+
+  getcodePin(): any {
+    return this._codePin;
   }
 
-  setmatricule(value: any) {
-    this._matricule = value;
+  setcodePin(value: any) {
+    this._codePin = value;
+  }
+
+  getactif(): any {
+    return this._actif;
+  }
+
+  setactif(value: any) {
+    this._actif = value;
   }
 
   getpassWord(): string {

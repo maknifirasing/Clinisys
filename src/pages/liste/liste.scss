@@ -1,12 +1,11 @@
 .windows, .android, .ios, .md {
   page-liste {
-    div#container{background:#ff0;width:800px;padding:5px;margin-right:-50px;}
-    div#a{background:#f00;float:left;width:150px;}
-    div#b{background:#0f0;margin-left:160px;direction:rtl;}
-    .headerListe{
-      height: 45px;
+
+    .headerListe {
+      height: 50px;
       color: white;
     }
+
     .md-cardListe {
       margin-top: 0px;
       padding-top: 0px;
@@ -14,205 +13,55 @@
       height: 50px;
     }
 
-    .md-card-subtitleListe{
-      //  margin-left: -5px;
-      margin-top: 10px;
-    }
-    .menuImg{
-      width:30px;
-      height:30px;
+    .menuImg {
+      width: 30px;
+      height: 30px;
       margin-top: 10px;
       margin-left: 20px;
     }
-    .menuImgAr{
-      width:30px;
-      height:30px;
-      margin-top: 10px;
-      margin-left: -20px;
 
-      float: left;
-    }
     .divFRANG {
       background-color: whitesmoke;
     }
+
     .divAr {
       background-color: whitesmoke;
       direction: rtl;
     }
 
-    .contentMenu{
+    .contentMenu {
       background-color: whitesmoke;
     }
-    .headerTitleMenu{
+
+    .headerTitleMenu {
       text-align: center;
-      color:whitesmoke;
+      color: whitesmoke;
     }
-    .headerBackgroundMenu{
+
+    .headerBackgroundMenu {
       background-image: url('/android_asset/www/assets/img/bagroundMenu.jpg');
       opacity: 0.6;
     }
 
-
-
-
-
     .ion-navbar {
       height: 45px;
     }
-    ion-scroll {
-      white-space: nowrap;
-      height: 100%;
-    }
-    .md-icon-button{
-      float: right;
-      background-color: #0277bd;
-    }
-    .md-card{
-      background-color:#0277bd;
-      color:white;
-    }
-    .p{
-      margin-top:5px;
-      line-height:5px;
-      color: #0f7ec0;
-    }
-    .p2{
-      margin-top:5px;
-      line-height:5px;
-    }
-    .list{
-      padding-left:0px;
-      width:70px;
-      height:70px;
+
+    .p2 {
+      margin-top: 5px;
+      line-height: 5px;
     }
 
-    .md-icon-buttonArr{
-      float: left;
-      background-color: #0277bd;
+    .list {
+      padding-left: 0px;
+      width: 70px;
+      height: 70px;
     }
-    .firstArr {
-      width: 90px;
-      float:right; /* add this */
-     //  border: 1px solid red;
-    }
-    .first {
-      width: 90px;
-      float:left; /* add this */
-     // border: 1px solid red;
-    }
-    .second {
-      width: 200px;
-     // border: 1px solid green;
-      overflow: hidden; /* if you don't want #second to wrap below #first */
-    }
-    .secondArr {
-      width: 200px;
 
-   //   border: 1px solid green;
-      overflow: hidden; /* if you don't want #second to wrap below #first */
-    }
-    #wrap:after {
-      display: block;
-      height: 0px;
-      clear: both;
-      float: none;
-    }
-    #wrap div {
-      float: left;
-      word-break: break-all;
-    }
-    .one {
-      width: 40%;
-      // background-color: red;
-      direction: ltr;
-      margin-top: 6px;
-    }
-    .oneFRANG {
-      width: 10%;
-      // background-color: red;
-
-      //margin-top: 10px;
-    }
-    .threeFRANG {
-      width: 45%;
-      //  background-color: blue;
-      direction: rtl;
-    }
-    .two {
-      width: 45%;
-      color: white;
-      // background-color: yellow;
-    }
-    .three {
-      width: 15%;
-      //  background-color: blue;
-
-    }
-    .bar-header {
-      height: 10px !important; /*just an example*/
-    }
-    .ion-navbar{
-      height: 10px !important;
-    //  margin:5px;
-
-
-    }
-    .search{
+    .search {
       margin-top: 0;
       padding-top: 0;
     }
-    #wrap2:after {
-      display: block;
-      height: 0px;
-      clear: both;
-      float: none;
-    }
-    #wrap2 div {
-      float: left;
-      word-break: break-all;
-    }
-
-    .dropbtn {
-      background-color: #4CAF50;
-      color: white;
-      padding: 16px;
-      font-size: 16px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      right: 0;
-      background-color: #f9f9f9;
-      min-width: 160px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 1;
-    }
-
-    .dropdown-content a {
-      color: black;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-    }
-
-    .dropdown-content a:hover {background-color: #f1f1f1}
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    .dropdown:hover .dropbtn {
-      background-color: #3e8e41;
-    }
-
   }
 
 }

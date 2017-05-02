@@ -16,6 +16,7 @@ import {Database} from "../providers/database";
   templateUrl: 'app.html',
   providers: [Database]
 })
+
 export class MyApp {
   rootPage: any;
   @ViewChild(Nav) nav: Nav;
@@ -33,6 +34,8 @@ export class MyApp {
     this.pages = [
       {title: 'Langues', component: LanguesPage}
     ];
+    Variables.uRL = "http://adminWS:pom@37.59.230.40:8084/";
+
     platform.ready().then(() => {
 
       this.userserv = new UserService(this.sqlite);
@@ -56,7 +59,7 @@ export class MyApp {
                 else if (this.langue === "anglais") {
                   this.tabLangue = Variables.anglais;
                 }
-
+                Variables.updateUrl(lang.geturl());
                 this.nav.setRoot(ListePage, {
                   tabLangue: this.tabLangue,
                   langue: this.langue,
@@ -71,7 +74,17 @@ export class MyApp {
         }
       });
 
-      //    this.nav.setRoot(TryPage);
+      //       this.nav.setRoot(TryPage);
+
+      if ((!platform.is('cordova')) || (platform.is('ios')) || (platform.is('android'))) {
+        Variables.path = './assets/img';
+      }
+      else {
+        // exit otherwise, but you could add further types here e.g. Windows
+        Variables.path = '../../assets/img';
+      }
+
+
       statusBar.styleDefault();
       setTimeout(() => {
         splashScreen.hide();

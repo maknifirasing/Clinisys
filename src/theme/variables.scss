@@ -3,7 +3,7 @@
 $font-path: "../assets/fonts";
 
 @import "ionic.globals";
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+//@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 // Shared Variables
 // --------------------------------------------------
@@ -33,7 +33,7 @@ $colors: (
 );
 $tabs-md-tab-icon-size:3.8rem ;
 $badge-md-background-color:color($colors,danger);
-
+$modal-inset-height-large:100px;
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here

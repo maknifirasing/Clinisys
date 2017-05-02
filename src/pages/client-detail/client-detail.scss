@@ -7,7 +7,7 @@ page-client-detail {
     font-weight: bold;
   }
   .headerBackground{
-    background-image: url('../../assets/img/profil.jpg');
+    background-image: url('{{pathimage}}/profil.jpg');
     opacity: 3.0;
     height: 100px;
   }
@@ -20,7 +20,7 @@ page-client-detail {
     width:50px;
     height:50px;
     margin-top: -40px;
-    background-image: url('../../assets/img/profil.jpg');
+    background-image: url('{{pathimage}}/profil.jpg');
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -30,7 +30,7 @@ page-client-detail {
     margin-left: auto;
     margin-right: auto;
     margin-top: 15px;
-    background-image: url('../../assets/img/profil.jpg');
+    background-image: url('{{pathimage}}/profil.jpg');
     height:50px;
     width: 50px;
     overflow:hidden;
@@ -44,7 +44,7 @@ page-client-detail {
     margin-left: auto;
     margin-right: auto;
     margin-top: -61px;
-    background-image: url('../../assets/img/profil.jpg');
+    background-image: url('{{pathimage}}/profil.jpg');
     height:50px;
     width: 50px;
     overflow:hidden;
@@ -73,7 +73,7 @@ page-client-detail {
     direction: rtl;
   }
   .headerBackgroundMenu{
-    background-image: url('../../assets/img/bagroundMenu.jpg');
+    background-image: url('{{pathimage}}/bagroundMenu.jpg');
     opacity: 0.6;
   }
   .headerTitleMenu{

@@ -27,6 +27,7 @@ export class ModifPassPage {
   langserv: any;
   langes: Array<Langue> = [];
   user: Users;
+  pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,private sqlite: SQLite) {
     this.codeClinique = this.navParams.get("codeClinique");
@@ -63,7 +64,7 @@ export class ModifPassPage {
                 var x, user;
                 x = this.xml.getElementsByTagName("return");
                 user = new Users();
-                user.setmatricule(this.user.getmatricule());
+                user.setcodePin(this.user.getcodePin());
                 user.setpassWord(newpass);
                 user.setuserName(this.user.getuserName());
                 user.setcodeClinique(this.codeClinique);
@@ -77,7 +78,7 @@ export class ModifPassPage {
                     this.langserv = new LangueService(this.sqlite);
                     var l = new Langue();
                     l.setlangue(this.langue);
-                    l.setmatricule(user.getmatricule());
+                    l.setcodePin(user.getcodePin());
                     l.setcodeClinique(this.codeClinique);
                     l.setnomClinique(this.nomClinique);
                     this.langes.push(l);

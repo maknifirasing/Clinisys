@@ -1,7 +1,7 @@
 export class Langue {
   private _langue: string;
   private _nom: string;
-  private _matricule: string;
+  private _codePin: string;
   private _codeClinique: string;
   private _nomClinique: string;
   private _url: string;
@@ -25,12 +25,12 @@ export class Langue {
     this._langue = value;
   }
 
-  getmatricule(): string {
-    return this._matricule;
+  getcodePin(): string {
+    return this._codePin;
   }
 
-  setmatricule(value: string) {
-    this._matricule = value;
+  setcodePin(value: string) {
+    this._codePin = value;
   }
 
   getcodeClinique(): string {

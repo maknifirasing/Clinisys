@@ -10,12 +10,15 @@ import {SigneCourbeTAService} from "../../services/SigneCourbeTAService";
 import {SigneCourbeTempService} from "../../services/SigneCourbeTempService";
 import {HistSigneCourbeService} from "../../services/HistSigneCourbeService";
 import {SQLite} from "@ionic-native/sqlite";
+import {ScreenOrientation} from '@ionic-native/screen-orientation';
+import {TabsPage} from "../tabs/tabs";
 
 @Component({
   selector: 'page-signe-courbe',
   templateUrl: 'signe-courbe.html',
-  providers: [Variables]
+  providers: [ScreenOrientation, Variables]
 })
+
 export class SigneCourbePage {
   codeClinique: any;
   tabLangue: any;
@@ -37,22 +40,23 @@ export class SigneCourbePage {
   langue: any;
   tabBarElement: any;
   chartData: any;
+  pathimage = Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sqlite: SQLite, private screenOrientation: ScreenOrientation) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
-
-    this.codeClinique = navParams.get("codeClinique");
-    this.tabLangue = navParams.get("tabLangue");
-    this.pass = navParams.get("pass");
-    this.langue = navParams.get("langue");
+    this.codeClinique = TabsPage.tabLangue.codeClinique;
+    this.tabLangue = TabsPage.tabLangue.tabLangue;
+    this.pass = TabsPage.tabLangue.pass;
+    this.langue = TabsPage.tabLangue.langue;
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
         this.connection = false;
-        this.getChartSurveillanceOff(this.pass.getdossier(), this.codeClinique);
         this.historiqueOff(this.histC, this.pass.getdossier(), this.codeClinique);
+        this.getChartSurveillanceOff(this.pass.getdossier(), this.codeClinique);
       }
       else {
         this.connection = true;
+        this.historique(this.pass.getdossier(), this.codeClinique);
         this.update();
       }
     });
@@ -61,10 +65,12 @@ export class SigneCourbePage {
 
   ionViewDidLoad() {
     this.tabBarElement.style.display = 'none';
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
   }
 
   ionViewWillLeave() {
     this.tabBarElement.style.display = 'flex';
+    this.screenOrientation.unlock();
   }
 
   getChartSurveillance(numdoss, codeClinique) {
@@ -277,7 +283,7 @@ export class SigneCourbePage {
       },
       xAxis: {
         categories: labelcourbePouls,
-        min: labelcourbePouls.length-3,
+        min: labelcourbePouls.length - 3,
         scrollbar: {
           enabled: true,
           barBorderRadius: 2,
@@ -376,6 +382,5 @@ export class SigneCourbePage {
   update() {
     this.DeletegetChartSurveillance(this.pass.getdossier(), this.codeClinique);
     this.getChartSurveillance(this.pass.getdossier(), this.codeClinique);
-    this.historique(this.pass.getdossier(), this.codeClinique);
   }
 }

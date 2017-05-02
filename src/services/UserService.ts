@@ -79,7 +79,7 @@ export class UserService {
             var user;
             for (var i = 0; i < result.rows.length; i++) {
               user = new Users();
-              user.setmatricule(result.rows.item(i).matricule);
+              user.setcodePin(result.rows.item(i).codePin);
               user.setpassWord(result.rows.item(i).passWord);
               user.setuserName(result.rows.item(i).userName);
               user.setcodeClinique(result.rows.item(i).codeClinique);
@@ -108,8 +108,8 @@ export class UserService {
           continue;
         }
         let user = users[key];
-        db.executeSql('insert into Users (matricule ,passWord ,userName ,codeClinique) values (?,?,?,?)', [
-          user.getmatricule(),
+        db.executeSql('insert into Users (codePin,passWord ,userName ,codeClinique) values (?,?,?,?)', [
+          user.getcodePin(),
           user.getpassWord(),
           user.getuserName(),
           user.getcodeClinique()

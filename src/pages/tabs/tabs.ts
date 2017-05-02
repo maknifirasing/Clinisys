@@ -1,6 +1,6 @@
 import {Component, Injectable} from '@angular/core';
 import {DossierPage} from "../dossier/dossier";
-import {NavParams, NavController, Platform} from 'ionic-angular';
+import {NavParams, NavController, Platform,ModalController} from 'ionic-angular';
 import {ExamenRadioPage} from "../examen-radio/examen-radio";
 import {ListPreanesthesiePage} from "../list-preanesthesie/list-preanesthesie";
 import {ExamenLaboPage} from "../examen-labo/examen-labo";
@@ -24,6 +24,7 @@ import {ConsigneService} from "../../services/ConsigneService";
 import {tabBadgeConsigneService} from "../../services/tabBadgeConsigneService";
 import {RealisationPage} from "../realisation/realisation";
 import {SQLite} from "@ionic-native/sqlite";
+import {MenuPage} from "../menu/menu";
 
 @Component({
   selector: 'page-tabs',
@@ -43,7 +44,7 @@ export class TabsPage {
   pass: Patient;
   pdf: string;
   dateFeuille: string;
-  heureActuelle: any;
+  static heureActuelle: string;
   tabLangue: any;
   countPdfT: number;
   countPdf: number;
@@ -77,8 +78,10 @@ export class TabsPage {
   private consigne: Array<Consigne> = [];
   private coountConsigneT: number;
   private countConsigneserv: any;
+  pathimage=Variables.path;
+  static  tabLangue:any;
 
-  constructor(public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {
+  constructor(public navParams: NavParams, private Url: Variables, public platform: Platform,public modalCtrl: ModalController, private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("mypatient");
     this.tabLangue = navParams.get("tabLangue");
@@ -90,10 +93,9 @@ export class TabsPage {
     this.coountListPreanesthesie = 0;
     this.countPdfT = 0;
     this.countPdf = 0;
-    this.tabLangue = {
-      pass: navParams.get("mypatient"),
+    TabsPage.tabLangue = {
+      pass: this.pass,
       dateFeuille: navParams.get("dateFeuille"),
-      heureActuelle:this.heureActuelle,
       Labost: this.LabosT,
       Labosf: this.LabosF,
       ListeP: this.ListeP,
@@ -103,7 +105,8 @@ export class TabsPage {
       langue: this.langue,
       tabLangue: this.tabLangue, codeClinique: this.codeClinique,
       typeconsigne: "all",
-      etatconsigne: "all"
+      etatconsigne: "all",
+      heureActuelle: TabsPage.heureActuelle
     };
 
     platform.ready().then(() => {
@@ -463,7 +466,7 @@ export class TabsPage {
         if (xmlhttp.status == 200) {
           var xml;
           xml = xmlhttp.responseXML;
-          var x, i,c;
+          var x, i, c;
           x = xml.getElementsByTagName("return");
           for (i = 0; i < x.length; i++) {
             c = new Consigne();
@@ -537,14 +540,14 @@ export class TabsPage {
     this.consigneserv.deleteConsignes(numDoss, codeClinique);
   }
 
-  GetHour() {
+  GetGetFullDate() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
       '<soapenv:Body>' +
-      '  <ser:GetHour/>' +
+      '  <ser:GetFullDate/>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
     xmlhttp.onreadystatechange = () => {
@@ -553,7 +556,7 @@ export class TabsPage {
           var xml = xmlhttp.responseXML;
           var x;
           x = xml.getElementsByTagName("return");
-          this.heureActuelle = x[0].childNodes[0].nodeValue;
+          TabsPage.heureActuelle = x[0].childNodes[0].nodeValue;
         }
       }
     }
@@ -563,7 +566,7 @@ export class TabsPage {
   }
 
   update() {
-    this.GetHour();
+    this.GetGetFullDate();
 
     this.deleteAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
     this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
@@ -577,4 +580,5 @@ export class TabsPage {
     this.deletePlanificationTacheInfirmierByNumDossAndType(this.pass.getdossier(), "all", "all", this.codeClinique)
     this.getPlanificationTacheInfirmierByNumDossAndType(this.pass.getdossier(), "all", "all", this.codeClinique);
   }
+
 }

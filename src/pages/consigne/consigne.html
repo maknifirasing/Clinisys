@@ -1,72 +1,72 @@
-<ion-header style="height: 95px;color: white">
-  <div fxLayout="row" fxLayoutWrap *ngIf="langue==='francais' || langue==='anglais'" class="md-card">
-    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/{{pass.getimg()}}" width="40" height="40"></div>
+<ion-header style="height: 93px;color: white">
+
+  <div fxLayout="row" fxLayoutAlign="start start" class="md-card" *ngIf="langue==='francais' || langue==='anglais'">
+    <div><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
+    &nbsp;&nbsp;
     <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
-    <div fxFlex="13" style="margin-top: 0px;direction:rtl;"><img src="/android_asset/www/assets/img/microb.png"
-                                                                 class="roundedImage" (click)="goToInfPage(pass)"/>
-    </div>
+    &nbsp;&nbsp;
+
+    <div><img src="{{pathimage}}/info.png" class="roundedImage" (click)="goToInfPage()"></div>
   </div>
 
 
-  <md-card class="md-card2" *ngIf="langue==='francais' || langue==='anglais'">
-    <div fxLayout="row" fxLayoutWrap>
-      <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px"><img
-        src="/android_asset/www/assets/img/green.png"
-        width="25" height="25"></div>
-      <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px"><img
-        src="/android_asset/www/assets/img/red.png"
-        width="25" height="25"></div>
-
-      <div fxFlex="86" style="margin-top: -10px;font-size:10px;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}}</strong>
-        {{histd}}
-      </div>
-      <div fxFlex="86" style="margin-top: -10px;font-size:10px;" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}}</strong>
-        {{histd}}
-      </div>
-
+  <div fxLayout="row" fxLayoutAlign="start start" class="md-card2" *ngIf="langue==='francais' || langue==='anglais'">
+    <div *ngIf="connection===true">
+      <ion-avatar ><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
     </div>
-  </md-card>
+    &nbsp;&nbsp;
+    <div *ngIf="connection===false">
 
+      <ion-avatar><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
+    </div>
+    &nbsp;&nbsp;
+    <div  *ngIf="connection===true"><span ><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</span></div>
+    &nbsp;&nbsp;
+    <div *ngIf="connection===false">
 
-  <div fxLayout="row" fxLayoutWrap *ngIf="langue==='arabe'" class="md-card">
-    <div fxFlex="13" dir="ltr"><img src="/android_asset/www/assets/img/microb.png" class="roundedImage"
-                                    (click)="goToInfPage(pass)"/></div>
-    <div fxFlex="73" style="margin-top: 10px;direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
+      <span ><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}</span></div>
+    &nbsp;&nbsp;
+
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="end start" *ngIf="langue==='arabe'" class="md-card">
+    <div dir="rtl"><img src="{{pathimage}}/info.png" class="roundedImage" (click)="goToInfPage()"></div>
+    &nbsp;&nbsp;
+    <div fxFlex="73" style="margin-top: 10px; direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
-    <div fxFlex="13" style="margin-top: 5px;direction:rtl;"><img src="/android_asset/www/assets/img/{{pass.getimg()}}"
-                                                                 width="40"
-                                                                 height="40"></div>
+    &nbsp;&nbsp;
+
+    <div><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
   </div>
-  <md-card *ngIf="langue==='arabe'" class="md-card2">
-    <div fxLayout="row" fxLayoutWrap>
 
-      <div fxFlex="86" style="margin-top: -10px;font-size:10px;direction:rtl;" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}}</strong>
-        {{histd}}
-      </div>
-      <div fxFlex="86" style="margin-top: -10px;font-size:10px;direction:rtl;" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}}</strong>
-        {{histd}}
-      </div>
-
-      <div fxFlex="13" *ngIf="connection===true" style="margin-top:-15px;direction:rtl;"><img
-        src="/android_asset/www/assets/img/green.png" width="30" height="30"></div>
-      <div fxFlex="13" *ngIf="connection===false" style="margin-top:-15px;direction:rtl;"><img
-        src="/android_asset/www/assets/img/red.png" width="30" height="30"></div>
-
+  <div fxLayout="row" fxLayoutAlign="end start" class="md-card2" *ngIf="langue==='arabe'">
+    <div dir="rtl" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</div>
+    &nbsp;&nbsp;
+    <div dir="rtl" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}
     </div>
-  </md-card>
+    &nbsp;&nbsp;
+    <div *ngIf="connection===true">
+      <ion-avatar><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
+    </div>
+    &nbsp;&nbsp;
+    <div *ngIf="connection===false">
+      <ion-avatar><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
+    </div>
+    &nbsp;&nbsp;
 
+  </div>
 
 </ion-header>
 
-<ion-content *ngIf="langue==='francais' || langue==='anglais'" #content class="consignePage">
+<ion-content *ngIf="langue==='francais' || langue==='anglais'" #content>
 <div *ngFor="let con of consigne ">
   <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='NL') || (con.getetat()==='AF')">
 
     <div fxFlex="99" dir="ltr">
-      <img src="/android_asset/www/assets/img/uncheck.png" width="20" height="20">
+      <img src="{{pathimage}}/uncheck.png" width="20" height="20">
       <strong  style="color: #ac2925">
         {{con.getuserCreate()}}
       </strong>
@@ -91,7 +91,7 @@
     <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='F')" dir="rtl">
 
     <div fxFlex="99">
-      <img src="/android_asset/www/assets/img/check.png" width="20" height="20">
+      <img src="{{pathimage}}/check.png" width="20" height="20">
 
       <strong style="color: #ac2925">
         {{con.getuserCreate()}}
@@ -119,12 +119,12 @@
 </div>
 
 </ion-content>
-<ion-content *ngIf="langue==='arabe'" #content class="consignePage">
+<ion-content *ngIf="langue==='arabe'" #content>
   <div *ngFor="let con of consigne ">
     <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='NL') || (con.getetat()==='AF')" dir="rtl">
 
       <div fxFlex="99" dir="rtl">
-        <img src="/android_asset/www/assets/img/uncheck.png" width="20" height="20">
+        <img src="{{pathimage}}/uncheck.png" width="20" height="20">
         <strong  style="color: #ac2925;direction:rtl;">
           {{con.getuserCreate()}}
         </strong>
@@ -149,7 +149,7 @@
     <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='F')" dir="rtl">
 
       <div fxFlex="99" dir="ltr">
-        <img src="/android_asset/www/assets/img/check.png" width="20" height="20">
+        <img src="{{pathimage}}/check.png" width="20" height="20">
         <strong style="color: #ac2925 ;direction:rtl;">
           {{con.getuserCreate()}}
         </strong>
@@ -188,7 +188,7 @@
     </div>
 
     <div fxFlex="15" style="background-color: #F5F5F5; direction: rtl;">
-      <button><img src="/android_asset/www/assets/img/send2.png" class="img"></button>
+      <button><img src="{{pathimage}}/send2.png" class="img"></button>
     </div>
   </div>
 </ion-footer>
@@ -203,7 +203,7 @@
     </div>
 
     <div fxFlex="15" style="background-color: #F5F5F5; direction: rtl;">
-      <button><img src="/android_asset/www/assets/img/send.png" class="img" (click)="CreatePlanificationTacheInfirmiereForTablette(details.value)"></button>
+      <button><img src="{{pathimage}}/send.png" class="img" (click)="CreatePlanificationTacheInfirmiereForTablette(details.value)"></button>
     </div>
   </div>
 </ion-footer>

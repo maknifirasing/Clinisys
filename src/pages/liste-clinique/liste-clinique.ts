@@ -29,8 +29,9 @@ export class ListeCliniquePage {
   langserv: any;
   langes: Array<Langue> = [];
   test: boolean;
+  pathimage = Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private viewCtrl: ViewController, public platform: Platform,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private viewCtrl: ViewController, public platform: Platform, private sqlite: SQLite) {
     this.viewCtrl.showBackButton(false);
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
@@ -134,6 +135,7 @@ export class ListeCliniquePage {
     this.userserv = new UserService(this.sqlite);
     this.userserv.verifUser(codeC.getcode()).then(user => {
       if (user === false) {
+        Variables.updateUrl(codeC.geturl());
         this.navCtrl.push(HomePage, {
           tabLangue: this.tabLangue,
           langue: this.langue,
@@ -149,10 +151,10 @@ export class ListeCliniquePage {
               var l = new Langue();
               l.setlangue(lg.getlangue());
               l.setnom(lg.getnom());
-              l.setmatricule(lg.getmatricule());
+              l.setcodePin(lg.getcodePin());
               l.setcodeClinique(codeC.getcode());
               l.setnomClinique(codeC.getnom());
-              l.seturl(lg.geturl());
+              l.seturl(codeC.geturl());
               this.langes.push(l);
               this.langserv.deleteLangues().then(delet => {
                 if (delet === true) {
@@ -162,12 +164,12 @@ export class ListeCliniquePage {
 
             });
           }
+          Variables.updateUrl(codeC.geturl());
           this.navCtrl.setRoot(ListePage, {
             tabLangue: this.tabLangue,
             langue: this.langue,
             codeClinique: codeC.getcode(),
-            nomClinique: codeC.getnom(),
-            url: codeC.geturl()
+            nomClinique: codeC.getnom()
           });
         });
       }

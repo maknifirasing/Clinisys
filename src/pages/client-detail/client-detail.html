@@ -1,7 +1,7 @@
 <ion-header  style="background-color:whitesmoke">
 
-  <IMG src="/android_asset/www/assets/img/profil.jpg" height="85" width="5000">
-  <IMG src="/android_asset/www/assets/img/{{patient.getimg()}}" class="img">
+  <IMG src="{{pathimage}}/profil.jpg" height="85" width="5000">
+  <IMG src="{{pathimage}}/{{patient.getimg()}}" class="img">
 
   <ion-navbar hideBackButton="true" *ngIf="langue==='francais' || langue==='anglais'">
     <p></p>
@@ -26,33 +26,33 @@
 
 <ion-content padding *ngIf="langue==='arabe'" dir="rtl">
   <ion-list  style="margin-top:120px; background-color:whitesmoke;">
-    <p><img src="/android_asset/www/assets/img/chamb.png" width="15" height="15">
+    <p><img src="{{pathimage}}/chamb.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titreChambre}}:</strong><strong> {{client.getnumCha()}}</strong></p>
-    <p><img src="/android_asset/www/assets/img/etage.png" width="15" height="15">
+    <p><img src="{{pathimage}}/etage.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titreEtage}}: </strong><strong>{{client.getetage()}}</strong></p>
-    <p><img src="/android_asset/www/assets/img/calendarin.png" width="15" height="15">
+    <p><img src="{{pathimage}}/calendarin.png" width="15" height="15">
       <strong style="color: #0D47A1 ">{{tabLangue.titreDateAdmission}}: </strong><strong>{{client.getdateArr()}}</strong>
     </p>
-    <p><img src="/android_asset/www/assets/img/numdoss.png" width="15" height="15">
+    <p><img src="{{pathimage}}/numdoss.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titreNumDoss}}: </strong><strong>{{client.getnumdoss()}}</strong></p>
-    <p><img src="/android_asset/www/assets/img/idcard.png" width="15" height="15">
+    <p><img src="{{pathimage}}/idcard.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titreIdentifiant}}: </strong><strong>{{client.getidentifiant()}}</strong>
     </p>
   </ion-list>
   <ion-list >
-    <p><img src="/android_asset/www/assets/img/sang.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titreGroupeSanguim}}: </strong>{{motif.getgroupeSang()}}
+    <p><img src="{{pathimage}}/sang.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titreGroupeSanguim}}: </strong>{{motif.getgroupeSang()}}
     </p>
-    <p><img src="/android_asset/www/assets/img/poid.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titrePoid}}: </strong>{{motif.getpoid()}}
+    <p><img src="{{pathimage}}/poid.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titrePoid}}: </strong>{{motif.getpoid()}}
     </p>
-    <p><img src="/android_asset/www/assets/img/taille.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titreTaille}}: </strong>{{motif.gettaille()}}
+    <p><img src="{{pathimage}}/taille.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titreTaille}}: </strong>{{motif.gettaille()}}
     </p>
   </ion-list>
   <ion-list style="background-color:whitesmoke;">
 
-    <p><img src="/android_asset/www/assets/img/doc.png" width="15" height="15">
+    <p><img src="{{pathimage}}/doc.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titleMed}}: </strong></p>
     <div *ngFor="let med of medecinList ">
-      <p><img src="/android_asset/www/assets/img/doc.png" width="15" height="15">
+      <p><img src="{{pathimage}}/doc.png" width="15" height="15">
         <strong>{{med.getnomMed().substr(7,(med.getnomMed().length))}}</strong> {{med.getdesignationSpecialite()}}
       </p>
     </div>
@@ -62,33 +62,33 @@
 </ion-content>
 <ion-content padding *ngIf="langue==='francais' || langue==='anglais'">
   <ion-list  style="margin-top:120px; background-color:whitesmoke;">
-    <p><img src="/android_asset/www/assets/img/chamb.png" width="15" height="15">
+    <p><img src="{{pathimage}}/chamb.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titreChambre}}:</strong><strong> {{client.getnumCha()}}</strong></p>
-    <p><img src="/android_asset/www/assets/img/etage.png" width="15" height="15">
+    <p><img src="{{pathimage}}/etage.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titreEtage}}: </strong><strong>{{client.getetage()}}</strong></p>
-    <p><img src="/android_asset/www/assets/img/calendarin.png" width="15" height="15">
+    <p><img src="{{pathimage}}/calendarin.png" width="15" height="15">
       <strong style="color: #0D47A1 ">{{tabLangue.titreDateAdmission}}: </strong><strong>{{client.getdateArr()}}</strong>
     </p>
-    <p><img src="/android_asset/www/assets/img/numdoss.png" width="15" height="15">
+    <p><img src="{{pathimage}}/numdoss.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titreNumDoss}}: </strong><strong>{{client.getnumdoss()}}</strong></p>
-    <p><img src="/android_asset/www/assets/img/idcard.png" width="15" height="15">
+    <p><img src="{{pathimage}}/idcard.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titreIdentifiant}}: </strong><strong>{{client.getidentifiant()}}</strong>
     </p>
   </ion-list>
   <ion-list >
-    <p><img src="/android_asset/www/assets/img/sang.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titreGroupeSanguim}}: </strong>{{motif.getgroupeSang()}}
+    <p><img src="{{pathimage}}/sang.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titreGroupeSanguim}}: </strong>{{motif.getgroupeSang()}}
     </p>
-    <p><img src="/android_asset/www/assets/img/poid.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titrePoid}}: </strong>{{motif.getpoid()}}
+    <p><img src="{{pathimage}}/poid.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titrePoid}}: </strong>{{motif.getpoid()}}
     </p>
-    <p><img src="/android_asset/www/assets/img/taille.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titreTaille}}: </strong>{{motif.gettaille()}}
+    <p><img src="{{pathimage}}/taille.png" width="15" height="15"> <strong style="color: #0D47A1">{{tabLangue.titreTaille}}: </strong>{{motif.gettaille()}}
     </p>
   </ion-list>
   <ion-list style="background-color:whitesmoke;">
 
-    <p><img src="/android_asset/www/assets/img/doc.png" width="15" height="15">
+    <p><img src="{{pathimage}}/doc.png" width="15" height="15">
       <strong style="color: #0D47A1">{{tabLangue.titleMed}}: </strong></p>
     <div *ngFor="let med of medecinList ">
-      <p><img src="/android_asset/www/assets/img/doc.png" width="15" height="15">
+      <p><img src="{{pathimage}}/doc.png" width="15" height="15">
         <strong>{{med.getnomMed().substr(7,(med.getnomMed().length))}}</strong> {{med.getdesignationSpecialite()}}
       </p>
     </div>

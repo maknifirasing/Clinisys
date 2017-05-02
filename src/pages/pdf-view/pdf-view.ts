@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, Platform, AlertController} from 'ionic-angular';
+import {NavController, NavParams, Platform, AlertController, LoadingController} from 'ionic-angular';
 import {PdfViewerComponent} from 'ng2-pdf-viewer';
 import { File} from '@ionic-native/file';
 import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
@@ -8,6 +8,7 @@ import {HistDossier} from "../../models/HistDossier";
 import {HistPdfService} from "../../services/HistPdfService";
 import {HistDoc} from "../../models/HistDoc";
 import {SQLite} from "@ionic-native/sqlite";
+import {TabsPage} from "../tabs/tabs";
 
 declare var cordova: any;
 
@@ -16,6 +17,7 @@ declare var cordova: any;
   templateUrl: 'pdf-view.html',
   providers: [PdfViewerComponent,File,Transfer]
 })
+
 export class PdfViewPage {
   pdfSrc: string;
   page: number = 1;
@@ -30,15 +32,17 @@ export class PdfViewPage {
   tabLangue: any;
   pass: any;
   langue: any;
+  pathimage=Variables.path;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private PdfViewerComponent: PdfViewerComponent, public platform: Platform, public alertCtrl: AlertController
-    ,private transfer: Transfer, private file: File,private sqlite: SQLite) {
-    this.codeClinique = navParams.get("codeClinique");
-    this.tabLangue = navParams.get("tabLangue");
-    this.pass = navParams.get("pass");
-    this.langue = navParams.get("langue");
+    ,private transfer: Transfer, private file: File,private sqlite: SQLite,public loadingCtrl: LoadingController) {
+    this.codeClinique = TabsPage.tabLangue.codeClinique;
+    this.tabLangue = TabsPage.tabLangue.tabLangue;
+    this.pass = TabsPage.tabLangue.pass;
+    this.langue = TabsPage.tabLangue.langue;
     this.pdf = this.navParams.get("pdf");
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+    this.presentLoadingDefault();
     this.platform.ready().then(() => {
       // make sure this is on a device, not an emulation (e.g. chrome tools device mode)
       if (!this.platform.is('cordova')) {
@@ -65,15 +69,26 @@ export class PdfViewPage {
         else {
           this.connection = true;
           this.pdfSrc = this.pdf;
-          this.retrieveImage(this.pdfSrc);
           this.historique(this.pass.getdossier(), fields[5], this.codeClinique);
+          this.retrieveImage(this.pdfSrc);
         }
       });
     });
 
 
   }
+  presentLoadingDefault() {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...',
+      spinner: 'bubbles'
+    });
 
+    loading.present();
+
+    setTimeout(() => {
+      loading.dismiss();
+    }, 5000);
+  }
   ionViewDidLoad() {
     this.tabBarElement.style.display = 'none';
   }

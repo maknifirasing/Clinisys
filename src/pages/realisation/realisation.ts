@@ -1,13 +1,14 @@
-import {Component, ViewChild} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
-import {MdMenuTrigger} from "@angular/material";
 import {Planification} from "../../models/Planification";
 import {DossierPage} from "../dossier/dossier";
 import {ClientDetailPage} from "../client-detail/client-detail";
 import {LangueService} from "../../services/LangueService";
 import {Langue} from "../../models/Langue";
 import {SQLite} from "@ionic-native/sqlite";
+import {RealisationTest} from "../../models/RealisationTest";
+import {TabsPage} from "../tabs/tabs";
 
 @Component({
   selector: 'page-realisation',
@@ -16,7 +17,6 @@ import {SQLite} from "@ionic-native/sqlite";
 
 })
 export class RealisationPage {
-  @ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
   connection: boolean;
   tabLangue: any;
   pass: any;
@@ -24,27 +24,34 @@ export class RealisationPage {
   langue: any;
   histd: any;
   xml: any;
-  datefeuille: any;
+  dateFeuille: any;
   heureActuelle: any;
   planification: Array<Planification> = [];
   private langserv: any;
   langes: Array<Langue> = [];
   user: any;
+  keyboar = 0;
+  planificationvalue: Array<RealisationTest> = [];
+  inputrange: number;
+  plus = true;
+  moins = true;
+  heure: any;
+  clavier: boolean;
+  pathimage = Variables.path;
+  p: number;
+  m: number;
+  d: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite) {
-    this.tabLangue = navParams.get("tabLangue");
-    this.codeClinique = navParams.get("codeClinique");
-    this.pass = navParams.get("pass");
-    this.langue = navParams.get("langue");
-    this.datefeuille = navParams.get("dateFeuille");
-    this.heureActuelle = navParams.get("heureActuelle");
-
-    /*
-     this.user = "admin";
-     this.datefeuille = "18/05/2016";
-     this.heureActuelle = "16";
-     this.getAllPlanification("16002649", this.datefeuille, "REA", this.heureActuelle);
-     */
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite) {
+    this.codeClinique = TabsPage.tabLangue.codeClinique;
+    this.tabLangue = TabsPage.tabLangue.tabLangue;
+    this.pass = TabsPage.tabLangue.pass;
+    this.dateFeuille = TabsPage.tabLangue.dateFeuille;
+    this.langue = TabsPage.tabLangue.langue;
+    this.heureActuelle = new Date(TabsPage.heureActuelle);
+    this.p = Number(this.heureActuelle.getHours() + 1);
+    this.m = Number(this.heureActuelle.getHours() - 6);
+    this.heure = new Date(TabsPage.heureActuelle);
 
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
@@ -54,50 +61,92 @@ export class RealisationPage {
         this.connection = true;
         this.langserv = new LangueService(this.sqlite);
         this.langserv.getLangues(this.langes).then(lg => {
-          this.getAllPlanification(this.pass.getdossier(), this.datefeuille, this.pass.getnature(), this.heureActuelle);
+          this.getAllPlanification(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.heureActuelle);
           this.user = lg.getnom();
         });
       }
     });
     this.histd = DossierPage.hist;
-
   }
 
-
   getAllPlanification(numDoss, dateFeuille, nature, heure) {
+    this.clavier = true;
+    this.keyboar = 0;
+    this.inputrange = 0;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
       '<soapenv:Body>' +
-      '<ser:getPlanificationNonRealise>' +
+      '<ser:getAllPlanification>' +
       '<numdoss>' + numDoss + '</numdoss>' +
       '<dateFeuille>' + dateFeuille + '</dateFeuille>' +
       '<nature>' + nature + '</nature>' +
       '<heure>' + heure + '</heure>' +
-      '</ser:getPlanificationNonRealise>' +
+      '</ser:getAllPlanification>' +
       '</soapenv:Body>' +
       '</soapenv:Envelope>';
     xmlhttp.onreadystatechange = () => {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
           this.xml = xmlhttp.responseXML;
-          var x, i, p;
+          var x, i, p, r;
           x = this.xml.getElementsByTagName("return");
-          console.log(x);
           for (i = 0; i < x.length; i++) {
             p = new Planification();
             p.setcodeType(x[i].children[0].textContent);
             p.setdesignation(x[i].children[1].textContent);
-            p.getdate(x[i].children[2].children[0].textContent);
-            p.setheurePrise(x[i].children[2].children[1].textContent);
-            p.setnum(x[i].children[2].children[2].textContent);
-            p.setseuilMax(x[i].children[3].textContent);
-            p.setseuilMin(x[i].children[4].textContent);
-            p.settype(x[i].children[5].textContent);
+            p.setheureRealisation(x[i].children[2].textContent);
+            p.getdate(x[i].children[3].children[0].textContent);
+            p.setheurePrise(x[i].children[3].children[1].textContent);
+            p.setnum(x[i].children[3].children[2].textContent);
+            p.setposologie(x[i].children[4].textContent);
+            p.setquantite(x[i].children[5].textContent);
+            p.setseuilMax(x[i].children[6].textContent);
+            p.setseuilMin(x[i].children[7].textContent);
+            p.settype(x[i].children[8].textContent);
+            p.setrang(i);
+            if (p.getdesignation().indexOf('@') > -1) {
+              p.setposologie(p.getdesignation().split('@')[1]);
+              p.setdesignation(p.getdesignation().split('@')[0]);
+            }
+            if (p.getdesignation() === 'OXYGENE' || p.getdesignation() === 'Insuline') {
+              p.setpave('text');
+            } else {
+              p.setpave('text');
+            }
             this.planification.push(p);
-            console.log(p);
+            r = new RealisationTest();
+            r.setclavier("false");
+            if (p.getquantite() !== "") {
+              r.setvaleur(p.getquantite());
+              r.setdisabled("true");
+            } else {
+              r.setvaleur("");
+              r.setdisabled("false");
+            }
+            switch (p.getdesignation()) {
+              case "T.A":
+                r.setkeyboard(2);
+                break;
+              case "Pouls":
+                r.setkeyboard(3);
+                break;
+              case "Température":
+                r.setkeyboard(4);
+                break;
+              case "ETC02":
+                r.setkeyboard(5);
+                break;
+              case "SP02":
+                r.setkeyboard(6);
+                break;
+              default:
+                r.setkeyboard(1);
+                break;
+            }
+            this.planificationvalue.push(r);
           }
         }
       }
@@ -117,8 +166,8 @@ export class RealisationPage {
       '<soapenv:Body>' +
       '<ser:CreatePlusieursRealisation>' +
       '<numTr>' + traitsList + '</numTr>' +
-      '<date_prise>' + this.datefeuille + '</date_prise>' +
-      '<heure_prise>' + this.heureActuelle + '</heure_prise>' +
+      '<date_prise>' + this.dateFeuille + '</date_prise>' +
+      '<heure_prise>' + this.heure.getHours() + '</heure_prise>' +
       '<qnt>' + qtesList + '</qnt>' +
       '<user>' + this.user + '</user>' +
       '</ser:CreatePlusieursRealisation>' +
@@ -139,20 +188,220 @@ export class RealisationPage {
     xmlhttp.send(sr);
   }
 
-  goToInfPage(patient) {
-    this.navCtrl.push(ClientDetailPage,
-      {
-        patient: patient,
-        motif: DossierPage.motifhh,
-        tabLangue: this.tabLangue,
-        langue: this.langue,
-        codeClinique: this.codeClinique
-      });
+  presentConfirm(designation, numTr, rang) {
+    let alert = this.alertCtrl.create({
+      title: this.tabLangue.titreconfirmation,
+      message: this.tabLangue.titremessConf + designation + " ?",
+      buttons: [
+        {
+          text: this.tabLangue.titreNon,
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: this.tabLangue.titreoui,
+          handler: () => {
+            this.AnnulerRealisation(numTr, rang);
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
-  change(value) {
-    var c = document.getElementById("cc");
-    c = value;
-    document.getElementById("totalValue").innerHTML = "Total price: $" + 500 * value;
+  AnnulerRealisation(numTr, rang) {
+    this.clavier = true;
+    this.keyboar = 0;
+    this.inputrange = 0;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:AnnulerRealisation>' +
+      '<numTr>' + numTr + '</numTr>' +
+      '<date>' + this.dateFeuille + '</date>' +
+      '<heure>' + this.heure.getHours() + '</heure>' +
+      '<user>' + this.user + '</user>' +
+      '<numDoss>' + this.pass.getdossier() + '</numDoss>' +
+      '<codePosologie></codePosologie>' +
+      '</ser:AnnulerRealisation>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          var x
+          x = this.xml.getElementsByTagName("return");
+          this.planificationvalue[rang].setdisabled('false');
+          this.planificationvalue[rang].setvaleur('');
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+  goToInfPage() {
+    this.navCtrl.push(ClientDetailPage);
+  }
+
+  selectInput() {
+    var b = false;
+    var i = 0;
+    while (b === false || i < this.planificationvalue.length) {
+      if (this.planificationvalue[i].getdisabled() === 'false') {
+        b = true;
+        this.inputrange = i;
+        this.keyboar=this.planificationvalue[i].getkeyboard();
+      }
+      i++;
+    }
+  }
+
+  keyboardShow(rang) {
+    this.inputrange = rang;
+    if (this.planificationvalue[rang].getdisabled() === 'false') {
+      this.keyboar = this.planificationvalue[rang].getkeyboard();
+      if (this.planificationvalue[rang].getclavier() === 'true') {
+        this.clavier = false;
+      }
+      else {
+        this.clavier = true;
+      }
+    } else {
+      this.keyboar = 0;
+      this.clavier = false;
+    }
+  }
+
+  luck() {
+    var val;
+    if (this.langue === 'arabe') {
+      val = (<HTMLInputElement>document.getElementById(this.inputrange + "inputt")).value + "";
+    } else {
+      val = (<HTMLInputElement>document.getElementById(this.inputrange + "input")).value + "";
+    }
+
+    if (val.length > 0 && val !== " ") {
+      this.planificationvalue[this.inputrange].setvaleur(val);
+      this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+      this.planificationvalue[this.inputrange].setdisabled('true');
+      this.selectInput();
+    }
+    this.planificationvalue[this.inputrange].setclavier('false');
+    this.inputrange = -1;
+    this.keyboar = 0;
+  }
+
+  updateInput(value) {
+    this.clavier = true;
+    if (this.planificationvalue[this.inputrange].getdisabled() === 'false') {
+      if (value === 'clavier') {
+        this.clavier = false;
+        this.keyboar = 0;
+        this.planificationvalue[this.inputrange].setclavier("true");
+        setTimeout(() => {
+          document.getElementById(this.inputrange + "input").focus();
+        }, 10);
+      }
+      else if (value !== 'clavier') {
+        this.clavier = true;
+        this.planificationvalue[this.inputrange].setclavier("false");
+        if (this.keyboar > 0 && this.keyboar < 3) {
+          switch (value) {
+            case "X":
+              this.keyboar = 0;
+              this.planificationvalue[this.inputrange].setvaleur(value);
+              this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+              this.planificationvalue[this.inputrange].setdisabled('true');
+              this.planificationvalue[this.inputrange].setclavier('false');
+              this.clavier = false;
+              this.inputrange = -1;
+              this.selectInput();
+              break;
+            case "R":
+              this.keyboar = 0;
+              this.planificationvalue[this.inputrange].setvaleur(value);
+              this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+              this.planificationvalue[this.inputrange].setdisabled('true');
+              this.planificationvalue[this.inputrange].setclavier('false');
+              this.clavier = false;
+              this.selectInput();
+              break;
+            case "//":
+              this.keyboar = 0;
+              this.planificationvalue[this.inputrange].setvaleur(value);
+              this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+              this.planificationvalue[this.inputrange].setdisabled('true');
+              this.planificationvalue[this.inputrange].setclavier('false');
+              this.clavier = false;
+              this.selectInput();
+              break;
+            case "OK":
+              this.keyboar = 0;
+              this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+              this.planificationvalue[this.inputrange].setdisabled('true');
+              this.planificationvalue[this.inputrange].setclavier('false');
+              this.clavier = false;
+              this.selectInput();
+              break;
+            case "delete":
+              if (this.planificationvalue[this.inputrange].getvaleur().length > 0) {
+                this.planificationvalue[this.inputrange].setvaleur(this.planificationvalue[this.inputrange].getvaleur().substr(0, this.planificationvalue[this.inputrange].getvaleur().length - 1));
+              }
+              break;
+            default:
+              this.planificationvalue[this.inputrange].setvaleur(this.planificationvalue[this.inputrange].getvaleur() + value);
+              break;
+          }
+        } else if (this.keyboar > 2) {
+          this.planificationvalue[this.inputrange].setvaleur(value);
+          this.keyboar = 0;
+          this.clavier = false;
+          this.CreatePlusieursRealisation(this.planification[this.inputrange].getnum(), this.planificationvalue[this.inputrange].getvaleur());
+          this.planificationvalue[this.inputrange].setdisabled('true');
+          this.planificationvalue[this.inputrange].setclavier('false');
+          this.selectInput();
+        }
+      }
+    }
+  }
+
+  addHeure() {
+    var x = this.heure.getHours();
+    this.heure.setHours(x + 1);
+    if (Number(this.heure.getHours()) === this.p) {
+      this.plus = false;
+    }
+    if (Number(this.heure.getHours()) !== this.m) {
+      this.moins = true;
+    }
+    this.update();
+  }
+
+  removeHeure() {
+    var x = this.heure.getHours();
+    this.heure.setHours(x - 1);
+    if (Number(this.heure.getHours()) === this.m) {
+      this.moins = false;
+    }
+    if (Number(this.heure.getHours()) !== this.p) {
+      this.plus = true;
+    }
+    this.update();
+  }
+
+  update() {
+    this.planification.length = 0;
+    this.planification = [];
+    this.planificationvalue.length = 0;
+    this.planificationvalue = [];
+    this.getAllPlanification(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.heure.getHours());
   }
 }

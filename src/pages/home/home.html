@@ -2,14 +2,14 @@
   <div padding id="cloud-layer" *ngIf="langue==='arabe'" dir="rtl">
 
     <ion-row>
-      <ion-col class="animated fadeInUp">
-        <img src="/android_asset/www/assets/img/clinisys.png"/>
+      <ion-col>
+        <img src="{{pathimage}}/clinisys.png"/>
       </ion-col>
     </ion-row>
     <p>{{mess}}</p>
     <p>{{err}}</p>
     <p>{{errConn}}</p>
-    <md-card class="animated fadeInUp">
+    <div>
       <ion-input type="text" #login placeholder="{{tabLangue.nomUtili}}"
                  required="true" class=" ion-item"></ion-input>
       <ion-input type="password" #password placeholder="{{tabLangue.mo2pass}}"
@@ -18,20 +18,20 @@
         {{tabLangue.login}}
       </button>
   <!--    <button (click)="conn()">Connecter</button>-->
-    </md-card>
+    </div>
 
   </div>
   <div padding id="cloud-layer2" *ngIf="langue==='francais' || langue==='anglais'">
 
     <ion-row>
-      <ion-col class="animated fadeInUp">
-        <img src="/android_asset/www/assets/img/clinisys.png"/>
+      <ion-col>
+        <img src="{{pathimage}}/clinisys.png"/>
       </ion-col>
     </ion-row>
     <p>{{mess}}</p>
     <p>{{err}}</p>
     <p>{{errConn}}</p>
-    <md-card class="animated fadeInUp">
+    <div>
       <ion-input type="text" #login placeholder="{{tabLangue.nomUtili}}"
                  required="true" class=" ion-item"></ion-input>
       <ion-input type="password" #password placeholder="{{tabLangue.mo2pass}}"
@@ -40,7 +40,7 @@
         {{tabLangue.login}}
       </button>
   <!--    <button (click)="conn()">Connecter</button>-->
-    </md-card>
+    </div>
 
   </div>
 </ion-content>

@@ -27,11 +27,13 @@ import {ClientDetailPage} from "../client-detail/client-detail";
 import {TraitmentCourbe} from "../traitment-courbe/traitment-courbe";
 import {Patient} from "../../models/Patient";
 import {SQLite} from "@ionic-native/sqlite";
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import {TabsPage} from "../tabs/tabs";
 
 @Component({
   selector: 'page-dossier',
   templateUrl: 'dossier.html',
-  providers: [Variables]
+  providers: [ScreenOrientation,Variables]
 })
 
 export class DossierPage {
@@ -90,13 +92,15 @@ export class DossierPage {
   dateFeuille: any;
   langue: any;
   static motifhh = new MotifHospitalisation();
+  pathimage=Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {
-    this.codeClinique = navParams.get("codeClinique");
-    this.tabLangue = navParams.get("tabLangue");
-    this.pass = navParams.get("pass");
-    this.dateFeuille = navParams.get("dateFeuille");
-    this.langue = navParams.get("langue");
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite,private screenOrientation: ScreenOrientation) {
+    this.codeClinique = TabsPage.tabLangue.codeClinique;
+    this.tabLangue = TabsPage.tabLangue.tabLangue;
+    this.pass = TabsPage.tabLangue.pass;
+    this.dateFeuille = TabsPage.tabLangue.dateFeuille;
+    this.langue = TabsPage.tabLangue.langue;
+    this.screenOrientation.unlock();
 
     if (this.pass.getnature() === "REA") {
       this.codeType = "'1','G','L','E','7','I','9','A','3'";
@@ -110,14 +114,7 @@ export class DossierPage {
       if (res === false) {
         this.connection = false;
         this.historiqueOff(this.histd, this.pass.getdossier(), this.codeClinique);
-        this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
-        this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
-        this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
-        this.GetTraitementsOff(this.traitement, this.pass.getdossier(), this.dateFeuille, this.codeClinique);
-        this.GetEvenementByDossierOff(this.pass.getdossier(), this.codeClinique);
-        this.GetListRegimeOff(this.rigime, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
-        this.GetSigneCliniqueOff(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeTypeOf, this.codeClinique);
-
+        this.updateOff();
       }
       else {
         this.connection = true;
@@ -884,7 +881,6 @@ export class DossierPage {
   }
 
   historique(numDoss, codeClinique) {
-
     this.histserv = new HistDossierService(this.sqlite);
     this.histd = new HistDossier();
     var d = new Date();
@@ -919,33 +915,28 @@ export class DossierPage {
     });
   }
 
-  goToInfPage(patient) {
-    this.navCtrl.push(ClientDetailPage,
-      {
-        patient: patient,
-        motif: this.motifh,
-        tabLangue: this.tabLangue,
-        langue: this.langue,
-        codeClinique: this.codeClinique
-      });
+  updateOff(){
+    this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
+    this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
+    this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+    this.GetTraitementsOff(this.traitement, this.pass.getdossier(), this.dateFeuille, this.codeClinique);
+    this.GetEvenementByDossierOff(this.pass.getdossier(), this.codeClinique);
+    this.GetListRegimeOff(this.rigime, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
+    this.GetSigneCliniqueOff(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeTypeOf, this.codeClinique);
+  }
+
+
+
+  goToInfPage() {
+    this.navCtrl.push(ClientDetailPage);
   }
 
   gotoSigneCourbe() {
-    this.navCtrl.push(SigneCourbePage, {
-      codeClinique: this.codeClinique,
-      tabLangue: this.tabLangue,
-      pass: this.pass,
-      langue: this.langue
-    });
+    this.navCtrl.push(SigneCourbePage);
   }
 
   gotoTraitementCourbe() {
-    this.navCtrl.push(TraitmentCourbe, {
-      codeClinique: this.codeClinique,
-      tabLangue: this.tabLangue,
-      pass: this.pass,
-      langue: this.langue
-    });
+    this.navCtrl.push(TraitmentCourbe);
   }
 }
 

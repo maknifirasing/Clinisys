@@ -12,7 +12,7 @@ export class Database {
       location: 'default'
     })
       .then((db: SQLiteObject) => {
-        db.executeSql('CREATE TABLE IF NOT EXISTS Langue (langue VARCHAR(32),nom VARCHAR (32),matricule VARCHAR (32),codeClinique VARCHAR(32),nomClinique VARCHAR(32),url VARCHAR(32))', {});
+        db.executeSql('CREATE TABLE IF NOT EXISTS Langue (langue VARCHAR(32),nom VARCHAR (32),codePin VARCHAR (32),codeClinique VARCHAR(32),nomClinique VARCHAR(32),url VARCHAR(32))', {});
 
         db.executeSql('CREATE TABLE IF NOT EXISTS tabBadgeListPreanesthesie(codeClinique VARCHAR(32),numDoss VARCHAR(32),ListPreanesthesie VARCHAR(32))', {});
 
@@ -38,7 +38,7 @@ export class Database {
 
         db.executeSql('CREATE TABLE IF NOT EXISTS HistDoc(numDoss VARCHAR(32),date VARCHAR(32),codeClinique VARCHAR(32),nom VARCHAR(32))', {});
 
-        db.executeSql('CREATE TABLE IF NOT EXISTS Users(matricule VARCHAR (32),passWord VARCHAR(32),userName VARCHAR(32),codeClinique VARCHAR(32))', {});
+        db.executeSql('CREATE TABLE IF NOT EXISTS Users(codePin VARCHAR (32),passWord VARCHAR(32),userName VARCHAR(32),codeClinique VARCHAR(32))', {});
 
         db.executeSql('CREATE TABLE IF NOT EXISTS Patient(id VARCHAR(32),dossier VARCHAR(32),chambre VARCHAR(32),nom VARCHAR(32),' +
           'prenom VARCHAR(32),dateNaiss VARCHAR(32),medecin VARCHAR(32),spec VARCHAR(32),etat VARCHAR (32),age NUMERIC(10),' +
@@ -126,8 +126,7 @@ export class Database {
 
       })
       .catch(error => {
-        console.error('Error opening database', error);
-        alert('Error opening database  ' + error);
+//        alert('Error opening database  ' + error);
       });
   }
 
