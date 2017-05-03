@@ -1,4 +1,4 @@
-import {NgModule, ErrorHandler} from '@angular/core';
+import {NgModule, ErrorHandler, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
 import {MyApp} from './app.component';
@@ -25,9 +25,9 @@ import {ConsignePage} from "../pages/consigne/consigne";
 import {ModifPassPage} from "../pages/modif-pass/modif-pass";
 import {CustomIconsModule} from 'ionic2-custom-icons';
 import {Ng2HighchartsModule} from 'ng2-highcharts';
-import {RealisationPage} from "../pages/realisation/realisation";
 import {Variables} from "../providers/variables";
 import {HttpModule} from '@angular/http';
+import {PharmaciePage} from "../pages/pharmacie/pharmacie";
 import {MenuPage} from "../pages/menu/menu";
 
 @NgModule({
@@ -49,7 +49,7 @@ import {MenuPage} from "../pages/menu/menu";
     TraitmentCourbe,
     ConsignePage,
     ModifPassPage,
-    RealisationPage,
+    PharmaciePage,
     MenuPage
   ],
   imports: [
@@ -82,7 +82,7 @@ import {MenuPage} from "../pages/menu/menu";
     TraitmentCourbe,
     ConsignePage,
     ModifPassPage,
-    RealisationPage,
+    PharmaciePage,
     MenuPage
   ],
   providers: [

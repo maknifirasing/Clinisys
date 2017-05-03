@@ -1,3 +1,14 @@
+<ion-header *ngIf="b===1">
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="icons" color="secondary">
+      <ul class="error-list">
+        <img src="../../assets/img/edit_document.png" width="40" height="40"> Realisation<br/>
+        <img src="../../assets/img/pharmacie.png" width="40" height="40"> pharmacie <br/>
+
+      </ul>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
 <ion-tabs color="custom-color" toolbarColor="dark" sliderColor="light">
 
   <ion-tab [root]="tab1Root" customIconSet="ico" customIconName="dossier"
@@ -14,8 +25,6 @@
            customIconName="consigne"></ion-tab>
   <ion-tab [root]="tab6Root"
             customIconSet="ico"
-           customIconName="info"></ion-tab>
-  <!--<ion-tab  (ionSelect)="presentProfileModal()"
-            customIconSet="ico"
-           customIconName="info"></ion-tab>-->
+           customIconName="info"  ></ion-tab>
 </ion-tabs>
+

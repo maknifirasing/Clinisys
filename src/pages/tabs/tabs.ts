@@ -1,6 +1,6 @@
 import {Component, Injectable} from '@angular/core';
 import {DossierPage} from "../dossier/dossier";
-import {NavParams, NavController, Platform,ModalController} from 'ionic-angular';
+import {NavParams, NavController, Platform, ModalController} from 'ionic-angular';
 import {ExamenRadioPage} from "../examen-radio/examen-radio";
 import {ListPreanesthesiePage} from "../list-preanesthesie/list-preanesthesie";
 import {ExamenLaboPage} from "../examen-labo/examen-labo";
@@ -22,7 +22,6 @@ import {ConsignePage} from "../consigne/consigne";
 import {Consigne} from "../../models/Consigne";
 import {ConsigneService} from "../../services/ConsigneService";
 import {tabBadgeConsigneService} from "../../services/tabBadgeConsigneService";
-import {RealisationPage} from "../realisation/realisation";
 import {SQLite} from "@ionic-native/sqlite";
 import {MenuPage} from "../menu/menu";
 
@@ -33,6 +32,7 @@ import {MenuPage} from "../menu/menu";
 })
 @Injectable()
 export class TabsPage {
+
   consigneserv: any;
   coountConsigne: number;
   tab1Root: any = DossierPage;
@@ -40,7 +40,7 @@ export class TabsPage {
   tab3Root: any = ExamenRadioPage;
   tab4Root: any = ListPreanesthesiePage;
   tab5Root: any = ConsignePage;
-  tab6Root: any = RealisationPage;
+  tab6Root: any = MenuPage;
   pass: Patient;
   pdf: string;
   dateFeuille: string;
@@ -62,7 +62,6 @@ export class TabsPage {
   LabosFs: any;
   RadiosTs: any;
   RadiosFs: any;
-  a: any;
   GetExamenRadioByNumDossResponseTest: boolean = false;
   examenRT: Array<ExamenRadio> = [];
   examenRF: Array<ExamenRadio> = [];
@@ -78,10 +77,10 @@ export class TabsPage {
   private consigne: Array<Consigne> = [];
   private coountConsigneT: number;
   private countConsigneserv: any;
-  pathimage=Variables.path;
-  static  tabLangue:any;
+  pathimage = Variables.path;
+  static tabLangue: any;
 
-  constructor(public navParams: NavParams, private Url: Variables, public platform: Platform,public modalCtrl: ModalController, private sqlite: SQLite) {
+  constructor(public navParams: NavParams, private Url: Variables, public platform: Platform, public modalCtrl: ModalController, private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("mypatient");
     this.tabLangue = navParams.get("tabLangue");
@@ -93,6 +92,7 @@ export class TabsPage {
     this.coountListPreanesthesie = 0;
     this.countPdfT = 0;
     this.countPdf = 0;
+
     TabsPage.tabLangue = {
       pass: this.pass,
       dateFeuille: navParams.get("dateFeuille"),
