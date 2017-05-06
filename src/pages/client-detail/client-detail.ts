@@ -31,15 +31,16 @@ export class ClientDetailPage {
   medecinserv: any;
   patient: any;
   connection: boolean;
-  pathimage=Variables.path;
+  pathimage = Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sqlite: SQLite) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.codeClinique = TabsPage.tabLangue.codeClinique;
     this.tabLangue = TabsPage.tabLangue.tabLangue;
     this.langue = TabsPage.tabLangue.langue;
     this.patient = TabsPage.tabLangue.pass;
     this.motif = DossierPage.motifhh;
+    this.client = TabsPage.tabLangue.client;
 
     Variables.checconnection().then(res => {
       if (res === false) {
@@ -49,7 +50,6 @@ export class ClientDetailPage {
       }
       else {
         this.connection = true;
-        this.GetClientByNumDoss(this.patient.getdossier());
         this.findMedIntervenatByNumDoss(this.patient.getdossier());
       }
     });
@@ -63,52 +63,6 @@ export class ClientDetailPage {
     this.tabBarElement.style.display = 'flex';
   }
 
-  GetClientByNumDoss(numDoss) {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
-    var sr =
-      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
-      '<soapenv:Header/>' +
-      '<soapenv:Body>' +
-      '<ser:GetClientByNumDoss>' +
-      '<numDoss>' + numDoss + '</numDoss>' +
-      '</ser:GetClientByNumDoss>' +
-      '</soapenv:Body>' +
-      '</soapenv:Envelope>';
-    xmlhttp.onreadystatechange = () => {
-      if (xmlhttp.readyState == 4) {
-        if (xmlhttp.status == 200) {
-          var xml = xmlhttp.responseXML;
-          var x;
-          x = xml.getElementsByTagName("return");
-          var d, d2;
-          d = new Date();
-          this.client.setadrCli(x[0].children[0].textContent);
-          d = (x[0].children[3].textContent).substr(0, 9);
-          this.client.setdatNai(d);
-          this.client.setlibNat(x[0].children[27].children[1].textContent);
-          this.client.setnumTel(x[0].children[38].textContent);
-          this.client.setetage(x[0].children[36].children[0].children[3].textContent);
-          this.client.setnumCha(x[0].children[36].children[2].textContent);
-          this.client.setnumdoss(x[0].children[37].textContent);
-          this.client.setidentifiant(x[0].children[18].textContent);
-          d2 = (x[0].children[4].textContent).substr(0, 9);
-          this.client.setdateArr(d2);
-          this.client.setcodeClinique(this.codeClinique);
-          this.clientserv = new ClientService(this.sqlite);
-          this.clientserv.verifClient(this.client, numDoss, this.codeClinique).then(res => {
-            if (res === false) {
-              this.clientserv.getClients(this.client, numDoss, this.codeClinique);
-            }
-          });
-        }
-      }
-    }
-
-    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
-    xmlhttp.responseType = "document";
-    xmlhttp.send(sr);
-  }
 
   GetClientByNumDossOff(client, numDoss) {
     this.clientserv = new ClientService(this.sqlite);

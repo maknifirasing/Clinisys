@@ -62,7 +62,7 @@
 
   <ion-toolbar no-border-top>
     <ion-segment [(ngModel)]="pet">
-      <ion-segment-button value="realisation" >
+      <ion-segment-button value="realisation">
         Realisation
       </ion-segment-button>
 
@@ -73,8 +73,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
   <div [ngSwitch]="pet">
+
     <div *ngSwitchCase="'realisation'">
 
       <div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 5px;height:50px;" *ngIf="langue==='arabe'">
@@ -224,7 +225,71 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
     </div>
 
     <div *ngSwitchCase="'pharmacie'">
-      <p>Bonjour</p>
+
+
+      <div><p>{{pharmacieSelected.getLibelle()}}</p></div>
+      <ion-fab top right #fab>
+        <img ion-fab mini src="{{pathimage}}/list.png">
+        <ion-fab-list style="background-color: #F5F5F5;">
+          <div *ngFor="let pha of listePharmacie " (click)="changeFiltre(pha,fab)"><p>{{pha.getLibelle()}}</p></div>
+        </ion-fab-list>
+      </ion-fab>
+
+
+      <ion-list >
+        <ion-item-sliding *ngFor="let art of articleComande ">
+          <ion-item><span width="70">{{art.getarticle().getdesart()}}</span>
+
+            <input type="number"
+                   id="{{art.getrang()}}article"
+                   value="{{art.getqte()}}" (blur)="updateQteArticle(art.getqte())"
+                   min="1"
+                   max="{{art.getarticle().getqtestk()}}"
+                   item-right>
+
+          </ion-item>
+        </ion-item-sliding>
+
+      </ion-list>
+
+
+
+
+      <div class="container">
+        <div class="input-field col s12">
+          <input type="text" class="validate filter-input" id="article" (keyup)=filtreArticle()>
+          <label for="article">Article</label>
+        </div>
+        <div class="suggestions" *ngIf="articleListe.length > 0">
+          <ul *ngFor="let item of articleListe">
+            <li>
+              <p (click)="selectArticle(item)">{{item.getdesart()}} {{item.getqtestk()}}</p>
+            </li>
+          </ul>
+        </div>
+
+
+      </div>
+
+
+      <div class="container">
+        <div class="input-field col s12">
+          <input type="text" class="validate filter-input" id="medecin" (keyup)=filtreMedecin()>
+          <label for="medecin">Medecin</label>
+        </div>
+        <div class="suggestions" *ngIf="medecinListe.length > 0">
+          <ul *ngFor="let item of medecinListe">
+            <li>
+              <p (click)="selectMedecin(item)">{{item.getnomMed()}}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <button (click)="addComande()">Enregister</button>
+
+
+
     </div>
 
   </div>

@@ -4,6 +4,7 @@ export class Client {
   private _libNat: string;
   private _numTel: string;
   private _etage: string;
+  private _libelle: string;
   private _numCha: string;
   private _numdoss: string;
   private _identifiant: string;
@@ -59,6 +60,14 @@ export class Client {
 
   setetage(value: string) {
     this._etage = value;
+  }
+
+  getlibelle(): string {
+    return this._libelle;
+  }
+
+  setlibelle(value: string) {
+    this._libelle = value;
   }
 
   getnumCha(): string {

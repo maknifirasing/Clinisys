@@ -99,13 +99,10 @@ export class ConsignePage {
       xmlhttp.onreadystatechange = () => {
         if (xmlhttp.readyState == 4) {
           if (xmlhttp.status == 200) {
-            alert("ok");
             var xml;
             xml = xmlhttp.responseXML;
-            var x, i;
+            var x
             x = xml.getElementsByTagName("return");
-            console.log(xml);
-            console.log(x);
             this.deletePlanificationTacheInfirmierByNumDossAndType(this.pass.getdossier(), this.type, this.etat, this.codeClinique);
           }
         }

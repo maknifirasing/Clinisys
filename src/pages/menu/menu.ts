@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {AlertController, NavController, NavParams} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {AlertController, FabContainer, NavController, NavParams} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {RealisationTest} from "../../models/RealisationTest";
 import {Langue} from "../../models/Langue";
@@ -9,6 +9,11 @@ import {TabsPage} from "../tabs/tabs";
 import {SQLite} from "@ionic-native/sqlite";
 import {LangueService} from "../../services/LangueService";
 import {DossierPage} from "../dossier/dossier";
+import {Client} from "../../models/Client";
+import {Pharmacie} from "../../models/Pharmacie";
+import {TraitementArticlePharmacie} from "../../models/TraitementArticlePharmacie";
+import {TraitementMedecinPharmacie} from "../../models/TraitementMedecinPharmacie";
+import {Article} from "../../models/Article";
 
 /**
  * Generated class for the Menu page.
@@ -52,17 +57,36 @@ export class MenuPage {
   m: number;
 
   // ************* Fin Realisation ***************
+
+  // *********** Pharmacie ***********************
+
+  listePharmacie: Array<Pharmacie> = [];
+  articleListe: Array<TraitementArticlePharmacie> = [];
+  articleComande: Array<Article> = [];
+  medecinListe: Array<TraitementMedecinPharmacie> = [];
+  client = new Client();
+  pharmacieSelected = new Pharmacie();
+  medecinSelected = new TraitementMedecinPharmacie();
+
+  // *********** Fin Pharmacie ***********************
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
     this.tabLangue = TabsPage.tabLangue.tabLangue;
     this.pass = TabsPage.tabLangue.pass;
     this.dateFeuille = TabsPage.tabLangue.dateFeuille;
     this.langue = TabsPage.tabLangue.langue;
+
+    // ************* Realisation ***************
+
     this.heureActuelle = new Date(TabsPage.heureActuelle);
     this.p = Number(this.heureActuelle.getHours() + 1);
     this.m = Number(this.heureActuelle.getHours() - 6);
     this.heure = new Date(TabsPage.heureActuelle);
 
+    // ************* Fin Realisation ***************
+    this.client = TabsPage.tabLangue.client;
+    // *********** Fin Pharmacie ***********************
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
         this.connection = false;
@@ -78,6 +102,8 @@ export class MenuPage {
     });
     this.histd = DossierPage.hist;
   }
+
+  //   ***********************  Realisation *************************
 
   getAllPlanification(numDoss, dateFeuille, nature, heure) {
     this.clavier = true;
@@ -167,7 +193,6 @@ export class MenuPage {
   }
 
   CreatePlusieursRealisation(traitsList, qtesList) {
-    console.log(traitsList + "  q  " + qtesList);
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -189,7 +214,6 @@ export class MenuPage {
           this.xml = xmlhttp.responseXML;
           var x
           x = this.xml.getElementsByTagName("return");
-          console.log(x);
         }
       }
     }
@@ -269,7 +293,7 @@ export class MenuPage {
       if (this.planificationvalue[i].getdisabled() === 'false') {
         b = true;
         this.inputrange = i;
-        this.keyboar=this.planificationvalue[i].getkeyboard();
+        this.keyboar = this.planificationvalue[i].getkeyboard();
       }
       i++;
     }
@@ -417,7 +441,648 @@ export class MenuPage {
   }
 
 
-  luckFooter(){
-    this.clavier=false;
+  //   *********************** fin Realisation *************************
+
+
+  //   ******************* Pharmacie  ************************
+
+  luckFooter() {
+    this.clavier = false;
+    this.PharmacieDispo();
+  }
+
+  PharmacieDispo() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:PharmacieDispo>' +
+      '<etage>' + this.client.getetage() + '</etage>' +
+      '</ser:PharmacieDispo>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          var x, i, j, pharmacie;
+          x = this.xml.getElementsByTagName("return");
+          j = 0;
+          for (i = 0; i < x.length; i++) {
+            if (j === 0) {
+              pharmacie = new Pharmacie();
+              pharmacie.setCodeDep(x[i].textContent);
+            }
+            if (j === 1) {
+              pharmacie.setLibelle(x[i].textContent);
+            }
+            if (j === 2) {
+              pharmacie.setCodePhar(x[i].textContent);
+              pharmacie.setCoDep(pharmacie.getCodeDep());
+              if (pharmacie.getCodeDep() === "99") {
+                pharmacie.setisNuit(false);
+              }
+              else {
+                pharmacie.setisNuit(true);
+              }
+              this.listePharmacie.push(pharmacie);
+              j = 0;
+            }
+            j++;
+          }
+
+          pharmacie = new Pharmacie();
+          pharmacie.setCodeDep("EX");
+          pharmacie.setLibelle("Externe");
+          pharmacie.setCoDep("EX");
+          pharmacie.setCodePhar("PEX");
+          pharmacie.setisNuit(true);
+          this.listePharmacie.push(pharmacie);
+
+          pharmacie = new Pharmacie();
+          pharmacie.setCodeDep("Stup");
+          pharmacie.setLibelle("Stupéfiant");
+          pharmacie.setCoDep("Stup");
+          pharmacie.setCodePhar("PS");
+          pharmacie.setisNuit(true);
+          this.listePharmacie.push(pharmacie);
+
+          pharmacie = new Pharmacie();
+          pharmacie.setCodeDep(this.client.getetage());
+          pharmacie.setLibelle(this.client.getlibelle());
+          pharmacie.setCoDep(this.client.getetage());
+          pharmacie.setCodePhar("PET");
+          pharmacie.setisNuit(true);
+          this.listePharmacie.push(pharmacie);
+
+          this.AutrePharmacieEtage();
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+  AutrePharmacieEtage() {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:AutrePharmacieEtage/>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          var x, i, pharmacie;
+          x = this.xml.getElementsByTagName("return");
+          for (i = 0; i < x.length; i++) {
+
+            pharmacie = new Pharmacie();
+
+            pharmacie.setCodeDep(x[i].children[0].textContent);
+            pharmacie.setLibelle(x[i].children[1].textContent);
+            pharmacie.setCodePhar(x[i].children[0].textContent);
+            pharmacie.setCoDep(x[i].children[2].textContent);
+            pharmacie.setisNuit(true);
+            this.listePharmacie.push(pharmacie);
+          }
+          this.pharmacieSelected = this.listePharmacie[0];
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+  changeFiltre(pharmacie, fab: FabContainer) {
+    this.pharmacieSelected = pharmacie;
+    fab.close();
+  }
+
+
+  getTraitementExterne(shearch) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:GetTraitementExterne>' +
+      '<arg0>' + shearch + '</arg0>' +
+      '</ser:GetTraitementExterne>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          var x, i, article;
+          x = this.xml.getElementsByTagName("return");
+          for (i = 0; i < x.length; i++) {
+            article = new TraitementArticlePharmacie();
+            article.setactif(x[i].children[0].textContent);
+            article.setcodart(x[i].children[2].textContent);
+            article.setdesart(x[i].children[6].textContent);
+            article.setqtestk(x[i].children[22].textContent);
+            this.articleListe.push(article);
+          }
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+
+  getStupifiant(shearch, etage) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:GetStupifiant>' +
+      '<arg0>' + shearch + '</arg0>' +
+      '<arg1>' + etage + '</arg1>' +
+      '</ser:GetStupifiant>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          var x, i, article;
+          x = this.xml.getElementsByTagName("return");
+          for (i = 0; i < x.length; i++) {
+            article = new TraitementArticlePharmacie();
+            article.setactif(true);
+            article.setcodart(x[i].children[0].textContent);
+            article.setdesart(x[i].children[4].textContent);
+            article.setqtestk(x[i].children[16].textContent);
+            this.articleListe.push(article);
+          }
+
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+  getTraitementInterne(shearch, CodeDep, isEtage) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:GetTraitementInterne>' +
+      '<arg0>' + shearch + '</arg0>' +
+      '<arg1>' + CodeDep + '</arg1>' +
+      '<arg2>' + isEtage + '</arg2>' +
+      '</ser:GetTraitementInterne>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          var x, i, article;
+          x = this.xml.getElementsByTagName("return");
+          for (i = 0; i < x.length; i++) {
+            article = new TraitementArticlePharmacie();
+            article.setactif('true');
+            article.setcodart(x[i].children[0].textContent);
+            article.setdesart(x[i].children[4].textContent);
+            article.setqtestk(x[i].children[16].textContent);
+            this.articleListe.push(article);
+          }
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+
+  getListMedecinLikeNomMed(shearch) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:getListMedecinLikeNomMed>' +
+      '<param>' + shearch + '</param>' +
+      '</ser:getListMedecinLikeNomMed>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          var x, i, medecin;
+          x = this.xml.getElementsByTagName("return");
+          for (i = 0; i < x.length; i++) {
+            medecin = new TraitementMedecinPharmacie();
+            medecin.setactif(x[i].children[0].textContent);
+            medecin.setcodMed(x[i].children[3].textContent);
+            medecin.setnomMed(x[i].children[4].textContent);
+            this.medecinListe.push(medecin);
+          }
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+
+  filtreArticle() {
+    this.articleListe = [];
+    var shearch = (<HTMLInputElement>document.getElementById("article")).value;
+
+    if (this.pharmacieSelected.getCodeDep() === "EX") {
+      this.getTraitementExterne(shearch);
+    }
+    else if (this.pharmacieSelected.getCodeDep() === "Stup") {
+      this.getStupifiant(shearch, '01');//this.client.getetage());
+    } else {
+      this.getTraitementInterne(shearch, this.pharmacieSelected.getCodeDep(), true);
+    }
+  }
+
+
+  selectArticle(x) {
+    (<HTMLInputElement>document.getElementById("article")).value = "";
+    var article = new Article();
+    article.setarticle(x);
+    article.setqte(1);
+    article.setrang(this.articleComande.length);
+    this.articleComande.push(article);
+    setTimeout(() => {
+      document.getElementById(this.articleComande[this.articleComande.length - 1].getrang() + "article").focus();
+    }, 10);
+    this.articleListe = [];
+  }
+
+  updateQteArticle(x) {
+    this.articleComande[x].setqte(Number((<HTMLInputElement>document.getElementById(this.articleComande[x].getrang() + "article")).value));
+  }
+
+
+  filtreMedecin() {
+    this.medecinListe = [];
+    var shearch = (<HTMLInputElement>document.getElementById("medecin")).value;
+    this.getListMedecinLikeNomMed(shearch);
+  }
+
+  selectMedecin(x) {
+    (<HTMLInputElement>document.getElementById("medecin")).value = "";
+    (<HTMLInputElement>document.getElementById("medecin")).value = x.getnomMed();
+    this.medecinSelected = x;
+    this.medecinListe = [];
+  }
+
+  addComande() {
+    switch (this.pharmacieSelected.getCodePhar()) {
+      case "PC":// PharmacieCentrale
+        if (this.pharmacieSelected.getisNuit() === false) {
+          for (var i = 0; i < this.articleComande.length; i++) {
+            this.ajoutCommandePharmacieCentrale(this.client.getnumdoss(), this.articleComande[i],this.client.getetage() ,this.user,
+              this.dateFeuille, this.medecinSelected.getcodMed());
+          }
+        } else {
+          for (var i = 0; i < this.articleComande.length; i++) {
+            this.ajoutCommandePharmacieNuit(this.client.getnumdoss(), this.articleComande[i],this.client.getetage(), this.user,
+              this.dateFeuille, this.medecinSelected.getcodMed());
+          }
+        }
+        break;
+      case "PEX":// Pharmacie Externe
+        for (var i = 0; i < this.articleComande.length; i++) {
+          this.ajoutCommandePharmacieExterne(this.client.getnumdoss(), this.articleComande[i], this.client.getetage(), this.user,
+            this.dateFeuille, this.medecinSelected.getcodMed(), this.pharmacieSelected.getisNuit());
+        }
+        break;
+      case "PS":// Pharmacie Stupéfiant
+        for (var i = 0; i < this.articleComande.length; i++) {
+          this.ajoutCommandePharmacieStupefiant(this.client.getnumdoss(), this.articleComande[i], this.client.getetage(), this.user,
+            this.dateFeuille, this.medecinSelected.getcodMed());
+        }
+        break;
+      case "PET":// Pharmacie Etage
+        for (var i = 0; i < this.articleComande.length; i++) {
+          this.ajoutCommandePharmacieReserve(this.client.getnumdoss(), this.articleComande[i], this.client.getetage(), this.user,
+            this.dateFeuille, this.medecinSelected.getcodMed());
+        }
+        break;
+      case "APE":// Autre Pharmacie Etage
+        for (var i = 0; i < this.articleComande.length; i++) {
+          this.ajoutCommandePharmacieReserve(this.client.getnumdoss(), this.articleComande[i], this.client.getetage(), this.user,
+            this.dateFeuille, this.medecinSelected.getcodMed());
+        }
+        break;
+    }
+
+  }
+
+
+  ajoutCommandePharmacieCentrale(numdoss, article, etage,user, dateFeuille, codMed) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:ajoutCommandePharmacieCentrale>' +
+      '<numdoss>' + numdoss + '</numdoss>' +
+      '<mvtst>' +
+      '<cod>' + article.getarticle().getcodart() + '</cod>' +
+      '<codeTva></codeTva>' +
+      '<datPer></datPer>' +
+      '<fodec></fodec>' +
+      '<homologue></homologue>' +
+      '<identifiant></identifiant>' +
+      '<libelle>' + article.getarticle().getdesart() + '</libelle>' +
+      '<lot></lot>' +
+      '<marge></marge>' +
+      '<nbrePce></nbrePce>' +
+      '<numBonDepot></numBonDepot>' +
+      '<numTr></numTr>' +
+      '<prixAcht></prixAcht>' +
+      '<prixUni></prixUni>' +
+      '<qte>' + article.getqte() + '</qte>' +
+      '<qteAnesth></qteAnesth>' +
+      '<qtePans></qtePans>' +
+      '<referenceDepot></referenceDepot>' +
+      '</mvtst>' +
+      '<etage>'+etage+'</etage>' +
+      '<user>' + user + '</user>' +
+      '<dateFeuille>' + dateFeuille + '</dateFeuille>' +
+      '<codMed>' + codMed + '</codMed>' +
+      '</ser:ajoutCommandePharmacieCentrale>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          var x, i, medecin;
+          x = this.xml.getElementsByTagName("return");
+          for (i = 0; i < x.length; i++) {
+            medecin = new TraitementMedecinPharmacie();
+            medecin.setactif(x[i].children[0].textContent);
+            medecin.setcodMed(x[i].children[3].textContent);
+            medecin.setnomMed(x[i].children[4].textContent);
+            this.medecinListe.push(medecin);
+          }
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+  ajoutCommandePharmacieNuit(numdoss, article, etage, user, dateFeuille, codMed) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:ajoutCommandePharmacieNuit>' +
+      '<numdoss>' + numdoss + '</numdoss>' +
+      '<mvtst>' +
+      '<cod>' + article.getarticle().getcodart() + '</cod>' +
+      '<codeTva></codeTva>' +
+      '<datPer></datPer>' +
+      '<fodec></fodec>' +
+      '<homologue></homologue>' +
+      '<identifiant></identifiant>' +
+      '<libelle>' + article.getarticle().getdesart() + '</libelle>' +
+      '<lot></lot>' +
+      '<marge></marge>' +
+      '<nbrePce></nbrePce>' +
+      '<numBonDepot></numBonDepot>' +
+      '<numTr></numTr>' +
+      '<prixAcht></prixAcht>' +
+      '<prixUni></prixUni>' +
+      '<qte>' + article.getqte() + '</qte>' +
+      '<qteAnesth></qteAnesth>' +
+      '<qtePans></qtePans>' +
+      '<referenceDepot></referenceDepot>' +
+      '</mvtst>' +
+      '<etage>'+etage+'</etage>' +
+      '<user>' + user + '</user>' +
+      '<dateFeuille>' + dateFeuille + '</dateFeuille>' +
+      '<codMed>' + codMed + '</codMed>' +
+      '</ser:ajoutCommandePharmacieNuit>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          var x, i, medecin;
+          x = this.xml.getElementsByTagName("return");
+          for (i = 0; i < x.length; i++) {
+            medecin = new TraitementMedecinPharmacie();
+            medecin.setactif(x[i].children[0].textContent);
+            medecin.setcodMed(x[i].children[3].textContent);
+            medecin.setnomMed(x[i].children[4].textContent);
+            this.medecinListe.push(medecin);
+          }
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+  ajoutCommandePharmacieExterne(numdoss, article, etage, user, dateFeuille, codMed,isNuit) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:ajoutCommandePharmacieExterne>' +
+      '<c>' + numdoss + '</c>' +
+      '<mvtst>' +
+      '<cod>' + article.getarticle().getcodart() + '</cod>' +
+      '<codeTva></codeTva>' +
+      '<datPer></datPer>' +
+      '<fodec></fodec>' +
+      '<homologue></homologue>' +
+      '<identifiant></identifiant>' +
+      '<libelle>' + article.getarticle().getdesart() + '</libelle>' +
+      '<lot></lot>' +
+      '<marge></marge>' +
+      '<nbrePce></nbrePce>' +
+      '<numBonDepot></numBonDepot>' +
+      '<numTr></numTr>' +
+      '<prixAcht></prixAcht>' +
+      '<prixUni></prixUni>' +
+      '<qte>' + article.getqte() + '</qte>' +
+      '<qteAnesth></qteAnesth>' +
+      '<qtePans></qtePans>' +
+      '<referenceDepot></referenceDepot>' +
+      '</mvtst>' +
+      '<etage>'+etage+'</etage>' +
+      '<user>' + user + '</user>' +
+      '<dateFeuille>' + dateFeuille + '</dateFeuille>' +
+      '<codMed>' + codMed + '</codMed>' +
+      '<nuit>' + isNuit + '</nuit>' +
+      '</ser:ajoutCommandePharmacieExterne>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          var x, i, medecin;
+          x = this.xml.getElementsByTagName("return");
+          for (i = 0; i < x.length; i++) {
+            medecin = new TraitementMedecinPharmacie();
+            medecin.setactif(x[i].children[0].textContent);
+            medecin.setcodMed(x[i].children[3].textContent);
+            medecin.setnomMed(x[i].children[4].textContent);
+            this.medecinListe.push(medecin);
+          }
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+  ajoutCommandePharmacieStupefiant(numdoss, article, etage, user, dateFeuille, codMed) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:ajoutCommandePharmacieStupefiant>' +
+      '<c>' + numdoss + '</c>' +
+      '<mvtst>' +
+      '<cod>' + article.getarticle().getcodart() + '</cod>' +
+      '<codeTva></codeTva>' +
+      '<datPer></datPer>' +
+      '<fodec></fodec>' +
+      '<homologue></homologue>' +
+      '<identifiant></identifiant>' +
+      '<libelle>' + article.getarticle().getdesart() + '</libelle>' +
+      '<lot></lot>' +
+      '<marge></marge>' +
+      '<nbrePce></nbrePce>' +
+      '<numBonDepot></numBonDepot>' +
+      '<numTr></numTr>' +
+      '<prixAcht></prixAcht>' +
+      '<prixUni></prixUni>' +
+      '<qte>' + article.getqte() + '</qte>' +
+      '<qteAnesth></qteAnesth>' +
+      '<qtePans></qtePans>' +
+      '<referenceDepot></referenceDepot>' +
+      '</mvtst>' +
+      '<etage>'+etage+'</etage>' +
+      '<user>' + user + '</user>' +
+      '<dateFeuille>' + dateFeuille + '</dateFeuille>' +
+      '<codMed>' + codMed + '</codMed>' +
+      '</ser:ajoutCommandePharmacieStupefiant>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          var x, i, medecin;
+          x = this.xml.getElementsByTagName("return");
+          for (i = 0; i < x.length; i++) {
+            medecin = new TraitementMedecinPharmacie();
+            medecin.setactif(x[i].children[0].textContent);
+            medecin.setcodMed(x[i].children[3].textContent);
+            medecin.setnomMed(x[i].children[4].textContent);
+            this.medecinListe.push(medecin);
+          }
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+  ajoutCommandePharmacieReserve(numdoss, article, etage, user, dateFeuille, codMed) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:ajoutCommandePharmacieReserve>' +
+      '<numdoss>' + numdoss + '</numdoss>' +
+      '<mvtst>' +
+      '<cod>' + article.getarticle().getcodart() + '</cod>' +
+      '<codeTva></codeTva>' +
+      '<datPer></datPer>' +
+      '<fodec></fodec>' +
+      '<homologue></homologue>' +
+      '<identifiant></identifiant>' +
+      '<libelle>' + article.getarticle().getdesart() + '</libelle>' +
+      '<lot></lot>' +
+      '<marge></marge>' +
+      '<nbrePce></nbrePce>' +
+      '<numBonDepot></numBonDepot>' +
+      '<numTr></numTr>' +
+      '<prixAcht></prixAcht>' +
+      '<prixUni></prixUni>' +
+      '<qte>' + article.getqte() + '</qte>' +
+      '<qteAnesth></qteAnesth>' +
+      '<qtePans></qtePans>' +
+      '<referenceDepot></referenceDepot>' +
+      '</mvtst>' +
+      '<etage>'+etage+'</etage>' +
+      '<user>' + user + '</user>' +
+      '<dateFeuille>' + dateFeuille + '</dateFeuille>' +
+      '<codMed>' + codMed + '</codMed>' +
+      '</ser:ajoutCommandePharmacieReserve>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          var x, i, medecin;
+          x = this.xml.getElementsByTagName("return");
+          for (i = 0; i < x.length; i++) {
+            medecin = new TraitementMedecinPharmacie();
+            medecin.setactif(x[i].children[0].textContent);
+            medecin.setcodMed(x[i].children[3].textContent);
+            medecin.setnomMed(x[i].children[4].textContent);
+            this.medecinListe.push(medecin);
+          }
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
   }
 }

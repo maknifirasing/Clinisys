@@ -58,7 +58,13 @@
     "cordova-plugin-statusbar",
     "cordova-plugin-device",
     "ionic-plugin-keyboard",
-    "cordova-plugin-splashscreen"
+    "cordova-plugin-splashscreen",
+    "cordova-sqlite-storage",
+    "cordova-plugin-file",
+    "cordova-plugin-screen-orientation",
+    "cordova-plugin-network-information",
+    "cordova-plugin-themeablebrowser",
+    "cordova-plugin-themeablebrowser"
   ],
   "cordovaPlatforms": [],
   "description": "CliniSys: An Ionic project"

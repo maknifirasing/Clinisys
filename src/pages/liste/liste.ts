@@ -10,7 +10,6 @@ import {HistPatient} from "../../models/HistPatient";
 import {HistPatientService} from "../../services/HistPatientService";
 import {UserService} from "../../services/UserService";
 import {LanguesPage} from "../langues/langues";
-import {MenuController} from 'ionic-angular';
 import {ListeCliniquePage} from "../liste-clinique/liste-clinique";
 import {ModifPassPage} from "../modif-pass/modif-pass";
 import {LangueService} from "../../services/LangueService";

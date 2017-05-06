@@ -24,6 +24,8 @@ import {ConsigneService} from "../../services/ConsigneService";
 import {tabBadgeConsigneService} from "../../services/tabBadgeConsigneService";
 import {SQLite} from "@ionic-native/sqlite";
 import {MenuPage} from "../menu/menu";
+import {ClientService} from "../../services/ClientService";
+import {Client} from "../../models/Client";
 
 @Component({
   selector: 'page-tabs',
@@ -79,6 +81,8 @@ export class TabsPage {
   private countConsigneserv: any;
   pathimage = Variables.path;
   static tabLangue: any;
+  client = new Client();
+  clientserv: any;
 
   constructor(public navParams: NavParams, private Url: Variables, public platform: Platform, public modalCtrl: ModalController, private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
@@ -106,7 +110,8 @@ export class TabsPage {
       tabLangue: this.tabLangue, codeClinique: this.codeClinique,
       typeconsigne: "all",
       etatconsigne: "all",
-      heureActuelle: TabsPage.heureActuelle
+      heureActuelle: TabsPage.heureActuelle,
+      client: this.client
     };
 
     platform.ready().then(() => {
@@ -565,8 +570,58 @@ export class TabsPage {
     xmlhttp.send(sr);
   }
 
+  GetClientByNumDoss(numDoss) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:GetClientByNumDoss>' +
+      '<numDoss>' + numDoss + '</numDoss>' +
+      '</ser:GetClientByNumDoss>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          var xml = xmlhttp.responseXML;
+          var x;
+          x = xml.getElementsByTagName("return");
+          var d, d2;
+          d = new Date();
+          this.client.setadrCli(x[0].children[0].textContent);
+          d = (x[0].children[3].textContent).substr(0, 9);
+          this.client.setdatNai(d);
+          this.client.setlibNat(x[0].children[1].textContent);
+          this.client.setnumTel(x[0].children[38].textContent);
+          this.client.setetage(x[0].children[36].children[0].children[3].textContent);
+          this.client.setlibelle(x[0].children[36].children[0].children[8].textContent);
+          this.client.setnumCha(x[0].children[36].children[2].textContent);
+          this.client.setnumdoss(x[0].children[37].textContent);
+          this.client.setidentifiant(x[0].children[18].textContent);
+          d2 = (x[0].children[4].textContent).substr(0, 9);
+          this.client.setdateArr(d2);
+          this.client.setcodeClinique(this.codeClinique);
+          this.clientserv = new ClientService(this.sqlite);
+          this.clientserv.verifClient(this.client, numDoss, this.codeClinique).then(res => {
+            if (res === false) {
+              this.clientserv.getClients(this.client, numDoss, this.codeClinique);
+            }
+          });
+        }
+      }
+    }
+
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
   update() {
     this.GetGetFullDate();
+
+    this.GetClientByNumDoss(this.pass.getdossier());
 
     this.deleteAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
     this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
