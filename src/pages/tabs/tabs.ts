@@ -96,23 +96,24 @@ export class TabsPage {
     this.coountListPreanesthesie = 0;
     this.countPdfT = 0;
     this.countPdf = 0;
+    this.dateFeuille = navParams.get("dateFeuille"),
 
-    TabsPage.tabLangue = {
-      pass: this.pass,
-      dateFeuille: navParams.get("dateFeuille"),
-      Labost: this.LabosT,
-      Labosf: this.LabosF,
-      ListeP: this.ListeP,
-      examenRT: this.examenRT,
-      examenRF: this.examenRF,
-      consigne: this.consigne,
-      langue: this.langue,
-      tabLangue: this.tabLangue, codeClinique: this.codeClinique,
-      typeconsigne: "all",
-      etatconsigne: "all",
-      heureActuelle: TabsPage.heureActuelle,
-      client: this.client
-    };
+      TabsPage.tabLangue = {
+        pass: this.pass,
+        dateFeuille: this.dateFeuille,
+        Labost: this.LabosT,
+        Labosf: this.LabosF,
+        ListeP: this.ListeP,
+        examenRT: this.examenRT,
+        examenRF: this.examenRF,
+        consigne: this.consigne,
+        langue: this.langue,
+        tabLangue: this.tabLangue, codeClinique: this.codeClinique,
+        typeconsigne: "all",
+        etatconsigne: "all",
+        heureActuelle: TabsPage.heureActuelle,
+        client: this.client
+      };
 
     platform.ready().then(() => {
       Variables.checconnection().then(connexion => {
@@ -471,21 +472,28 @@ export class TabsPage {
         if (xmlhttp.status == 200) {
           var xml;
           xml = xmlhttp.responseXML;
-          var x, i, c;
+          var x, i, c, d;
           x = xml.getElementsByTagName("return");
-          for (i = 0; i < x.length; i++) {
+          var date = new Date();
+          date.setFullYear(Number(this.dateFeuille.substr(6, 4)));
+          date.setMonth(Number(this.dateFeuille.substr(3, 2)) - 1);
+          date.setDate(Number(this.dateFeuille.substr(0, 2)));
+          date.setHours(0);
+          date.setMinutes(0);
+
+          for (i = x.length - 1; i >= 0; i--) {
             c = new Consigne();
-            if (x[i].childElementCount === 19) {
+            if (x[i].childElementCount === 17) {
               c.setcodeMedecin(x[i].children[1].textContent);
-              c.setdatetache(x[i].children[6].textContent);
-              c.setdetails(x[i].children[7].textContent);
-              c.setetat(x[i].children[8].textContent);
-              c.setheurtache(x[i].children[9].textContent);
-              c.setnumeroDossier(x[i].children[13].textContent);
-              c.setuserCreate(x[i].children[16].textContent);
+              c.setdatetache(x[i].children[5].textContent);
+              c.setdetails(x[i].children[6].textContent);
+              c.setetat(x[i].children[7].textContent);
+              c.setheurtache(x[i].children[8].textContent);
+              c.setnumeroDossier(x[i].children[11].textContent);
+              c.setuserCreate(x[i].children[14].textContent);
               c.setcodeClinique(codeClinique);
             }
-            else if (x[i].childElementCount === 18) {
+            else if (x[i].childElementCount > 17) {
               c.setcodeMedecin(x[i].children[1].textContent);
               c.setdatetache(x[i].children[6].textContent);
               c.setdetails(x[i].children[7].textContent);
@@ -495,9 +503,12 @@ export class TabsPage {
               c.setuserCreate(x[i].children[15].textContent);
               c.setcodeClinique(codeClinique);
             }
-            this.consigne.push(c);
-            if (c.getetat() === "F") {
-              this.coountConsigneT++;
+            d = new Date(c.getheurtache());
+            if ((date < d)&&(c.getetat()==='NL' || c.getetat()==='AF' ||c.getetat()==='F')) {
+              this.consigne.push(c);
+              if (c.getetat() === "F") {
+                this.coountConsigneT++;
+              }
             }
           }
           this.coountConsigne = this.consigne.length;
@@ -616,6 +627,38 @@ export class TabsPage {
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
+  }
+
+  tabBadgepdf() {
+    if (this.countPdf === 0) {
+      return null;
+    } else {
+      return this.countPdfT + "/" + this.countPdf;
+    }
+  }
+
+  tabBadgeexamenR() {
+    if (this.coountexamenR === 0) {
+      return null;
+    } else {
+      return this.coountexamenRT + "/" + this.coountexamenR;
+    }
+  }
+
+  tabBadgePreanesthesie() {
+    if (this.coountListPreanesthesie === 0) {
+      return null;
+    } else {
+      return this.coountListPreanesthesie;
+    }
+  }
+
+  tabBadgeC() {
+    if (this.coountConsigne === 0) {
+      return null;
+    } else {
+      return this.coountConsigneT + "/" + this.coountConsigne;
+    }
   }
 
   update() {

@@ -138,7 +138,7 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
         </div>
 
 
-        <ion-list *ngIf="langue==='arabe'" dir="rtl">
+        <ion-list *ngIf="langue==='arabe'" dir="rtl" class="{{listerealisation}}">
           <ion-item-sliding *ngFor="let pla of planification ">
             <ion-item (click)="keyboardShow(pla.getrang()); ">
               <input type="{{pla.getpave()}}"
@@ -180,7 +180,7 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
         </ion-list>
 
 
-        <ion-list *ngIf="langue==='francais' || langue==='anglais'">
+        <ion-list *ngIf="langue==='francais' || langue==='anglais'" class="{{listerealisation}}">
           <ion-item-sliding *ngFor="let pla of planification ">
             <ion-item (click)="keyboardShow(pla.getrang()); "><span width="70">{{pla.getdesignation()}}</span>
 
@@ -226,70 +226,141 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
 
     <div *ngSwitchCase="'pharmacie'">
 
+      <div class="collapsible">
 
-      <div><p>{{pharmacieSelected.getLibelle()}}</p></div>
-      <ion-fab top right #fab>
-        <img ion-fab mini src="{{pathimage}}/list.png">
-        <ion-fab-list style="background-color: #F5F5F5;">
-          <div *ngFor="let pha of listePharmacie " (click)="changeFiltre(pha,fab)"><p>{{pha.getLibelle()}}</p></div>
-        </ion-fab-list>
-      </ion-fab>
+        <div class="popup">
+          <div class="popup-menu">
+            <div class="popup-menu-overlay" [ngClass]="{'in': menu_is_open}" (click)="togglePopupMenu('false')"></div>
+            <i class="ion ion-grid popup-menu-toggle" (click)="togglePopupMenu('false')"
+               [ngClass]="{'out': menu_is_open}"></i>
+            <div class="popup-menu-panel" [ngClass]="{'in': menu_is_open}" style="right: 10%">
+              <div *ngFor="let pha of listePharmacie " (click)="togglePopupMenu(pha)" >
+                <p style="padding-top: 10px">{{pha.getLibelle()}}</p>
+              </div>
 
-
-      <ion-list >
-        <ion-item-sliding *ngFor="let art of articleComande ">
-          <ion-item><span width="70">{{art.getarticle().getdesart()}}</span>
-
-            <input type="number"
-                   id="{{art.getrang()}}article"
-                   value="{{art.getqte()}}" (blur)="updateQteArticle(art.getqte())"
-                   min="1"
-                   max="{{art.getarticle().getqtestk()}}"
-                   item-right>
-
-          </ion-item>
-        </ion-item-sliding>
-
-      </ion-list>
-
-
-
-
-      <div class="container">
-        <div class="input-field col s12">
-          <input type="text" class="validate filter-input" id="article" (keyup)=filtreArticle()>
-          <label for="article">Article</label>
-        </div>
-        <div class="suggestions" *ngIf="articleListe.length > 0">
-          <ul *ngFor="let item of articleListe">
-            <li>
-              <p (click)="selectArticle(item)">{{item.getdesart()}} {{item.getqtestk()}}</p>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
 
+        <input id="articleListe" type="checkbox" checked align="left" style=" display: none;
+    visibility: hidden;">
+        <label for="articleListe" align="left" class="label"><strong>Commande </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{pharmacieSelected.getLibelle()}}</label>
 
+
+        <div id="expand">
+          <section class="collapsible-content">
+
+            <div fxLayout="row" style="margin-top: 10px" class="collapsible-title">
+              <div fxFlex="79" style="color: #0f7ec0 ">
+                {{tabLangue.titreDesignation}}
+              </div>
+              <div fxFlex="20" style="color: #0f7ec0 ">
+                {{tabLangue.titreValeurs}}
+              </div>
+
+            </div>
+
+            <ion-list class="listeShow">
+              <ion-item-sliding *ngFor="let art of articleComande ">
+                <ion-item style="background-color: #FAFAFA;"><span width="70">{{art.getarticle().getdesart()}}</span>
+
+                  <input type="number"
+                         id="{{art.getrang()}}article"
+                         value="{{art.getqte()}}" (blur)="updateQteArticle(art.getrang())"
+                         item-right>
+
+                </ion-item>
+              </ion-item-sliding>
+
+            </ion-list>
+
+
+            <div class="container">
+              <div class="input-field col s12">
+                <input type="text" class="validate filter-input" id="article" (keyup)=filtreArticle()
+                       placeholder="Article">
+              </div>
+              <ion-list *ngIf="articleListe.length > 0" class="listeShow">
+                <ion-item-sliding *ngFor="let item of articleListe " style="background-color: #F5F5F5;">
+
+                  <ion-item (click)="selectArticle(item)" style="background-color: #F5F5F5;">
+                    <span width="70">{{item.getdesart()}}</span>
+                    <input type="number"
+                           disabled
+                           value="{{item.getqtestk()}}"
+                           item-right>
+                  </ion-item>
+                </ion-item-sliding>
+              </ion-list>
+
+            </div>
+
+
+            <div class="container" style="padding-top: 100px">
+              <div class="medecin-input col s12">
+               <strong style="color: blue">Médecin P : </strong>
+                <input type="text" class="validate medecin-input" id="medecin" (keyup)=filtreMedecin()
+                       placeholder="medecin" style="padding-left: 10px" >
+              </div>
+              <ion-list *ngIf="medecinListe.length > 0" class="listeShow">
+                <ion-item-sliding *ngFor="let item of medecinListe ">
+
+                  <ion-item (click)="selectMedecin(item)" style="background-color: #F5F5F5;">{{item.getnomMed()}}
+                  </ion-item>
+
+                </ion-item-sliding>
+              </ion-list>
+            </div>
+            <div *ngIf="art===true && med ===true" style="padding-top: 20px">
+              <button round class="login-button" (click)="addComande()">Enregister</button>
+            </div>
+          </section>
+        </div>
+        <div style="padding-top: 5px" class="collapsible">
+          &nbsp;&nbsp;
+        </div>
       </div>
+<div style="padding-top: 50px">
+  &nbsp;&nbsp;
+</div>
 
+      <div  class="collapsible">
+        <input id="commande" type="checkbox" checked align="left" style=" display: none;
+    visibility: hidden;" (click)="ListeCommandePharmaciePrescrit(client.getnumdoss(),dateFeuille)">
+        <label for="commande" align="left" class="label"><strong>liste Commandes</strong></label>
+        <div id="commandeListe">
+          <section class="collapsible-content">
+            <div fxLayout="row" style="margin-top: 10px" class="collapsible-title">
+              <div fxFlex="79" style="color: #0f7ec0 ">
+                {{tabLangue.titreDesignation}}
+              </div>
+              <div fxFlex="20" style="color: #0f7ec0 ">
+                {{tabLangue.titreValeurs}}
+              </div>
 
-      <div class="container">
-        <div class="input-field col s12">
-          <input type="text" class="validate filter-input" id="medecin" (keyup)=filtreMedecin()>
-          <label for="medecin">Medecin</label>
-        </div>
-        <div class="suggestions" *ngIf="medecinListe.length > 0">
-          <ul *ngFor="let item of medecinListe">
-            <li>
-              <p (click)="selectMedecin(item)">{{item.getnomMed()}}</p>
-            </li>
-          </ul>
+            </div>
+
+            <ion-list class="listeShow">
+              <ion-item-sliding *ngFor="let com of commandeListe ">
+                <ion-item style="background-color: #FAFAFA;">
+                  <span width="70">{{com.getdesart()}}</span>
+                  <input type="number"
+                         disabled
+                         value="{{com.getqte()}}"
+                         item-right>
+                </ion-item>
+
+                <ion-item-options side="right" style="background-color: #B39DDB ;">
+                  <span style=" margin-top: 15px;color: #212121 ">{{com.getdateCommande()}}</span>&nbsp;&nbsp;
+                  <span style=" margin-top: 15px;color: #212121 ">{{com.getnomMed()}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span style=" margin-top: 15px;color: #212121 ">{{com.getnumbon()}}</span>
+                </ion-item-options>
+              </ion-item-sliding>
+
+            </ion-list>
+          </section>
         </div>
       </div>
-
-      <button (click)="addComande()">Enregister</button>
-
-
-
     </div>
 
   </div>

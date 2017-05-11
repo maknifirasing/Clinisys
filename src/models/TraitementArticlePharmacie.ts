@@ -2,7 +2,7 @@ export class TraitementArticlePharmacie{
   private _actif:string;
   private _desart:string;
   private _codart:string;
-  private _qtestk:string;
+  private _qtestk:number;
 
   constructor() {
   }
@@ -31,11 +31,11 @@ export class TraitementArticlePharmacie{
     this._codart = value;
   }
 
-  getqtestk(): string {
+  getqtestk(): number {
     return this._qtestk;
   }
 
-  setqtestk(value: string) {
+  setqtestk(value: number) {
     this._qtestk = value;
   }
 

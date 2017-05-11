@@ -34,6 +34,10 @@ $colors: (
 $tabs-md-tab-icon-size:3.8rem ;
 $badge-md-background-color:color($colors,danger);
 $modal-inset-height-large:100px;
+
+$toast-max-width:( 80%);
+$toast-md-background:(#42A5F5);
+
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here

@@ -33,8 +33,8 @@ export class MyApp {
     this.pages = [
       {title: 'Langues', component: LanguesPage}
     ];
- //   Variables.uRL = "http://adminWS:pom@37.59.230.40:8084/";
-    Variables.uRL = "http://adminWS:pom@192.168.0.172:8084/";
+   Variables.uRL = "http://adminWS:pom@37.59.230.40:8084/";
+  //  Variables.uRL = "http://adminWS:pom@192.168.0.172:8084/";
 
     platform.ready().then(() => {
 

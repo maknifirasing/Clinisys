@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AlertController, FabContainer, NavController, NavParams} from 'ionic-angular';
+import {AlertController, NavController, NavParams, ToastController} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {RealisationTest} from "../../models/RealisationTest";
 import {Langue} from "../../models/Langue";
@@ -14,6 +14,7 @@ import {Pharmacie} from "../../models/Pharmacie";
 import {TraitementArticlePharmacie} from "../../models/TraitementArticlePharmacie";
 import {TraitementMedecinPharmacie} from "../../models/TraitementMedecinPharmacie";
 import {Article} from "../../models/Article";
+import {CommandePharmacie} from "../../models/CommandePharmacie";
 
 /**
  * Generated class for the Menu page.
@@ -29,7 +30,6 @@ import {Article} from "../../models/Article";
 export class MenuPage {
 
   pet: string = "realisation";
-
   // ************** Realisation **************
 
   connection: boolean;
@@ -55,6 +55,7 @@ export class MenuPage {
   pathimage = Variables.path;
   p: number;
   m: number;
+  listerealisation: any;
 
   // ************* Fin Realisation ***************
 
@@ -64,18 +65,24 @@ export class MenuPage {
   articleListe: Array<TraitementArticlePharmacie> = [];
   articleComande: Array<Article> = [];
   medecinListe: Array<TraitementMedecinPharmacie> = [];
+  commandeListe: Array<CommandePharmacie> = [];
   client = new Client();
   pharmacieSelected = new Pharmacie();
   medecinSelected = new TraitementMedecinPharmacie();
+  menu_is_open: boolean;
+  art: boolean;
+  med: boolean;
 
   // *********** Fin Pharmacie ***********************
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite, private toastCtrl: ToastController) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
     this.tabLangue = TabsPage.tabLangue.tabLangue;
     this.pass = TabsPage.tabLangue.pass;
     this.dateFeuille = TabsPage.tabLangue.dateFeuille;
     this.langue = TabsPage.tabLangue.langue;
+
+
 
     // ************* Realisation ***************
 
@@ -85,7 +92,12 @@ export class MenuPage {
     this.heure = new Date(TabsPage.heureActuelle);
 
     // ************* Fin Realisation ***************
+
+    // ***********  Pharmacie ***********************
+
     this.client = TabsPage.tabLangue.client;
+    this.menu_is_open = false;
+
     // *********** Fin Pharmacie ***********************
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
@@ -109,6 +121,12 @@ export class MenuPage {
     this.clavier = true;
     this.keyboar = 0;
     this.inputrange = 0;
+
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
+    }
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -249,6 +267,11 @@ export class MenuPage {
     this.clavier = true;
     this.keyboar = 0;
     this.inputrange = 0;
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
+    }
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -297,6 +320,11 @@ export class MenuPage {
       }
       i++;
     }
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
+    }
   }
 
   keyboardShow(rang) {
@@ -312,6 +340,11 @@ export class MenuPage {
     } else {
       this.keyboar = 0;
       this.clavier = false;
+    }
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
     }
   }
 
@@ -332,10 +365,20 @@ export class MenuPage {
     this.planificationvalue[this.inputrange].setclavier('false');
     this.inputrange = -1;
     this.keyboar = 0;
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
+    }
   }
 
   updateInput(value) {
     this.clavier = true;
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
+    }
     if (this.planificationvalue[this.inputrange].getdisabled() === 'false') {
       if (value === 'clavier') {
         this.clavier = false;
@@ -406,6 +449,11 @@ export class MenuPage {
         }
       }
     }
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
+    }
   }
 
   addHeure() {
@@ -449,9 +497,18 @@ export class MenuPage {
   luckFooter() {
     this.clavier = false;
     this.PharmacieDispo();
+    this.ListeCommandePharmaciePrescrit(this.pass.getdossier(), this.dateFeuille);
+    this.art = false;
+    this.med = false;
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
+    }
   }
 
   PharmacieDispo() {
+    this.listePharmacie = [];
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
@@ -562,9 +619,40 @@ export class MenuPage {
     xmlhttp.send(sr);
   }
 
-  changeFiltre(pharmacie, fab: FabContainer) {
-    this.pharmacieSelected = pharmacie;
-    fab.close();
+  togglePopupMenu(pharmacie) {
+    if (pharmacie !== 'false') {
+      if (this.articleComande.length > 0) {
+        this.articleConfirm(pharmacie);
+      } else {
+        this.pharmacieSelected = pharmacie;
+      }
+    }
+    return this.menu_is_open = !this.menu_is_open;
+  }
+
+  articleConfirm(pharmacie) {
+    let alert = this.alertCtrl.create({
+      title: 'Confirm purchase',
+      message: 'Do you want to buy this book?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'ok',
+          handler: () => {
+            this.articleComande = [];
+            this.pharmacieSelected = pharmacie;
+
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
 
@@ -591,7 +679,7 @@ export class MenuPage {
             article.setactif(x[i].children[0].textContent);
             article.setcodart(x[i].children[2].textContent);
             article.setdesart(x[i].children[6].textContent);
-            article.setqtestk(x[i].children[22].textContent);
+            article.setqtestk(Number(x[i].children[22].textContent));
             this.articleListe.push(article);
           }
         }
@@ -627,7 +715,7 @@ export class MenuPage {
             article.setactif(true);
             article.setcodart(x[i].children[0].textContent);
             article.setdesart(x[i].children[4].textContent);
-            article.setqtestk(x[i].children[16].textContent);
+            article.setqtestk(Number(x[i].children[16].textContent));
             this.articleListe.push(article);
           }
 
@@ -664,7 +752,7 @@ export class MenuPage {
             article.setactif('true');
             article.setcodart(x[i].children[0].textContent);
             article.setdesart(x[i].children[4].textContent);
-            article.setqtestk(x[i].children[16].textContent);
+            article.setqtestk(Number(x[i].children[16].textContent));
             this.articleListe.push(article);
           }
         }
@@ -718,28 +806,73 @@ export class MenuPage {
       this.getTraitementExterne(shearch);
     }
     else if (this.pharmacieSelected.getCodeDep() === "Stup") {
-      this.getStupifiant(shearch, '01');//this.client.getetage());
+      this.getStupifiant(shearch, this.client.getetage());
     } else {
       this.getTraitementInterne(shearch, this.pharmacieSelected.getCodeDep(), true);
     }
   }
 
+  exist(article, t): number {
+    for (var i = 0; i < t.length; i++) {
+      if (article.getcodart() === t[i].getarticle().getcodart()) {
+        return i;
+      }
+    }
+    return -1;
+  }
 
   selectArticle(x) {
     (<HTMLInputElement>document.getElementById("article")).value = "";
-    var article = new Article();
-    article.setarticle(x);
-    article.setqte(1);
-    article.setrang(this.articleComande.length);
-    this.articleComande.push(article);
+    if (x.getqtestk() > 0) {
+      if (this.exist(x, this.articleComande) < 0) {
+        var article = new Article();
+        article.setarticle(x);
+        article.setqte(1);
+        article.setrang(this.articleComande.length);
+        this.articleComande.push(article);
+        this.art = true;
+      } else {
+        this.presentToast('Produit exsit');
+      }
+    } else {
+      this.presentToast('Stock indosponible');
+    }
     setTimeout(() => {
       document.getElementById(this.articleComande[this.articleComande.length - 1].getrang() + "article").focus();
     }, 10);
     this.articleListe = [];
+    //   this.exist(x);
   }
 
-  updateQteArticle(x) {
-    this.articleComande[x].setqte(Number((<HTMLInputElement>document.getElementById(this.articleComande[x].getrang() + "article")).value));
+  presentToast(message) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top',
+      //  cssClass:'toasterr'
+    });
+
+    toast.onDidDismiss(() => {
+      //     console.log('Dismissed toast');
+    });
+
+    toast.present();
+  }
+
+
+  updateQteArticle(rang) {
+    var qte = Number((<HTMLInputElement>document.getElementById(this.articleComande[rang].getrang() + "article")).value);
+    if (qte > this.articleComande[rang].getarticle().getqtestk()) {
+      this.presentToast('qte indisponible');
+      (<HTMLInputElement>document.getElementById(this.articleComande[rang] + "article")).value = "1";
+      this.articleComande[rang].setqte(1);
+      setTimeout(() => {
+        document.getElementById(this.articleComande[rang] + "article").focus();
+      }, 10);
+
+    } else {
+      this.articleComande[rang].setqte(qte);
+    }
   }
 
 
@@ -754,26 +887,27 @@ export class MenuPage {
     (<HTMLInputElement>document.getElementById("medecin")).value = x.getnomMed();
     this.medecinSelected = x;
     this.medecinListe = [];
+    this.med = true;
   }
 
   addComande() {
     switch (this.pharmacieSelected.getCodePhar()) {
-      case "PC":// PharmacieCentrale
+      case "C":// PharmacieCentrale
         if (this.pharmacieSelected.getisNuit() === false) {
           for (var i = 0; i < this.articleComande.length; i++) {
-            this.ajoutCommandePharmacieCentrale(this.client.getnumdoss(), this.articleComande[i],this.client.getetage() ,this.user,
+            this.ajoutCommandePharmacieCentrale(this.client.getnumdoss(), this.articleComande[i], this.pharmacieSelected.getCodeDep(), this.user,
               this.dateFeuille, this.medecinSelected.getcodMed());
           }
         } else {
           for (var i = 0; i < this.articleComande.length; i++) {
-            this.ajoutCommandePharmacieNuit(this.client.getnumdoss(), this.articleComande[i],this.client.getetage(), this.user,
+            this.ajoutCommandePharmacieNuit(this.client.getnumdoss(), this.articleComande[i], this.pharmacieSelected.getCodeDep(), this.user,
               this.dateFeuille, this.medecinSelected.getcodMed());
           }
         }
         break;
       case "PEX":// Pharmacie Externe
         for (var i = 0; i < this.articleComande.length; i++) {
-          this.ajoutCommandePharmacieExterne(this.client.getnumdoss(), this.articleComande[i], this.client.getetage(), this.user,
+          this.ajoutCommandePharmacieExterne(this.client.getnumdoss(), this.articleComande[i], this.pharmacieSelected.getCodeDep(), this.user,
             this.dateFeuille, this.medecinSelected.getcodMed(), this.pharmacieSelected.getisNuit());
         }
         break;
@@ -785,13 +919,13 @@ export class MenuPage {
         break;
       case "PET":// Pharmacie Etage
         for (var i = 0; i < this.articleComande.length; i++) {
-          this.ajoutCommandePharmacieReserve(this.client.getnumdoss(), this.articleComande[i], this.client.getetage(), this.user,
+          this.ajoutCommandePharmacieReserve(this.client.getnumdoss(), this.articleComande[i], this.pharmacieSelected.getCodeDep(), this.user,
             this.dateFeuille, this.medecinSelected.getcodMed());
         }
         break;
       case "APE":// Autre Pharmacie Etage
         for (var i = 0; i < this.articleComande.length; i++) {
-          this.ajoutCommandePharmacieReserve(this.client.getnumdoss(), this.articleComande[i], this.client.getetage(), this.user,
+          this.ajoutCommandePharmacieReserve(this.client.getnumdoss(), this.articleComande[i], this.pharmacieSelected.getCodeDep(), this.user,
             this.dateFeuille, this.medecinSelected.getcodMed());
         }
         break;
@@ -800,7 +934,7 @@ export class MenuPage {
   }
 
 
-  ajoutCommandePharmacieCentrale(numdoss, article, etage,user, dateFeuille, codMed) {
+  ajoutCommandePharmacieCentrale(numdoss, article, etage, user, dateFeuille, codMed) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
@@ -829,7 +963,7 @@ export class MenuPage {
       '<qtePans></qtePans>' +
       '<referenceDepot></referenceDepot>' +
       '</mvtst>' +
-      '<etage>'+etage+'</etage>' +
+      '<etage>' + etage + '</etage>' +
       '<user>' + user + '</user>' +
       '<dateFeuille>' + dateFeuille + '</dateFeuille>' +
       '<codMed>' + codMed + '</codMed>' +
@@ -842,13 +976,9 @@ export class MenuPage {
           this.xml = xmlhttp.responseXML;
           var x, i, medecin;
           x = this.xml.getElementsByTagName("return");
-          for (i = 0; i < x.length; i++) {
-            medecin = new TraitementMedecinPharmacie();
-            medecin.setactif(x[i].children[0].textContent);
-            medecin.setcodMed(x[i].children[3].textContent);
-            medecin.setnomMed(x[i].children[4].textContent);
-            this.medecinListe.push(medecin);
-          }
+          alert("ajoutCommandePharmacieCentrale " + x[0].textContent);
+          this.commandeListe = [];
+          this.ListeCommandePharmaciePrescrit(numdoss, dateFeuille);
         }
       }
     }
@@ -886,7 +1016,7 @@ export class MenuPage {
       '<qtePans></qtePans>' +
       '<referenceDepot></referenceDepot>' +
       '</mvtst>' +
-      '<etage>'+etage+'</etage>' +
+      '<etage>' + etage + '</etage>' +
       '<user>' + user + '</user>' +
       '<dateFeuille>' + dateFeuille + '</dateFeuille>' +
       '<codMed>' + codMed + '</codMed>' +
@@ -899,13 +1029,9 @@ export class MenuPage {
           this.xml = xmlhttp.responseXML;
           var x, i, medecin;
           x = this.xml.getElementsByTagName("return");
-          for (i = 0; i < x.length; i++) {
-            medecin = new TraitementMedecinPharmacie();
-            medecin.setactif(x[i].children[0].textContent);
-            medecin.setcodMed(x[i].children[3].textContent);
-            medecin.setnomMed(x[i].children[4].textContent);
-            this.medecinListe.push(medecin);
-          }
+          alert("ajoutCommandePharmacieNuit " + x[0].textContent);
+          this.commandeListe = [];
+          this.ListeCommandePharmaciePrescrit(numdoss, dateFeuille);
         }
       }
     }
@@ -914,7 +1040,7 @@ export class MenuPage {
     xmlhttp.send(sr);
   }
 
-  ajoutCommandePharmacieExterne(numdoss, article, etage, user, dateFeuille, codMed,isNuit) {
+  ajoutCommandePharmacieExterne(numdoss, article, etage, user, dateFeuille, codMed, isNuit) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
@@ -943,7 +1069,7 @@ export class MenuPage {
       '<qtePans></qtePans>' +
       '<referenceDepot></referenceDepot>' +
       '</mvtst>' +
-      '<etage>'+etage+'</etage>' +
+      '<etage>' + etage + '</etage>' +
       '<user>' + user + '</user>' +
       '<dateFeuille>' + dateFeuille + '</dateFeuille>' +
       '<codMed>' + codMed + '</codMed>' +
@@ -957,13 +1083,9 @@ export class MenuPage {
           this.xml = xmlhttp.responseXML;
           var x, i, medecin;
           x = this.xml.getElementsByTagName("return");
-          for (i = 0; i < x.length; i++) {
-            medecin = new TraitementMedecinPharmacie();
-            medecin.setactif(x[i].children[0].textContent);
-            medecin.setcodMed(x[i].children[3].textContent);
-            medecin.setnomMed(x[i].children[4].textContent);
-            this.medecinListe.push(medecin);
-          }
+          alert("ajoutCommandePharmacieExterne " + x[0].textContent);
+          this.commandeListe = [];
+          this.ListeCommandePharmaciePrescrit(numdoss, dateFeuille);
         }
       }
     }
@@ -1001,7 +1123,7 @@ export class MenuPage {
       '<qtePans></qtePans>' +
       '<referenceDepot></referenceDepot>' +
       '</mvtst>' +
-      '<etage>'+etage+'</etage>' +
+      '<etage>' + etage + '</etage>' +
       '<user>' + user + '</user>' +
       '<dateFeuille>' + dateFeuille + '</dateFeuille>' +
       '<codMed>' + codMed + '</codMed>' +
@@ -1014,13 +1136,9 @@ export class MenuPage {
           this.xml = xmlhttp.responseXML;
           var x, i, medecin;
           x = this.xml.getElementsByTagName("return");
-          for (i = 0; i < x.length; i++) {
-            medecin = new TraitementMedecinPharmacie();
-            medecin.setactif(x[i].children[0].textContent);
-            medecin.setcodMed(x[i].children[3].textContent);
-            medecin.setnomMed(x[i].children[4].textContent);
-            this.medecinListe.push(medecin);
-          }
+          alert("ajoutCommandePharmacieStupefiant " + x[0].textContent);
+          this.commandeListe = [];
+          this.ListeCommandePharmaciePrescrit(numdoss, dateFeuille);
         }
       }
     }
@@ -1058,7 +1176,7 @@ export class MenuPage {
       '<qtePans></qtePans>' +
       '<referenceDepot></referenceDepot>' +
       '</mvtst>' +
-      '<etage>'+etage+'</etage>' +
+      '<etage>' + etage + '</etage>' +
       '<user>' + user + '</user>' +
       '<dateFeuille>' + dateFeuille + '</dateFeuille>' +
       '<codMed>' + codMed + '</codMed>' +
@@ -1071,12 +1189,49 @@ export class MenuPage {
           this.xml = xmlhttp.responseXML;
           var x, i, medecin;
           x = this.xml.getElementsByTagName("return");
+          alert("ajoutCommandePharmacieReserve " + x[0].textContent);
+          this.commandeListe = [];
+          this.ListeCommandePharmaciePrescrit(numdoss, dateFeuille);
+        }
+      }
+    }
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+  ListeCommandePharmaciePrescrit(numdoss, dateFeuille) {
+    this.commandeListe = [];
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:ListeCommandePharmaciePrescrit>' +
+      '<numdoss>' + numdoss + '</numdoss>' +
+      '<datefeuille>' + dateFeuille + '</datefeuille>' +
+      '</ser:ListeCommandePharmaciePrescrit>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          this.xml = xmlhttp.responseXML;
+          var x, i, commande, d, day, month, year;
+          x = this.xml.getElementsByTagName("return");
           for (i = 0; i < x.length; i++) {
-            medecin = new TraitementMedecinPharmacie();
-            medecin.setactif(x[i].children[0].textContent);
-            medecin.setcodMed(x[i].children[3].textContent);
-            medecin.setnomMed(x[i].children[4].textContent);
-            this.medecinListe.push(medecin);
+            commande = new CommandePharmacie();
+            d = new Date(x[i].children[2].textContent);
+            day = d.getDate();
+            month = d.getMonth() + 1;
+            year = d.getFullYear();
+            commande.setdateCommande(day + "/" + month + "/" + year);
+            commande.setdesart(x[i].children[3].textContent);
+            commande.setnomMed(x[i].children[5].textContent);
+            commande.setnumbon(x[i].children[7].textContent);
+            commande.setqte(x[i].children[9].textContent);
+            this.commandeListe.push(commande);
           }
         }
       }
@@ -1085,4 +1240,5 @@ export class MenuPage {
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
   }
+
 }
