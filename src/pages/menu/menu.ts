@@ -28,7 +28,6 @@ import {CommandePharmacie} from "../../models/CommandePharmacie";
   templateUrl: 'menu.html',
 })
 export class MenuPage {
-
   pet: string = "realisation";
   // ************** Realisation **************
 
@@ -82,14 +81,15 @@ export class MenuPage {
     this.dateFeuille = TabsPage.tabLangue.dateFeuille;
     this.langue = TabsPage.tabLangue.langue;
 
-
-
     // ************* Realisation ***************
-
     this.heureActuelle = new Date(TabsPage.heureActuelle);
+    if (isNaN(this.heureActuelle.getTime())) {
+      this.heureActuelle = new Date();
+    }
+    this.heure = this.heureActuelle;
     this.p = Number(this.heureActuelle.getHours() + 1);
     this.m = Number(this.heureActuelle.getHours() - 6);
-    this.heure = new Date(TabsPage.heureActuelle);
+
 
     // ************* Fin Realisation ***************
 
@@ -1239,6 +1239,25 @@ export class MenuPage {
     xmlhttp.setRequestHeader('Content-Type', 'text/xml');
     xmlhttp.responseType = "document";
     xmlhttp.send(sr);
+  }
+
+
+  navShow: any;
+
+
+  showMenu(pharmacie) {
+    if (pharmacie !== 'false') {
+      if (this.articleComande.length > 0) {
+        this.articleConfirm(pharmacie);
+      } else {
+        this.pharmacieSelected = pharmacie;
+      }
+    }
+    this.navShow = "navShow";
+  }
+
+  hideMenu() {
+    this.navShow = "";
   }
 
 }

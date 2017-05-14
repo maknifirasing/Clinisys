@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.computerSystem.Clinisys" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.csys.clinisys" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>CliniSys</name>
     <description>Clinisys application medical</description>
     <author email="csys.tn@gmail.com" href="http://www.csys.com.tn">Computer System</author>

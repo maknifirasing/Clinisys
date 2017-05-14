@@ -1,7 +1,7 @@
 <ion-header style="height: 93px;color: white">
 
   <div fxLayout="row" fxLayoutAlign="start start" class="md-card" *ngIf="langue==='francais' || langue==='anglais'">
-    <div><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
+     <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
     &nbsp;&nbsp;
     <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
@@ -39,7 +39,7 @@
     </div>
     &nbsp;&nbsp;
 
-    <div><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
+     <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="end start" class="md-card2" *ngIf="langue==='arabe'">

@@ -17,13 +17,13 @@ page-dossier {
 
 .strong{
   color: #0c60ee;
-  font-size: 15px;
+  font-size: 19px;
   line-height:5px;
 }
 
   .strong2{
     margin-top: 5px;
-    font-size: 15px;
+    font-size: 17px;
   }
 
 
@@ -40,5 +40,14 @@ page-dossier {
     background-color: #0277bd;
     opacity: 0.9;
     height: 45px;
+  }
+
+  .imginfo {
+    width: 45px;
+    height: 45px;
+    font-size: 54px;
+    background: #00E676;
+    border-radius: 50%;
+    border: 3px solid #FFFFFF;
   }
 }

@@ -1,7 +1,7 @@
 <ion-header style="height: 93px;color: white">
 
   <div fxLayout="row" fxLayoutAlign="start start" class="md-card" *ngIf="langue==='francais' || langue==='anglais'">
-    <div><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
+     <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
     &nbsp;&nbsp;
     <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
@@ -39,7 +39,7 @@
     </div>
     &nbsp;&nbsp;
 
-    <div><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
+     <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="end start" class="md-card2" *ngIf="langue==='arabe'">
@@ -66,7 +66,7 @@
   <div *ngIf="langue==='arabe'" dir="rtl"  margin-top="10" >
     <div fxLayout="row" fxLayoutWrap *ngFor="let ExRad of examenRT" (click)="getdocumentById(observ.value)">
       <input type="hidden" #observ value="{{ExRad.getobserv()}}">
-      <div dir="rtl"><img src="{{pathimage}}/word.png" style="width:40px;height:40px;margin-top:5px;"></div>&nbsp;&nbsp;&nbsp;
+      <div dir="rtl"><img src="{{pathimage}}/word.png" style="width:40px;height:40px;margin-top:5px;margin-right: 5px"></div>&nbsp;&nbsp;&nbsp;
       <div fxFlex="84" ><strong>{{tabLangue.titreDemande}}:</strong> {{ExRad.getdateExamen()}}<br/>
         <strong style="color: #0c60ee">{{tabLangue.titreExamen}}:</strong> <span style="color: #0c60ee">{{ExRad.getdesignationExamen()}}</span>
         <p></p>
@@ -76,7 +76,7 @@
     </div>
     <div fxLayout="row" fxLayoutWrap *ngFor="let ExRadF of examenRF " (click)="getdocumentById(observF.value)">
       <input type="hidden" #observF value="{{ExRadF.getobserv()}}">
-      <div dir="rtl"><img src="{{pathimage}}/wordoff.png" style="width:40px;height:40px;margin-top:5px;"></div>&nbsp;&nbsp;&nbsp;
+      <div dir="rtl"><img src="{{pathimage}}/wordoff.png" style="width:40px;height:40px;margin-top:5px;margin-right: 5px"></div>&nbsp;&nbsp;&nbsp;
       <div fxFlex="84" ><strong>{{tabLangue.titreDemande}}:</strong> {{ExRadF.getdateExamen()}}<br/>
         <strong style="color: #0c60ee">{{tabLangue.titreExamen}}:</strong> <span style="color: #0c60ee">{{ExRadF.getdesignationExamen()}}</span>
         <p></p>
@@ -88,7 +88,7 @@
   <div *ngIf="langue==='francais' || langue==='anglais'" margin-top="10" >
     <div fxLayout="row" fxLayoutWrap *ngFor="let ExRad of examenRT  ">
       <input type="hidden" #observ value="{{ExRad.getobserv()}}">
-      <div dir="ltr"><img src="{{pathimage}}/word.png" style="width:40px;height:40px;margin-top:0px;"></div>&nbsp;&nbsp;&nbsp;
+      <div dir="ltr"><img src="{{pathimage}}/word.png" style="width:40px;height:40px;margin-top:0px;margin-left: 5px"></div>&nbsp;&nbsp;&nbsp;
       <div fxFlex="84" (click)="getdocumentById(observ.value)"><strong>{{tabLangue.titreDemande}}:</strong> {{ExRad.getdateExamen()}}<br/>
         <strong>{{tabLangue.titreExamen}}: </strong>{{ExRad.getdesignationExamen()}}
         <p></p>
@@ -97,7 +97,7 @@
     </div>
     <div fxLayout="row" fxLayoutWrap *ngFor="let ExRadF of examenRF " (click)="getdocumentById(observF.value)">
       <input type="hidden" #observF value="{{ExRadF.getobserv()}}">
-      <div dir="ltr"><img src="{{pathimage}}/wordoff.png" style="width:40px;height:40px;margin-top:0px;"></div>&nbsp;&nbsp;&nbsp;
+      <div dir="ltr"><img src="{{pathimage}}/wordoff.png" style="width:40px;height:40px;margin-top:0px;margin-left: 5px"></div>&nbsp;&nbsp;&nbsp;
       <div fxFlex="84" (click)="getdocumentById(observ.value)"><strong>{{tabLangue.titreDemande}}:</strong> {{ExRadF.getdateExamen()}}<br/>
         <strong>{{tabLangue.titreExamen}}: </strong>{{ExRadF.getdesignationExamen()}}
         <p></p>

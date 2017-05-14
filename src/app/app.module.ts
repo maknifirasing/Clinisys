@@ -27,7 +27,6 @@ import {CustomIconsModule} from 'ionic2-custom-icons';
 import {Ng2HighchartsModule} from 'ng2-highcharts';
 import {Variables} from "../providers/variables";
 import {HttpModule} from '@angular/http';
-import {PharmaciePage} from "../pages/pharmacie/pharmacie";
 import {MenuPage} from "../pages/menu/menu";
 
 @NgModule({
@@ -49,7 +48,6 @@ import {MenuPage} from "../pages/menu/menu";
     TraitmentCourbe,
     ConsignePage,
     ModifPassPage,
-    PharmaciePage,
     MenuPage
   ],
   imports: [
@@ -82,7 +80,6 @@ import {MenuPage} from "../pages/menu/menu";
     TraitmentCourbe,
     ConsignePage,
     ModifPassPage,
-    PharmaciePage,
     MenuPage
   ],
   providers: [

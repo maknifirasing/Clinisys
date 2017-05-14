@@ -1,7 +1,7 @@
 <ion-header style="height: 93px;color: white">
 
   <div fxLayout="row" fxLayoutAlign="start start" class="md-card" *ngIf="langue==='francais' || langue==='anglais'">
-    <div><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
+     <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
     &nbsp;&nbsp;
     <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
@@ -39,7 +39,7 @@
     </div>
     &nbsp;&nbsp;
 
-    <div><img src="{{pathimage}}/{{pass.getimg()}}" width="40" height="40"></div>
+     <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="end start" class="md-card2" *ngIf="langue==='arabe'">
@@ -118,7 +118,7 @@
           </strong><br/>
           <span class="strong2" *ngFor="let sig of signec ">
 
-            <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong> {{sig.getdate()}}<br/>
+            <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong><span style="font-size: 13px"> {{sig.getdate()}}</span><br/>
 
           </span>
         </div>
@@ -135,7 +135,7 @@
           </strong><br/>
           <span class="strong2" *ngFor="let en of Entrees ">
 
-            <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong><span style="font-size: 10px"> {{en.getdate()}}</span><br/>
+            <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong><span style="font-size: 13px"> {{en.getdate()}}</span><br/>
 
           </span>
         </div>
@@ -152,7 +152,7 @@
           <span class="strong2" *ngFor="let tra of traitement ">
 
             <strong>{{ tra.getdesignation() }}</strong>
-            <span style="font-size: 10px">     {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.</span><br/>
+            <span style="font-size: 13px">     {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.</span><br/>
 
           </span>
         </div>
@@ -169,7 +169,7 @@
           </strong><br/>
           <span class="strong2" *ngFor="let so of Sorties ">
 
-            <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong><span style="font-size: 10px"> {{so.getdate()}}</span><br/>
+            <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong><span style="font-size: 13px"> {{so.getdate()}}</span><br/>
 
           </span>
         </div>
@@ -183,7 +183,7 @@
           </strong><br/>
           <span class="strong2" *ngFor="let pas of signe ">
 
-            <strong>{{pas.getdesignation()}}</strong> <span style="font-size: 10px">{{pas.getquantite()}} {{pas.getdate()}}</span><br/>
+            <strong>{{pas.getdesignation()}}</strong> <span style="font-size: 13px">{{pas.getquantite()}} {{pas.getdate()}}</span><br/>
 
           </span>
         </div>
@@ -322,7 +322,7 @@
           </strong><br/>
           <span class="strong2" *ngFor="let sig of signec ">
 
-             <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong><span style="font-size: 10px"> {{sig.getdate()}}</span><br/>
+             <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong><span style="font-size: 13px"> {{sig.getdate()}}</span><br/>
 
           </span>
         </div>
@@ -339,7 +339,7 @@
           </strong><br/>
           <span class="strong2" *ngFor="let en of Entrees ">
 
-             <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong><span style="font-size: 10px"> {{en.getdate()}}</span><br/>
+             <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong><span style="font-size: 13px"> {{en.getdate()}}</span><br/>
 
           </span>
         </div>
@@ -356,7 +356,7 @@
           <span class="strong2" *ngFor="let tra of traitement ">
 
             <strong>{{ tra.getdesignation() }}</strong>
-             <span style="font-size: 10px">  {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.</span><br/>
+             <span style="font-size: 13px">  {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.</span><br/>
 
           </span>
         </div>
@@ -373,7 +373,7 @@
           </strong><br/>
           <span class="strong2" *ngFor="let so of Sorties ">
 
-             <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> <span style="font-size: 10px">{{so.getdate()}}</span><br/>
+             <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> <span style="font-size: 13px">{{so.getdate()}}</span><br/>
 
           </span>
         </div>
@@ -387,7 +387,7 @@
           </strong><br/>
           <span class="strong2" *ngFor="let pas of signe ">
 
-             <strong>{{pas.getdesignation()}}</strong> <span style="font-size: 10px">{{pas.getquantite()}} {{pas.getdate()}}</span><br/>
+             <strong>{{pas.getdesignation()}}</strong> <span style="font-size: 13px">{{pas.getquantite()}} {{pas.getdate()}}</span><br/>
 
           </span>
         </div>

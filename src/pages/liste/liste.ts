@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, Platform} from 'ionic-angular';
+import {LoadingController, NavController, NavParams, Platform} from 'ionic-angular';
 import {Patient} from '../../models/Patient';
 import {Variables} from "../../providers/variables";
 import {TabsPage} from "../tabs/tabs";
@@ -43,13 +43,13 @@ export class ListePage {
   langes: Array<Langue> = [];
   pathimage = Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, private sqlite: SQLite, public loadingCtrl: LoadingController) {
     this.dtFeuille = new DateFeuille();
     this.codeClinique = navParams.get("codeClinique");
     this.nomClinique = navParams.get("nomClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
-
+    this.presentLoadingDefault();
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
         this.connection = false;
@@ -58,6 +58,7 @@ export class ListePage {
       }
       else {
         this.connection = true;
+
         this.historique("admin", "", "all", this.codeClinique);
         this.update();
       }
@@ -66,10 +67,20 @@ export class ListePage {
 
   }
 
+  presentLoadingDefault() {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...',
+      spinner: 'bubbles'
+    });
+
+    loading.present();
+
+    setTimeout(() => {
+      loading.dismiss();
+    }, 1000);
+  }
+
   liste(user, searchText, etage, codeClinique) {
-    this.patient.pop();
-    this.patient = [];
-    this.patient.length = 0;
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -135,8 +146,6 @@ export class ListePage {
             }
             this.patient.push(p);
           }
-          if (searchText === "")
-            searchText = "vide";
           this.patienserv = new PatientService(this.sqlite);
           this.patienserv.verifPatient(this.patient, user, searchText, etage, codeClinique).then(res => {
             if (res === false) {
@@ -152,8 +161,6 @@ export class ListePage {
   }
 
   listeOff(patient, user, searchText, etage, codeClinique) {
-    if (searchText === "")
-      searchText = "vide";
     this.patienserv = new PatientService(this.sqlite);
     this.patient = this.patienserv.getPatients(patient, user, searchText, etage, codeClinique);
     this.patientliste = this.patient;
@@ -240,6 +247,7 @@ export class ListePage {
   }
 
   deleteListe(user, searchText, etage, codeClinique) {
+    this.patient = [];
     this.patienserv = new PatientService(this.sqlite);
     this.patienserv.deletePatients(user, searchText, etage, codeClinique);
   }
@@ -291,7 +299,15 @@ export class ListePage {
   }
 
   update() {
-    this.liste("admin", "", "all", this.codeClinique);
+
+    this.patienserv = new PatientService(this.sqlite);
+    this.patienserv.verifPatient(this.patient, "admin", "", "all", this.codeClinique).then(res => {
+      if (res === false) {
+        this.liste("admin", "", "all", this.codeClinique);
+      } else {
+        this.listeOff(this.patient, "admin", "", "all", this.codeClinique);
+      }
+    });
     this.DateFeuille(this.codeClinique);
   }
 

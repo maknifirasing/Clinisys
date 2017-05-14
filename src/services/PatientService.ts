@@ -14,7 +14,7 @@ export class PatientService {
         name: 'clinisys.db',
         location: 'default' // the location field is required
       }).then((db: SQLiteObject) => {
-        db.executeSql("select count(*) as sums from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
+        db.executeSql("select count(*) as sum from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
           .then(result => {
             if (result.rows.item(0).sum > 0) {
               resolve(true);

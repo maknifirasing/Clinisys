@@ -1,4 +1,4 @@
-<ion-tabs color="custom-color" toolbarColor="dark" sliderColor="light">
+<ion-tabs color="custom-color" toolbarColor="dark" sliderColor="light" *ngIf="langue==='francais' || langue==='anglais'">
 
   <ion-tab [root]="tab1Root" customIconSet="ico" customIconName="dossier"
           ></ion-tab>
@@ -15,5 +15,25 @@
   <ion-tab [root]="tab6Root"
             customIconSet="ico"
            customIconName="info"  ></ion-tab>
+</ion-tabs>
+
+
+<ion-tabs color="custom-color" toolbarColor="dark" sliderColor="light" *ngIf="langue==='arabe'" selectedIndex="6"
+          #paymentTabs [tabbarLayout]="tabBarLayout" [selectedIndex]="tabsIndex" preloadTabs="false">
+  <ion-tab [root]="tab6Root"
+           customIconSet="ico"
+           customIconName="info"  ></ion-tab>
+  <ion-tab [root]="tab5Root"
+           tabBadge="{{tabBadgeC()}}" customIconSet="ico"
+           customIconName="consigne"></ion-tab>
+  <ion-tab [root]="tab4Root" tabBadge="{{tabBadgePreanesthesie()}}" customIconSet="ico" customIconName="bloc"
+  ></ion-tab>
+  <ion-tab [root]="tab3Root" customIconSet="ico" customIconName="radio"
+           tabBadge="{{tabBadgeexamenR()}}" ></ion-tab>
+  <ion-tab [root]="tab2Root"
+           tabBadge="{{tabBadgepdf()}}"  customIconSet="ico"
+           customIconName="lab"></ion-tab>
+  <ion-tab [root]="tab1Root" customIconSet="ico" customIconName="dossier"
+  ></ion-tab>
 </ion-tabs>
 

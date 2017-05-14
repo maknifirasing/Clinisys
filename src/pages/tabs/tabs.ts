@@ -1,6 +1,6 @@
-import {Component, Injectable} from '@angular/core';
+import {Component, Injectable, ViewChild} from '@angular/core';
 import {DossierPage} from "../dossier/dossier";
-import {NavParams, NavController, Platform, ModalController} from 'ionic-angular';
+import {NavParams, NavController, Platform, ModalController, Tabs} from 'ionic-angular';
 import {ExamenRadioPage} from "../examen-radio/examen-radio";
 import {ListPreanesthesiePage} from "../list-preanesthesie/list-preanesthesie";
 import {ExamenLaboPage} from "../examen-labo/examen-labo";
@@ -34,7 +34,7 @@ import {Client} from "../../models/Client";
 })
 @Injectable()
 export class TabsPage {
-
+  @ViewChild("paymentTabs") paymentTabs: Tabs;
   consigneserv: any;
   coountConsigne: number;
   tab1Root: any = DossierPage;
@@ -132,7 +132,10 @@ export class TabsPage {
     });
   }
 
-  ionViewDidLoad() {
+  ngAfterViewInit() {
+    if(this.langue==='arabe'){
+      this.paymentTabs.select(5);
+    }
   }
 
   GetExamenRadioByNumDossResponse(numDoss, codeClinique) {

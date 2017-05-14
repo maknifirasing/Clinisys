@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {LoadingController, NavController, NavParams} from 'ionic-angular';
 import {Variables} from "../../providers/variables";
 import {TraitCourbe} from "../../models/TraitCourbe";
 import {HistTraitCourbeService} from "../../services/HistTraitCourbeService";
@@ -29,12 +29,13 @@ export class TraitmentCourbe {
   chartData: any;
   pathimage=Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite,private screenOrientation: ScreenOrientation) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite,private screenOrientation: ScreenOrientation,public loadingCtrl: LoadingController) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.codeClinique = TabsPage.tabLangue.codeClinique;
     this.tabLangue = TabsPage.tabLangue.tabLangue;
     this.pass = TabsPage.tabLangue.pass;
     this.langue = TabsPage.tabLangue.langue;
+    this.presentLoadingDefault();
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
         this.connection = false;
@@ -47,6 +48,19 @@ export class TraitmentCourbe {
         this.update();
       }
     });
+  }
+
+  presentLoadingDefault() {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...',
+      spinner: 'bubbles'
+    });
+
+    loading.present();
+
+    setTimeout(() => {
+      loading.dismiss();
+    }, 2000);
   }
 
   ionViewDidLoad() {
