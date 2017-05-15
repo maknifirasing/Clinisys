@@ -1,10 +1,10 @@
-<ion-header style="height: 93px;color: white">
+<ion-header style="height: 83px;color: white">
 
   <div fxLayout="row" fxLayoutAlign="start start" class="md-card" *ngIf="langue==='francais' || langue==='anglais'">
-     <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
+    <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
     &nbsp;&nbsp;
     <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
-      <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
+      <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong style="padding-left: 5px">{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
     &nbsp;&nbsp;
 
@@ -14,17 +14,17 @@
 
   <div fxLayout="row" fxLayoutAlign="start start" class="md-card2" *ngIf="langue==='francais' || langue==='anglais'">
     <div *ngIf="connection===true">
-      <ion-avatar ><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
+      <ion-avatar style="padding-top: 5px"><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
     </div>
     &nbsp;&nbsp;
     <div *ngIf="connection===false">
 
-      <ion-avatar><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
+      <ion-avatar style="padding-top: 5px"><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
     </div>
     &nbsp;&nbsp;
-    <div  *ngIf="connection===true" style="padding-top: 5px"><span ><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</span></div>
+    <div  *ngIf="connection===true" style="padding-top: 10px;font-size: 12px;width: 100%"><span ><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</span></div>
     &nbsp;&nbsp;
-    <div *ngIf="connection===false" style="padding-top: 5px">
+    <div *ngIf="connection===false" style="padding-top: 10px;font-size: 12px;width: 100%">
 
       <span ><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}</span></div>
     &nbsp;&nbsp;
@@ -35,24 +35,24 @@
     <div dir="rtl"><img src="{{pathimage}}/info.png" class="roundedImage" (click)="goToInfPage()"></div>
     &nbsp;&nbsp;
     <div fxFlex="73" style="margin-top: 10px; direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
-      <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
+      <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong style="padding-right: 5px">{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
     &nbsp;&nbsp;
 
-     <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
+    <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="end start" class="md-card2" *ngIf="langue==='arabe'">
-    <div dir="rtl" *ngIf="connection===true" style="padding-top: 5px"><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</div>
+    <div style="padding-top: 10px;font-size: 12px ;width: 100%" dir="rtl" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</div>
     &nbsp;&nbsp;
-    <div dir="rtl" *ngIf="connection===false" style="padding-top: 5px"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}
+    <div style="padding-top: 10px;font-size: 12px;width: 100%" dir="rtl" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}
     </div>
     &nbsp;&nbsp;
-    <div *ngIf="connection===true">
-      <ion-avatar><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
+    <div style="padding-top: 5px" *ngIf="connection===true">
+      <ion-avatar ><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
     </div>
     &nbsp;&nbsp;
-    <div *ngIf="connection===false">
+    <div style="padding-top: 5px" *ngIf="connection===false">
       <ion-avatar><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
     </div>
     &nbsp;&nbsp;

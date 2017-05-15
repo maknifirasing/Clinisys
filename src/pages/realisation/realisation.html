@@ -1,10 +1,10 @@
-<ion-header style="height: 150px;color: white">
+<ion-header style="height: 83px;color: white">
 
   <div fxLayout="row" fxLayoutAlign="start start" class="md-card" *ngIf="langue==='francais' || langue==='anglais'">
-    <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo"></div>
+    <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
     &nbsp;&nbsp;
     <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
-      <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
+      <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong style="padding-left: 5px">{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
     &nbsp;&nbsp;
 
@@ -14,19 +14,19 @@
 
   <div fxLayout="row" fxLayoutAlign="start start" class="md-card2" *ngIf="langue==='francais' || langue==='anglais'">
     <div *ngIf="connection===true">
-      <ion-avatar><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
+      <ion-avatar style="padding-top: 5px"><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
     </div>
     &nbsp;&nbsp;
     <div *ngIf="connection===false">
 
-      <ion-avatar><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
+      <ion-avatar style="padding-top: 5px"><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
     </div>
     &nbsp;&nbsp;
-    <div *ngIf="connection===true"><span><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</span></div>
+    <div  *ngIf="connection===true" style="padding-top: 10px;font-size: 12px;width: 100%"><span ><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</span></div>
     &nbsp;&nbsp;
-    <div *ngIf="connection===false">
+    <div *ngIf="connection===false" style="padding-top: 10px;font-size: 12px;width: 100%">
 
-      <span><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}</span></div>
+      <span ><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}</span></div>
     &nbsp;&nbsp;
 
   </div>
@@ -35,366 +35,180 @@
     <div dir="rtl"><img src="{{pathimage}}/info.png" class="roundedImage" (click)="goToInfPage()"></div>
     &nbsp;&nbsp;
     <div fxFlex="73" style="margin-top: 10px; direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
-      <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong>{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
+      <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong style="padding-right: 5px">{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
     &nbsp;&nbsp;
 
-    <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo"></div>
+    <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="end start" class="md-card2" *ngIf="langue==='arabe'">
-    <div margin-top="-3" dir="rtl" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</div>
+    <div style="padding-top: 10px;font-size: 12px ;width: 100%" dir="rtl" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</div>
     &nbsp;&nbsp;
-    <div margin-top="-3" dir="rtl" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}
+    <div style="padding-top: 10px;font-size: 12px;width: 100%" dir="rtl" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}
     </div>
     &nbsp;&nbsp;
-    <div margin-top="-3" *ngIf="connection===true">
-      <ion-avatar><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
+    <div style="padding-top: 5px" *ngIf="connection===true">
+      <ion-avatar ><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
     </div>
     &nbsp;&nbsp;
-    <div margin-top="-3" *ngIf="connection===false">
+    <div style="padding-top: 5px" *ngIf="connection===false">
       <ion-avatar><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
     </div>
     &nbsp;&nbsp;
 
   </div>
 
-  <ul class="nav">
-    <li>
-      <ion-icon name="menu" aria-hidden="true" (click)="hideMenu()"></ion-icon>
-      <ul  [(ngModel)]="pet">
-        <li  (click)="showMenu(pha)" value="realisation">
-          <p>{{tabLangue.titreRealisation}}</p>
-        </li>
-        <li  (click)="luckFooter()"  value="pharmacie" >
-          <p>{{tabLangue.titrePharmacie}}</p>
-        </li>
-      </ul>
-    </li>
-  </ul>
-
-
-
-
-<!--
-  <ion-toolbar no-border-top>
-    <ion-segment [(ngModel)]="pet" *ngIf="langue==='francais' || langue==='anglais'">
-      <ion-segment-button value="realisation">
-        {{tabLangue.titreRealisation}}
-      </ion-segment-button>
-
-      <ion-segment-button value="pharmacie" (click)="luckFooter()">
-        {{tabLangue.titrePharmacie}}
-      </ion-segment-button>
-    </ion-segment>
-
-    <ion-segment [(ngModel)]="pet" *ngIf="langue==='arabe'">
-      <ion-segment-button value="pharmacie" (click)="luckFooter()">
-        {{tabLangue.titrePharmacie}}
-      </ion-segment-button>
-      <ion-segment-button value="realisation">
-        {{tabLangue.titreRealisation}}
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
--->
 </ion-header>
 
 <ion-content padding >
-  <div [ngSwitch]="pet">
 
-    <div *ngSwitchCase="'realisation'">
 
-      <div fxLayout="row" fxLayoutAlign="center center" style="height:50px;" *ngIf="langue==='arabe'">
-        <div class="button" *ngIf="plus===true" (click)="addHeure()">
+    <div fxLayout="row" fxLayoutAlign="center center" style="height:50px;" *ngIf="langue==='arabe'">
+      <div class="button" *ngIf="plus===true" (click)="addHeure()">
       <span style="text-align: center;
 vertical-align: middle;
 line-height: 40px;"> < </span>
-        </div>&nbsp;&nbsp;
-        <div class="button2">
+      </div>&nbsp;&nbsp;
+      <div class="button2">
       <span style="text-align: center;
 vertical-align: middle;
 line-height: 40px;color:white;font-weight: bold;">{{heure.getHours()}}س</span>
-        </div>&nbsp;&nbsp;
-        <div class="button" *ngIf="moins===true" (click)="removeHeure()">
+      </div>&nbsp;&nbsp;
+      <div class="button" *ngIf="moins===true" (click)="removeHeure()">
       <span style="text-align: center;
 vertical-align: middle;
 line-height: 40px;color:white;font-weight: bold; ">  > </span>
-        </div>
       </div>
+    </div>
 
-      <div fxLayout="row" fxLayoutAlign="center center" style="height:50px;"
-           *ngIf="langue==='francais' || langue==='anglais'">
-        <div class="button" *ngIf="moins===true" (click)="removeHeure()">
+    <div fxLayout="row" fxLayoutAlign="center center" style="height:50px;"
+         *ngIf="langue==='francais' || langue==='anglais'">
+      <div class="button" *ngIf="moins===true" (click)="removeHeure()">
       <span style="text-align: center;
 vertical-align: middle;
 line-height: 40px;"> < </span>
-        </div>&nbsp;&nbsp;
-        <div class="button2">
+      </div>&nbsp;&nbsp;
+      <div class="button2">
       <span style="text-align: center;
 vertical-align: middle;
 line-height: 40px;color:white;font-weight: bold;">{{heure.getHours()}}H</span>
-        </div>&nbsp;&nbsp;
-        <div class="button" *ngIf="plus===true" (click)="addHeure()">
+      </div>&nbsp;&nbsp;
+      <div class="button" *ngIf="plus===true" (click)="addHeure()">
       <span style="text-align: center;
 vertical-align: middle;
 line-height: 40px;color:white;font-weight: bold; ">  > </span>
+      </div>
+    </div>
+
+    <div class="slider1">
+      <div fxLayout="row" style="margin-top: 10px" *ngIf="langue==='arabe'">
+
+        <div fxFlex="20" style="color: #0f7ec0; direction: rtl;">
+          {{tabLangue.titreValeurs}}
+        </div>
+        <div fxFlex="79" style="color: #0f7ec0; direction: rtl; ">
+          {{tabLangue.titreDesignation}}
         </div>
       </div>
 
-      <div class="slider1">
-        <div fxLayout="row" style="margin-top: 10px" *ngIf="langue==='arabe'">
 
-          <div fxFlex="20" style="color: #0f7ec0; direction: rtl;">
-            {{tabLangue.titreValeurs}}
-          </div>
-          <div fxFlex="79" style="color: #0f7ec0; direction: rtl; ">
-            {{tabLangue.titreDesignation}}
-          </div>
+      <div fxLayout="row" style="margin-top: 10px" *ngIf="langue==='francais' || langue==='anglais'">
+        <div fxFlex="79" style="color: #0f7ec0 ">
+          {{tabLangue.titreDesignation}}
         </div>
-
-
-        <div fxLayout="row" style="margin-top: 10px" *ngIf="langue==='francais' || langue==='anglais'">
-          <div fxFlex="79" style="color: #0f7ec0 ">
-            {{tabLangue.titreDesignation}}
-          </div>
-          <div fxFlex="20" style="color: #0f7ec0 ">
-            {{tabLangue.titreValeurs}}
-          </div>
-
+        <div fxFlex="20" style="color: #0f7ec0 ">
+          {{tabLangue.titreValeurs}}
         </div>
-
-
-        <ion-list *ngIf="langue==='arabe'" dir="rtl" class="{{listerealisation}}">
-          <ion-item-sliding *ngFor="let pla of planification ">
-            <ion-item (click)="keyboardShow(pla.getrang()); ">
-              <input type="{{pla.getpave()}}"
-                     *ngIf="(planificationvalue[pla.getrang()].getclavier()==='false')&&(pla.getrang()===inputrange)"
-                     disabled style=" border-bottom: 1px solid rgb(3, 167, 23);"
-                     value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
-
-              <input type="{{pla.getpave()}}"
-                     *ngIf="(planificationvalue[pla.getrang()].getclavier()==='false')&&(pla.getrang()!==inputrange)"
-                     disabled
-                     value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
-
-              <input *ngIf="(planificationvalue[pla.getrang()].getclavier()==='true')&&(pla.getrang()===inputrange)"
-                     type="{{pla.getpave()}}"
-                     id="{{pla.getrang()}}inputt" (blur)="luck()"
-                     style=" border-bottom: 1px solid rgb(3, 167, 23);"
-                     value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
-
-              <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'" src="{{pathimage}}/valid.png"
-                   height="14"
-                   width="14" item-right>
-              <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" src="{{pathimage}}/unvalid.png"
-                   height="14" width="14" item-right>
-              <span width="70" dir="rtl" item-left>{{pla.getdesignation()}}</span>
-
-
-            </ion-item>
-            <ion-item-options side="left" style="background-color: #FFF3E0 ;width: 300px;"
-                              *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'">
-              <span style=" margin-top: 15px;color: #BDBDBD ">{{pla.getdesignation()}}</span>
-              <button ion-button style="color: whitesmoke;background-color: rgb(243, 156, 18);width: 100px;"
-                      (click)="presentConfirm(pla.getdesignation(),pla.getnum(),pla.getrang())">
-                {{tabLangue.titreAnnuler}}
-              </button>
-
-            </ion-item-options>
-          </ion-item-sliding>
-
-        </ion-list>
-
-
-        <ion-list *ngIf="langue==='francais' || langue==='anglais'" class="{{listerealisation}}">
-          <ion-item-sliding *ngFor="let pla of planification ">
-            <ion-item (click)="keyboardShow(pla.getrang()); "><span width="70">{{pla.getdesignation()}}</span>
-
-              <input type="{{pla.getpave()}}"
-                     *ngIf="(planificationvalue[pla.getrang()].getclavier()==='false')&&(pla.getrang()===inputrange)"
-                     disabled style=" border-bottom: 1px solid rgb(3, 167, 23);"
-                     value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
-
-              <input type="{{pla.getpave()}}"
-                     *ngIf="(planificationvalue[pla.getrang()].getclavier()==='false')&&(pla.getrang()!==inputrange)"
-                     disabled
-                     value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
-
-              <input *ngIf="(planificationvalue[pla.getrang()].getclavier()==='true')&&(pla.getrang()===inputrange)"
-                     type="{{pla.getpave()}}"
-                     id="{{pla.getrang()}}input" (blur)="luck()"
-                     style=" border-bottom: 1px solid rgb(3, 167, 23);"
-                     value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
-
-              <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'" src="{{pathimage}}/valid.png"
-                   height="14"
-                   width="14" item-right>
-              <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" src="{{pathimage}}/unvalid.png"
-                   height="14" width="14" item-right>
-            </ion-item>
-            <ion-item-options side="right" style="background-color: #FFF3E0 ;width: 300px;"
-                              *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'">
-              <span style=" margin-top: 15px;color: #BDBDBD ">{{pla.getdesignation()}}</span>
-              <button ion-button style="color: whitesmoke;background-color: rgb(243, 156, 18);width: 100px;"
-                      (click)="presentConfirm(pla.getdesignation(),pla.getnum(),pla.getrang())">
-                {{tabLangue.titreAnnuler}}
-              </button>
-
-            </ion-item-options>
-          </ion-item-sliding>
-
-        </ion-list>
 
       </div>
 
+
+      <ion-list *ngIf="langue==='arabe'" dir="rtl" class="{{listerealisation}}">
+        <ion-item-sliding *ngFor="let pla of planification ">
+          <ion-item (click)="keyboardShow(pla.getrang()); ">
+            <input type="{{pla.getpave()}}"
+                   *ngIf="(planificationvalue[pla.getrang()].getclavier()==='false')&&(pla.getrang()===inputrange)"
+                   disabled style=" border-bottom: 1px solid rgb(3, 167, 23);"
+                   value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
+
+            <input type="{{pla.getpave()}}"
+                   *ngIf="(planificationvalue[pla.getrang()].getclavier()==='false')&&(pla.getrang()!==inputrange)"
+                   disabled
+                   value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
+
+            <input *ngIf="(planificationvalue[pla.getrang()].getclavier()==='true')&&(pla.getrang()===inputrange)"
+                   type="{{pla.getpave()}}"
+                   id="{{pla.getrang()}}inputt" (blur)="luck()"
+                   style=" border-bottom: 1px solid rgb(3, 167, 23);"
+                   value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
+
+            <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'" src="{{pathimage}}/valid.png"
+                 height="14"
+                 width="14" item-right>
+            <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" src="{{pathimage}}/unvalid.png"
+                 height="14" width="14" item-right>
+            <span width="70" dir="rtl" item-left>{{pla.getdesignation()}}</span>
+
+
+          </ion-item>
+          <ion-item-options side="left" style="background-color: #FFF3E0 ;width: 300px;"
+                            *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'">
+            <span style=" margin-top: 15px;color: #BDBDBD ">{{pla.getdesignation()}}</span>
+            <button ion-button style="color: whitesmoke;background-color: rgb(243, 156, 18);width: 100px;"
+                    (click)="presentConfirm(pla.getdesignation(),pla.getnum(),pla.getrang())">
+              {{tabLangue.titreAnnuler}}
+            </button>
+
+          </ion-item-options>
+        </ion-item-sliding>
+
+      </ion-list>
+
+
+      <ion-list *ngIf="langue==='francais' || langue==='anglais'" class="{{listerealisation}}">
+        <ion-item-sliding *ngFor="let pla of planification ">
+          <ion-item (click)="keyboardShow(pla.getrang()); "><span width="70">{{pla.getdesignation()}}</span>
+
+            <input type="{{pla.getpave()}}"
+                   *ngIf="(planificationvalue[pla.getrang()].getclavier()==='false')&&(pla.getrang()===inputrange)"
+                   disabled style=" border-bottom: 1px solid rgb(3, 167, 23);"
+                   value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
+
+            <input type="{{pla.getpave()}}"
+                   *ngIf="(planificationvalue[pla.getrang()].getclavier()==='false')&&(pla.getrang()!==inputrange)"
+                   disabled
+                   value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
+
+            <input *ngIf="(planificationvalue[pla.getrang()].getclavier()==='true')&&(pla.getrang()===inputrange)"
+                   type="{{pla.getpave()}}"
+                   id="{{pla.getrang()}}input" (blur)="luck()"
+                   style=" border-bottom: 1px solid rgb(3, 167, 23);"
+                   value="{{planificationvalue[pla.getrang()].getvaleur()}}" item-right>
+
+            <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'" src="{{pathimage}}/valid.png"
+                 height="14"
+                 width="14" item-right>
+            <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" src="{{pathimage}}/unvalid.png"
+                 height="14" width="14" item-right>
+          </ion-item>
+          <ion-item-options side="right" style="background-color: #FFF3E0 ;width: 300px;"
+                            *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'">
+            <span style=" margin-top: 15px;color: #BDBDBD ">{{pla.getdesignation()}}</span>
+            <button ion-button style="color: whitesmoke;background-color: rgb(243, 156, 18);width: 100px;"
+                    (click)="presentConfirm(pla.getdesignation(),pla.getnum(),pla.getrang())">
+              {{tabLangue.titreAnnuler}}
+            </button>
+
+          </ion-item-options>
+        </ion-item-sliding>
+
+      </ion-list>
 
     </div>
 
-    <div *ngSwitchCase="'pharmacie'">
 
-      <div class="navBloc">
-        <ul class="nav">
-          <li>
-            <ion-icon name="menu" aria-hidden="true" (click)="hideMenu()"></ion-icon>
-            <ul id="{{navShow}}">
-              <li *ngFor="let pha of listePharmacie " (click)="showMenu(pha)">
-                <p>{{pha.getLibelle()}}</p>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-
-      <!-- 1er div : commande -->
-      <div style="margin: 10px;padding: 5px;border: 1px solid #ABC;border-radius: 5px;background-color: #AAAFAB;">
-        <input type="checkbox" id="cb1">
-        <label for="cb1">{{tabLangue.titreCommande}} </label>
-        <div style="text-align:center ;">
-          <span>{{pharmacieSelected.getLibelle()}}</span>
-
-        </div>
-
-
-
-
-        <div>
-          <div id="expand">
-            <section class="collapsible-content">
-
-              <div fxLayout="row" style="margin-top: 10px" class="collapsible-title">
-                <div fxFlex="79" style="color: #0f7ec0 ">
-                  {{tabLangue.titreDesignation}}
-                </div>
-                <div fxFlex="20" style="color: #0f7ec0 ">
-                  {{tabLangue.titreQuantite}}
-                </div>
-
-              </div>
-
-              <ion-list class="listeShow">
-                <ion-item-sliding *ngFor="let art of articleComande ">
-                  <ion-item style="background-color: #FAFAFA;"><span width="70">{{art.getarticle().getdesart()}}</span>
-
-                    <input type="number"
-                           id="{{art.getrang()}}article"
-                           value="{{art.getqte()}}" (blur)="updateQteArticle(art.getrang())"
-                           item-right>
-
-                  </ion-item>
-                </ion-item-sliding>
-
-              </ion-list>
-
-
-              <div class="container">
-
-                <ion-list *ngIf="articleListe.length > 0" class="listeShow" style="z-index: 8;position: relative">
-                  <ion-item-sliding *ngFor="let item of articleListe " style="background-color: #F5F5F5;">
-
-                    <ion-item (click)="selectArticle(item)" style="background-color: #F5F5F5;">
-                      <span width="70">{{item.getdesart()}}</span>
-                      <input type="number"
-                             disabled
-                             value="{{item.getqtestk()}}"
-                             item-right>
-                    </ion-item>
-                  </ion-item-sliding>
-                </ion-list>
-                <div class="input-field col s12">
-                  <input type="text" class="validate filter-input" id="article" (keyup)=filtreArticle()
-                         placeholder="{{tabLangue.titreAddArticle}}" (blur)="xx()">
-                </div>
-              </div>
-
-
-              <div class="container" style="padding-top: 100px">
-                <div class="medecin-input col s12">
-                  <strong style="color: blue">{{tabLangue.titreMedecinP}} : </strong>
-                  <input type="text" class="validate medecin-input" id="medecin" (keyup)=filtreMedecin()
-                         placeholder="{{tabLangue.titreMedecin}}" style="padding-left: 10px">
-                </div>
-                <ion-list *ngIf="medecinListe.length > 0" class="listeShow">
-                  <ion-item-sliding *ngFor="let item of medecinListe ">
-
-                    <ion-item (click)="selectMedecin(item)" style="background-color: #F5F5F5;">{{item.getnomMed()}}
-                    </ion-item>
-
-                  </ion-item-sliding>
-                </ion-list>
-              </div>
-              <div *ngIf="art===true && med ===true" style="padding-top: 20px">
-                <button round class="login-button" (click)="addComande()">Enregister</button>
-              </div>
-            </section>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2 eme div : list -->
-      <div style="margin: 10px;padding: 5px;border: 1px solid #ABC;border-radius: 5px;">
-        <input type="checkbox" id="cb2" (click)="ListeCommandePharmaciePrescrit(client.getnumdoss(),dateFeuille)"/>
-        <label for="cb2"><strong>{{tabLangue.titreListeCommandes}}</strong></label>
-
-        <div id="commandeListe">
-          <section class="collapsible-content">
-            <div fxLayout="row" style="margin-top: 10px" class="collapsible-title">
-              <div fxFlex="79" style="color: #0f7ec0 ">
-                {{tabLangue.titreDesignation}}
-              </div>
-              <div fxFlex="20" style="color: #0f7ec0 ">
-                {{tabLangue.titreQuantite}}
-              </div>
-
-            </div>
-
-            <ion-list class="listeShow">
-              <ion-item-sliding *ngFor="let com of commandeListe ">
-                <ion-item style="background-color: #FAFAFA;">
-                  <span width="70">{{com.getdesart()}}</span>
-                  <input type="number"
-                         disabled
-                         value="{{com.getqte()}}"
-                         item-right>
-                </ion-item>
-
-                <ion-item-options side="right" style="background-color: #B39DDB ;">
-                  <span style=" margin-top: 15px;color: #212121 ">{{com.getdateCommande()}}</span>&nbsp;&nbsp;
-                  <span style=" margin-top: 15px;color: #212121 ">{{com.getnomMed()}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span style=" margin-top: 15px;color: #212121 ">{{com.getnumbon()}}</span>
-                </ion-item-options>
-              </ion-item-sliding>
-
-            </ion-list>
-          </section>
-        </div>
-      </div>
-
-
-    </div>
-  </div>
 </ion-content>
-
 <ion-footer>
   <div *ngIf="clavier===true">
     <div *ngIf="keyboar===1" class="slider">
@@ -1050,5 +864,3 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
     </div>
   </div>
 </ion-footer>
-
-

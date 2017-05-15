@@ -28,6 +28,8 @@ import {Ng2HighchartsModule} from 'ng2-highcharts';
 import {Variables} from "../providers/variables";
 import {HttpModule} from '@angular/http';
 import {MenuPage} from "../pages/menu/menu";
+import {PharmaciePage} from "../pages/pharmacie/pharmacie";
+import {RealisationPage} from "../pages/realisation/realisation";
 
 @NgModule({
   declarations: [
@@ -48,6 +50,8 @@ import {MenuPage} from "../pages/menu/menu";
     TraitmentCourbe,
     ConsignePage,
     ModifPassPage,
+    PharmaciePage,
+    RealisationPage,
     MenuPage
   ],
   imports: [
@@ -59,7 +63,7 @@ import {MenuPage} from "../pages/menu/menu";
     CustomIconsModule,
     Ng2HighchartsModule,
     HttpModule,
-    IonicModule.forRoot(MyApp, { animate: false })
+    IonicModule.forRoot(MyApp, {animate: false})
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -80,6 +84,8 @@ import {MenuPage} from "../pages/menu/menu";
     TraitmentCourbe,
     ConsignePage,
     ModifPassPage,
+    PharmaciePage,
+    RealisationPage,
     MenuPage
   ],
   providers: [
@@ -89,7 +95,7 @@ import {MenuPage} from "../pages/menu/menu";
     Variables,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
 }

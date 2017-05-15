@@ -26,6 +26,8 @@ import {SQLite} from "@ionic-native/sqlite";
 import {MenuPage} from "../menu/menu";
 import {ClientService} from "../../services/ClientService";
 import {Client} from "../../models/Client";
+import {RealisationPage} from "../realisation/realisation";
+import {PharmaciePage} from "../pharmacie/pharmacie";
 
 @Component({
   selector: 'page-tabs',
@@ -42,7 +44,8 @@ export class TabsPage {
   tab3Root: any = ExamenRadioPage;
   tab4Root: any = ListPreanesthesiePage;
   tab5Root: any = ConsignePage;
-  tab6Root: any = MenuPage;
+  tab6Root: any = RealisationPage;
+  tab7Root: any = PharmaciePage;
   pass: Patient;
   pdf: string;
   dateFeuille: string;

@@ -31,8 +31,11 @@ $colors: (
   dark:       #222,
   custom-color: #0277bd
 );
-$tabs-md-tab-icon-size:3.8rem ;
+$tabs-md-tab-icon-size:3.0rem ;
 $badge-md-background-color:color($colors,danger);
+$badge-font-size:(0.6rem);
+$badge-md-border-radius:4px;
+
 $modal-inset-height-large:100px;
 
 $toast-max-width:( 80%);

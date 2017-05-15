@@ -45,6 +45,9 @@
   @if $filename == radio {
   $char: "\E006";
 }
+  @if $filename == realisation {
+  $char: "\E007";
+}
 
 @return $char;
 }
@@ -77,4 +80,7 @@
 }
 .ico-radio {
   @include ico(radio);
+}
+.ico-realisation {
+  @include ico(realisation);
 }

@@ -42,6 +42,7 @@ export class ListePage {
   private langserv: any;
   langes: Array<Langue> = [];
   pathimage = Variables.path;
+  menu: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, private sqlite: SQLite, public loadingCtrl: LoadingController) {
     this.dtFeuille = new DateFeuille();
@@ -50,6 +51,11 @@ export class ListePage {
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
     this.presentLoadingDefault();
+    if (this.langue === 'arabe') {
+      this.menu = "right";
+    } else {
+      this.menu = "left";
+    }
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
         this.connection = false;
