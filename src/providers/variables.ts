@@ -85,7 +85,19 @@ export class Variables {
     titremessConf: "هل تريد الغاء",
     titreoui: "نعم",
     titreNon: "لا",
-    titreAnnuler: "الغاء"
+    titreAnnuler: "الغاء",
+    titreQuantite: "كمية",
+    titreAddArticle: "إضافة المادة",
+    titreMedecin: "اختيار طبيب",
+    titreMedecinP: "طبيب ب.",
+    titreListeCommandes: "الضوابط القائمة",
+    titreEnregister: "سجل",
+    titreRealisation: "تحقيق",
+    titrePharmacie: "صيدلية",
+    titreCommande: "ترتيب",
+    titreProduitexiste: "المنتج هو",
+    titreStockindisponible: "الأسهم غير متوفرة",
+    titreLoading: "جاري التحميل..."
   }
 
   static francais: any = {
@@ -160,7 +172,19 @@ export class Variables {
     titremessConf: "Voulez vous annuler",
     titreoui: "Oui",
     titreNon: "Non",
-    titreAnnuler: "Annuler"
+    titreAnnuler: "Annuler",
+    titreQuantite: "Quantité",
+    titreAddArticle: "Ajouter Article",
+    titreMedecin: "Choisir Médecin",
+    titreMedecinP: "Médecin P.",
+    titreListeCommandes: "Liste Commandes",
+    titreEnregister: "Enregistrer",
+    titreRealisation: "Réalisation",
+    titrePharmacie: "Pharmacie",
+    titreCommande: "Commande",
+    titreProduitexiste: "Produit existe",
+    titreStockindisponible: "Stock indisponible",
+    titreLoading: "Chargement..."
   }
 
   static anglais: any = {
@@ -235,7 +259,20 @@ export class Variables {
     titremessConf: "Want to cancel",
     titreoui: "Yes",
     titreNon: "No",
-    titreAnnuler: "Cancel"
+    titreAnnuler: "Cancel",
+    titreQuantite: "Quantity",
+    titreAddArticle: "Add Article",
+    titreMedecin: "Choose Doctor",
+    titreMedecinP: "Doctor P.",
+    titreListeCommandes: "Commands list",
+    titreEnregister: "Save",
+    titreRealisation: "realization",
+    titrePharmacie: "Pharmacy",
+    titreCommande: "command",
+    titreProduitexiste: "Product exists",
+    titreStockindisponible: "Stock not available",
+    titreLoading: "Loading..."
+
   }
 
   static uRL = "";

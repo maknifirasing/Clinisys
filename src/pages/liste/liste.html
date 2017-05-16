@@ -1,4 +1,4 @@
-<ion-menu [content]="content">
+<ion-menu side="{{menu}}" [content]="content">
 
   <ion-header>
     <ion-card class="headerBackgroundMenu">
@@ -43,19 +43,19 @@
 </ion-menu>
 <ion-header class="headerListe" #content>
   <div fxLayout="row" fxLayoutAlign="start start" class="md-cardListe" *ngIf="langue==='francais' || langue==='anglais'">
-    <div margin-top="-4" *ngIf="connection===true"> <ion-avatar><img src="{{pathimage}}/green.png" width="30" height="30"></ion-avatar></div>
-    <div margin-top="-4" *ngIf="connection===false"> <ion-avatar><img src="{{pathimage}}/red.png" width="30" height="30"></ion-avatar></div>
-    <div margin-top="-4" fxFlex="73" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histl}}</div>&nbsp;&nbsp;
-    <div margin-top="-4" fxFlex="73" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histl}}</div>&nbsp;&nbsp;
-    <div item-right><img src="{{pathimage}}/menu.png" class="menuImg" menuToggle item-right></div>
+    <div *ngIf="connection===true"> <ion-avatar><img src="{{pathimage}}/green.png" width="30" height="30"></ion-avatar></div>
+    <div *ngIf="connection===false"> <ion-avatar><img src="{{pathimage}}/red.png" width="30" height="30"></ion-avatar></div>
+    <div style="padding-top: 5px" fxFlex="73" style="font-size: 15px;width: 100%" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histl}}</div>&nbsp;&nbsp;
+    <div style="padding-top: 5px" fxFlex="73" style="font-size: 15px;width: 100%" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histl}}</div>&nbsp;&nbsp;
+    <div item-right ><img src="{{pathimage}}/menu.png" class="menuImg" menuToggle item-right></div>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="end start" class="md-cardListe" *ngIf="langue==='arabe'">
-    <div item-left><img src="{{pathimage}}/menu.png" class="menuImg" menuToggle  item-left></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   <div margin-top="-4" fxFlex="73"  *ngIf="connection===true"  dir="rtl"><strong>{{tabLangue.titreEnligne}} </strong>{{histl}}</div>
-    <div margin-top="-4" fxFlex="73" *ngIf="connection===false" dir="rtl"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histl}}</div>
-    <div margin-top="-4" *ngIf="connection===true" > <ion-avatar><img src="{{pathimage}}/green.png" width="30" height="30"></ion-avatar></div>&nbsp;&nbsp;
-    <div margin-top="-4" *ngIf="connection===false"> <ion-avatar><img src="{{pathimage}}/red.png" width="30" height="30"></ion-avatar></div>&nbsp;&nbsp;
+    <div item-left ><img src="{{pathimage}}/menu.png" class="menuImg" menuToggle  item-left></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   <div   style="padding-right:5px;padding-top: 10px;font-size: 15px;width: 100%" fxFlex="73"  *ngIf="connection===true"  dir="rtl"><strong>{{tabLangue.titreEnligne}} </strong>{{histl}}</div>
+    <div   style="padding-right:5px;padding-top: 10px;font-size: 15px;width: 100%" fxFlex="73" *ngIf="connection===false" dir="rtl"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histl}}</div>
+    <div style="padding-top: 5px" *ngIf="connection===true" > <ion-avatar><img src="{{pathimage}}/green.png" width="30" height="30"></ion-avatar></div>&nbsp;&nbsp;
+    <div style="padding-top: 5px" *ngIf="connection===false"> <ion-avatar><img src="{{pathimage}}/red.png" width="30" height="30"></ion-avatar></div>&nbsp;&nbsp;
 
   </div>
 
@@ -98,7 +98,7 @@
   <ion-card-header style="height: 50px">
 
   </ion-card-header>
-  <div  margin-top="20" *ngIf="(langue==='francais' || langue==='anglais')">
+  <div  margin-top="10" *ngIf="(langue==='francais' || langue==='anglais')">
 
   <div fxLayout="row" fxLayoutAlign="start start" *ngFor="let pas of patientliste ">
     <div  (click)="goToDossierPage(pas)">

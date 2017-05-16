@@ -1,6 +1,6 @@
-import {Component, Injectable} from '@angular/core';
+import {Component, Injectable, ViewChild} from '@angular/core';
 import {DossierPage} from "../dossier/dossier";
-import {NavParams, NavController, Platform,ModalController} from 'ionic-angular';
+import {NavParams, NavController, Platform, ModalController, Tabs} from 'ionic-angular';
 import {ExamenRadioPage} from "../examen-radio/examen-radio";
 import {ListPreanesthesiePage} from "../list-preanesthesie/list-preanesthesie";
 import {ExamenLaboPage} from "../examen-labo/examen-labo";
@@ -22,9 +22,12 @@ import {ConsignePage} from "../consigne/consigne";
 import {Consigne} from "../../models/Consigne";
 import {ConsigneService} from "../../services/ConsigneService";
 import {tabBadgeConsigneService} from "../../services/tabBadgeConsigneService";
-import {RealisationPage} from "../realisation/realisation";
 import {SQLite} from "@ionic-native/sqlite";
 import {MenuPage} from "../menu/menu";
+import {ClientService} from "../../services/ClientService";
+import {Client} from "../../models/Client";
+import {RealisationPage} from "../realisation/realisation";
+import {PharmaciePage} from "../pharmacie/pharmacie";
 
 @Component({
   selector: 'page-tabs',
@@ -33,6 +36,7 @@ import {MenuPage} from "../menu/menu";
 })
 @Injectable()
 export class TabsPage {
+  @ViewChild("paymentTabs") paymentTabs: Tabs;
   consigneserv: any;
   coountConsigne: number;
   tab1Root: any = DossierPage;
@@ -41,6 +45,7 @@ export class TabsPage {
   tab4Root: any = ListPreanesthesiePage;
   tab5Root: any = ConsignePage;
   tab6Root: any = RealisationPage;
+  tab7Root: any = PharmaciePage;
   pass: Patient;
   pdf: string;
   dateFeuille: string;
@@ -62,7 +67,6 @@ export class TabsPage {
   LabosFs: any;
   RadiosTs: any;
   RadiosFs: any;
-  a: any;
   GetExamenRadioByNumDossResponseTest: boolean = false;
   examenRT: Array<ExamenRadio> = [];
   examenRF: Array<ExamenRadio> = [];
@@ -78,10 +82,12 @@ export class TabsPage {
   private consigne: Array<Consigne> = [];
   private coountConsigneT: number;
   private countConsigneserv: any;
-  pathimage=Variables.path;
-  static  tabLangue:any;
+  pathimage = Variables.path;
+  static tabLangue: any;
+  client = new Client();
+  clientserv: any;
 
-  constructor(public navParams: NavParams, private Url: Variables, public platform: Platform,public modalCtrl: ModalController, private sqlite: SQLite) {
+  constructor(public navParams: NavParams, private Url: Variables, public platform: Platform, public modalCtrl: ModalController, private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("mypatient");
     this.tabLangue = navParams.get("tabLangue");
@@ -93,21 +99,24 @@ export class TabsPage {
     this.coountListPreanesthesie = 0;
     this.countPdfT = 0;
     this.countPdf = 0;
-    TabsPage.tabLangue = {
-      pass: this.pass,
-      dateFeuille: navParams.get("dateFeuille"),
-      Labost: this.LabosT,
-      Labosf: this.LabosF,
-      ListeP: this.ListeP,
-      examenRT: this.examenRT,
-      examenRF: this.examenRF,
-      consigne: this.consigne,
-      langue: this.langue,
-      tabLangue: this.tabLangue, codeClinique: this.codeClinique,
-      typeconsigne: "all",
-      etatconsigne: "all",
-      heureActuelle: TabsPage.heureActuelle
-    };
+    this.dateFeuille = navParams.get("dateFeuille"),
+
+      TabsPage.tabLangue = {
+        pass: this.pass,
+        dateFeuille: this.dateFeuille,
+        Labost: this.LabosT,
+        Labosf: this.LabosF,
+        ListeP: this.ListeP,
+        examenRT: this.examenRT,
+        examenRF: this.examenRF,
+        consigne: this.consigne,
+        langue: this.langue,
+        tabLangue: this.tabLangue, codeClinique: this.codeClinique,
+        typeconsigne: "all",
+        etatconsigne: "all",
+        heureActuelle: TabsPage.heureActuelle,
+        client: this.client
+      };
 
     platform.ready().then(() => {
       Variables.checconnection().then(connexion => {
@@ -126,7 +135,10 @@ export class TabsPage {
     });
   }
 
-  ionViewDidLoad() {
+  ngAfterViewInit() {
+    if(this.langue==='arabe'){
+      this.paymentTabs.select(5);
+    }
   }
 
   GetExamenRadioByNumDossResponse(numDoss, codeClinique) {
@@ -466,21 +478,28 @@ export class TabsPage {
         if (xmlhttp.status == 200) {
           var xml;
           xml = xmlhttp.responseXML;
-          var x, i, c;
+          var x, i, c, d;
           x = xml.getElementsByTagName("return");
-          for (i = 0; i < x.length; i++) {
+          var date = new Date();
+          date.setFullYear(Number(this.dateFeuille.substr(6, 4)));
+          date.setMonth(Number(this.dateFeuille.substr(3, 2)) - 1);
+          date.setDate(Number(this.dateFeuille.substr(0, 2)));
+          date.setHours(0);
+          date.setMinutes(0);
+
+          for (i = x.length - 1; i >= 0; i--) {
             c = new Consigne();
-            if (x[i].childElementCount === 19) {
+            if (x[i].childElementCount === 17) {
               c.setcodeMedecin(x[i].children[1].textContent);
-              c.setdatetache(x[i].children[6].textContent);
-              c.setdetails(x[i].children[7].textContent);
-              c.setetat(x[i].children[8].textContent);
-              c.setheurtache(x[i].children[9].textContent);
-              c.setnumeroDossier(x[i].children[13].textContent);
-              c.setuserCreate(x[i].children[16].textContent);
+              c.setdatetache(x[i].children[5].textContent);
+              c.setdetails(x[i].children[6].textContent);
+              c.setetat(x[i].children[7].textContent);
+              c.setheurtache(x[i].children[8].textContent);
+              c.setnumeroDossier(x[i].children[11].textContent);
+              c.setuserCreate(x[i].children[14].textContent);
               c.setcodeClinique(codeClinique);
             }
-            else if (x[i].childElementCount === 18) {
+            else if (x[i].childElementCount > 17) {
               c.setcodeMedecin(x[i].children[1].textContent);
               c.setdatetache(x[i].children[6].textContent);
               c.setdetails(x[i].children[7].textContent);
@@ -490,9 +509,12 @@ export class TabsPage {
               c.setuserCreate(x[i].children[15].textContent);
               c.setcodeClinique(codeClinique);
             }
-            this.consigne.push(c);
-            if (c.getetat() === "F") {
-              this.coountConsigneT++;
+            d = new Date(c.getheurtache());
+            if ((date < d)&&(c.getetat()==='NL' || c.getetat()==='AF' ||c.getetat()==='F')) {
+              this.consigne.push(c);
+              if (c.getetat() === "F") {
+                this.coountConsigneT++;
+              }
             }
           }
           this.coountConsigne = this.consigne.length;
@@ -565,8 +587,90 @@ export class TabsPage {
     xmlhttp.send(sr);
   }
 
+  GetClientByNumDoss(numDoss) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
+    var sr =
+      '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
+      '<soapenv:Header/>' +
+      '<soapenv:Body>' +
+      '<ser:GetClientByNumDoss>' +
+      '<numDoss>' + numDoss + '</numDoss>' +
+      '</ser:GetClientByNumDoss>' +
+      '</soapenv:Body>' +
+      '</soapenv:Envelope>';
+    xmlhttp.onreadystatechange = () => {
+      if (xmlhttp.readyState == 4) {
+        if (xmlhttp.status == 200) {
+          var xml = xmlhttp.responseXML;
+          var x;
+          x = xml.getElementsByTagName("return");
+          var d, d2;
+          d = new Date();
+          this.client.setadrCli(x[0].children[0].textContent);
+          d = (x[0].children[3].textContent).substr(0, 9);
+          this.client.setdatNai(d);
+          this.client.setlibNat(x[0].children[1].textContent);
+          this.client.setnumTel(x[0].children[38].textContent);
+          this.client.setetage(x[0].children[36].children[0].children[3].textContent);
+          this.client.setlibelle(x[0].children[36].children[0].children[8].textContent);
+          this.client.setnumCha(x[0].children[36].children[2].textContent);
+          this.client.setnumdoss(x[0].children[37].textContent);
+          this.client.setidentifiant(x[0].children[18].textContent);
+          d2 = (x[0].children[4].textContent).substr(0, 9);
+          this.client.setdateArr(d2);
+          this.client.setcodeClinique(this.codeClinique);
+          this.clientserv = new ClientService(this.sqlite);
+          this.clientserv.verifClient(this.client, numDoss, this.codeClinique).then(res => {
+            if (res === false) {
+              this.clientserv.getClients(this.client, numDoss, this.codeClinique);
+            }
+          });
+        }
+      }
+    }
+
+    xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+    xmlhttp.responseType = "document";
+    xmlhttp.send(sr);
+  }
+
+  tabBadgepdf() {
+    if (this.countPdf === 0) {
+      return null;
+    } else {
+      return this.countPdfT + "/" + this.countPdf;
+    }
+  }
+
+  tabBadgeexamenR() {
+    if (this.coountexamenR === 0) {
+      return null;
+    } else {
+      return this.coountexamenRT + "/" + this.coountexamenR;
+    }
+  }
+
+  tabBadgePreanesthesie() {
+    if (this.coountListPreanesthesie === 0) {
+      return null;
+    } else {
+      return this.coountListPreanesthesie;
+    }
+  }
+
+  tabBadgeC() {
+    if (this.coountConsigne === 0) {
+      return null;
+    } else {
+      return this.coountConsigneT + "/" + this.coountConsigne;
+    }
+  }
+
   update() {
     this.GetGetFullDate();
+
+    this.GetClientByNumDoss(this.pass.getdossier());
 
     this.deleteAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);
     this.findAllLaboByNumDossier(this.pass.getdossier(), this.codeClinique);

@@ -1,20 +1,18 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import {AlertController, NavController, NavParams} from 'ionic-angular';
-import {Variables} from "../../providers/variables";
+import {RealisationTest} from "../../models/RealisationTest";
+import {Langue} from "../../models/Langue";
 import {Planification} from "../../models/Planification";
-import {DossierPage} from "../dossier/dossier";
+import {Variables} from "../../providers/variables";
+import {TabsPage} from "../tabs/tabs";
+import {SQLite} from "@ionic-native/sqlite";
 import {ClientDetailPage} from "../client-detail/client-detail";
 import {LangueService} from "../../services/LangueService";
-import {Langue} from "../../models/Langue";
-import {SQLite} from "@ionic-native/sqlite";
-import {RealisationTest} from "../../models/RealisationTest";
-import {TabsPage} from "../tabs/tabs";
+import {DossierPage} from "../dossier/dossier";
 
 @Component({
   selector: 'page-realisation',
   templateUrl: 'realisation.html',
-  providers: [Variables]
-
 })
 export class RealisationPage {
   connection: boolean;
@@ -40,7 +38,7 @@ export class RealisationPage {
   pathimage = Variables.path;
   p: number;
   m: number;
-  d: any;
+  listerealisation: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
@@ -49,9 +47,12 @@ export class RealisationPage {
     this.dateFeuille = TabsPage.tabLangue.dateFeuille;
     this.langue = TabsPage.tabLangue.langue;
     this.heureActuelle = new Date(TabsPage.heureActuelle);
+    if (isNaN(this.heureActuelle.getTime())) {
+      this.heureActuelle = new Date();
+    }
+    this.heure = this.heureActuelle;
     this.p = Number(this.heureActuelle.getHours() + 1);
     this.m = Number(this.heureActuelle.getHours() - 6);
-    this.heure = new Date(TabsPage.heureActuelle);
 
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
@@ -67,12 +68,22 @@ export class RealisationPage {
       }
     });
     this.histd = DossierPage.hist;
+
   }
 
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad Realisation');
+  }
   getAllPlanification(numDoss, dateFeuille, nature, heure) {
     this.clavier = true;
     this.keyboar = 0;
     this.inputrange = 0;
+
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
+    }
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -157,7 +168,6 @@ export class RealisationPage {
   }
 
   CreatePlusieursRealisation(traitsList, qtesList) {
-    console.log(traitsList + "  q  " + qtesList);
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -179,7 +189,6 @@ export class RealisationPage {
           this.xml = xmlhttp.responseXML;
           var x
           x = this.xml.getElementsByTagName("return");
-          console.log(x);
         }
       }
     }
@@ -197,7 +206,7 @@ export class RealisationPage {
           text: this.tabLangue.titreNon,
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
+
           }
         },
         {
@@ -215,6 +224,11 @@ export class RealisationPage {
     this.clavier = true;
     this.keyboar = 0;
     this.inputrange = 0;
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
+    }
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/ReaWSService?wsdl', true);
     var sr =
@@ -259,9 +273,14 @@ export class RealisationPage {
       if (this.planificationvalue[i].getdisabled() === 'false') {
         b = true;
         this.inputrange = i;
-        this.keyboar=this.planificationvalue[i].getkeyboard();
+        this.keyboar = this.planificationvalue[i].getkeyboard();
       }
       i++;
+    }
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
     }
   }
 
@@ -278,6 +297,11 @@ export class RealisationPage {
     } else {
       this.keyboar = 0;
       this.clavier = false;
+    }
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
     }
   }
 
@@ -298,10 +322,20 @@ export class RealisationPage {
     this.planificationvalue[this.inputrange].setclavier('false');
     this.inputrange = -1;
     this.keyboar = 0;
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
+    }
   }
 
   updateInput(value) {
     this.clavier = true;
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
+    }
     if (this.planificationvalue[this.inputrange].getdisabled() === 'false') {
       if (value === 'clavier') {
         this.clavier = false;
@@ -371,6 +405,11 @@ export class RealisationPage {
           this.selectInput();
         }
       }
+    }
+    if (this.keyboar !== 0) {
+      this.listerealisation = 'liste-show';
+    } else {
+      this.listerealisation = '';
     }
   }
 

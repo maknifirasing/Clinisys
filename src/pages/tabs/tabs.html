@@ -1,21 +1,42 @@
-<ion-tabs color="custom-color" toolbarColor="dark" sliderColor="light">
+<ion-tabs color="custom-color" toolbarColor="dark" sliderColor="light" *ngIf="langue==='francais' || langue==='anglais'">
 
   <ion-tab [root]="tab1Root" customIconSet="ico" customIconName="dossier"
           ></ion-tab>
   <ion-tab [root]="tab2Root"
-           tabBadge="{{countPdfT}}/{{countPdf}}"  customIconSet="ico"
+           tabBadge="{{tabBadgepdf()}}"  customIconSet="ico"
            customIconName="lab"></ion-tab>
   <ion-tab [root]="tab3Root" customIconSet="ico" customIconName="radio"
-           tabBadge="{{coountexamenRT}}/{{coountexamenR}}" ></ion-tab>
-  <ion-tab [root]="tab4Root" tabBadge="{{coountListPreanesthesie}}" customIconSet="ico" customIconName="bloc"
+           tabBadge="{{tabBadgeexamenR()}}" ></ion-tab>
+  <ion-tab [root]="tab4Root" tabBadge="{{tabBadgePreanesthesie()}}" customIconSet="ico" customIconName="bloc"
            ></ion-tab>
   <ion-tab [root]="tab5Root"
-           tabBadge="{{coountConsigneT}}/{{coountConsigne}}" customIconSet="ico"
+           tabBadge="{{tabBadgeC()}}" customIconSet="ico"
            customIconName="consigne"></ion-tab>
   <ion-tab [root]="tab6Root"
+           customIconSet="ico"
+           customIconName="realisation"  ></ion-tab>
+  <ion-tab [root]="tab7Root"
             customIconSet="ico"
-           customIconName="info"></ion-tab>
-  <!--<ion-tab  (ionSelect)="presentProfileModal()"
-            customIconSet="ico"
-           customIconName="info"></ion-tab>-->
+           customIconName="info"  ></ion-tab>
 </ion-tabs>
+
+
+<ion-tabs color="custom-color" toolbarColor="dark" sliderColor="light" *ngIf="langue==='arabe'" selectedIndex="6"
+          #paymentTabs [tabbarLayout]="tabBarLayout" [selectedIndex]="tabsIndex" preloadTabs="false">
+  <ion-tab [root]="tab6Root"
+           customIconSet="ico"
+           customIconName="info"  ></ion-tab>
+  <ion-tab [root]="tab5Root"
+           tabBadge="{{tabBadgeC()}}" customIconSet="ico"
+           customIconName="consigne"></ion-tab>
+  <ion-tab [root]="tab4Root" tabBadge="{{tabBadgePreanesthesie()}}" customIconSet="ico" customIconName="bloc"
+  ></ion-tab>
+  <ion-tab [root]="tab3Root" customIconSet="ico" customIconName="radio"
+           tabBadge="{{tabBadgeexamenR()}}" ></ion-tab>
+  <ion-tab [root]="tab2Root"
+           tabBadge="{{tabBadgepdf()}}"  customIconSet="ico"
+           customIconName="lab"></ion-tab>
+  <ion-tab [root]="tab1Root" customIconSet="ico" customIconName="dossier"
+  ></ion-tab>
+</ion-tabs>
+

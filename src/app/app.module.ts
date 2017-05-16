@@ -1,4 +1,4 @@
-import {NgModule, ErrorHandler} from '@angular/core';
+import {NgModule, ErrorHandler, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
 import {MyApp} from './app.component';
@@ -25,10 +25,10 @@ import {ConsignePage} from "../pages/consigne/consigne";
 import {ModifPassPage} from "../pages/modif-pass/modif-pass";
 import {CustomIconsModule} from 'ionic2-custom-icons';
 import {Ng2HighchartsModule} from 'ng2-highcharts';
-import {RealisationPage} from "../pages/realisation/realisation";
 import {Variables} from "../providers/variables";
 import {HttpModule} from '@angular/http';
-import {MenuPage} from "../pages/menu/menu";
+import {PharmaciePage} from "../pages/pharmacie/pharmacie";
+import {RealisationPage} from "../pages/realisation/realisation";
 
 @NgModule({
   declarations: [
@@ -49,8 +49,8 @@ import {MenuPage} from "../pages/menu/menu";
     TraitmentCourbe,
     ConsignePage,
     ModifPassPage,
-    RealisationPage,
-    MenuPage
+    PharmaciePage,
+    RealisationPage
   ],
   imports: [
     BrowserModule,
@@ -61,7 +61,7 @@ import {MenuPage} from "../pages/menu/menu";
     CustomIconsModule,
     Ng2HighchartsModule,
     HttpModule,
-    IonicModule.forRoot(MyApp, { animate: false })
+    IonicModule.forRoot(MyApp, {animate: false})
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -82,8 +82,8 @@ import {MenuPage} from "../pages/menu/menu";
     TraitmentCourbe,
     ConsignePage,
     ModifPassPage,
-    RealisationPage,
-    MenuPage
+    PharmaciePage,
+    RealisationPage
   ],
   providers: [
     StatusBar,
@@ -91,7 +91,8 @@ import {MenuPage} from "../pages/menu/menu";
     SQLite,
     Variables,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
 }

@@ -27,13 +27,13 @@ import {ClientDetailPage} from "../client-detail/client-detail";
 import {TraitmentCourbe} from "../traitment-courbe/traitment-courbe";
 import {Patient} from "../../models/Patient";
 import {SQLite} from "@ionic-native/sqlite";
-import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import {ScreenOrientation} from '@ionic-native/screen-orientation';
 import {TabsPage} from "../tabs/tabs";
 
 @Component({
   selector: 'page-dossier',
   templateUrl: 'dossier.html',
-  providers: [ScreenOrientation,Variables]
+  providers: [ScreenOrientation, Variables]
 })
 
 export class DossierPage {
@@ -88,13 +88,13 @@ export class DossierPage {
   static hist: any;
   codeClinique: any;
   tabLangue: any;
-  pass=new Patient();
+  pass = new Patient();
   dateFeuille: any;
   langue: any;
   static motifhh = new MotifHospitalisation();
-  pathimage=Variables.path;
+  pathimage = Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite,private screenOrientation: ScreenOrientation) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private sqlite: SQLite, private screenOrientation: ScreenOrientation) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
     this.tabLangue = TabsPage.tabLangue.tabLangue;
     this.pass = TabsPage.tabLangue.pass;
@@ -180,7 +180,6 @@ export class DossierPage {
   }
 
   GetAlerteSigneCliniqueOff(signe, numDoss, dateFeuille, nature, codeClinique) {
-
     this.signeCliniqueAlertS = new SigneCliniqueAlertService(this.sqlite);
     this.signeCliniqueAlertS.verifSigneCliniqueAlert(signe, numDoss, dateFeuille, nature, codeClinique).then(res => {
       if (res === true) {
@@ -324,6 +323,7 @@ export class DossierPage {
 
   GetAllMotifHospitalisationByNumDoss(numDoss, codeClinique) {
     this.test = false;
+    DossierPage.motifhh = new MotifHospitalisation();
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open('POST', Variables.uRL + 'dmi-core/WebServiceMedecinEventsService?wsdl', true);
     var sr =
@@ -915,7 +915,7 @@ export class DossierPage {
     });
   }
 
-  updateOff(){
+  updateOff() {
     this.GetAllMotifHospitalisationByNumDossOff(this.motifh, this.pass.getdossier(), this.codeClinique);
     this.getAntecedentAllergieByIdentifiantOff(this.antechl, this.alechl, this.pass.getid(), this.codeClinique);
     this.GetAlerteSigneCliniqueOff(this.signe, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
@@ -924,7 +924,6 @@ export class DossierPage {
     this.GetListRegimeOff(this.rigime, this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeClinique);
     this.GetSigneCliniqueOff(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.codeTypeOf, this.codeClinique);
   }
-
 
 
   goToInfPage() {

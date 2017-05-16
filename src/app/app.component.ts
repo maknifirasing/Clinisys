@@ -4,7 +4,6 @@ import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {SQLite} from '@ionic-native/sqlite';
 import {UserService} from "../services/UserService";
-import {TryPage} from "../pages/try/try";
 import {Langue} from "../models/Langue";
 import {LanguesPage} from "../pages/langues/langues";
 import {ListePage} from "../pages/liste/liste";
@@ -34,7 +33,9 @@ export class MyApp {
     this.pages = [
       {title: 'Langues', component: LanguesPage}
     ];
+   // Variables.uRL = "http://192.168.0.63:8084/";
     Variables.uRL = "http://adminWS:pom@37.59.230.40:8084/";
+  //  Variables.uRL = "http://adminWS:pom@192.168.0.172:8084/";
 
     platform.ready().then(() => {
 
@@ -73,8 +74,6 @@ export class MyApp {
           });
         }
       });
-
-      //       this.nav.setRoot(TryPage);
 
       if ((!platform.is('cordova')) || (platform.is('ios')) || (platform.is('android'))) {
         Variables.path = './assets/img';
