@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {RealisationTest} from "../../models/RealisationTest";
 import {Langue} from "../../models/Langue";
 import {Planification} from "../../models/Planification";
@@ -9,13 +9,6 @@ import {SQLite} from "@ionic-native/sqlite";
 import {ClientDetailPage} from "../client-detail/client-detail";
 import {LangueService} from "../../services/LangueService";
 import {DossierPage} from "../dossier/dossier";
-
-/**
- * Generated class for the Realisation page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 
 @Component({
   selector: 'page-realisation',
@@ -47,7 +40,7 @@ export class RealisationPage {
   m: number;
   listerealisation: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite, private toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
     this.tabLangue = TabsPage.tabLangue.tabLangue;
     this.pass = TabsPage.tabLangue.pass;
@@ -213,7 +206,7 @@ export class RealisationPage {
           text: this.tabLangue.titreNon,
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
+
           }
         },
         {

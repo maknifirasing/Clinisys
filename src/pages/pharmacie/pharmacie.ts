@@ -208,18 +208,17 @@ export class PharmaciePage {
 
   articleConfirm(pharmacie) {
     let alert = this.alertCtrl.create({
-      title: 'Confirm purchase',
-      message: 'Do you want to buy this book?',
+      title: this.tabLangue.titreconfirmation,
+      message: this.tabLangue.titremessConf,
       buttons: [
         {
-          text: 'Cancel',
+          text: this.tabLangue.titreNon,
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
           }
         },
         {
-          text: 'ok',
+          text: this.tabLangue.titreoui,
           handler: () => {
             this.articleComande = [];
             this.pharmacieSelected = pharmacie;
@@ -408,10 +407,10 @@ export class PharmaciePage {
         this.articleComande.push(article);
         this.art = true;
       } else {
-        this.presentToast('Produit exsit');
+        this.presentToast(this.tabLangue.titreProduitexiste);
       }
     } else {
-      this.presentToast('Stock indosponible');
+      this.presentToast(this.tabLangue.titreStockindisponible);
     }
     setTimeout(() => {
       document.getElementById(this.articleComande[this.articleComande.length - 1].getrang() + "article").focus();
@@ -439,7 +438,7 @@ export class PharmaciePage {
   updateQteArticle(rang) {
     var qte = Number((<HTMLInputElement>document.getElementById(this.articleComande[rang].getrang() + "article")).value);
     if (qte > this.articleComande[rang].getarticle().getqtestk()) {
-      this.presentToast('qte indisponible');
+      this.presentToast(this.tabLangue.titreStockindisponible);
       (<HTMLInputElement>document.getElementById(this.articleComande[rang] + "article")).value = "1";
       this.articleComande[rang].setqte(1);
       setTimeout(() => {
@@ -552,7 +551,7 @@ export class PharmaciePage {
           this.xml = xmlhttp.responseXML;
           var x, i, medecin;
           x = this.xml.getElementsByTagName("return");
-          alert("ajoutCommandePharmacieCentrale " + x[0].textContent);
+          this.presentToast(x[0].textContent);
           this.commandeListe = [];
           this.ListeCommandePharmaciePrescrit(numdoss, dateFeuille);
         }
@@ -605,7 +604,7 @@ export class PharmaciePage {
           this.xml = xmlhttp.responseXML;
           var x, i, medecin;
           x = this.xml.getElementsByTagName("return");
-          alert("ajoutCommandePharmacieNuit " + x[0].textContent);
+          this.presentToast(x[0].textContent);
           this.commandeListe = [];
           this.ListeCommandePharmaciePrescrit(numdoss, dateFeuille);
         }
@@ -659,7 +658,7 @@ export class PharmaciePage {
           this.xml = xmlhttp.responseXML;
           var x, i, medecin;
           x = this.xml.getElementsByTagName("return");
-          alert("ajoutCommandePharmacieExterne " + x[0].textContent);
+          this.presentToast(x[0].textContent);
           this.commandeListe = [];
           this.ListeCommandePharmaciePrescrit(numdoss, dateFeuille);
         }
@@ -712,7 +711,7 @@ export class PharmaciePage {
           this.xml = xmlhttp.responseXML;
           var x, i, medecin;
           x = this.xml.getElementsByTagName("return");
-          alert("ajoutCommandePharmacieStupefiant " + x[0].textContent);
+          this.presentToast(x[0].textContent);
           this.commandeListe = [];
           this.ListeCommandePharmaciePrescrit(numdoss, dateFeuille);
         }
@@ -765,7 +764,7 @@ export class PharmaciePage {
           this.xml = xmlhttp.responseXML;
           var x, i, medecin;
           x = this.xml.getElementsByTagName("return");
-          alert("ajoutCommandePharmacieReserve " + x[0].textContent);
+          this.presentToast(x[0].textContent);
           this.commandeListe = [];
           this.ListeCommandePharmaciePrescrit(numdoss, dateFeuille);
         }

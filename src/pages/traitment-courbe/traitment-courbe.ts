@@ -52,7 +52,7 @@ export class TraitmentCourbe {
 
   presentLoadingDefault() {
     let loading = this.loadingCtrl.create({
-      content: 'Please wait...',
+      content: this.tabLangue.titreLoading,
       spinner: 'bubbles'
     });
 

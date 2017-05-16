@@ -94,7 +94,10 @@ export class Variables {
     titreEnregister: "سجل",
     titreRealisation: "تحقيق",
     titrePharmacie: "صيدلية",
-    titreCommande: "ترتيب"
+    titreCommande: "ترتيب",
+    titreProduitexiste: "المنتج هو",
+    titreStockindisponible: "الأسهم غير متوفرة",
+    titreLoading: "جاري التحميل..."
   }
 
   static francais: any = {
@@ -178,7 +181,10 @@ export class Variables {
     titreEnregister: "Enregistrer",
     titreRealisation: "Réalisation",
     titrePharmacie: "Pharmacie",
-    titreCommande: "Commande"
+    titreCommande: "Commande",
+    titreProduitexiste: "Produit existe",
+    titreStockindisponible: "Stock indisponible",
+    titreLoading: "Chargement..."
   }
 
   static anglais: any = {
@@ -262,7 +268,11 @@ export class Variables {
     titreEnregister: "Save",
     titreRealisation: "realization",
     titrePharmacie: "Pharmacy",
-    titreCommande: "command"
+    titreCommande: "command",
+    titreProduitexiste: "Product exists",
+    titreStockindisponible: "Stock not available",
+    titreLoading: "Loading..."
+
   }
 
   static uRL = "";
