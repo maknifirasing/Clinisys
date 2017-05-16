@@ -27,7 +27,6 @@ import {CustomIconsModule} from 'ionic2-custom-icons';
 import {Ng2HighchartsModule} from 'ng2-highcharts';
 import {Variables} from "../providers/variables";
 import {HttpModule} from '@angular/http';
-import {MenuPage} from "../pages/menu/menu";
 import {PharmaciePage} from "../pages/pharmacie/pharmacie";
 import {RealisationPage} from "../pages/realisation/realisation";
 
@@ -51,8 +50,7 @@ import {RealisationPage} from "../pages/realisation/realisation";
     ConsignePage,
     ModifPassPage,
     PharmaciePage,
-    RealisationPage,
-    MenuPage
+    RealisationPage
   ],
   imports: [
     BrowserModule,
@@ -85,8 +83,7 @@ import {RealisationPage} from "../pages/realisation/realisation";
     ConsignePage,
     ModifPassPage,
     PharmaciePage,
-    RealisationPage,
-    MenuPage
+    RealisationPage
   ],
   providers: [
     StatusBar,

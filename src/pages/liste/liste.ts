@@ -83,7 +83,7 @@ export class ListePage {
 
     setTimeout(() => {
       loading.dismiss();
-    }, 1000);
+    }, 2000);
   }
 
   liste(user, searchText, etage, codeClinique) {
