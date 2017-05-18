@@ -26,8 +26,8 @@ export class AlegchService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 Alegc  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 Alegc  ' + error);
             resolve(false);
             return false;
           })
@@ -58,8 +58,8 @@ export class AlegchService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 Alegc  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 Alegc  ' + error);
         })
     });
 
@@ -84,8 +84,8 @@ export class AlegchService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 Alegc ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 Alegc ' + error);
     });
 
   }
@@ -98,11 +98,11 @@ export class AlegchService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from Alegc where  idpass like '" + idpass + "' and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //    alert("Suppression de table Aleg est terminé avec succes");
+          //     //alert("Suppression de table Aleg est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 Alegc  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 Alegc  ' + error);
         })
     });
 

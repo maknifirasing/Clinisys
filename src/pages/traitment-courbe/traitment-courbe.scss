@@ -29,5 +29,12 @@ page-traitment-courbe {
     width: 100%;
     height: 100%;
   }
-
+.buttonBack {
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  outline:none;
+}
 }

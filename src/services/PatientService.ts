@@ -26,8 +26,8 @@ export class PatientService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 Patient  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 Patient  ' + error);
             resolve(false);
             return false;
           })
@@ -68,8 +68,8 @@ export class PatientService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 Patient  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 Patient  ' + error);
         })
     });
 
@@ -107,8 +107,8 @@ export class PatientService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 Patient ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 Patient ' + error);
     });
 
   }
@@ -123,11 +123,11 @@ export class PatientService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //  alert("Suppression de table Patient est terminé avec succes");
+          //   //alert("Suppression de table Patient est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 Patient  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 Patient  ' + error);
         })
     });
 

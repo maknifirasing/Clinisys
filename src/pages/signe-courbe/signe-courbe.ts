@@ -41,6 +41,7 @@ export class SigneCourbePage {
   tabBarElement: any;
   chartData: any;
   pathimage = Variables.path;
+  device=Variables.device;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sqlite: SQLite, private screenOrientation: ScreenOrientation, public loadingCtrl: LoadingController) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
@@ -395,5 +396,8 @@ export class SigneCourbePage {
   update() {
     this.DeletegetChartSurveillance(this.pass.getdossier(), this.codeClinique);
     this.getChartSurveillance(this.pass.getdossier(), this.codeClinique);
+  }
+  goBack(){
+    this.navCtrl.pop();
   }
 }

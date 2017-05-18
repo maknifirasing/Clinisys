@@ -26,8 +26,8 @@ export class HistDossierService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 HistDossier  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 HistDossier  ' + error);
             resolve(false);
             return false;
           })
@@ -58,8 +58,8 @@ export class HistDossierService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1.1 HistDossier  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1.1 HistDossier  ' + error);
           })
       });
 
@@ -81,8 +81,8 @@ export class HistDossierService {
       ]);
 
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 HistDossier ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 HistDossier ' + error);
     });
 
   }
@@ -97,13 +97,13 @@ export class HistDossierService {
       }).then((db: SQLiteObject) => {
         db.executeSql("delete from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
           .then(() => {
-            //      alert("Suppression de table HistDossier est terminé avec succes");
+            //       //alert("Suppression de table HistDossier est terminé avec succes");
             resolve(true);
             return true;
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 3 HistDossier  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 3 HistDossier  ' + error);
             resolve(false);
             return false;
           })

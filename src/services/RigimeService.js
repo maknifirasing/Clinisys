@@ -23,8 +23,8 @@ var RigimeService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 Rigime  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 Rigime  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -53,8 +53,8 @@ var RigimeService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 Rigime  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 Rigime  ' + error);
             });
         });
         return this.rigime;
@@ -79,8 +79,8 @@ var RigimeService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 Rigime ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 Rigime ' + error);
         });
     };
     RigimeService.prototype.deleteRigimes = function (numdoss, datefeuille, nature, codeClinique) {
@@ -90,11 +90,11 @@ var RigimeService = (function () {
         }).then(function (db) {
             db.executeSql("delete from Rigime where numdoss like '" + numdoss + "' and datefeuille like '" + datefeuille + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //      alert("Suppression de table Rigime est terminé avec succes");
+                //       //alert("Suppression de table Rigime est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 Rigime  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 Rigime  ' + error);
             });
         });
         return this.rigime;

@@ -346,11 +346,11 @@ export class ListePage {
   changerPassword() {
     this.langserv = new LangueService(this.sqlite);
     this.langserv.getLangues(this.langes).then(lg => {
-      this.navCtrl.setRoot(ModifPassPage, {
+      this.navCtrl.push(ModifPassPage, {
         tabLangue: this.tabLangue,
         langue: this.langue,
         codeClinique: lg.getcodeClinique(),
-        nomClinique: lg.getmatricule()
+        nomClinique: lg.getnomClinique()
       });
     });
   }

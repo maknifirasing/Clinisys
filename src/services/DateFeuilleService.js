@@ -22,8 +22,8 @@ var DateFeuilleService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 datefeuille  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 datefeuille  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -51,8 +51,8 @@ var DateFeuilleService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 datefeuille  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 datefeuille  ' + error);
             });
         });
         return this.date;
@@ -73,8 +73,8 @@ var DateFeuilleService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 datefeuille ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 datefeuille ' + error);
         });
     };
     DateFeuilleService.prototype.deleteDateFeuille = function (codeClinique) {
@@ -84,11 +84,11 @@ var DateFeuilleService = (function () {
         }).then(function (db) {
             db.executeSql("delete from DateFeuille where codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //    alert("Suppression de table DateFeuille est terminé avec succes");
+                //     //alert("Suppression de table DateFeuille est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 DateFeuille  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 DateFeuille  ' + error);
             });
         });
         return this.date;

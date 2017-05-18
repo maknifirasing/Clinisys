@@ -23,8 +23,8 @@ var HistTraitCourbeService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 HistTraitCourbe  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 HistTraitCourbe  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -61,8 +61,8 @@ var HistTraitCourbeService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1.1 HistTraitCourbe  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1.1 HistTraitCourbe  ' + error);
                 });
             });
             return _this;
@@ -85,8 +85,8 @@ var HistTraitCourbeService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 HistTraitCourbe ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 HistTraitCourbe ' + error);
         });
     };
     HistTraitCourbeService.prototype.deleteHistTraitCourbes = function (numDoss, codeClinique) {
@@ -96,11 +96,11 @@ var HistTraitCourbeService = (function () {
         }).then(function (db) {
             db.executeSql("delete from HistTraitCourbe where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //  alert("Suppression de table Patient est terminé avec succes");
+                //   //alert("Suppression de table Patient est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 HistTraitCourbe  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 HistTraitCourbe  ' + error);
             });
         });
         return this.histSigneCourbe;

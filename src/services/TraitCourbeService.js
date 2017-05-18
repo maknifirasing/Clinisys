@@ -23,8 +23,8 @@ var TraitCourbeService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 TraitCourbe  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 TraitCourbe  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -67,8 +67,8 @@ var TraitCourbeService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 TraitCourbe  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 TraitCourbe  ' + error);
                 });
             });
             return _this;
@@ -101,8 +101,8 @@ var TraitCourbeService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 Traitement ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 Traitement ' + error);
         });
     };
     TraitCourbeService.prototype.deleteTraitCourbes = function (numDoss, codeClinique) {
@@ -112,11 +112,11 @@ var TraitCourbeService = (function () {
         }).then(function (db) {
             db.executeSql("delete from TraitCourbe where  numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //   alert("Suppression de table Traitement est terminé avec succes");
+                //    //alert("Suppression de table Traitement est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 TraitCourbe  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 TraitCourbe  ' + error);
             });
         });
         return this.traitCourbe;

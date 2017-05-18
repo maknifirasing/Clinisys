@@ -26,8 +26,8 @@ export class MedecinService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 Medecin  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 Medecin  ' + error);
             resolve(false);
             return false;
           })
@@ -60,8 +60,8 @@ export class MedecinService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 medecin  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 medecin  ' + error);
         })
     });
 
@@ -90,8 +90,8 @@ export class MedecinService {
         ;
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 medecin ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 medecin ' + error);
     });
 
   }
@@ -105,11 +105,11 @@ export class MedecinService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from Medecin where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          alert("Suppression de table medecin est terminé avec succes");
+           //alert("Suppression de table medecin est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 medecin  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 medecin  ' + error);
         })
     });
 

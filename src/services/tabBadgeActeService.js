@@ -10,7 +10,7 @@ var tabBadgeActeService = (function () {
             name: 'clinisys.db',
             location: 'default' // the location field is required
         }).then(function (db) {
-            alert("g " + tabBadgeActes[0].getnumDoss());
+             //alert("g " + tabBadgeActes[0].getnumDoss());
             db.executeSql("select * from tabBadgeActe where numDoss like '" + numDoss + "' and ActeT like '" + FichierT + "'and ActeF like '" + FichierF + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === tabBadgeActes.length) {
@@ -18,8 +18,8 @@ var tabBadgeActeService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 0 tabBadgeActe  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 0 tabBadgeActe  ' + error);
             });
         });
         return this.verif;
@@ -47,8 +47,8 @@ var tabBadgeActeService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 tabBadgeActe  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 tabBadgeActe  ' + error);
             });
         });
         return this.tabBadgeActe;
@@ -70,8 +70,8 @@ var tabBadgeActeService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 tabBadgeActe ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 tabBadgeActe ' + error);
         });
     };
     tabBadgeActeService.prototype.deletetabBadgeActes = function (numDoss, FichierT, FichierF, codeClinique) {
@@ -81,11 +81,11 @@ var tabBadgeActeService = (function () {
         }).then(function (db) {
             db.executeSql("delete from tabBadgeActes where numDoss like '" + numDoss + "' and ActeT like '" + FichierT + "'and ActeF like '" + FichierF + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //   alert("Suppression de table Traitement est terminé avec succes");
+                //    //alert("Suppression de table Traitement est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 Traitement  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 Traitement  ' + error);
             });
         });
         return this.tabBadgeActe;

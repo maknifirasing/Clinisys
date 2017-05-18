@@ -23,8 +23,8 @@ var CliniqueService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 Clinique  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 Clinique  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -57,8 +57,8 @@ var CliniqueService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 Clinique  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 Clinique  ' + error);
                 });
             });
             return _this;
@@ -81,8 +81,8 @@ var CliniqueService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 Clinique ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 Clinique ' + error);
         });
     };
     CliniqueService.prototype.deleteCliniques = function () {
@@ -92,11 +92,11 @@ var CliniqueService = (function () {
         }).then(function (db) {
             db.executeSql("delete from Clinique ", [])
                 .then(function () {
-                //    alert("Suppression de table Aleg est terminé avec succes");
+                //     //alert("Suppression de table Aleg est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 Clinique  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 Clinique  ' + error);
             });
         });
         return this.clinique;

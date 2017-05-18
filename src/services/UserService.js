@@ -22,8 +22,8 @@ var UserService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 Users  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 Users  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -57,8 +57,8 @@ var UserService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 Users  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 Users  ' + error);
                 });
             });
             return _this;
@@ -86,8 +86,8 @@ var UserService = (function () {
                     resolve(_this.users);
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1.1 Users  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1.1 Users  ' + error);
                 });
             });
             return _this;
@@ -111,8 +111,8 @@ var UserService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 Users ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 Users ' + error);
         });
     };
     UserService.prototype.deleteUsers = function (codeClinique) {
@@ -128,8 +128,8 @@ var UserService = (function () {
                     return true;
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 3 User  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 3 User  ' + error);
                     resolve(false);
                     return false;
                 });

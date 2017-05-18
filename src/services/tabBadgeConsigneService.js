@@ -23,8 +23,8 @@ var tabBadgeConsigneService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 tabBadgeConsigne  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 tabBadgeConsigne  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -58,8 +58,8 @@ var tabBadgeConsigneService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 tabBadgeConsigne  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 tabBadgeConsigne  ' + error);
                 });
             });
             return _this;
@@ -83,8 +83,8 @@ var tabBadgeConsigneService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 tabBadgeConsigne ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 tabBadgeConsigne ' + error);
         });
     };
     tabBadgeConsigneService.prototype.deletetabBadgeConsignes = function (numDoss, codeClinique) {
@@ -94,11 +94,11 @@ var tabBadgeConsigneService = (function () {
         }).then(function (db) {
             db.executeSql("delete from tabBadgeConsigne where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //   alert("Suppression de table Traitement est terminé avec succes");
+                //    //alert("Suppression de table Traitement est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 tabBadgeConsignes  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 tabBadgeConsignes  ' + error);
             });
         });
         return this.tabBadgeConsigne;

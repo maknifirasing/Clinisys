@@ -32,6 +32,7 @@ export class ClientDetailPage {
   patient: any;
   connection: boolean;
   pathimage = Variables.path;
+  device=!Variables.device;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sqlite: SQLite) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');

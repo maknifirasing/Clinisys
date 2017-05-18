@@ -23,8 +23,8 @@ var LaboTService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 LaboT  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 LaboT  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -59,8 +59,8 @@ var LaboTService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 LaboT  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 LaboT  ' + error);
             });
         });
         return this.labo;
@@ -88,8 +88,8 @@ var LaboTService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 LaboT ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 LaboT ' + error);
         });
     };
     LaboTService.prototype.deleteLabos = function (numDossier, codeClinique) {
@@ -99,11 +99,11 @@ var LaboTService = (function () {
         }).then(function (db) {
             db.executeSql("delete from LaboT where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //     alert("Suppression de table Labo est terminé avec succes");
+                //      //alert("Suppression de table Labo est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 LaboT  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 LaboT  ' + error);
             });
         });
         return this.labo;

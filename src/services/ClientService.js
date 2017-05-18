@@ -22,8 +22,8 @@ var ClientService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 Client  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 Client  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -63,8 +63,8 @@ var ClientService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 client  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 client  ' + error);
                 });
             });
             return _this;
@@ -89,8 +89,8 @@ var ClientService = (function () {
                 client.getdateArr()
             ]);
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 client ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 client ' + error);
         });
     };
     ClientService.prototype.deleteClients = function (numdoss, codeClinique) {
@@ -100,11 +100,11 @@ var ClientService = (function () {
         }).then(function (db) {
             db.executeSql("delete from Client where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                alert("Suppression de table Client est terminé avec succes");
+                 //alert("Suppression de table Client est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 Client  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 Client  ' + error);
             });
         });
         return this.client;

@@ -26,8 +26,8 @@ export class HistDocService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 HistDoc  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 HistDoc  ' + error);
             resolve(false);
             return false;
           })
@@ -66,8 +66,8 @@ export class HistDocService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1.1 HistDoc  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1.1 HistDoc  ' + error);
           })
       });
 
@@ -94,8 +94,8 @@ export class HistDocService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 HistDoc ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 HistDoc ' + error);
     });
 
   }
@@ -109,11 +109,11 @@ export class HistDocService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from HistDoc where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and nom like '" + file + "'", [])
         .then(() => {
-          //  alert("Suppression de table Patient est terminé avec succes");
+          //   //alert("Suppression de table Patient est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 HistDoc  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 HistDoc  ' + error);
         })
     });
 

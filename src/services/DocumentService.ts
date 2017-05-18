@@ -26,8 +26,8 @@ export class DocumentService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 Document  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 Document  ' + error);
             resolve(false);
             return false;
           })
@@ -62,8 +62,8 @@ export class DocumentService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1 Document  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1 Document  ' + error);
           })
       });
 
@@ -89,8 +89,8 @@ export class DocumentService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 Document ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 Document ' + error);
     });
 
   }
@@ -105,11 +105,11 @@ export class DocumentService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from Document where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //  alert("Suppression de table Patient est terminé avec succes");
+          //   //alert("Suppression de table Patient est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 Patient  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 Patient  ' + error);
         })
     });
 

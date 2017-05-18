@@ -23,8 +23,8 @@ var EvenementHisService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 EvenementHis  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 EvenementHis  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -57,8 +57,8 @@ var EvenementHisService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 EvenementHis  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 EvenementHis  ' + error);
             });
         });
         return this.evenement;
@@ -84,8 +84,8 @@ var EvenementHisService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 EvenementHis ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 EvenementHis ' + error);
         });
     };
     EvenementHisService.prototype.deleteEvenementHis = function (numdoss, codeClinique) {
@@ -95,11 +95,11 @@ var EvenementHisService = (function () {
         }).then(function (db) {
             db.executeSql("delete from EvenementHis where  numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //    alert("Suppression de table EvenementHis est terminé avec succes");
+                //     //alert("Suppression de table EvenementHis est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 EvenementHis  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 EvenementHis  ' + error);
             });
         });
         return this.evenement;

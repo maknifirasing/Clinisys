@@ -23,8 +23,8 @@ var LangueService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 Langue  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 Langue  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -60,8 +60,8 @@ var LangueService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 Langue  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 Langue  ' + error);
                 });
             });
             return _this;
@@ -86,8 +86,8 @@ var LangueService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 Langue ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 Langue ' + error);
         });
     };
     LangueService.prototype.deleteLangues = function () {
@@ -99,13 +99,13 @@ var LangueService = (function () {
             }).then(function (db) {
                 db.executeSql("delete from Langue ", [])
                     .then(function () {
-                    //   alert("Suppression de table Aleg est terminé avec succes");
+                    //    //alert("Suppression de table Aleg est terminé avec succes");
                     resolve(true);
                     return true;
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 3 Langue  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 3 Langue  ' + error);
                     resolve(false);
                     return false;
                 });

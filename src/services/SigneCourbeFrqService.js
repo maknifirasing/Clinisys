@@ -23,8 +23,8 @@ var SigneCourbeFrqService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 SigneCourbeFrq  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 SigneCourbeFrq  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -63,8 +63,8 @@ var SigneCourbeFrqService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 SigneCourbeFrq  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 SigneCourbeFrq  ' + error);
                 });
             });
             return _this;
@@ -96,8 +96,8 @@ var SigneCourbeFrqService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 SigneCourbeFrq ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 SigneCourbeFrq ' + error);
         });
     };
     SigneCourbeFrqService.prototype.deleteSigneCourbes = function (numdoss, codeClinique) {
@@ -107,11 +107,11 @@ var SigneCourbeFrqService = (function () {
         }).then(function (db) {
             db.executeSql("delete from SigneCourbeFrq where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //   alert("Suppression de table signeCourbe est terminé avec succes");
+                //    //alert("Suppression de table signeCourbe est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 SigneCourbeFrq  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 SigneCourbeFrq  ' + error);
             });
         });
         return this.signeCourbe;

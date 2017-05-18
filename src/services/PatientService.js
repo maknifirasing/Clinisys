@@ -23,8 +23,8 @@ var PatientService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 Patient  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 Patient  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -64,8 +64,8 @@ var PatientService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 Patient  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 Patient  ' + error);
             });
         });
         return this.patient;
@@ -100,8 +100,8 @@ var PatientService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 Patient ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 Patient ' + error);
         });
     };
     PatientService.prototype.deletePatients = function (user, searchText, etage, codeClinique) {
@@ -111,11 +111,11 @@ var PatientService = (function () {
         }).then(function (db) {
             db.executeSql("delete from Patient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //  alert("Suppression de table Patient est terminé avec succes");
+                //   //alert("Suppression de table Patient est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 Patient  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 Patient  ' + error);
             });
         });
         return this.patient;

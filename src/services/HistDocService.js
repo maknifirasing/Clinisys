@@ -23,8 +23,8 @@ var HistDocService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 HistDoc  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 HistDoc  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -62,8 +62,8 @@ var HistDocService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1.1 HistDoc  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1.1 HistDoc  ' + error);
                 });
             });
             return _this;
@@ -87,8 +87,8 @@ var HistDocService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 HistDoc ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 HistDoc ' + error);
         });
     };
     HistDocService.prototype.deleteHistDocs = function (numDoss, codeClinique, file) {
@@ -98,11 +98,11 @@ var HistDocService = (function () {
         }).then(function (db) {
             db.executeSql("delete from HistDoc where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and nom like '" + file + "'", [])
                 .then(function () {
-                //  alert("Suppression de table Patient est terminé avec succes");
+                //   //alert("Suppression de table Patient est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 HistDoc  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 HistDoc  ' + error);
             });
         });
         return this.histSigneCourbe;

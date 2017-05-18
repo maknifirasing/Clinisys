@@ -23,8 +23,8 @@ var SigneCourbeTAService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 SigneCourbeTA  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 SigneCourbeTA  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -63,8 +63,8 @@ var SigneCourbeTAService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 SigneCourbeTA  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 SigneCourbeTA  ' + error);
                 });
             });
             return _this;
@@ -96,8 +96,8 @@ var SigneCourbeTAService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 SigneCourbeTA ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 SigneCourbeTA ' + error);
         });
     };
     SigneCourbeTAService.prototype.deleteSigneCourbes = function (numdoss, codeClinique) {
@@ -107,11 +107,11 @@ var SigneCourbeTAService = (function () {
         }).then(function (db) {
             db.executeSql("delete from SigneCourbeTA where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //        alert("Suppression de table signeCourbe est terminé avec succes");
+                //         //alert("Suppression de table signeCourbe est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 SigneCourbeTA  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 SigneCourbeTA  ' + error);
             });
         });
         return this.signeCourbe;

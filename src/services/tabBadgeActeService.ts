@@ -17,7 +17,7 @@ export class tabBadgeActeService {
       name: 'clinisys.db',
       location: 'default' // the location field is required
     }).then((db: SQLiteObject) => {
-      alert("g " + tabBadgeActes[0].getnumDoss());
+       //alert("g " + tabBadgeActes[0].getnumDoss());
       db.executeSql("select * from tabBadgeActe where numDoss like '" + numDoss + "' and ActeT like '" + FichierT + "'and ActeF like '" + FichierF + "'and codeClinique like '" + codeClinique + "'", [])
         .then(result => {
           if (result.rows.length === tabBadgeActes.length) {
@@ -25,8 +25,8 @@ export class tabBadgeActeService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 0 tabBadgeActe  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 0 tabBadgeActe  ' + error);
         })
     });
 
@@ -56,8 +56,8 @@ export class tabBadgeActeService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 tabBadgeActe  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 tabBadgeActe  ' + error);
         })
     });
 
@@ -83,8 +83,8 @@ export class tabBadgeActeService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 tabBadgeActe ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 tabBadgeActe ' + error);
     });
 
   }
@@ -98,11 +98,11 @@ export class tabBadgeActeService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from tabBadgeActes where numDoss like '" + numDoss + "' and ActeT like '" + FichierT + "'and ActeF like '" + FichierF + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //   alert("Suppression de table Traitement est terminé avec succes");
+          //    //alert("Suppression de table Traitement est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 Traitement  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 Traitement  ' + error);
         })
     });
 

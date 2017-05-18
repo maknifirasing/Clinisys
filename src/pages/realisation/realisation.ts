@@ -39,6 +39,7 @@ export class RealisationPage {
   p: number;
   m: number;
   listerealisation: any;
+  device=Variables.device;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
@@ -443,5 +444,8 @@ export class RealisationPage {
     this.planificationvalue.length = 0;
     this.planificationvalue = [];
     this.getAllPlanification(this.pass.getdossier(), this.dateFeuille, this.pass.getnature(), this.heure.getHours());
+  }
+  goBack(){
+    this.navCtrl.parent.viewCtrl.dismiss();
   }
 }

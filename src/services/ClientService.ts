@@ -26,8 +26,8 @@ export class ClientService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 Client  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 Client  ' + error);
             resolve(false);
             return false;
           })
@@ -68,8 +68,8 @@ export class ClientService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1 client  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1 client  ' + error);
           })
       });
 
@@ -99,8 +99,8 @@ export class ClientService {
       ]);
 
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 client ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 client ' + error);
     });
 
   }
@@ -114,11 +114,11 @@ export class ClientService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from Client where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          alert("Suppression de table Client est terminé avec succes");
+           //alert("Suppression de table Client est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 Client  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 Client  ' + error);
         })
     });
 

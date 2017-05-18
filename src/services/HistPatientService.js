@@ -23,8 +23,8 @@ var HistPatientService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 HistPatient  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 HistPatient  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -60,8 +60,8 @@ var HistPatientService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1.1 HistPatient  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1.1 HistPatient  ' + error);
                 });
             });
             return _this;
@@ -86,8 +86,8 @@ var HistPatientService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 HistPatient ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 HistPatient ' + error);
         });
     };
     HistPatientService.prototype.deleteHistPatients = function (user, searchText, etage, codeClinique) {
@@ -97,11 +97,11 @@ var HistPatientService = (function () {
         }).then(function (db) {
             db.executeSql("delete from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //  alert("Suppression de table Patient est terminé avec succes");
+                //   //alert("Suppression de table Patient est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 HistPatient  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 HistPatient  ' + error);
             });
         });
         return this.histPatient;

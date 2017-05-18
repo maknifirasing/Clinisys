@@ -23,8 +23,8 @@ var SigneCourbePoulsService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 SigneCourbePouls  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 SigneCourbePouls  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -63,8 +63,8 @@ var SigneCourbePoulsService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 SigneCourbePouls  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 SigneCourbePouls  ' + error);
                 });
             });
             return _this;
@@ -96,8 +96,8 @@ var SigneCourbePoulsService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 SigneCourbePouls ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 SigneCourbePouls ' + error);
         });
     };
     SigneCourbePoulsService.prototype.deleteSigneCourbes = function (numdoss, codeClinique) {
@@ -107,11 +107,11 @@ var SigneCourbePoulsService = (function () {
         }).then(function (db) {
             db.executeSql("delete from SigneCourbePouls where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //     alert("Suppression de table signeCourbe est terminé avec succes");
+                //      //alert("Suppression de table signeCourbe est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 SigneCourbePouls  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 SigneCourbePouls  ' + error);
             });
         });
         return this.signeCourbe;

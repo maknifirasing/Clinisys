@@ -26,8 +26,8 @@ export class TraitCourbeService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 TraitCourbe  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 TraitCourbe  ' + error);
             resolve(false);
             return false;
           })
@@ -71,8 +71,8 @@ export class TraitCourbeService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1 TraitCourbe  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1 TraitCourbe  ' + error);
           })
       });
 
@@ -108,8 +108,8 @@ export class TraitCourbeService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 Traitement ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 Traitement ' + error);
     });
 
   }
@@ -122,11 +122,11 @@ export class TraitCourbeService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from TraitCourbe where  numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //   alert("Suppression de table Traitement est terminé avec succes");
+          //    //alert("Suppression de table Traitement est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 TraitCourbe  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 TraitCourbe  ' + error);
         })
     });
 

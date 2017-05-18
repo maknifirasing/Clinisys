@@ -23,8 +23,8 @@ var ExamenRadioFService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 ExamenRadioF  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 ExamenRadioF  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -57,8 +57,8 @@ var ExamenRadioFService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 ExamenRadioF  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 ExamenRadioF  ' + error);
             });
         });
         return this.examenRadio;
@@ -83,8 +83,8 @@ var ExamenRadioFService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 ExamenRadioF ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 ExamenRadioF ' + error);
         });
     };
     ExamenRadioFService.prototype.deleteExamenRadios = function (numeroDossier, codeClinique) {
@@ -94,11 +94,11 @@ var ExamenRadioFService = (function () {
         }).then(function (db) {
             db.executeSql("delete from ExamenRadioF where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //   alert("Suppression de table ExamenRadioF est terminé avec succes");
+                //    //alert("Suppression de table ExamenRadioF est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 ExamenRadioF  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 ExamenRadioF  ' + error);
             });
         });
         return this.examenRadio;

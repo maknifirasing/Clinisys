@@ -23,8 +23,8 @@ var TraitementService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 Traitement  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 Traitement  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -56,8 +56,8 @@ var TraitementService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 Traitement  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 Traitement  ' + error);
             });
         });
         return this.traitement;
@@ -82,8 +82,8 @@ var TraitementService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 Traitement ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 Traitement ' + error);
         });
     };
     TraitementService.prototype.deleteTraitements = function (numDoss, datefeuille, codeClinique) {
@@ -93,11 +93,11 @@ var TraitementService = (function () {
         }).then(function (db) {
             db.executeSql("delete from Traitement where  numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //   alert("Suppression de table Traitement est terminé avec succes");
+                //    //alert("Suppression de table Traitement est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 Traitement  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 Traitement  ' + error);
             });
         });
         return this.traitement;

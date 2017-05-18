@@ -75,6 +75,8 @@ export class MyApp {
         }
       });
 
+     Variables.device=(platform.is('ios'));
+
       if ((!platform.is('cordova')) || (platform.is('ios')) || (platform.is('android'))) {
         Variables.path = './assets/img';
       }

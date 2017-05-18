@@ -3,7 +3,7 @@
   <IMG src="{{pathimage}}/profil.jpg" height="85" width="5000">
   <IMG src="{{pathimage}}/{{patient.getimg()}}" class="img">
 
-  <ion-navbar hideBackButton="true" *ngIf="langue==='francais' || langue==='anglais'">
+  <ion-navbar hideBackButton="{{device}}" *ngIf="langue==='francais' || langue==='anglais'">
     <p></p>
     <p style="text-align:center;color: black;"><strong>{{patient.getnom()}} {{patient.getprenom()}} {{patient.getage()}}
       ({{tabLangue.titreAns}})</strong></p>
@@ -12,7 +12,7 @@
     <p style="text-align:center;color: black;"><strong>{{tabLangue.titreAdr}}: </strong>{{client.getadrCli()}}
       <strong>{{tabLangue.titreTel}}: </strong>{{client.getnumTel()}}</p>
   </ion-navbar>
-  <ion-navbar hideBackButton="true" *ngIf="langue==='arabe'" dir="rtl">
+  <ion-navbar hideBackButton="{{device}}" *ngIf="langue==='arabe'" dir="rtl">
     <p></p>
     <p style="text-align:center;color: black;"><strong>{{patient.getnom()}} {{patient.getprenom()}} {{patient.getage()}}
       ({{tabLangue.titreAns}})</strong></p>

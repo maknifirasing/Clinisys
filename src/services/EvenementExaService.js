@@ -23,8 +23,8 @@ var EvenementExaService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 EvenementExa  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 EvenementExa  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -57,8 +57,8 @@ var EvenementExaService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 EvenementExa  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 EvenementExa  ' + error);
             });
         });
         return this.evenement;
@@ -84,8 +84,8 @@ var EvenementExaService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 EvenementExa ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 EvenementExa ' + error);
         });
     };
     EvenementExaService.prototype.deleteEvenementExas = function (numdoss, codeClinique) {
@@ -95,11 +95,11 @@ var EvenementExaService = (function () {
         }).then(function (db) {
             db.executeSql("delete from EvenementExa where  numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //    alert("Suppression de table EvenementExa est terminé avec succes");
+                //     //alert("Suppression de table EvenementExa est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 EvenementExa  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 EvenementExa  ' + error);
             });
         });
         return this.evenement;

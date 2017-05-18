@@ -26,8 +26,8 @@ export class motifHospitalisationService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 motifHospitalisation  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 motifHospitalisation  ' + error);
             resolve(false);
             return false;
           })
@@ -59,8 +59,8 @@ export class motifHospitalisationService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1 motifHospitalisation  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1 motifHospitalisation  ' + error);
           })
       });
 
@@ -86,8 +86,8 @@ export class motifHospitalisationService {
       ]);
 
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 motifHospitalisation ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 motifHospitalisation ' + error);
     });
 
   }
@@ -101,11 +101,11 @@ export class motifHospitalisationService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from Motifhospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //      alert("Suppression de table Motifhospitalisation est terminé avec succes");
+          //       //alert("Suppression de table Motifhospitalisation est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 Motifhospitalisation  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 Motifhospitalisation  ' + error);
         })
     });
 

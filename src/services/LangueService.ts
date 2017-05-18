@@ -27,8 +27,8 @@ export class LangueService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 Langue  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 Langue  ' + error);
             resolve(false);
             return false;
           })
@@ -66,8 +66,8 @@ export class LangueService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1 Langue  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1 Langue  ' + error);
           })
       });
 
@@ -96,8 +96,8 @@ export class LangueService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 Langue ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 Langue ' + error);
     });
 
   }
@@ -111,13 +111,13 @@ export class LangueService {
       }).then((db: SQLiteObject) => {
         db.executeSql("delete from Langue ", [])
           .then(() => {
-            //   alert("Suppression de table Aleg est terminé avec succes");
+            //    //alert("Suppression de table Aleg est terminé avec succes");
             resolve(true);
             return true;
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 3 Langue  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 3 Langue  ' + error);
             resolve(false);
             return false;
           })

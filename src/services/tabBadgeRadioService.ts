@@ -26,8 +26,8 @@ export class tabBadgeRadioService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 tabBadgeRadio  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 tabBadgeRadio  ' + error);
             resolve(false);
             return false;
           })
@@ -61,8 +61,8 @@ export class tabBadgeRadioService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1 tabBadgeRadio  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1 tabBadgeRadio  ' + error);
           })
       });
 
@@ -89,8 +89,8 @@ export class tabBadgeRadioService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 tabBadgeRadio ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 tabBadgeRadio ' + error);
     });
 
   }
@@ -104,11 +104,11 @@ export class tabBadgeRadioService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from tabBadgeRadio where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //   alert("Suppression de table Traitement est terminé avec succes");
+          //    //alert("Suppression de table Traitement est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 tabBadgeRadio  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 tabBadgeRadio  ' + error);
         })
     });
 

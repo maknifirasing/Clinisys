@@ -23,8 +23,8 @@ var EvenementConService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 EvenementCon  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 EvenementCon  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -57,8 +57,8 @@ var EvenementConService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 EvenementCon  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 EvenementCon  ' + error);
             });
         });
         return this.evenement;
@@ -84,8 +84,8 @@ var EvenementConService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 EvenementCon ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 EvenementCon ' + error);
         });
     };
     EvenementConService.prototype.deleteEvenementCons = function (numdoss, codeClinique) {
@@ -95,11 +95,11 @@ var EvenementConService = (function () {
         }).then(function (db) {
             db.executeSql("delete from EvenementCon where  numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //         alert("Suppression de table EvenementCon est terminé avec succes");
+                //          //alert("Suppression de table EvenementCon est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 EvenementCons  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 EvenementCons  ' + error);
             });
         });
         return this.evenement;

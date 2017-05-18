@@ -23,8 +23,8 @@ var MedecinService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 Medecin  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 Medecin  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -56,8 +56,8 @@ var MedecinService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 medecin  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 medecin  ' + error);
             });
         });
         return this.medecin;
@@ -82,8 +82,8 @@ var MedecinService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 medecin ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 medecin ' + error);
         });
     };
     MedecinService.prototype.deleteMedecins = function (numdoss, codeClinique) {
@@ -93,11 +93,11 @@ var MedecinService = (function () {
         }).then(function (db) {
             db.executeSql("delete from Medecin where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                alert("Suppression de table medecin est terminé avec succes");
+                 //alert("Suppression de table medecin est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 medecin  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 medecin  ' + error);
             });
         });
         return this.medecin;

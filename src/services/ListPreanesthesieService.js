@@ -23,8 +23,8 @@ var ListPreanesthesieService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 listPreanesthesie  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 listPreanesthesie  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -59,8 +59,8 @@ var ListPreanesthesieService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 listPreanesthesie  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 listPreanesthesie  ' + error);
             });
         });
         return this.listPreanesthesie;
@@ -87,8 +87,8 @@ var ListPreanesthesieService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 listPreanesthesie ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 listPreanesthesie ' + error);
         });
     };
     ListPreanesthesieService.prototype.deleteListPreanesthesies = function (numeroDossier, codeClinique) {
@@ -98,11 +98,11 @@ var ListPreanesthesieService = (function () {
         }).then(function (db) {
             db.executeSql("delete from ListPreanesthesie where numeroDossier like '" + numeroDossier + "' and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //    alert("Suppression de table Aleg est terminé avec succes");
+                //     //alert("Suppression de table Aleg est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 ListPreanesthesie  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 ListPreanesthesie  ' + error);
             });
         });
         return this.listPreanesthesie;

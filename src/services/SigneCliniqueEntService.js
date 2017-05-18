@@ -24,8 +24,8 @@ var SigneCliniqueEntService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 SigneCliniqueEnt  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 SigneCliniqueEnt  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -57,8 +57,8 @@ var SigneCliniqueEntService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 SigneCliniqueEnt  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 SigneCliniqueEnt  ' + error);
             });
         });
         return this.signeClinique;
@@ -85,8 +85,8 @@ var SigneCliniqueEntService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 SigneCliniqueEnt ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 SigneCliniqueEnt ' + error);
         });
     };
     SigneCliniqueEntService.prototype.deleteSigneCliniques = function (numDoss, dateFeuille, nature, codeType, codeClinique) {
@@ -96,11 +96,11 @@ var SigneCliniqueEntService = (function () {
         }).then(function (db) {
             db.executeSql("delete from SigneCliniqueEnt where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //      alert("Suppression de table SigneCliniqueEnt est terminé avec succes");
+                //       //alert("Suppression de table SigneCliniqueEnt est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 SigneCliniqueEnt  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 SigneCliniqueEnt  ' + error);
             });
         });
         return this.signeClinique;

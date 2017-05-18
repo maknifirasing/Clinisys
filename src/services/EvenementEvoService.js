@@ -23,8 +23,8 @@ var EvenementEvoService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 EvenementEvo  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 EvenementEvo  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -58,8 +58,8 @@ var EvenementEvoService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 EvenementEvo  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 EvenementEvo  ' + error);
             });
         });
         return this.evenement;
@@ -85,8 +85,8 @@ var EvenementEvoService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 EvenementEvo ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 EvenementEvo ' + error);
         });
     };
     EvenementEvoService.prototype.deleteEvenementEvos = function (numdoss, codeClinique) {
@@ -96,11 +96,11 @@ var EvenementEvoService = (function () {
         }).then(function (db) {
             db.executeSql("delete from EvenementEvo where  numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //   alert("Suppression de table EvenementEvo est terminé avec succes");
+                //    //alert("Suppression de table EvenementEvo est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 EvenementEvo  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 EvenementEvo  ' + error);
             });
         });
         return this.evenement;

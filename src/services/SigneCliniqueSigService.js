@@ -24,8 +24,8 @@ var SigneCliniqueSigService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 SigneCliniqueSig  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 SigneCliniqueSig  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -57,8 +57,8 @@ var SigneCliniqueSigService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 SigneCliniqueSig  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 SigneCliniqueSig  ' + error);
             });
         });
         return this.signeClinique;
@@ -85,8 +85,8 @@ var SigneCliniqueSigService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 SigneCliniqueSig ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 SigneCliniqueSig ' + error);
         });
     };
     SigneCliniqueSigService.prototype.deleteSigneCliniques = function (numDoss, dateFeuille, nature, codeType, codeClinique) {
@@ -96,11 +96,11 @@ var SigneCliniqueSigService = (function () {
         }).then(function (db) {
             db.executeSql("delete from SigneCliniqueSig where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //      alert("Suppression de table SigneCliniqueSig est terminé avec succes");
+                //       //alert("Suppression de table SigneCliniqueSig est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 SigneCliniqueSig  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 SigneCliniqueSig  ' + error);
             });
         });
         return this.signeClinique;

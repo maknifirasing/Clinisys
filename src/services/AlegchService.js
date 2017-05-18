@@ -23,8 +23,8 @@ var AlegchService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 Alegc  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 Alegc  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -54,8 +54,8 @@ var AlegchService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 Alegc  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 Alegc  ' + error);
             });
         });
         return this.aleg;
@@ -77,8 +77,8 @@ var AlegchService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 Alegc ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 Alegc ' + error);
         });
     };
     AlegchService.prototype.deleteAlegs = function (idpass, codeClinique) {
@@ -88,11 +88,11 @@ var AlegchService = (function () {
         }).then(function (db) {
             db.executeSql("delete from Alegc where  idpass like '" + idpass + "' and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //    alert("Suppression de table Aleg est terminé avec succes");
+                //     //alert("Suppression de table Aleg est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 Alegc  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 Alegc  ' + error);
             });
         });
         return this.aleg;

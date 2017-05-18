@@ -23,8 +23,8 @@ var tabBadgeListPreanesthesie = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 tabBadgeListPreanesthesie  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 tabBadgeListPreanesthesie  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -58,8 +58,8 @@ var tabBadgeListPreanesthesie = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 tabBadgeListPreanesthesie  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 tabBadgeListPreanesthesie  ' + error);
                 });
             });
             return _this;
@@ -82,8 +82,8 @@ var tabBadgeListPreanesthesie = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 tabBadgeListPreanesthesie ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 tabBadgeListPreanesthesie ' + error);
         });
     };
     tabBadgeListPreanesthesie.prototype.deletetabBadgeLists = function (numDoss, codeClinique) {
@@ -93,11 +93,11 @@ var tabBadgeListPreanesthesie = (function () {
         }).then(function (db) {
             db.executeSql("delete from tabBadgeListPreanesthesie where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //   alert("Suppression de table Traitement est terminé avec succes");
+                //    //alert("Suppression de table Traitement est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 tabBadgeListPreanesthesie  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 tabBadgeListPreanesthesie  ' + error);
             });
         });
         return this.tabBadgeList;

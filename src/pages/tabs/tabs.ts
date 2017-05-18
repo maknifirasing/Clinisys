@@ -55,7 +55,6 @@ export class TabsPage {
   countPdfs: any;
   countListPreanesthesiess: any;
   countDocs: any;
-  public navCtrl: NavController;
   tabgLabo: Array<tabBadge> = [];
   tabgConsigne: Array<tabBadge> = [];
   tabgRadio: Array<tabBadge> = [];
@@ -86,7 +85,7 @@ export class TabsPage {
   client = new Client();
   clientserv: any;
 
-  constructor(public navParams: NavParams, private Url: Variables, public platform: Platform, public modalCtrl: ModalController, private sqlite: SQLite) {
+  constructor(public navCtrl: NavController,public navParams: NavParams, private Url: Variables, public platform: Platform, public modalCtrl: ModalController, private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("mypatient");
     this.tabLangue = navParams.get("tabLangue");

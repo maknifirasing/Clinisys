@@ -23,8 +23,8 @@ var motifHospitalisationService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 motifHospitalisation  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 motifHospitalisation  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -55,8 +55,8 @@ var motifHospitalisationService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 motifHospitalisation  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 motifHospitalisation  ' + error);
                 });
             });
             return _this;
@@ -77,8 +77,8 @@ var motifHospitalisationService = (function () {
                 codeClinique
             ]);
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 motifHospitalisation ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 motifHospitalisation ' + error);
         });
     };
     motifHospitalisationService.prototype.deleteMotifhospitalisations = function (numdoss, codeClinique) {
@@ -88,11 +88,11 @@ var motifHospitalisationService = (function () {
         }).then(function (db) {
             db.executeSql("delete from Motifhospitalisation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //      alert("Suppression de table Motifhospitalisation est terminé avec succes");
+                //       //alert("Suppression de table Motifhospitalisation est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 Motifhospitalisation  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 Motifhospitalisation  ' + error);
             });
         });
         return this.motifhospitalisation;

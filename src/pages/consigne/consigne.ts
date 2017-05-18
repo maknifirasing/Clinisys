@@ -35,6 +35,7 @@ export class ConsignePage {
   pathimage = Variables.path;
   dateFeuille: string;
   @ViewChild(Content) content: Content;
+  device=Variables.device;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private sqlite: SQLite) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
@@ -220,5 +221,8 @@ export class ConsignePage {
 
   goToInfPage() {
     this.navCtrl.push(ClientDetailPage);
+  }
+  goBack(){
+    this.navCtrl.parent.viewCtrl.dismiss();
   }
 }

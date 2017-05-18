@@ -26,8 +26,8 @@ export class EvenementEvoService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 EvenementEvo  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 EvenementEvo  ' + error);
             resolve(false);
             return false;
           })
@@ -65,8 +65,8 @@ export class EvenementEvoService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 EvenementEvo  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 EvenementEvo  ' + error);
         })
     });
 
@@ -95,8 +95,8 @@ export class EvenementEvoService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 EvenementEvo ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 EvenementEvo ' + error);
     });
 
   }
@@ -110,11 +110,11 @@ export class EvenementEvoService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from EvenementEvo where  numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //   alert("Suppression de table EvenementEvo est terminé avec succes");
+          //    //alert("Suppression de table EvenementEvo est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 EvenementEvo  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 EvenementEvo  ' + error);
         })
     });
 

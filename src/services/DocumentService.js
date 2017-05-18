@@ -23,8 +23,8 @@ var DocumentService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 Document  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 Document  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -58,8 +58,8 @@ var DocumentService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 Document  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 Document  ' + error);
                 });
             });
             return _this;
@@ -82,8 +82,8 @@ var DocumentService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 Document ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 Document ' + error);
         });
     };
     DocumentService.prototype.deleteDocuments = function (observ, codeClinique) {
@@ -93,11 +93,11 @@ var DocumentService = (function () {
         }).then(function (db) {
             db.executeSql("delete from Document where observ like '" + observ + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //  alert("Suppression de table Patient est terminé avec succes");
+                //   //alert("Suppression de table Patient est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 Patient  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 Patient  ' + error);
             });
         });
         return this.document;

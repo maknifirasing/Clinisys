@@ -22,8 +22,8 @@ var HistDossierService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 HistDossier  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 HistDossier  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -53,8 +53,8 @@ var HistDossierService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1.1 HistDossier  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1.1 HistDossier  ' + error);
                 });
             });
             return _this;
@@ -71,8 +71,8 @@ var HistDossierService = (function () {
                 histDossier.getcodeClinique()
             ]);
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 HistDossier ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 HistDossier ' + error);
         });
     };
     HistDossierService.prototype.deleteHistDossiers = function (numDoss, codeClinique) {
@@ -84,13 +84,13 @@ var HistDossierService = (function () {
             }).then(function (db) {
                 db.executeSql("delete from HistDossier where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'", [])
                     .then(function () {
-                    //      alert("Suppression de table HistDossier est terminé avec succes");
+                    //       //alert("Suppression de table HistDossier est terminé avec succes");
                     resolve(true);
                     return true;
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 3 HistDossier  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 3 HistDossier  ' + error);
                     resolve(false);
                     return false;
                 });

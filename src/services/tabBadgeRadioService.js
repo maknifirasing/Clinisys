@@ -23,8 +23,8 @@ var tabBadgeRadioService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 tabBadgeRadio  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 tabBadgeRadio  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -57,8 +57,8 @@ var tabBadgeRadioService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 tabBadgeRadio  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 tabBadgeRadio  ' + error);
                 });
             });
             return _this;
@@ -82,8 +82,8 @@ var tabBadgeRadioService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 tabBadgeRadio ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 tabBadgeRadio ' + error);
         });
     };
     tabBadgeRadioService.prototype.deletetabBadgeRadios = function (numDoss, codeClinique) {
@@ -93,11 +93,11 @@ var tabBadgeRadioService = (function () {
         }).then(function (db) {
             db.executeSql("delete from tabBadgeRadio where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //   alert("Suppression de table Traitement est terminé avec succes");
+                //    //alert("Suppression de table Traitement est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 tabBadgeRadio  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 tabBadgeRadio  ' + error);
             });
         });
         return this.tabBadgeRadio;

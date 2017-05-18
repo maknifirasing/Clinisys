@@ -26,8 +26,8 @@ export class EvenementExaService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 EvenementExa  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 EvenementExa  ' + error);
             resolve(false);
             return false;
           })
@@ -62,8 +62,8 @@ export class EvenementExaService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 EvenementExa  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 EvenementExa  ' + error);
         })
     });
 
@@ -92,8 +92,8 @@ export class EvenementExaService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 EvenementExa ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 EvenementExa ' + error);
     });
 
   }
@@ -107,11 +107,11 @@ export class EvenementExaService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from EvenementExa where  numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //    alert("Suppression de table EvenementExa est terminé avec succes");
+          //     //alert("Suppression de table EvenementExa est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 EvenementExa  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 EvenementExa  ' + error);
         })
     });
 

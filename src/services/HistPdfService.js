@@ -23,8 +23,8 @@ var HistPdfService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 HistPdf  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 HistPdf  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -62,8 +62,8 @@ var HistPdfService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1.1 HistPdf  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1.1 HistPdf  ' + error);
                 });
             });
             return _this;
@@ -87,8 +87,8 @@ var HistPdfService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 HistPdf ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 HistPdf ' + error);
         });
     };
     HistPdfService.prototype.deleteHistPdfs = function (numDoss, codeClinique, file) {
@@ -98,11 +98,11 @@ var HistPdfService = (function () {
         }).then(function (db) {
             db.executeSql("delete from HistPdf where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and nom like '" + file + "'", [])
                 .then(function () {
-                //  alert("Suppression de table Patient est terminé avec succes");
+                //   //alert("Suppression de table Patient est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 HistPdf  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 HistPdf  ' + error);
             });
         });
         return this.histSigneCourbe;

@@ -23,7 +23,7 @@ var AntechService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
+                    //console.error('Error opening database', error);
                     resolve(false);
                     return false;
                 });
@@ -53,8 +53,8 @@ var AntechService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 Antech  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 Antech  ' + error);
             });
         });
         return this.antec;
@@ -76,8 +76,8 @@ var AntechService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 Antech ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 Antech ' + error);
         });
     };
     AntechService.prototype.deleteAntecs = function (idpass, codeClinique) {
@@ -87,11 +87,11 @@ var AntechService = (function () {
         }).then(function (db) {
             db.executeSql("delete from Antech where  idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //       alert("Suppression de table Antech est terminé avec succes");
+                //        //alert("Suppression de table Antech est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 Antech  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 Antech  ' + error);
             });
         });
         return this.antec;

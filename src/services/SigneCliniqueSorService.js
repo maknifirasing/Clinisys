@@ -24,8 +24,8 @@ var SigneCliniqueSorService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 SigneCliniqueSor  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 SigneCliniqueSor  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -57,8 +57,8 @@ var SigneCliniqueSorService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 SigneCliniqueSor  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 SigneCliniqueSor  ' + error);
             });
         });
         return this.signeClinique;
@@ -85,8 +85,8 @@ var SigneCliniqueSorService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 SigneCliniqueSor ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 SigneCliniqueSor ' + error);
         });
     };
     SigneCliniqueSorService.prototype.deleteSigneCliniques = function (numDoss, dateFeuille, nature, codeType, codeClinique) {
@@ -96,11 +96,11 @@ var SigneCliniqueSorService = (function () {
         }).then(function (db) {
             db.executeSql("delete from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //    alert("Suppression de table SigneCliniqueSor est terminé avec succes");
+                //     //alert("Suppression de table SigneCliniqueSor est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 SigneCliniqueSor  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 SigneCliniqueSor  ' + error);
             });
         });
         return this.signeClinique;

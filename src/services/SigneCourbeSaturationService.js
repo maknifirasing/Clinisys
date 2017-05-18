@@ -23,8 +23,8 @@ var SigneCourbeSaturationService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 SigneCourbeSaturation  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 SigneCourbeSaturation  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -63,8 +63,8 @@ var SigneCourbeSaturationService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 SigneCourbeSaturation  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 SigneCourbeSaturation  ' + error);
                 });
             });
             return _this;
@@ -96,8 +96,8 @@ var SigneCourbeSaturationService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 SigneCourbeSaturation ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 SigneCourbeSaturation ' + error);
         });
     };
     SigneCourbeSaturationService.prototype.deleteSigneCourbes = function (numdoss, codeClinique) {
@@ -107,11 +107,11 @@ var SigneCourbeSaturationService = (function () {
         }).then(function (db) {
             db.executeSql("delete from SigneCourbeSaturation where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //     alert("Suppression de table signeCourbe est terminé avec succes");
+                //      //alert("Suppression de table signeCourbe est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 SigneCourbeSaturation  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 SigneCourbeSaturation  ' + error);
             });
         });
         return this.signeCourbe;

@@ -46,6 +46,7 @@ export class ExamenRadioPage {
   private histdoc = new HistDoc();
   private histdocserv: any;
   pathimage = Variables.path;
+  device=Variables.device;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private themeableBrowser: ThemeableBrowser, public alertCtrl: AlertController
     , private transfer: Transfer, private file: File, private sqlite: SQLite) {
@@ -195,7 +196,7 @@ export class ExamenRadioPage {
         backButton: {
           wwwImage: '{{pathimage}}/green.png',
           align: 'left'
-        }
+        },backButtonCanClose: true
       };
       option = options;
     }
@@ -217,7 +218,7 @@ export class ExamenRadioPage {
         backButton: {
           wwwImage: '{{pathimage}}/red.png',
           align: 'left'
-        }
+        },backButtonCanClose: true
       };
       option = options;
     }
@@ -238,8 +239,8 @@ export class ExamenRadioPage {
         },
         backButton: {
           wwwImage: '{{pathimage}}/green.png',
-          align: 'left'
-        }
+          align: 'right'
+        },backButtonCanClose: true
       };
       option = options;
     }
@@ -261,8 +262,8 @@ export class ExamenRadioPage {
 
         backButton: {
           wwwImage: '{{pathimage}}/red.png',
-          align: 'left'
-        }
+          align: 'right'
+        },backButtonCanClose: true
       };
       option = options;
     }
@@ -364,4 +365,7 @@ export class ExamenRadioPage {
     this.navCtrl.push(ClientDetailPage);
   }
 
+  goBack(){
+    this.navCtrl.parent.viewCtrl.dismiss();
+  }
 }

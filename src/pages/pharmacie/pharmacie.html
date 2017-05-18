@@ -1,9 +1,11 @@
-<ion-header style="height: 83px;color: white;z-index: 9">
-
+<ion-header style="height: 83px;color: white" >
   <div fxLayout="row" fxLayoutAlign="start start" class="md-card" *ngIf="langue==='francais' || langue==='anglais'">
-    <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo"></div>
+    <button ion-button class="buttonBack" icon-only *ngIf="device===true">
+      <ion-icon name='arrow-back' (click)="goBack()"></ion-icon>
+    </button>
+    <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
     &nbsp;&nbsp;
-    <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
+    <div fxFlex="63" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong style="padding-left: 5px">{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
     &nbsp;&nbsp;
@@ -22,12 +24,11 @@
       <ion-avatar style="padding-top: 5px"><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
     </div>
     &nbsp;&nbsp;
-    <div *ngIf="connection===true" style="padding-top: 10px;font-size: 12px;width: 100%"><span><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</span>
-    </div>
+    <div  *ngIf="connection===true" style="padding-top: 10px;font-size: 12px;width: 100%"><span ><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</span></div>
     &nbsp;&nbsp;
     <div *ngIf="connection===false" style="padding-top: 10px;font-size: 12px;width: 100%">
 
-      <span><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}</span></div>
+      <span ><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}</span></div>
     &nbsp;&nbsp;
 
   </div>
@@ -35,79 +36,34 @@
   <div fxLayout="row" fxLayoutAlign="end start" *ngIf="langue==='arabe'" class="md-card">
     <div dir="rtl"><img src="{{pathimage}}/info.png" class="roundedImage" (click)="goToInfPage()"></div>
     &nbsp;&nbsp;
-    <div fxFlex="73" style="margin-top: 10px; direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
-      <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong
-        style="padding-right: 5px">{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
+    <div fxFlex="63" style="margin-top: 10px; direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
+      <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong style="padding-right: 5px">{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
     &nbsp;&nbsp;
 
-    <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo"></div>
+    <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
+    <button ion-button  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===true" >
+      <ion-icon name='arrow-forward' ></ion-icon>
+    </button>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="end start" class="md-card2" *ngIf="langue==='arabe'">
-    <div style="padding-top: 10px;font-size: 12px ;width: 100%" dir="rtl" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}
-    </div>
+    <div style="padding-top: 10px;font-size: 12px ;width: 100%" dir="rtl" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</div>
     &nbsp;&nbsp;
     <div style="padding-top: 10px;font-size: 12px;width: 100%" dir="rtl" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}
     </div>
     &nbsp;&nbsp;
     <div style="padding-top: 5px" *ngIf="connection===true">
-      <ion-avatar><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
+      <ion-avatar ><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
     </div>
     &nbsp;&nbsp;
     <div style="padding-top: 5px" *ngIf="connection===false">
       <ion-avatar><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
     </div>
-    &nbsp;&nbsp;
+    &nbsp;&nbsp;<button ion-button  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===true" >
+    <ion-icon name='arrow-forward' ></ion-icon>
+  </button>
 
-  </div>
-  <div *ngIf="showlistepopup===true">
-  <div style="padding: 20px;" *ngIf="langue==='francais' || langue==='anglais'">
-    <ion-list *ngIf="articleListe.length > 0" class="listShow"
-              style="background-color: #F5F5F5;font-size: 12px;list-style: none;">
-      <ion-item-sliding *ngFor="let item of articleListe " style="background-color: #F5F5F5;">
-
-        <ion-item (click)="selectArticle(item)" style="background-color: #F5F5F5;">
-          <span width="70">{{item.getdesart()}}</span>
-          <span width="20" item-right style="font-size: 10px">{{item.getqtestk()}}</span>
-        </ion-item>
-      </ion-item-sliding>
-    </ion-list>
-
-    <ion-list *ngIf="medecinListe.length > 0" class="listShow"
-              style="background-color: #F5F5F5;font-size: 12px;list-style: none;">
-      <ion-item-sliding *ngFor="let item of medecinListe ">
-
-        <ion-item (click)="selectMedecin(item)" style="background-color: #F5F5F5;font-size: 10px;list-style: none;">
-          {{item.getnomMed()}}
-        </ion-item>
-
-      </ion-item-sliding>
-    </ion-list>
-  </div>
-  <div style="padding: 20px;" *ngIf="langue==='arabe'">
-    <ion-list *ngIf="articleListe.length > 0" dir="rtl" class="listShow"
-              style="background-color: #F5F5F5;font-size: 12px;list-style: none;">
-      <ion-item-sliding *ngFor="let item of articleListe " style="background-color: #F5F5F5;">
-
-        <ion-item (click)="selectArticle(item)" style="background-color: #F5F5F5;">
-          <span width="20" item-left style="font-size: 10px">{{item.getqtestk()}}</span>
-          <span width="70">{{item.getdesart()}}</span>
-        </ion-item>
-      </ion-item-sliding>
-    </ion-list>
-
-    <ion-list *ngIf="medecinListe.length > 0" dir="rtl" class="listShow"
-              style="background-color: #F5F5F5;font-size: 12px;list-style: none;">
-      <ion-item-sliding *ngFor="let item of medecinListe ">
-
-        <ion-item (click)="selectMedecin(item)" style="background-color: #F5F5F5;font-size: 10px;list-style: none;">
-          {{item.getnomMed()}}
-        </ion-item>
-
-      </ion-item-sliding>
-    </ion-list>
-  </div>
   </div>
 </ion-header>
 
@@ -131,7 +87,7 @@
   <!-- 1er div : commande -->
   <div style="border: 1px solid #ABC;border-radius: 5px;background-color: #E0E0E0;">
     <input type="checkbox" id="cb3" checked="checked" />
-    <label for="cb3" ><strong>{{tabLangue.titreCommande}}</strong> <span item-center style="padding-left: 10%">{{pharmacieSelected.getLibelle()}}</span></label>
+    <label for="cb3" ><strong>{{tabLangue.titreCommande}}</strong> <span item-center style="padding-left: 10px;">{{pharmacieSelected.getLibelle()}}</span></label>
     <div id="commandeListee" style="padding-top: 10px">
       <section class="collapsible-content">
         <div fxLayout="row" style="margin-top: 10px" class="collapsible-title" style="background-color: #EEEEEE">

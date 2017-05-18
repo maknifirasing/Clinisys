@@ -23,7 +23,7 @@ var ConsigneService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    alert('Error 0 Consigne  ' + error);
+                     //alert('Error 0 Consigne  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -59,8 +59,8 @@ var ConsigneService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 Consigne  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 Consigne  ' + error);
             });
         });
         return this.consigne;
@@ -90,8 +90,8 @@ var ConsigneService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 Consigne ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 Consigne ' + error);
         });
     };
     ConsigneService.prototype.deleteConsignes = function (numeroDossier, codeClinique, typeget, etatget) {
@@ -107,8 +107,8 @@ var ConsigneService = (function () {
                     return true;
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 3 Consigne  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 3 Consigne  ' + error);
                     resolve(false);
                     return false;
                 });

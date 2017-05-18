@@ -24,8 +24,8 @@ var SigneCliniqueAlertService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 SigneCliniqueAlert  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 SigneCliniqueAlert  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -43,7 +43,7 @@ var SigneCliniqueAlertService = (function () {
                 + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function (result) {
                 if (result.rows.length === 0) {
-                    _this._insertSigneCliniquesAlert(signeCliniques, numDoss, dateFeuille, nature, codeClinique);
+                    _this._insertSigneCliniques //alert(signeCliniques, numDoss, dateFeuille, nature, codeClinique);
                 }
                 else {
                     var s;
@@ -58,8 +58,8 @@ var SigneCliniqueAlertService = (function () {
                 }
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 1 SigneCliniqueAlert  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 1 SigneCliniqueAlert  ' + error);
             });
         });
         return this.signeClinique;
@@ -86,8 +86,8 @@ var SigneCliniqueAlertService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 SigneCliniqueAlert ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 SigneCliniqueAlert ' + error);
         });
     };
     SigneCliniqueAlertService.prototype.deleteSigneCliniquesAlert = function (numDoss, dateFeuille, nature, codeClinique) {
@@ -97,11 +97,11 @@ var SigneCliniqueAlertService = (function () {
         }).then(function (db) {
             db.executeSql("delete from SigneCliniqueAlert where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                alert("Suppression de table SigneCliniqueAlert est terminé avec succes");
+                 //alert("Suppression de table SigneCliniqueAlert est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 SigneCliniqueAlert  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 SigneCliniqueAlert  ' + error);
             });
         });
         return this.signeClinique;

@@ -1,9 +1,11 @@
-<ion-header style="height: 83px;color: white">
-
+<ion-header style="height: 83px;color: white" >
   <div fxLayout="row" fxLayoutAlign="start start" class="md-card" *ngIf="langue==='francais' || langue==='anglais'">
+    <button ion-button class="buttonBack" icon-only *ngIf="device===true">
+      <ion-icon name='arrow-back' (click)="goBack()"></ion-icon>
+    </button>
     <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
     &nbsp;&nbsp;
-    <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
+    <div fxFlex="63" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong style="padding-left: 5px">{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
     &nbsp;&nbsp;
@@ -34,12 +36,15 @@
   <div fxLayout="row" fxLayoutAlign="end start" *ngIf="langue==='arabe'" class="md-card">
     <div dir="rtl"><img src="{{pathimage}}/info.png" class="roundedImage" (click)="goToInfPage()"></div>
     &nbsp;&nbsp;
-    <div fxFlex="73" style="margin-top: 10px; direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
+    <div fxFlex="63" style="margin-top: 10px; direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong style="padding-right: 5px">{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
     &nbsp;&nbsp;
 
     <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
+    <button ion-button  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===true" >
+      <ion-icon name='arrow-forward' ></ion-icon>
+    </button>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="end start" class="md-card2" *ngIf="langue==='arabe'">
@@ -55,10 +60,11 @@
     <div style="padding-top: 5px" *ngIf="connection===false">
       <ion-avatar><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
     </div>
-    &nbsp;&nbsp;
+    &nbsp;&nbsp;<button ion-button  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===true" >
+    <ion-icon name='arrow-forward' ></ion-icon>
+  </button>
 
   </div>
-
 </ion-header>
 
 <ion-content padding >

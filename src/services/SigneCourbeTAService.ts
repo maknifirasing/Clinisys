@@ -26,8 +26,8 @@ export class SigneCourbeTAService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 SigneCourbeTA  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 SigneCourbeTA  ' + error);
             resolve(false);
             return false;
           })
@@ -68,8 +68,8 @@ export class SigneCourbeTAService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1 SigneCourbeTA  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1 SigneCourbeTA  ' + error);
           })
       });
 
@@ -104,8 +104,8 @@ export class SigneCourbeTAService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 SigneCourbeTA ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 SigneCourbeTA ' + error);
     });
 
   }
@@ -119,11 +119,11 @@ export class SigneCourbeTAService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from SigneCourbeTA where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //        alert("Suppression de table signeCourbe est terminé avec succes");
+          //         //alert("Suppression de table signeCourbe est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 SigneCourbeTA  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 SigneCourbeTA  ' + error);
         })
     });
 

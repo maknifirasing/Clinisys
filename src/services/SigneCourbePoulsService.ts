@@ -26,8 +26,8 @@ export class SigneCourbePoulsService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 SigneCourbePouls  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 SigneCourbePouls  ' + error);
             resolve(false);
             return false;
           })
@@ -68,8 +68,8 @@ export class SigneCourbePoulsService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1 SigneCourbePouls  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1 SigneCourbePouls  ' + error);
           })
       });
 
@@ -104,8 +104,8 @@ export class SigneCourbePoulsService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 SigneCourbePouls ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 SigneCourbePouls ' + error);
     });
 
   }
@@ -119,11 +119,11 @@ export class SigneCourbePoulsService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from SigneCourbePouls where numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //     alert("Suppression de table signeCourbe est terminé avec succes");
+          //      //alert("Suppression de table signeCourbe est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 SigneCourbePouls  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 SigneCourbePouls  ' + error);
         })
     });
 

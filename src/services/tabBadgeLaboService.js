@@ -23,8 +23,8 @@ var tabBadgeLaboService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 0 tabBadgeLabo  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 0 tabBadgeLabo  ' + error);
                     resolve(false);
                     return false;
                 });
@@ -58,8 +58,8 @@ var tabBadgeLaboService = (function () {
                     }
                 })
                     .catch(function (error) {
-                    console.error('Error opening database', error);
-                    alert('Error 1 tabBadgeLabo  ' + error);
+                    //console.error('Error opening database', error);
+                     //alert('Error 1 tabBadgeLabo  ' + error);
                 });
             });
             return _this;
@@ -83,8 +83,8 @@ var tabBadgeLaboService = (function () {
                 ]);
             }
         }).catch(function (error) {
-            console.error('Error opening database', error);
-            alert('Error 2 tabBadgeLabo ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 2 tabBadgeLabo ' + error);
         });
     };
     tabBadgeLaboService.prototype.deletetabBadgeLabos = function (numDoss, codeClinique) {
@@ -94,11 +94,11 @@ var tabBadgeLaboService = (function () {
         }).then(function (db) {
             db.executeSql("delete from tabBadgeLabo where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
                 .then(function () {
-                //   alert("Suppression de table Traitement est terminé avec succes");
+                //    //alert("Suppression de table Traitement est terminé avec succes");
             })
                 .catch(function (error) {
-                console.error('Error opening database', error);
-                alert('Error 3 tabBadgeLabos  ' + error);
+                //console.error('Error opening database', error);
+                 //alert('Error 3 tabBadgeLabos  ' + error);
             });
         });
         return this.tabBadgeLabo;
