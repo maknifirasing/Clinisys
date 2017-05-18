@@ -22,12 +22,52 @@ export class LanguesPage {
   codeClinique: string;
   langue: string;
   private userserv: any;
-  pathimage=Variables.path;
+  pathimage = Variables.path;
 
-  constructor(public navCtrl: NavController,private sqlite: SQLite) {
-    //  Variables.auth();
+  lan: any;
+  fr: any;
+  ang: any;
+  ar: any;
+
+  constructor(public navCtrl: NavController, private sqlite: SQLite) {
+    this.updatelangue();
   }
 
+  updatelangue() {
+    var lang;
+    this.userserv = new UserService(this.sqlite);
+    this.userserv.getAllUser().then(user => {
+      if (user.length !== 0) {
+        this.langserv = new LangueService(this.sqlite);
+        this.langserv.verifLangue().then(res => {
+          if (res === true) {
+            this.langserv.getLangues(this.langes).then(lg => {
+              lang = lg.getlangue();
+              if (lang === "arabe") {
+                this.tabLangue = Variables.arabe;
+              }
+              else if (lang === "francais") {
+                this.tabLangue = Variables.francais;
+              }
+              else if (lang === "anglais") {
+                this.tabLangue = Variables.anglais;
+              }
+              this.lan = this.tabLangue.titreLangue;
+              this.fr = this.tabLangue.francais;
+              this.ang = this.tabLangue.anglais;
+              this.ar = this.tabLangue.arabe;
+
+            });
+          }
+        });
+      } else {
+        this.lan = "Langues";
+        this.fr = "francais";
+        this.ang = "anglais";
+        this.ar = "arabe";
+      }
+    });
+  }
 
 
   choixLang(lang) {

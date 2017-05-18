@@ -276,7 +276,21 @@ page-pharmacie {
   }
 
 
-
+  .listShow {
+    border-radius: 10px;
+    cursor: pointer;
+    list-style: none;
+    top: -100px;
+    clear: both;
+    border-style: solid;
+    border-color: transparent transparent #ccc transparent;
+    list-style: none;
+    float: inherit;
+    position: relative;
+    z-index: 500 !important;
+    max-height: 150px;
+    overflow-y: scroll;
+  }
 
   .liste-show {
     max-height: 200px;
@@ -438,13 +452,137 @@ page-pharmacie {
     color: #0f7ec0;
   }
 
+
+
+  *:before,
+  *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+
+  .navar p {
+    text-decoration: none;
+  }
+
+  .navar,
+  .navar ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    float: left;
+  }
+
+  .navar li {
+    display: block;
+    float: left;
+    clear: both;
+  }
+
+  .navar > li {
+    position: absolute;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 20px;
+    //    color: #999;
+    //    border: 1px solid #ccc;
+  }
+
+  .navar > li:hover {
+    color: #000;
+    //    background-color: #ccc;
+  }
+
+
+  .navar > li > ul {
+    position: absolute;
+    right: -1px;
+    display: none;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
+    webkit-box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
+  }
+
+  .navar > li:hover > ul {
+    display: block;
+  }
+
+  .navar > li > ul:before,
+  .navar > li > ul:after {
+    display: block;
+    position: absolute;
+    top: -10px;
+    left: 5px;
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-style: solid;
+  }
+
+  .navar > li > ul:before {
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent #ccc transparent;
+    z-index: 1px;
+  }
+
+  .navar > li > ul:after {
+    top: -9.5px;
+    left: 5px;
+    border-width: 0 9px 9px 9px;
+    border-color: transparent transparent #fff transparent;
+    z-index: 2px;
+  }
+
+  .navar > li > ul > li {
+    position: relative;
+    width: 100%;
+    font-size: 14px;
+    border-top: 1px solid #ccc;
+    padding: 5px;
+    background-color:  #FAFAFA;
+
+  }
+
+
+
+  .navar > li > ul > li:first-child {
+    border-top: 0;
+  }
+
+  .navar > li > ul > li:last-child {
+    border-bottom: 0;
+  }
+
+  .navar > li > ul > li p {
+    position: relative;
+    display: block;
+    color: #444;
+  }
+
+  .navar > li > ul > li:hover p {
+    color: #0f7ec0;
+  }
+
   #navShow{
     display: none;
   }
 
+ #navShowar{
+    display: none;
+  }
+
   .navBloc {
-    padding-top: 0px;
+    padding-top: 5px;
     padding-right: 10%;
+    z-index: 8;
+    position: relative;
+  }
+
+ .navBlocar {
+    padding-top: 5px;
+    padding-left: 10%;
     z-index: 8;
     position: relative;
   }

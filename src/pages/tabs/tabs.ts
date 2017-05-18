@@ -23,7 +23,6 @@ import {Consigne} from "../../models/Consigne";
 import {ConsigneService} from "../../services/ConsigneService";
 import {tabBadgeConsigneService} from "../../services/tabBadgeConsigneService";
 import {SQLite} from "@ionic-native/sqlite";
-import {MenuPage} from "../menu/menu";
 import {ClientService} from "../../services/ClientService";
 import {Client} from "../../models/Client";
 import {RealisationPage} from "../realisation/realisation";
@@ -137,7 +136,7 @@ export class TabsPage {
 
   ngAfterViewInit() {
     if(this.langue==='arabe'){
-      this.paymentTabs.select(5);
+      this.paymentTabs.select(6);
     }
   }
 
