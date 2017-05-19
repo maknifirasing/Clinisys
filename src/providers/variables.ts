@@ -290,7 +290,7 @@ export class Variables {
 
   static uRL = "";
   static path = "";
-  static device :boolean;
+  static device :number;
 
   constructor(public http: Http) {
   }

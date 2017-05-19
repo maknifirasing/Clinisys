@@ -74,8 +74,11 @@ export class MyApp {
           });
         }
       });
-
-     Variables.device=(platform.is('ios'));
+      if(platform.is('ios')){
+        Variables.device=63;
+      }else {
+        Variables.device=73
+      }
 
       if ((!platform.is('cordova')) || (platform.is('ios')) || (platform.is('android'))) {
         Variables.path = './assets/img';

@@ -1,6 +1,7 @@
 <ion-header class="headerListe" >
+
   <div fxLayout="row" fxLayoutAlign="start start" class="md-cardListe" *ngIf="langue==='francais' || langue==='anglais'">
-    <button ion-button  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===true" >
+    <button ion-button  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===63" >
       <ion-icon name='arrow-back' ></ion-icon>
     </button>
     <div *ngIf="connection===true"> <ion-avatar><img src="{{pathimage}}/green.png" width="30" height="30"></ion-avatar></div>
@@ -9,14 +10,15 @@
     <div style="padding-top: 5px" fxFlex="73" style="font-size: 15px;width: 100%" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histp}}</div>&nbsp;&nbsp;
   </div>
 
-  <div fxLayout="row" fxLayoutAlign="end start" class="md-cardListe" *ngIf="langue==='arabe'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <div fxLayout="row" fxLayoutAlign="end start" class="md-cardListe" *ngIf="langue==='arabe'">&nbsp;&nbsp;
     <div   style="padding-right:5px;padding-top: 10px;font-size: 15px;width: 100%" fxFlex="73"  *ngIf="connection===true"  dir="rtl"><strong>{{tabLangue.titreEnligne}} </strong>{{histp}}</div>
     <div   style="padding-right:5px;padding-top: 10px;font-size: 15px;width: 100%" fxFlex="73" *ngIf="connection===false" dir="rtl"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histp}}</div>
     <div style="padding-top: 5px" *ngIf="connection===true" > <ion-avatar><img src="{{pathimage}}/green.png" width="30" height="30"></ion-avatar></div>&nbsp;&nbsp;
     <div style="padding-top: 5px" *ngIf="connection===false"> <ion-avatar><img src="{{pathimage}}/red.png" width="30" height="30"></ion-avatar></div>&nbsp;&nbsp;
-    <button ion-button  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===true" >
+    <button ion-button  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===63" >
       <ion-icon name='arrow-forward' ></ion-icon>
     </button>
+
   </div>
 </ion-header>
 
