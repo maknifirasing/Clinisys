@@ -1,9 +1,11 @@
-<ion-header style="height: 83px;color: white">
-
+<ion-header style="height: 83px;color: white" >
   <div fxLayout="row" fxLayoutAlign="start start" class="md-card" *ngIf="langue==='francais' || langue==='anglais'">
+    <div  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===63" >
+      <ion-icon name='arrow-back' ></ion-icon>
+    </div>
     <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
     &nbsp;&nbsp;
-    <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
+    <div fxFlex="{{device}}" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong style="padding-left: 5px">{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
     &nbsp;&nbsp;
@@ -34,12 +36,15 @@
   <div fxLayout="row" fxLayoutAlign="end start" *ngIf="langue==='arabe'" class="md-card">
     <div dir="rtl"><img src="{{pathimage}}/info.png" class="roundedImage" (click)="goToInfPage()"></div>
     &nbsp;&nbsp;
-    <div fxFlex="73" style="margin-top: 10px; direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
+    <div fxFlex="{{device}}" style="margin-top: 10px; direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong style="padding-right: 5px">{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
     &nbsp;&nbsp;
 
     <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
+    <div  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===63" >
+      <ion-icon name='arrow-forward' ></ion-icon>
+    </div>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="end start" class="md-card2" *ngIf="langue==='arabe'">
@@ -58,7 +63,6 @@
     &nbsp;&nbsp;
 
   </div>
-
 </ion-header>
 
 <ion-content padding >
@@ -154,12 +158,12 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
           </ion-item>
           <ion-item-options side="left" style="background-color: #FFF3E0 ;width: 300px;"
                             *ngIf="planificationvalue[pla.getrang()].getdisabled()==='true'">
-            <span style=" margin-top: 15px;color: #BDBDBD ">{{pla.getdesignation()}}</span>
+
             <button ion-button style="color: whitesmoke;background-color: rgb(243, 156, 18);width: 100px;"
                     (click)="presentConfirm(pla.getdesignation(),pla.getnum(),pla.getrang())">
               {{tabLangue.titreAnnuler}}
             </button>
-
+            <span style=" margin-top: 15px;color: #BDBDBD ">{{pla.getdesignation()}}</span>
           </ion-item-options>
         </ion-item-sliding>
 

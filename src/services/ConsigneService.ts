@@ -26,7 +26,7 @@ export class ConsigneService {
             }
           })
           .catch(error => {
-            alert('Error 0 Consigne  ' + error);
+             //alert('Error 0 Consigne  ' + error);
             resolve(false);
             return false;
           })
@@ -63,8 +63,8 @@ export class ConsigneService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 Consigne  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 Consigne  ' + error);
         })
     });
 
@@ -97,8 +97,8 @@ export class ConsigneService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 Consigne ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 Consigne ' + error);
     });
 
   }
@@ -116,8 +116,8 @@ export class ConsigneService {
             return true;
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 3 Consigne  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 3 Consigne  ' + error);
             resolve(false);
             return false;
           })

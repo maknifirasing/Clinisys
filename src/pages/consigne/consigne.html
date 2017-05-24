@@ -1,9 +1,11 @@
 <ion-header style="height: 83px;color: white">
-
   <div fxLayout="row" fxLayoutAlign="start start" class="md-card" *ngIf="langue==='francais' || langue==='anglais'">
-    <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
+    <div icon-only class="buttonBack" (click)="goBack()" *ngIf="device===63">
+      <ion-icon name='arrow-back'></ion-icon>
+    </div>
+    <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo"></div>
     &nbsp;&nbsp;
-    <div fxFlex="73" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
+    <div fxFlex="{{device}}" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
       <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong style="padding-left: 5px">{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
     &nbsp;&nbsp;
@@ -22,11 +24,12 @@
       <ion-avatar style="padding-top: 5px"><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
     </div>
     &nbsp;&nbsp;
-    <div  *ngIf="connection===true" style="padding-top: 10px;font-size: 12px;width: 100%"><span ><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</span></div>
+    <div *ngIf="connection===true" style="padding-top: 10px;font-size: 12px;width: 100%"><span><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</span>
+    </div>
     &nbsp;&nbsp;
     <div *ngIf="connection===false" style="padding-top: 10px;font-size: 12px;width: 100%">
 
-      <span ><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}</span></div>
+      <span><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}</span></div>
     &nbsp;&nbsp;
 
   </div>
@@ -34,22 +37,27 @@
   <div fxLayout="row" fxLayoutAlign="end start" *ngIf="langue==='arabe'" class="md-card">
     <div dir="rtl"><img src="{{pathimage}}/info.png" class="roundedImage" (click)="goToInfPage()"></div>
     &nbsp;&nbsp;
-    <div fxFlex="73" style="margin-top: 10px; direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
-      <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong style="padding-right: 5px">{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
+    <div fxFlex="{{device}}" style="margin-top: 10px; direction:rtl;"><strong>{{pass.getnom()}}</strong> <br/>
+      <strong>{{tabLangue.age}}: </strong>{{pass.getage()}}<strong
+        style="padding-right: 5px">{{tabLangue.ch}}: </strong>{{pass.getchambre()}}
     </div>
     &nbsp;&nbsp;
 
-    <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
+    <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo"></div>
+    <div icon-only class="buttonBack" (click)="goBack()" *ngIf="device===63">
+      <ion-icon name='arrow-forward'></ion-icon>
+    </div>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="end start" class="md-card2" *ngIf="langue==='arabe'">
-    <div style="padding-top: 10px;font-size: 12px ;width: 100%" dir="rtl" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}</div>
+    <div style="padding-top: 10px;font-size: 12px ;width: 100%" dir="rtl" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histd}}
+    </div>
     &nbsp;&nbsp;
     <div style="padding-top: 10px;font-size: 12px;width: 100%" dir="rtl" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histd}}
     </div>
     &nbsp;&nbsp;
     <div style="padding-top: 5px" *ngIf="connection===true">
-      <ion-avatar ><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
+      <ion-avatar><img src="{{pathimage}}/green.png" width="25" height="25"></ion-avatar>
     </div>
     &nbsp;&nbsp;
     <div style="padding-top: 5px" *ngIf="connection===false">
@@ -58,46 +66,46 @@
     &nbsp;&nbsp;
 
   </div>
-
 </ion-header>
 
+
 <ion-content *ngIf="langue==='francais' || langue==='anglais'" #content>
-<div *ngFor="let con of consigne ">
-  <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='NL') || (con.getetat()==='AF')">
+  <div *ngFor="let con of consigne ">
+    <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='NL') || (con.getetat()==='AF')">
 
-    <div fxFlex="99" dir="ltr">
-      <img src="{{pathimage}}/uncheck.png" width="20" height="20">
-      <strong  style="color: #ac2925">
-        {{con.getuserCreate()}}
-      </strong>
-     <br/>
-    </div>
-    <div fxFlex="97">
-      <div class="left">
-        {{con.getdetails()}}<br/>
-        <span style="color: #3e8e41">{{con.getdatetache().substr(8,2)}}/{{con.getdatetache().substr(5,2)}}/{{con.getdatetache().substr(0,4)}}
-            {{con.getheurtache().substr(11,5)}}</span>
+      <div fxFlex="99" dir="ltr">
+        <img src="{{pathimage}}/uncheck.png" width="20" height="20">
+        <strong style="color: #ac2925">
+          {{con.getuserCreate()}}
+        </strong>
+        <br/>
       </div>
+      <div fxFlex="97">
+        <div class="left">
+          {{con.getdetails()}}<br/>
+          <span style="color: #3e8e41">{{con.getdatetache().substr(8,2)}}/{{con.getdatetache().substr(5,2)}}/{{con.getdatetache().substr(0,4)}}
+            {{con.getheurtache().substr(11,5)}}</span>
+        </div>
 
+      </div>
+      <div fxFlex="2">
+        <p></p>
+      </div>
+      <div fxFlex="99">
+        <p>&nbsp;</p>
+      </div>
     </div>
-    <div fxFlex="2">
-<p></p>
-    </div>
-    <div fxFlex="99">
-      <p>&nbsp;</p>
-    </div>
-  </div>
 
     <div fxLayout="row" fxLayoutWrap *ngIf="(con.getetat()==='F')" dir="rtl">
 
-    <div fxFlex="99">
-      <img src="{{pathimage}}/check.png" width="20" height="20">
+      <div fxFlex="99">
+        <img src="{{pathimage}}/check.png" width="20" height="20">
 
-      <strong style="color: #ac2925">
-        {{con.getuserCreate()}}
-      </strong>
-      <br/>
-    </div>
+        <strong style="color: #ac2925">
+          {{con.getuserCreate()}}
+        </strong>
+        <br/>
+      </div>
 
       <div fxFlex="97">
         <div class="right">
@@ -114,9 +122,9 @@
         <p>&nbsp;</p>
       </div>
 
-  </div>
+    </div>
 
-</div>
+  </div>
 
 </ion-content>
 <ion-content *ngIf="langue==='arabe'" #content>
@@ -125,7 +133,7 @@
 
       <div fxFlex="99" dir="rtl">
         <img src="{{pathimage}}/uncheck.png" width="20" height="20">
-        <strong  style="color: #ac2925;direction:rtl;">
+        <strong style="color: #ac2925;direction:rtl;">
           {{con.getuserCreate()}}
         </strong>
 
@@ -133,7 +141,7 @@
       </div>
       <div fxFlex="97">
         <div class="right">
-          {{con.getdetails()}}  <br/> <span style="color:#3e8e41">{{con.getdatetache().substr(8,2)}}/{{con.getdatetache().substr(5,2)}}/{{con.getdatetache().substr(0,4)}}
+          {{con.getdetails()}} <br/> <span style="color:#3e8e41">{{con.getdatetache().substr(8,2)}}/{{con.getdatetache().substr(5,2)}}/{{con.getdatetache().substr(0,4)}}
             {{con.getheurtache().substr(11,5)}}</span>
         </div>
 
@@ -203,7 +211,8 @@
     </div>
 
     <div fxFlex="15" style="background-color: #F5F5F5; direction: rtl;">
-      <button><img src="{{pathimage}}/send.png" class="img" (click)="CreatePlanificationTacheInfirmiereForTablette(details.value)"></button>
+      <button><img src="{{pathimage}}/send.png" class="img"
+                   (click)="CreatePlanificationTacheInfirmiereForTablette(details.value)"></button>
     </div>
   </div>
 </ion-footer>

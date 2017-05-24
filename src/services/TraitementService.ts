@@ -26,8 +26,8 @@ export class TraitementService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 Traitement  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 Traitement  ' + error);
             resolve(false);
             return false;
           })
@@ -60,8 +60,8 @@ export class TraitementService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 Traitement  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 Traitement  ' + error);
         })
     });
 
@@ -89,8 +89,8 @@ export class TraitementService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 Traitement ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 Traitement ' + error);
     });
 
   }
@@ -104,11 +104,11 @@ export class TraitementService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from Traitement where  numDoss like '" + numDoss + "' and datefeuille like '" + datefeuille + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //   alert("Suppression de table Traitement est terminé avec succes");
+          //    //alert("Suppression de table Traitement est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 Traitement  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 Traitement  ' + error);
         })
     });
 

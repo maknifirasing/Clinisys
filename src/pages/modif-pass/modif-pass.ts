@@ -28,6 +28,7 @@ export class ModifPassPage {
   langes: Array<Langue> = [];
   user: Users;
   pathimage=Variables.path;
+  device=Variables.device;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,private sqlite: SQLite) {
     this.codeClinique = this.navParams.get("codeClinique");
@@ -113,5 +114,8 @@ export class ModifPassPage {
     else {
       this.err = this.tabLangue.err;
     }
+  }
+  goBack(){
+    this.navCtrl.pop();
   }
 }

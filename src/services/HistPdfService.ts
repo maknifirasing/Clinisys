@@ -26,8 +26,8 @@ export class HistPdfService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 HistPdf  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 HistPdf  ' + error);
             resolve(false);
             return false;
           })
@@ -66,8 +66,8 @@ export class HistPdfService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1.1 HistPdf  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1.1 HistPdf  ' + error);
           })
       });
 
@@ -94,8 +94,8 @@ export class HistPdfService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 HistPdf ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 HistPdf ' + error);
     });
 
   }
@@ -109,11 +109,11 @@ export class HistPdfService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from HistPdf where numDoss like '" + numDoss + "' and codeClinique like '" + codeClinique + "'and nom like '" + file + "'", [])
         .then(() => {
-          //  alert("Suppression de table Patient est terminé avec succes");
+          //   //alert("Suppression de table Patient est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 HistPdf  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 HistPdf  ' + error);
         })
     });
 

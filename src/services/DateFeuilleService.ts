@@ -3,7 +3,7 @@ import {SQLite, SQLiteObject} from '@ionic-native/sqlite';
 export class DateFeuilleService {
 
   date: Array<DateFeuille> = [];
-  
+
   constructor(private sqlite: SQLite)  {
   }
 
@@ -24,8 +24,8 @@ export class DateFeuilleService {
           }
         })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 datefeuille  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 datefeuille  ' + error);
             resolve(false);
             return false;
           })
@@ -54,8 +54,8 @@ export class DateFeuilleService {
         }
       })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 datefeuille  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 datefeuille  ' + error);
         })
     });
 
@@ -79,8 +79,8 @@ export class DateFeuilleService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 datefeuille ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 datefeuille ' + error);
     });
 
   }
@@ -93,11 +93,11 @@ export class DateFeuilleService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from DateFeuille where codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //    alert("Suppression de table DateFeuille est terminé avec succes");
+          //     //alert("Suppression de table DateFeuille est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 DateFeuille  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 DateFeuille  ' + error);
         })
     });
 

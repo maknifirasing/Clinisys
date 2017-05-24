@@ -26,8 +26,8 @@ export class ListPreanesthesieService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 listPreanesthesie  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 listPreanesthesie  ' + error);
             resolve(false);
             return false;
           })
@@ -63,8 +63,8 @@ export class ListPreanesthesieService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 listPreanesthesie  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 listPreanesthesie  ' + error);
         })
     });
 
@@ -94,8 +94,8 @@ export class ListPreanesthesieService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 listPreanesthesie ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 listPreanesthesie ' + error);
     });
 
   }
@@ -109,11 +109,11 @@ export class ListPreanesthesieService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from ListPreanesthesie where numeroDossier like '" + numeroDossier + "' and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //    alert("Suppression de table Aleg est terminé avec succes");
+          //     //alert("Suppression de table Aleg est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 ListPreanesthesie  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 ListPreanesthesie  ' + error);
         })
     });
 

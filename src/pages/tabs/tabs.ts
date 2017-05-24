@@ -23,16 +23,16 @@ import {Consigne} from "../../models/Consigne";
 import {ConsigneService} from "../../services/ConsigneService";
 import {tabBadgeConsigneService} from "../../services/tabBadgeConsigneService";
 import {SQLite} from "@ionic-native/sqlite";
-import {MenuPage} from "../menu/menu";
 import {ClientService} from "../../services/ClientService";
 import {Client} from "../../models/Client";
 import {RealisationPage} from "../realisation/realisation";
 import {PharmaciePage} from "../pharmacie/pharmacie";
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
 
 @Component({
   selector: 'page-tabs',
   templateUrl: 'tabs.html',
-  providers: [Variables]
+  providers: [ScreenOrientation, Variables]
 })
 @Injectable()
 export class TabsPage {
@@ -56,7 +56,6 @@ export class TabsPage {
   countPdfs: any;
   countListPreanesthesiess: any;
   countDocs: any;
-  public navCtrl: NavController;
   tabgLabo: Array<tabBadge> = [];
   tabgConsigne: Array<tabBadge> = [];
   tabgRadio: Array<tabBadge> = [];
@@ -87,7 +86,7 @@ export class TabsPage {
   client = new Client();
   clientserv: any;
 
-  constructor(public navParams: NavParams, private Url: Variables, public platform: Platform, public modalCtrl: ModalController, private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private screenOrientation: ScreenOrientation, public platform: Platform, public modalCtrl: ModalController, private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("mypatient");
     this.tabLangue = navParams.get("tabLangue");
@@ -136,9 +135,13 @@ export class TabsPage {
   }
 
   ngAfterViewInit() {
-    if(this.langue==='arabe'){
-      this.paymentTabs.select(5);
+    if (this.langue === 'arabe') {
+      this.paymentTabs.select(6);
     }
+  }
+
+  ionViewDidLoad() {
+    this.screenOrientation.unlock();
   }
 
   GetExamenRadioByNumDossResponse(numDoss, codeClinique) {
@@ -510,7 +513,7 @@ export class TabsPage {
               c.setcodeClinique(codeClinique);
             }
             d = new Date(c.getheurtache());
-            if ((date < d)&&(c.getetat()==='NL' || c.getetat()==='AF' ||c.getetat()==='F')) {
+            if ((date < d) && (c.getetat() === 'NL' || c.getetat() === 'AF' || c.getetat() === 'F')) {
               this.consigne.push(c);
               if (c.getetat() === "F") {
                 this.coountConsigneT++;

@@ -26,8 +26,8 @@ export class EvenementHisService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 EvenementHis  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 EvenementHis  ' + error);
             resolve(false);
             return false;
           })
@@ -62,8 +62,8 @@ export class EvenementHisService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 EvenementHis  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 EvenementHis  ' + error);
         })
     });
 
@@ -92,8 +92,8 @@ export class EvenementHisService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 EvenementHis ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 EvenementHis ' + error);
     });
 
   }
@@ -107,11 +107,11 @@ export class EvenementHisService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from EvenementHis where  numdoss like '" + numdoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //    alert("Suppression de table EvenementHis est terminé avec succes");
+          //     //alert("Suppression de table EvenementHis est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 EvenementHis  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 EvenementHis  ' + error);
         })
     });
 

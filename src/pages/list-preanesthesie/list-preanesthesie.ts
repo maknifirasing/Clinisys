@@ -24,6 +24,7 @@ export class ListPreanesthesiePage {
   tabLangue: any;
   ListePserv: any;
   pathimage=Variables.path;
+  device=Variables.device;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
@@ -54,5 +55,8 @@ export class ListPreanesthesiePage {
 
   goToInfPage() {
     this.navCtrl.push(ClientDetailPage);
+  }
+  goBack(){
+    this.navCtrl.parent.viewCtrl.dismiss();
   }
 }

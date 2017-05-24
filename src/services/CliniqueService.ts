@@ -26,8 +26,8 @@ export class CliniqueService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 Clinique  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 Clinique  ' + error);
             resolve(false);
             return false;
           })
@@ -61,8 +61,8 @@ export class CliniqueService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1 Clinique  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1 Clinique  ' + error);
           })
       });
 
@@ -88,8 +88,8 @@ export class CliniqueService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 Clinique ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 Clinique ' + error);
     });
 
   }
@@ -102,11 +102,11 @@ export class CliniqueService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from Clinique ", [])
         .then(() => {
-          //    alert("Suppression de table Aleg est terminé avec succes");
+          //     //alert("Suppression de table Aleg est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 Clinique  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 Clinique  ' + error);
         })
     });
 

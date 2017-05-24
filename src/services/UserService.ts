@@ -24,8 +24,8 @@ export class UserService {
           }
         })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 Users  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 Users  ' + error);
 
             resolve(false);
             return false;
@@ -50,7 +50,7 @@ export class UserService {
             var user;
             for (var i = 0; i < result.rows.length; i++) {
               user = new Users();
-              user.setmatricule(result.rows.item(0).matricule);
+              user.setcodePin(result.rows.item(0).codePin);
               user.setpassWord(result.rows.item(0).passWord);
               user.setuserName(result.rows.item(0).userName);
               user.setcodeClinique(result.rows.item(0).codeClinique);
@@ -60,8 +60,8 @@ export class UserService {
           }
         })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1 Users  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1 Users  ' + error);
           })
       });
       return this;
@@ -89,8 +89,9 @@ export class UserService {
           resolve(this.users);
         })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1.1 Users  ' + error);
+            //console.error('Error opening database', error);
+          //   alert('Error 1.1 Users  ' + error);
+            resolve(this.users);
           })
       });
 
@@ -116,8 +117,8 @@ export class UserService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 Users ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 Users ' + error);
     });
   }
 
@@ -134,8 +135,8 @@ export class UserService {
             return true;
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 3 User  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 3 User  ' + error);
             resolve(false);
             return false;
           })

@@ -26,8 +26,8 @@ export class LaboTService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 LaboT  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 LaboT  ' + error);
             resolve(false);
             return false;
           })
@@ -63,8 +63,8 @@ export class LaboTService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 LaboT  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 LaboT  ' + error);
         })
     });
 
@@ -95,8 +95,8 @@ export class LaboTService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 LaboT ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 LaboT ' + error);
     });
 
   }
@@ -110,11 +110,11 @@ export class LaboTService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from LaboT where numDossier like '" + numDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //     alert("Suppression de table Labo est terminé avec succes");
+          //      //alert("Suppression de table Labo est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 LaboT  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 LaboT  ' + error);
         })
     });
 

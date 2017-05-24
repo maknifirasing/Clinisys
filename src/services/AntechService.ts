@@ -26,7 +26,7 @@ export class AntechService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
+            //console.error('Error opening database', error);
             resolve(false);
             return false;
           })
@@ -57,8 +57,8 @@ export class AntechService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 Antech  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 Antech  ' + error);
         })
     });
 
@@ -83,8 +83,8 @@ export class AntechService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 Antech ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 Antech ' + error);
     });
 
   }
@@ -98,11 +98,11 @@ export class AntechService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from Antech where  idpass like '" + idpass + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //       alert("Suppression de table Antech est terminé avec succes");
+          //        //alert("Suppression de table Antech est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 Antech  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 Antech  ' + error);
         })
     });
 

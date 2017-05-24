@@ -26,8 +26,8 @@ export class tabBadgeListPreanesthesie {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 tabBadgeListPreanesthesie  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 tabBadgeListPreanesthesie  ' + error);
             resolve(false);
             return false;
           })
@@ -62,8 +62,8 @@ export class tabBadgeListPreanesthesie {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1 tabBadgeListPreanesthesie  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1 tabBadgeListPreanesthesie  ' + error);
           })
       });
 
@@ -89,8 +89,8 @@ export class tabBadgeListPreanesthesie {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 tabBadgeListPreanesthesie ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 tabBadgeListPreanesthesie ' + error);
     });
 
   }
@@ -103,11 +103,11 @@ export class tabBadgeListPreanesthesie {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from tabBadgeListPreanesthesie where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //   alert("Suppression de table Traitement est terminé avec succes");
+          //    //alert("Suppression de table Traitement est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 tabBadgeListPreanesthesie  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 tabBadgeListPreanesthesie  ' + error);
         })
     });
 

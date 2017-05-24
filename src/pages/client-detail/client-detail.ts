@@ -32,6 +32,7 @@ export class ClientDetailPage {
   patient: any;
   connection: boolean;
   pathimage = Variables.path;
+  device: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sqlite: SQLite) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
@@ -41,6 +42,11 @@ export class ClientDetailPage {
     this.patient = TabsPage.tabLangue.pass;
     this.motif = DossierPage.motifhh;
     this.client = TabsPage.tabLangue.client;
+    if (Variables.device === 63) {
+      this.device = false;
+    } else {
+      this.device = true;
+    }
 
     Variables.checconnection().then(res => {
       if (res === false) {

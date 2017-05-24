@@ -19,7 +19,7 @@ export class ExamenLaboPage {
   LabosT: Array<Labo> = [];
   LabosF: Array<Labo> = [];
   pdf: string;
-  histd :any;
+  histd: any;
   connection: boolean;
   tabLangue: any;
   pass: any;
@@ -27,9 +27,10 @@ export class ExamenLaboPage {
   langue: any;
   LabosFs: any;
   LabosTs: any;
-  pathimage=Variables.path;
+  pathimage = Variables.path;
+  device = Variables.device;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,public platform: Platform,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private sqlite: SQLite) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
     this.tabLangue = TabsPage.tabLangue.tabLangue;
     this.pass = TabsPage.tabLangue.pass;
@@ -37,15 +38,15 @@ export class ExamenLaboPage {
     this.langue = TabsPage.tabLangue.langue;
     this.LabosT = TabsPage.tabLangue.Labost;
     this.LabosF = TabsPage.tabLangue.Labosf;
-      Variables.checconnection().then(connexion => {
-        if (connexion === false) {
-          this.connection = false;
-          this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
-        } else {
-          this.connection = true;
-        }
-      });
-    this.histd=DossierPage.hist;
+    Variables.checconnection().then(connexion => {
+      if (connexion === false) {
+        this.connection = false;
+        this.findAllLaboByNumDossierOff(this.pass.getdossier(), this.codeClinique);
+      } else {
+        this.connection = true;
+      }
+    });
+    this.histd = DossierPage.hist;
   }
 
   openURL(numAdmission) {
@@ -93,5 +94,9 @@ export class ExamenLaboPage {
 
   goToInfPage() {
     this.navCtrl.push(ClientDetailPage);
+  }
+
+  goBack() {
+    this.navCtrl.parent.viewCtrl.dismiss();
   }
 }

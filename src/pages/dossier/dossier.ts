@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NavController, NavParams, Platform} from "ionic-angular";
+import {NavController, NavParams, Platform, ViewController} from "ionic-angular";
 import {MotifHospitalisation} from "../../models/motifHospitalisation";
 import {SigneClinique} from "../../models/SigneClinique";
 import {Traitement} from "../../models/Traitement";
@@ -29,6 +29,7 @@ import {Patient} from "../../models/Patient";
 import {SQLite} from "@ionic-native/sqlite";
 import {ScreenOrientation} from '@ionic-native/screen-orientation';
 import {TabsPage} from "../tabs/tabs";
+import {ListePage} from "../liste/liste";
 
 @Component({
   selector: 'page-dossier',
@@ -93,14 +94,16 @@ export class DossierPage {
   langue: any;
   static motifhh = new MotifHospitalisation();
   pathimage = Variables.path;
+  device=Variables.device;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private sqlite: SQLite, private screenOrientation: ScreenOrientation) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private Url: Variables, public platform: Platform, private sqlite: SQLite, private screenOrientation: ScreenOrientation) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
     this.tabLangue = TabsPage.tabLangue.tabLangue;
     this.pass = TabsPage.tabLangue.pass;
     this.dateFeuille = TabsPage.tabLangue.dateFeuille;
     this.langue = TabsPage.tabLangue.langue;
     this.screenOrientation.unlock();
+    this.viewCtrl.showBackButton(true);
 
     if (this.pass.getnature() === "REA") {
       this.codeType = "'1','G','L','E','7','I','9','A','3'";
@@ -936,6 +939,9 @@ export class DossierPage {
 
   gotoTraitementCourbe() {
     this.navCtrl.push(TraitmentCourbe);
+  }
+  goBack(){
+    this.navCtrl.parent.viewCtrl.dismiss();
   }
 }
 

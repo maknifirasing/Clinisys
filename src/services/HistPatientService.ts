@@ -26,8 +26,8 @@ export class HistPatientService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 HistPatient  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 HistPatient  ' + error);
             resolve(false);
             return false;
           })
@@ -64,8 +64,8 @@ export class HistPatientService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1.1 HistPatient  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1.1 HistPatient  ' + error);
           })
       });
 
@@ -93,8 +93,8 @@ export class HistPatientService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 HistPatient ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 HistPatient ' + error);
     });
 
   }
@@ -108,11 +108,11 @@ export class HistPatientService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from HistPatient where user like '" + user + "' and searchText like '" + searchText + "' and etage like '" + etage + "' and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //  alert("Suppression de table Patient est terminé avec succes");
+          //   //alert("Suppression de table Patient est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 HistPatient  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 HistPatient  ' + error);
         })
     });
 

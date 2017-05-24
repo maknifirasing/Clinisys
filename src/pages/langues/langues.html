@@ -6,24 +6,43 @@
 
   <ion-navbar hideBackButton="true">
 
-    <ion-title style="text-align: center">Langues</ion-title>
+    <ion-title style="text-align: center">{{lan}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 <ion-content>
-  <ion-list radio-group>
+  <ion-list radio-group *ngIf="lan==='Langues' || lan==='Languages'">
     <ion-item>
-      <ion-label>Francais</ion-label>
+      <ion-label>{{fr}}</ion-label>
       <ion-radio #francais value="francais" checked (click)="choixLang(francais.value)"></ion-radio>
     </ion-item>
     <ion-item>
-      <ion-label>Anglais</ion-label>
+      <ion-label>{{ang}}</ion-label>
       <ion-radio #anglais value="anglais" (click)="choixLang(anglais.value)"></ion-radio>
     </ion-item>
     <ion-item>
-      <ion-label>Arabe</ion-label>
+      <ion-label>{{ar}}</ion-label>
       <ion-radio #arabe value="arabe" [disabled]="isDisabled" (click)="choixLang(arabe.value)"></ion-radio>
     </ion-item>
   </ion-list>
+
+  <ion-list radio-group *ngIf="lan==='اللغات'">
+    <ion-item dir="rtl">
+      <ion-label fxFlex="20">{{fr}}</ion-label>
+      <ion-radio #francais value="francais" checked (click)="choixLang(francais.value)"></ion-radio>
+
+    </ion-item>
+    <ion-item dir="rtl">
+      <ion-label fxFlex="20">{{ang}}</ion-label>
+      <ion-radio #anglais value="anglais" (click)="choixLang(anglais.value)"></ion-radio>
+
+    </ion-item>
+    <ion-item dir="rtl">
+      <ion-label fxFlex="20">{{ar}}</ion-label>
+      <ion-radio #arabe value="arabe" [disabled]="isDisabled" (click)="choixLang(arabe.value)"></ion-radio>
+
+    </ion-item>
+  </ion-list>
+
 </ion-content>

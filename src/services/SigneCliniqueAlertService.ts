@@ -27,8 +27,8 @@ export class SigneCliniqueAlertService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 SigneCliniqueAlert  ' + error);
+           // console.error('Error opening database', error);
+           // alert('Error 0 SigneCliniqueAlert  ' + error);
             resolve(false);
             return false;
           })
@@ -63,8 +63,8 @@ export class SigneCliniqueAlertService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 SigneCliniqueAlert  ' + error);
+       //   console.error('Error opening database', error);
+      //    alert('Error 1 SigneCliniqueAlert  ' + error);
         })
     });
 
@@ -94,8 +94,8 @@ export class SigneCliniqueAlertService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 SigneCliniqueAlert ' + error);
+  //    console.error('Error opening database', error);
+  //    alert('Error 2 SigneCliniqueAlert ' + error);
     });
 
   }
@@ -112,8 +112,8 @@ export class SigneCliniqueAlertService {
           alert("Suppression de table SigneCliniqueAlert est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 SigneCliniqueAlert  ' + error);
+        //  console.error('Error opening database', error);
+       //   alert('Error 3 SigneCliniqueAlert  ' + error);
         })
     });
 

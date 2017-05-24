@@ -1,8 +1,5 @@
 page-consigne {
-
   * {
-    margin:0;
-    padding:0;
     font-family: Tahoma, sans-serif;
     box-sizing: border-box;
   }
@@ -10,7 +7,6 @@ page-consigne {
   ion-content {
     background: #F5F5F5;
   }
-
   .chatbox {
     //width: 500px;
     min-width: 390px;
@@ -24,7 +20,7 @@ page-consigne {
   .chatlogs {
     padding: 10px;
     width: 50%;
-   // height: 450px;
+    // height: 450px;
     overflow-x: hidden;
     overflow-y: scroll;
 
@@ -44,7 +40,7 @@ page-consigne {
 
   .chatlogs::-webkit-scrollbar-thumb {
     border-radius: 5px;
-    background: rgba(0,0,0,-1);
+    background: rgba(0, 0, 0, -1);
   }
 
   .chat {
@@ -70,8 +66,6 @@ page-consigne {
     font-size: 20px;
     background: #1adda4;
   }
-
-
 
   .friend .chat-message {
     background: #1adda4;
@@ -112,34 +106,26 @@ page-consigne {
       border-radius: 5px;
       background: rgba(0,0,0,-1);
     }*/
-  .roundedImage{
-    overflow:hidden;
-    -webkit-border-radius:50px;
-    -moz-border-radius:50px;
-    border-radius:50px;
-    width:40px;
-    height:40px;
-    background-color: transparent;
-  }
- /* .chat-form button {
-   /* background: #F5F5F5;
-    padding: 5px 15px;
-    font-size: 30px;
-    color: #fff;
-    border: none;
-    margin: 0 10px;
-    border-radius: 3px;
-    box-shadow: 0 3px 0 #0eb2c1;*/
- /*   cursor: pointer;
-    overflow:hidden;
-    -webkit-border-radius:50px;
-    -moz-border-radius:50px;
-    border-radius:50px;
-    width:50px;
-    height:50px;
-    margin-top: 10px;
 
-  }*/
+  /* .chat-form button {
+    /* background: #F5F5F5;
+     padding: 5px 15px;
+     font-size: 30px;
+     color: #fff;
+     border: none;
+     margin: 0 10px;
+     border-radius: 3px;
+     box-shadow: 0 3px 0 #0eb2c1;*/
+  /*   cursor: pointer;
+     overflow:hidden;
+     -webkit-border-radius:50px;
+     -moz-border-radius:50px;
+     border-radius:50px;
+     width:50px;
+     height:50px;
+     margin-top: 10px;
+
+   }*/
 
   .chat-form button:hover {
 
@@ -149,35 +135,39 @@ page-consigne {
     border: none;
     border-bottom: 2px solid gainsboro;
     width: 350px;
-    margin-top:10px;
+    margin-top: 10px;
     padding-left: 5px;
-    background-color:#F5F5F5;
+    background-color: #F5F5F5;
   }
   .img {
-    background-color:  #F5F5F5;
-    width:30px;height:30px;
-
+    margin:0;
+    padding:0;
+    background-color: #F5F5F5;
+    width: 30px;
+    height: 30px;
 
   }
-  .img:focus{
-    background-color:  gainsboro;
-    overflow:hidden;
-    -webkit-border-radius:50px;
-    -moz-border-radius:50px;
-    border-radius:50px;
+  .img:focus {
+    margin:0;
+    padding:0;
+    background-color: gainsboro;
+    overflow: hidden;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
   }
 
   .right {
     position: relative;
     background: #F5F5F5;
     text-align: left;
-   // min-width: 45%;
+    // min-width: 45%;
     padding: 10px 15px;
     border-radius: 6px;
     border: 1px solid #F5F5F5;
     float: right;
     right: 20px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
 
   .right::before {
@@ -201,8 +191,6 @@ page-consigne {
     clear: both;
   }
 
-
-
   .left {
     position: relative;
     background: #F5F5F5;
@@ -213,7 +201,7 @@ page-consigne {
     border: 1px solid #F5F5F5;
     float: left;
     left: 20px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
 
   .left::before {
@@ -236,7 +224,30 @@ page-consigne {
     border-top: 10px solid #F5F5F5;
     clear: both;
   }
-  .md-card{
+
+  .roundedImage {
+    overflow: hidden;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+
+  }
+
+  .strong {
+    color: #0c60ee;
+    font-size: 19px;
+    line-height: 5px;
+  }
+
+  .strong2 {
+    margin-top: 5px;
+    font-size: 17px;
+  }
+
+  .md-card {
     margin-top: 0px;
     padding-top: 0px;
     background-color: #0277bd;
@@ -257,5 +268,14 @@ page-consigne {
     background: #00E676;
     border-radius: 50%;
     border: 3px solid #FFFFFF;
+  }
+  .buttonBack {
+    padding-top: 20px;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+
   }
 }

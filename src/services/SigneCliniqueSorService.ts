@@ -27,8 +27,8 @@ export class SigneCliniqueSorService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 SigneCliniqueSor  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 SigneCliniqueSor  ' + error);
             resolve(false);
             return false;
           })
@@ -62,8 +62,8 @@ export class SigneCliniqueSorService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 SigneCliniqueSor  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 SigneCliniqueSor  ' + error);
         })
     });
 
@@ -93,8 +93,8 @@ export class SigneCliniqueSorService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 SigneCliniqueSor ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 SigneCliniqueSor ' + error);
     });
 
   }
@@ -108,11 +108,11 @@ export class SigneCliniqueSorService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from SigneCliniqueSor where numDoss like '" + numDoss + "' and dateFeuille like '" + dateFeuille + "' and nature like '" + nature + "' and codetypeof like '" + codeType + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //    alert("Suppression de table SigneCliniqueSor est terminé avec succes");
+          //     //alert("Suppression de table SigneCliniqueSor est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 SigneCliniqueSor  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 SigneCliniqueSor  ' + error);
         })
     });
 

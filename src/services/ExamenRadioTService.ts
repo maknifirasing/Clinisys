@@ -26,8 +26,8 @@ export class ExamenRadioTService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 ExamenRadioT  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 ExamenRadioT  ' + error);
             resolve(false);
             return false;
           })
@@ -62,8 +62,8 @@ export class ExamenRadioTService {
           }
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 1 ExamenRadioT  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 1 ExamenRadioT  ' + error);
         })
     });
 
@@ -91,8 +91,8 @@ export class ExamenRadioTService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 ExamenRadioT ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 ExamenRadioT ' + error);
     });
 
   }
@@ -106,11 +106,11 @@ export class ExamenRadioTService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from ExamenRadioT where numeroDossier like '" + numeroDossier + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //    alert("Suppression de table ExamenRadioT est terminé avec succes");
+          //     //alert("Suppression de table ExamenRadioT est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 ExamenRadioT  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 ExamenRadioT  ' + error);
         })
     });
 

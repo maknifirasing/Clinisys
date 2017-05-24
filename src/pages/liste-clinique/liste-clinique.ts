@@ -164,6 +164,9 @@ export class ListeCliniquePage {
 
             });
           }
+          Variables.langue = this.langue;
+          Variables.nomClinique = codeC.getnom();
+          Variables.tab = this.tabLangue;
           Variables.updateUrl(codeC.geturl());
           this.navCtrl.setRoot(ListePage, {
             tabLangue: this.tabLangue,

@@ -26,8 +26,8 @@ export class tabBadgeLaboService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 0 tabBadgeLabo  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 0 tabBadgeLabo  ' + error);
             resolve(false);
             return false;
           })
@@ -62,8 +62,8 @@ export class tabBadgeLaboService {
             }
           })
           .catch(error => {
-            console.error('Error opening database', error);
-            alert('Error 1 tabBadgeLabo  ' + error);
+            //console.error('Error opening database', error);
+             //alert('Error 1 tabBadgeLabo  ' + error);
           })
       });
 
@@ -90,8 +90,8 @@ export class tabBadgeLaboService {
         ]);
       }
     }).catch(error => {
-      console.error('Error opening database', error);
-      alert('Error 2 tabBadgeLabo ' + error);
+      //console.error('Error opening database', error);
+       //alert('Error 2 tabBadgeLabo ' + error);
     });
 
   }
@@ -104,11 +104,11 @@ export class tabBadgeLaboService {
     }).then((db: SQLiteObject) => {
       db.executeSql("delete from tabBadgeLabo where numDoss like '" + numDoss + "'and codeClinique like '" + codeClinique + "'", [])
         .then(() => {
-          //   alert("Suppression de table Traitement est terminé avec succes");
+          //    //alert("Suppression de table Traitement est terminé avec succes");
         })
         .catch(error => {
-          console.error('Error opening database', error);
-          alert('Error 3 tabBadgeLabos  ' + error);
+          //console.error('Error opening database', error);
+           //alert('Error 3 tabBadgeLabos  ' + error);
         })
     });
 

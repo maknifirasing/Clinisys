@@ -33,6 +33,7 @@ export class PdfViewPage {
   pass: any;
   langue: any;
   pathimage=Variables.path;
+  device=Variables.device;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private PdfViewerComponent: PdfViewerComponent, public platform: Platform, public alertCtrl: AlertController
     ,private transfer: Transfer, private file: File,private sqlite: SQLite,public loadingCtrl: LoadingController) {
@@ -190,5 +191,8 @@ export class PdfViewPage {
     this.histserv.getHistPdfs(hist, numDoss, codeClinique, file).then(res => {
       this.histp = res.getdate();
     });
+  }
+  goBack(){
+    this.navCtrl.pop();
   }
 }
