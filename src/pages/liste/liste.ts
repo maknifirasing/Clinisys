@@ -15,6 +15,7 @@ import {ModifPassPage} from "../modif-pass/modif-pass";
 import {LangueService} from "../../services/LangueService";
 import {Langue} from "../../models/Langue";
 import {SQLite} from "@ionic-native/sqlite";
+import {MyApp} from "../../app/app.component";
 
 @Component({
   selector: 'page-liste',
@@ -42,7 +43,6 @@ export class ListePage {
   private langserv: any;
   langes: Array<Langue> = [];
   pathimage = Variables.path;
-  menu: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, private sqlite: SQLite, public loadingCtrl: LoadingController) {
     this.dtFeuille = new DateFeuille();
@@ -50,12 +50,11 @@ export class ListePage {
     this.nomClinique = navParams.get("nomClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
+    Variables.langue = this.langue;
+    Variables.nomClinique = this.nomClinique;
+    Variables.tab = this.tabLangue;
     this.presentLoadingDefault();
-    if (this.langue === 'arabe') {
-      this.menu = "right";
-    } else {
-      this.menu = "left";
-    }
+
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
         this.connection = false;
@@ -329,33 +328,4 @@ export class ListePage {
     this.DateFeuilleOff(this.datefeuille, this.codeClinique);
   }
 
-  deconnexion() {
-    this.userserv = new UserService(this.sqlite);
-    this.userserv.deleteUsers(this.codeClinique).then(res => {
-      if (res === true) {
-        this.navCtrl.setRoot(ListeCliniquePage, {tabLangue: this.tabLangue, langue: this.langue});
-      }
-    });
-
-  }
-
-  changerlangue() {
-    this.navCtrl.setRoot(LanguesPage);
-  }
-
-  changerPassword() {
-    this.langserv = new LangueService(this.sqlite);
-    this.langserv.getLangues(this.langes).then(lg => {
-      this.navCtrl.push(ModifPassPage, {
-        tabLangue: this.tabLangue,
-        langue: this.langue,
-        codeClinique: lg.getcodeClinique(),
-        nomClinique: lg.getnomClinique()
-      });
-    });
-  }
-
-  openListeCliniquePage() {
-    this.navCtrl.setRoot(ListeCliniquePage, {tabLangue: this.tabLangue, langue: this.langue});
-  }
 }

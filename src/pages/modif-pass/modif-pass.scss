@@ -129,12 +129,13 @@ ios, .md {
       animation-name: fadeInUpBig;
     }
     .buttonBack {
-      background-color: Transparent;
-      background-repeat:no-repeat;
+      padding-top: 10px;
+      background-repeat: no-repeat;
       border: none;
-      cursor:pointer;
+      cursor: pointer;
       overflow: hidden;
-      outline:none;
+      outline: none;
+
     }
   }
 }

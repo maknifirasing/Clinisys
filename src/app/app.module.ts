@@ -29,6 +29,9 @@ import {Variables} from "../providers/variables";
 import {HttpModule} from '@angular/http';
 import {PharmaciePage} from "../pages/pharmacie/pharmacie";
 import {RealisationPage} from "../pages/realisation/realisation";
+import {ThemeableBrowser} from "@ionic-native/themeable-browser";
+import {Transfer} from "@ionic-native/transfer";
+import {File} from '@ionic-native/file';
 
 @NgModule({
   declarations: [
@@ -61,7 +64,14 @@ import {RealisationPage} from "../pages/realisation/realisation";
     CustomIconsModule,
     Ng2HighchartsModule,
     HttpModule,
-    IonicModule.forRoot(MyApp, {animate: false})
+    IonicModule.forRoot(MyApp, {
+      platforms: {
+        ios: {
+          statusbarPadding: true,
+          tabsHideOnSubPages: true
+        }
+      }
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -86,10 +96,13 @@ import {RealisationPage} from "../pages/realisation/realisation";
     RealisationPage
   ],
   providers: [
+    SQLite,
     StatusBar,
     SplashScreen,
-    SQLite,
     Variables,
+    ThemeableBrowser,
+    File,
+    Transfer,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

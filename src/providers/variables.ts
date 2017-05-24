@@ -189,7 +189,7 @@ export class Variables {
     titreProduitexiste: "Produit existe",
     titreStockindisponible: "Stock indisponible",
     titreLoading: "Chargement...",
-    titreLangue:"langues",
+    titreLangue:"Langues",
     francais:"Francais",
     anglais:"anglais",
     arabe:"arabe"
@@ -280,7 +280,7 @@ export class Variables {
     titreProduitexiste: "Product exists",
     titreStockindisponible: "Stock not available",
     titreLoading: "Loading...",
-    titreLangue:"languages",
+    titreLangue:"Languages",
     francais:"French",
     anglais:"english",
     arabe:"arabic"
@@ -291,6 +291,10 @@ export class Variables {
   static uRL = "";
   static path = "";
   static device :number;
+  static padingtop :number;
+  static langue: any;
+  static nomClinique: any;
+  static tab: any;
 
   constructor(public http: Http) {
   }

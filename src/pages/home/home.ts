@@ -66,7 +66,7 @@ export class HomePage {
               user.setuserName(x[0].children[12].textContent);
               user.setcodeClinique(this.codeClinique);
               this.users.push(user);
-              if (this.users.length > 0 && user.getactif()==='1') {
+              if (this.users.length > 0 && user.getactif() === '1') {
                 this.userserv = new UserService(this.sqlite);
                 this.userserv.verifUser(this.codeClinique).then(res => {
                   if (res === false) {
@@ -94,6 +94,9 @@ export class HomePage {
                   } else {
                     this.langserv.getLangues(this.langes);
                   }
+                  Variables.langue = this.langue;
+                  Variables.nomClinique = this.nomClinique;
+                  Variables.tab = this.tabLangue;
                   this.navCtrl.setRoot(ListePage, {
                     tabLangue: this.tabLangue,
                     langue: this.langue,

@@ -51,6 +51,9 @@ export class PharmaciePage {
   langes: Array<Langue> = [];
   pathimage = Variables.path;
   device = Variables.device;
+  artic: any;
+  mede: any;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite, private toastCtrl: ToastController) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
@@ -77,6 +80,14 @@ export class PharmaciePage {
       }
     });
     this.histd = DossierPage.hist;
+
+    if (this.langue === 'arabe') {
+      this.artic = "articlear";
+      this.mede = "medecinar";
+    } else {
+      this.artic = "article";
+      this.mede = "medecin";
+    }
   }
 
   ionViewDidLoad() {
@@ -211,6 +222,7 @@ export class PharmaciePage {
   }
 
   articleConfirm(pharmacie) {
+
     let alert = this.alertCtrl.create({
       title: this.tabLangue.titreconfirmation,
       message: this.tabLangue.titremessConf,
@@ -226,6 +238,7 @@ export class PharmaciePage {
           handler: () => {
             this.articleComande = [];
             this.pharmacieSelected = pharmacie;
+            (<HTMLInputElement>document.getElementById(this.mede)).value = "";
             this.med = false;
             this.art = false;
 
@@ -382,7 +395,14 @@ export class PharmaciePage {
   filtreArticle() {
     this.showlistepopup = true;
     this.articleListe = [];
-    var shearch = (<HTMLInputElement>document.getElementById("article")).value;
+    this.medecinListe = [];
+
+    var shearch = (<HTMLInputElement>document.getElementById(this.artic)).value;
+    if (shearch.length === 0) {
+      this.showlistepopup = false;
+      this.articleListe = [];
+      this.medecinListe = [];
+    }
 
     if (this.pharmacieSelected.getCodeDep() === "EX") {
       this.getTraitementExterne(shearch);
@@ -404,14 +424,8 @@ export class PharmaciePage {
   }
 
   selectArticle(x) {
-    var art;
-    if (this.langue === 'arabe') {
-      art = "articlear";
-    } else {
-      art = "article";
-    }
 
-    (<HTMLInputElement>document.getElementById(art)).value = "";
+    (<HTMLInputElement>document.getElementById(this.artic)).value = "";
 
     if (x.getqtestk() > 0) {
       if (this.exist(x, this.articleComande) < 0) {
@@ -424,7 +438,7 @@ export class PharmaciePage {
 
 
         setTimeout(() => {
-          document.getElementById(this.articleComande[this.articleComande.length - 1].getrang() + art).focus();
+          document.getElementById(this.articleComande[this.articleComande.length - 1].getrang() + this.artic).focus();
         }, 10);
       } else {
         this.presentToast(this.tabLangue.titreProduitexiste);
@@ -455,19 +469,13 @@ export class PharmaciePage {
 
 
   updateQteArticle(rang) {
-    var art;
-    if (this.langue === 'arabe') {
-      art = "articlear";
-    } else {
-      art = "article";
-    }
-    var qte = Number((<HTMLInputElement>document.getElementById(this.articleComande[rang].getrang() + art)).value);
+    var qte = Number((<HTMLInputElement>document.getElementById(this.articleComande[rang].getrang() + this.artic)).value);
     if (qte > this.articleComande[rang].getarticle().getqtestk()) {
       this.presentToast(this.tabLangue.titreStockindisponible);
-      (<HTMLInputElement>document.getElementById(this.articleComande[rang] + art)).value = "1";
+      (<HTMLInputElement>document.getElementById(this.articleComande[rang] + this.artic)).value = "1";
       this.articleComande[rang].setqte(1);
       setTimeout(() => {
-        document.getElementById(this.articleComande[rang] + art).focus();
+        document.getElementById(this.articleComande[rang] + this.artic).focus();
       }, 10);
 
     } else {
@@ -478,26 +486,21 @@ export class PharmaciePage {
 
   filtreMedecin() {
     this.showlistepopup = true;
-    var med;
-    if (this.langue === 'arabe') {
-      med = "medecinar";
-    } else {
-      med = "medecin";
-    }
+
+    this.articleListe = [];
     this.medecinListe = [];
-    var shearch = (<HTMLInputElement>document.getElementById(med)).value;
+    var shearch = (<HTMLInputElement>document.getElementById(this.mede)).value;
+    if (shearch.length === 0) {
+      this.articleListe = [];
+      this.medecinListe = [];
+      this.showlistepopup = false;
+    }
     this.getListMedecinLikeNomMed(shearch);
   }
 
   selectMedecin(x) {
-    var med;
-    if (this.langue === 'arabe') {
-      med = "medecinar";
-    } else {
-      med = "medecin";
-    }
-    (<HTMLInputElement>document.getElementById(med)).value = "";
-    (<HTMLInputElement>document.getElementById(med)).value = x.getnomMed();
+    (<HTMLInputElement>document.getElementById(this.mede)).value = "";
+    (<HTMLInputElement>document.getElementById(this.mede)).value = x.getnomMed();
     this.medecinSelected = x;
     this.medecinListe = [];
     this.med = true;
@@ -593,20 +596,8 @@ export class PharmaciePage {
           this.presentToast(x[0].textContent);
           this.commandeListe = [];
           this.articleComande = [];
-          var med;
-          if (this.langue === 'arabe') {
-            med = "medecinar";
-          } else {
-            med = "medecin";
-          }
-          var art;
-          if (this.langue === 'arabe') {
-            art = "articlear";
-          } else {
-            art = "article";
-          }
-          (<HTMLInputElement>document.getElementById(art)).value = "";
-          (<HTMLInputElement>document.getElementById(med)).value = "";
+          (<HTMLInputElement>document.getElementById(this.artic)).value = "";
+          (<HTMLInputElement>document.getElementById(this.mede)).value = "";
 
           this.art = false;
           this.med = false;
@@ -664,20 +655,8 @@ export class PharmaciePage {
           this.presentToast(x[0].textContent);
           this.commandeListe = [];
           this.articleComande = [];
-          var med;
-          if (this.langue === 'arabe') {
-            med = "medecinar";
-          } else {
-            med = "medecin";
-          }
-          var art;
-          if (this.langue === 'arabe') {
-            art = "articlear";
-          } else {
-            art = "article";
-          }
-          (<HTMLInputElement>document.getElementById(art)).value = "";
-          (<HTMLInputElement>document.getElementById(med)).value = "";
+          (<HTMLInputElement>document.getElementById(this.artic)).value = "";
+          (<HTMLInputElement>document.getElementById(this.mede)).value = "";
           this.art = false;
           this.med = false;
           this.ListeCommandePharmaciePrescrit(numdoss, dateFeuille);
@@ -735,20 +714,8 @@ export class PharmaciePage {
           this.presentToast(x[0].textContent);
           this.commandeListe = [];
           this.articleComande = [];
-          var med;
-          if (this.langue === 'arabe') {
-            med = "medecinar";
-          } else {
-            med = "medecin";
-          }
-          var art;
-          if (this.langue === 'arabe') {
-            art = "articlear";
-          } else {
-            art = "article";
-          }
-          (<HTMLInputElement>document.getElementById(art)).value = "";
-          (<HTMLInputElement>document.getElementById(med)).value = "";
+          (<HTMLInputElement>document.getElementById(this.artic)).value = "";
+          (<HTMLInputElement>document.getElementById(this.mede)).value = "";
           this.art = false;
           this.med = false;
           this.ListeCommandePharmaciePrescrit(numdoss, dateFeuille);
@@ -805,20 +772,8 @@ export class PharmaciePage {
           this.presentToast(x[0].textContent);
           this.commandeListe = [];
           this.articleComande = [];
-          var med;
-          if (this.langue === 'arabe') {
-            med = "medecinar";
-          } else {
-            med = "medecin";
-          }
-          var art;
-          if (this.langue === 'arabe') {
-            art = "articlear";
-          } else {
-            art = "article";
-          }
-          (<HTMLInputElement>document.getElementById(art)).value = "";
-          (<HTMLInputElement>document.getElementById(med)).value = "";
+          (<HTMLInputElement>document.getElementById(this.artic)).value = "";
+          (<HTMLInputElement>document.getElementById(this.mede)).value = "";
           this.art = false;
           this.med = false;
           this.ListeCommandePharmaciePrescrit(numdoss, dateFeuille);
@@ -875,20 +830,8 @@ export class PharmaciePage {
           this.presentToast(x[0].textContent);
           this.commandeListe = [];
           this.articleComande = [];
-          var med;
-          if (this.langue === 'arabe') {
-            med = "medecinar";
-          } else {
-            med = "medecin";
-          }
-          var art;
-          if (this.langue === 'arabe') {
-            art = "articlear";
-          } else {
-            art = "article";
-          }
-          (<HTMLInputElement>document.getElementById(art)).value = "";
-          (<HTMLInputElement>document.getElementById(med)).value = "";
+          (<HTMLInputElement>document.getElementById(this.artic)).value = "";
+          (<HTMLInputElement>document.getElementById(this.mede)).value = "";
           this.art = false;
           this.med = false;
           this.ListeCommandePharmaciePrescrit(numdoss, dateFeuille);

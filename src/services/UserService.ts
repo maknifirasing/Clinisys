@@ -90,7 +90,7 @@ export class UserService {
         })
           .catch(error => {
             //console.error('Error opening database', error);
-             alert('Error 1.1 Users  ' + error);
+          //   alert('Error 1.1 Users  ' + error);
             resolve(this.users);
           })
       });

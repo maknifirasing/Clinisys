@@ -1,8 +1,8 @@
 <ion-content>
   <div padding id="cloud-layer" *ngIf="langue==='arabe'" dir="rtl">
-    <button ion-button  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===true" >
+    <div  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===63" >
       <ion-icon name='arrow-forward' ></ion-icon>
-    </button>
+    </div>
     <ion-row>
       <ion-col class="animated fadeInUp">
         <img src="{{pathimage}}/clinisys.png"/>
@@ -38,9 +38,9 @@
 
 
   <div padding id="cloud-layer2" *ngIf="langue==='francais' || langue==='anglais'">
-    <button ion-button  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===true" >
+    <div  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===63" >
       <ion-icon name='arrow-back' ></ion-icon>
-    </button>
+    </div>
     <ion-row>
       <ion-col class="animated fadeInUp">
         <img src="{{pathimage}}/clinisys.png"/>

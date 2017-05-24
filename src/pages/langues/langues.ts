@@ -60,13 +60,12 @@ export class LanguesPage {
             });
           }
         });
-      } else {
-        this.lan = "Langues";
-        this.fr = "francais";
-        this.ang = "anglais";
-        this.ar = "arabe";
       }
     });
+    this.lan = "Langues";
+    this.fr = "francais";
+    this.ang = "anglais";
+    this.ar = "arabe";
   }
 
 

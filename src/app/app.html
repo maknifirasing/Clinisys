@@ -1,1 +1,44 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu side="{{menu}}" [content]="content" (ionOpen)="menuOpened()">
+
+  <ion-header >
+
+      <IMG src="{{pathimage}}/bagroundMenu.png" class="headerBackgroundMenu">
+    <div class="headerTitleMenu"><strong>** {{nomClinique}} **</strong></div>
+  </ion-header>
+  <ion-content class="contentMenu" *ngIf="langue==='francais' || langue==='anglais'">
+    <div class="divFRANG">
+      <button menuClose ion-item   (click)="changerPassword()"><img
+        src="{{pathimage}}/modifIcon.png" width="30" height="30"> {{tabLangue.titreMod}}
+      </button>
+      <button menuClose ion-item   (click)="openListeCliniquePage()"><img
+        src="{{pathimage}}/clini.png" width="30" height="30"> {{tabLangue.titreChangClini}}
+      </button>
+      <button menuClose ion-item   (click)="changerlangue()"><img
+        src="{{pathimage}}/changeLang.png" width="30" height="30"> {{tabLangue.titreChangLangue}}
+      </button>
+      <button menuClose ion-item   (click)="deconnexion()"><img
+        src="{{pathimage}}/deconn.png" width="30" height="30"> {{tabLangue.titreDeconnexion}}
+      </button>
+
+    </div>
+  </ion-content>
+  <ion-content class="contentMenu" *ngIf="langue==='arabe'">
+    <div class="divAr">
+      <button menuClose ion-item   (click)="changerPassword()"><img
+        src="{{pathimage}}/modifIcon.png" width="30" height="30"> {{tabLangue.titreMod}}
+      </button>
+      <button menuClose ion-item   (click)="openListeCliniquePage()"><img
+        src="{{pathimage}}/clini.png" width="30" height="30"> {{tabLangue.titreChangClini}}
+      </button>
+      <button menuClose ion-item   (click)="changerlangue()"><img
+        src="{{pathimage}}/changeLang.png" width="30" height="30"> {{tabLangue.titreChangLangue}}
+      </button>
+      <button menuClose ion-item   (click)="deconnexion()"><img
+        src="{{pathimage}}/deconn.png" width="30" height="30"> {{tabLangue.titreDeconnexion}}
+      </button>
+
+    </div>
+  </ion-content>
+
+</ion-menu>
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

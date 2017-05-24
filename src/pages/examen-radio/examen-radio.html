@@ -1,8 +1,8 @@
 <ion-header style="height: 83px;color: white" >
   <div fxLayout="row" fxLayoutAlign="start start" class="md-card" *ngIf="langue==='francais' || langue==='anglais'">
-    <button ion-button class="buttonBack" icon-only *ngIf="device===63">
-      <ion-icon name='arrow-back' (click)="goBack()"></ion-icon>
-    </button>
+    <div  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===63" >
+      <ion-icon name='arrow-back' ></ion-icon>
+    </div>
     <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
     &nbsp;&nbsp;
     <div fxFlex="{{device}}" style="margin-top: 10px;"><strong>{{pass.getnom()}}</strong> <br/>
@@ -42,9 +42,9 @@
     &nbsp;&nbsp;
 
     <div><img src="{{pathimage}}/{{pass.getimg()}}" class="imginfo" ></div>
-    <button ion-button  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===63" >
+    <div  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===63" >
       <ion-icon name='arrow-forward' ></ion-icon>
-    </button>
+    </div>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="end start" class="md-card2" *ngIf="langue==='arabe'">
@@ -60,9 +60,7 @@
     <div style="padding-top: 5px" *ngIf="connection===false">
       <ion-avatar><img src="{{pathimage}}/red.png" width="25" height="25"></ion-avatar>
     </div>
-    &nbsp;&nbsp;<button ion-button  icon-only class="buttonBack" (click)="goBack()" *ngIf="device===63" >
-    <ion-icon name='arrow-forward' ></ion-icon>
-  </button>
+    &nbsp;&nbsp;
 
   </div>
 </ion-header>

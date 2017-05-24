@@ -1,59 +1,16 @@
-<ion-menu side="{{menu}}" [content]="content">
-
-  <ion-header>
-    <ion-card class="headerBackgroundMenu">
-      <ion-card-title class="headerTitleMenu">** {{nomClinique}} **</ion-card-title>
-    </ion-card>
-  </ion-header>
-  <ion-content class="contentMenu" *ngIf="langue==='francais' || langue==='anglais'">
-    <div class="divFRANG">
-      <button menuClose ion-item   (click)="changerPassword()"><img
-        src="{{pathimage}}/modifIcon.png" width="30" height="30"> {{tabLangue.titreMod}}
-      </button>
-      <button menuClose ion-item   (click)="openListeCliniquePage()"><img
-        src="{{pathimage}}/clini.png" width="30" height="30"> {{tabLangue.titreChangClini}}
-      </button>
-      <button menuClose ion-item   (click)="changerlangue()"><img
-        src="{{pathimage}}/changeLang.png" width="30" height="30"> {{tabLangue.titreChangLangue}}
-      </button>
-      <button menuClose ion-item   (click)="deconnexion()"><img
-        src="{{pathimage}}/deconn.png" width="30" height="30"> {{tabLangue.titreDeconnexion}}
-      </button>
-
-    </div>
-  </ion-content>
-  <ion-content class="contentMenu" *ngIf="langue==='arabe'">
-    <div class="divAr">
-      <button menuClose ion-item   (click)="changerPassword()"><img
-        src="{{pathimage}}/modifIcon.png" width="30" height="30"> {{tabLangue.titreMod}}
-      </button>
-      <button menuClose ion-item   (click)="openListeCliniquePage()"><img
-        src="{{pathimage}}/clini.png" width="30" height="30"> {{tabLangue.titreChangClini}}
-      </button>
-      <button menuClose ion-item   (click)="changerlangue()"><img
-        src="{{pathimage}}/changeLang.png" width="30" height="30"> {{tabLangue.titreChangLangue}}
-      </button>
-      <button menuClose ion-item   (click)="deconnexion()"><img
-        src="{{pathimage}}/deconn.png" width="30" height="30"> {{tabLangue.titreDeconnexion}}
-      </button>
-
-    </div>
-  </ion-content>
-
-</ion-menu>
 <ion-header class="headerListe" #content>
   <div fxLayout="row" fxLayoutAlign="start start" class="md-cardListe" *ngIf="langue==='francais' || langue==='anglais'">
     <div *ngIf="connection===true"> <ion-avatar><img src="{{pathimage}}/green.png" width="30" height="30"></ion-avatar></div>
     <div *ngIf="connection===false"> <ion-avatar><img src="{{pathimage}}/red.png" width="30" height="30"></ion-avatar></div>
     <div style="padding-top: 5px" fxFlex="73" style="font-size: 15px;width: 100%" *ngIf="connection===true"><strong>{{tabLangue.titreEnligne}} </strong>{{histl}}</div>&nbsp;&nbsp;
     <div style="padding-top: 5px" fxFlex="73" style="font-size: 15px;width: 100%" *ngIf="connection===false"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histl}}</div>&nbsp;&nbsp;
-    <div item-right ><img src="{{pathimage}}/menu.png" class="menuImg" menuToggle item-right></div>
+    <div item-right ><img src="{{pathimage}}/menu.png" class="menuImg" menuToggle item-right (click)="updateMenu()"></div>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="end start" class="md-cardListe" *ngIf="langue==='arabe'">
-    <div item-left ><img src="{{pathimage}}/menu.png" class="menuImg" menuToggle  item-left></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   <div   style="padding-right:5px;padding-top: 10px;font-size: 15px;width: 100%" fxFlex="73"  *ngIf="connection===true"  dir="rtl"><strong>{{tabLangue.titreEnligne}} </strong>{{histl}}</div>
-    <div   style="padding-right:5px;padding-top: 10px;font-size: 15px;width: 100%" fxFlex="73" *ngIf="connection===false" dir="rtl"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histl}}</div>
+    <div item-left ><img src="{{pathimage}}/menu.png" class="menuImg" menuToggle  item-left (click)="updateMenu()"></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+   <div   style="padding-right:5px;padding-top: 10px;font-size: 15px;width: 100%" fxFlex="70"  *ngIf="connection===true"  dir="rtl"><strong>{{tabLangue.titreEnligne}} </strong>{{histl}}</div>
+    <div   style="padding-right:5px;padding-top: 10px;font-size: 15px;width: 100%" fxFlex="70" *ngIf="connection===false" dir="rtl"><strong>{{tabLangue.titreHorsLigne}} </strong>{{histl}}</div>
     <div style="padding-top: 5px" *ngIf="connection===true" > <ion-avatar><img src="{{pathimage}}/green.png" width="30" height="30"></ion-avatar></div>&nbsp;&nbsp;
     <div style="padding-top: 5px" *ngIf="connection===false"> <ion-avatar><img src="{{pathimage}}/red.png" width="30" height="30"></ion-avatar></div>&nbsp;&nbsp;
 
