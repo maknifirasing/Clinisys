@@ -29,7 +29,6 @@ import {Patient} from "../../models/Patient";
 import {SQLite} from "@ionic-native/sqlite";
 import {ScreenOrientation} from '@ionic-native/screen-orientation';
 import {TabsPage} from "../tabs/tabs";
-import {ListePage} from "../liste/liste";
 
 @Component({
   selector: 'page-dossier',
@@ -96,7 +95,7 @@ export class DossierPage {
   pathimage = Variables.path;
   device=Variables.device;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private Url: Variables, public platform: Platform, private sqlite: SQLite, private screenOrientation: ScreenOrientation) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, public platform: Platform, private sqlite: SQLite, private screenOrientation: ScreenOrientation) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
     this.tabLangue = TabsPage.tabLangue.tabLangue;
     this.pass = TabsPage.tabLangue.pass;

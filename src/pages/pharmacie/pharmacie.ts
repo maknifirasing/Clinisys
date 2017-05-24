@@ -591,7 +591,7 @@ export class PharmaciePage {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
           this.xml = xmlhttp.responseXML;
-          var x, i, medecin;
+          var x;
           x = this.xml.getElementsByTagName("return");
           this.presentToast(x[0].textContent);
           this.commandeListe = [];
@@ -650,7 +650,7 @@ export class PharmaciePage {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
           this.xml = xmlhttp.responseXML;
-          var x, i, medecin;
+          var x;
           x = this.xml.getElementsByTagName("return");
           this.presentToast(x[0].textContent);
           this.commandeListe = [];
@@ -709,7 +709,7 @@ export class PharmaciePage {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
           this.xml = xmlhttp.responseXML;
-          var x, i, medecin;
+          var x;
           x = this.xml.getElementsByTagName("return");
           this.presentToast(x[0].textContent);
           this.commandeListe = [];
@@ -767,7 +767,7 @@ export class PharmaciePage {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
           this.xml = xmlhttp.responseXML;
-          var x, i, medecin;
+          var x;
           x = this.xml.getElementsByTagName("return");
           this.presentToast(x[0].textContent);
           this.commandeListe = [];
@@ -825,7 +825,7 @@ export class PharmaciePage {
       if (xmlhttp.readyState == 4) {
         if (xmlhttp.status == 200) {
           this.xml = xmlhttp.responseXML;
-          var x, i, medecin;
+          var x;
           x = this.xml.getElementsByTagName("return");
           this.presentToast(x[0].textContent);
           this.commandeListe = [];

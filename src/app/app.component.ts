@@ -11,7 +11,6 @@ import {Variables} from "../providers/variables";
 import {LangueService} from "../services/LangueService";
 import {ListeCliniquePage} from "../pages/liste-clinique/liste-clinique";
 import {ModifPassPage} from "../pages/modif-pass/modif-pass";
-import {TabsPage} from "../pages/tabs/tabs";
 
 @Component({
   selector: 'page-app',
