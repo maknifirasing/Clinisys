@@ -7,6 +7,7 @@
 * ionic cordova plugin add cordova-plugin-statusbar
 * ionic cordova plugin add cordova-sqlite-storage
 * ionic cordova plugin add cordova-plugin-file
+* ionic cordova plugin add cordova-plugin-file-transfer
 * ionic cordova plugin add cordova-plugin-screen-orientation
 * ionic cordova plugin add ionic-plugin-keyboard
 * ionic cordova plugin add cordova-plugin-network-information
