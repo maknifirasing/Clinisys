@@ -30,7 +30,7 @@ export class ModifPassPage {
   pathimage=Variables.path;
   device=Variables.device;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite) {
     this.codeClinique = this.navParams.get("codeClinique");
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");

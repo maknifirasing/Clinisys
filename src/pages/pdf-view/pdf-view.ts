@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {NavController, NavParams, Platform, AlertController, LoadingController} from 'ionic-angular';
 import {PdfViewerComponent} from 'ng2-pdf-viewer';
 import { File} from '@ionic-native/file';
-import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
+import { Transfer, TransferObject } from '@ionic-native/transfer';
 import {Variables} from "../../providers/variables";
 import {HistDossier} from "../../models/HistDossier";
 import {HistPdfService} from "../../services/HistPdfService";
@@ -35,7 +35,7 @@ export class PdfViewPage {
   pathimage=Variables.path;
   device=Variables.device;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private PdfViewerComponent: PdfViewerComponent, public platform: Platform, public alertCtrl: AlertController
+  constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, public alertCtrl: AlertController
     ,private transfer: Transfer, private file: File,private sqlite: SQLite,public loadingCtrl: LoadingController) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
     this.tabLangue = TabsPage.tabLangue.tabLangue;

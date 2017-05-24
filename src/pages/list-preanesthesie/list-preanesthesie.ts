@@ -26,7 +26,7 @@ export class ListPreanesthesiePage {
   pathimage=Variables.path;
   device=Variables.device;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public platform: Platform,private sqlite: SQLite) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
     this.tabLangue = TabsPage.tabLangue.tabLangue;
     this.pass = TabsPage.tabLangue.pass;

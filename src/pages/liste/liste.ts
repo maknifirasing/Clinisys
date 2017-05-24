@@ -8,14 +8,8 @@ import {PatientService} from "../../services/PatientService";
 import {DateFeuille} from "../../models/DateFeuille";
 import {HistPatient} from "../../models/HistPatient";
 import {HistPatientService} from "../../services/HistPatientService";
-import {UserService} from "../../services/UserService";
-import {LanguesPage} from "../langues/langues";
-import {ListeCliniquePage} from "../liste-clinique/liste-clinique";
-import {ModifPassPage} from "../modif-pass/modif-pass";
-import {LangueService} from "../../services/LangueService";
 import {Langue} from "../../models/Langue";
 import {SQLite} from "@ionic-native/sqlite";
-import {MyApp} from "../../app/app.component";
 
 @Component({
   selector: 'page-liste',
@@ -38,9 +32,7 @@ export class ListePage {
   histl = new HistPatient();
   codeClinique: string;
   nomClinique: string;
-  private userserv: any;
   langue: any;
-  private langserv: any;
   langes: Array<Langue> = [];
   pathimage = Variables.path;
 

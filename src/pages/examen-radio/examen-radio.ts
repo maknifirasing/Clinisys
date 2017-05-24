@@ -4,11 +4,8 @@ import {Variables} from "../../providers/variables";
 import {ExamenRadio} from "../../models/ExamenRadio";
 import {Document} from "../../models/Document";
 import {File} from '@ionic-native/file';
-import {Transfer, FileUploadOptions, TransferObject} from '@ionic-native/transfer';
-import {
-  ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject,
-  ThemeableBrowserButton
-} from '@ionic-native/themeable-browser';
+import {Transfer, TransferObject} from '@ionic-native/transfer';
+import {ThemeableBrowser, ThemeableBrowserOptions, ThemeableBrowserObject} from '@ionic-native/themeable-browser';
 import {DocumentService} from "../../services/DocumentService";
 import {ExamenRadioTService} from "../../services/ExamenRadioTService";
 import {ExamenRadioFService} from "../../services/ExamenRadioFService";
@@ -48,7 +45,7 @@ export class ExamenRadioPage {
   pathimage = Variables.path;
   device = Variables.device;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, public platform: Platform, private themeableBrowser: ThemeableBrowser, public alertCtrl: AlertController
+  constructor(public navCtrl: NavController, public navParams: NavParams,public platform: Platform, private themeableBrowser: ThemeableBrowser, public alertCtrl: AlertController
     , private transfer: Transfer, private file: File, private sqlite: SQLite) {
     this.codeClinique = TabsPage.tabLangue.codeClinique;
     this.tabLangue = TabsPage.tabLangue.tabLangue;

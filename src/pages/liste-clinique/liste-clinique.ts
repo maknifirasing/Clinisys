@@ -31,7 +31,7 @@ export class ListeCliniquePage {
   test: boolean;
   pathimage = Variables.path;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private Url: Variables, private viewCtrl: ViewController, public platform: Platform, private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, public platform: Platform, private sqlite: SQLite) {
     this.viewCtrl.showBackButton(false);
     this.tabLangue = navParams.get("tabLangue");
     this.langue = navParams.get("langue");
