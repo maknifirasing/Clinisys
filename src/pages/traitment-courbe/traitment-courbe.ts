@@ -73,7 +73,7 @@ export class TraitmentCourbe {
 
   ionViewWillLeave() {
     this.tabBarElement.style.display = 'flex';
-    if(this.orientation==='portrait-primary' || this.orientation==='portrait'){
+    if(this.orientation!=='landscape'){
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY);
     }
     this.screenOrientation.unlock();
