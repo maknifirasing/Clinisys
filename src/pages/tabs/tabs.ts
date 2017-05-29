@@ -27,12 +27,11 @@ import {ClientService} from "../../services/ClientService";
 import {Client} from "../../models/Client";
 import {RealisationPage} from "../realisation/realisation";
 import {PharmaciePage} from "../pharmacie/pharmacie";
-import {ScreenOrientation} from "@ionic-native/screen-orientation";
 
 @Component({
   selector: 'page-tabs',
   templateUrl: 'tabs.html',
-  providers: [ScreenOrientation, Variables]
+  providers: [Variables]
 })
 @Injectable()
 export class TabsPage {
@@ -86,7 +85,7 @@ export class TabsPage {
   client = new Client();
   clientserv: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private screenOrientation: ScreenOrientation, public platform: Platform,private sqlite: SQLite) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public platform: Platform,private sqlite: SQLite) {
     this.codeClinique = navParams.get("codeClinique");
     this.pass = navParams.get("mypatient");
     this.tabLangue = navParams.get("tabLangue");
@@ -141,7 +140,6 @@ export class TabsPage {
   }
 
   ionViewDidLoad() {
-    this.screenOrientation.unlock();
   }
 
   GetExamenRadioByNumDossResponse(numDoss, codeClinique) {

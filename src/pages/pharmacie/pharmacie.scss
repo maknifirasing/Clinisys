@@ -646,4 +646,29 @@ page-pharmacie {
 
   }
 
+  .country-list li{padding: 4px; background: #f0f0f0; border-bottom: #bbb9b9 1px solid;transform: rotate(-180deg)}
+  .country-list li:hover{background:#ece3d2;cursor: pointer;}
+  .country-list{
+    float:left;list-style:none;
+    margin-top:-3px;width:190px;
+    padding: 0;
+    position: absolute;
+    transform: rotate(180deg);
+    margin-top: -190px
+  }
+
+
+
+  .country-list_min li{padding: 4px; background: #f0f0f0; border-bottom: #bbb9b9 1px solid;transform: rotate(-180deg)}
+  .country-list_min li:hover{background:#ece3d2;cursor: pointer;}
+  #article{padding: 10px;border: #a8d4b1 1px solid;border-radius:4px;}
+  .country-list_min{
+    float:left;list-style:none;
+    margin-top:-3px;width:190px;
+    padding: 0;
+    position: absolute;
+    transform: rotate(180deg);
+    bottom: 335px;
+  }
+
 }

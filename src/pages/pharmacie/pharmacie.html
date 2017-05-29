@@ -68,12 +68,12 @@
   </div>
 
   <div *ngIf="showlistepopup===true">
-    <div style="padding: 20px;" *ngIf="langue==='francais' || langue==='anglais'">
+    <div style="padding: 20px;" *ngIf="langue==='francaiss' || langue==='anglaiss'">
       <ion-list *ngIf="articleListe.length > 0" class="listShow"
                 style="background-color: #F5F5F5;font-size: 12px;list-style: none;">
         <ion-item-sliding *ngFor="let item of articleListe " style="background-color: #F5F5F5;">
 
-          <ion-item (click)="selectArticle(item)" style="background-color: #F5F5F5;">
+          <ion-item (click)="selectArticle(item)"  (blur)="luck()" style="background-color: #F5F5F5;">
             <span width="70">{{item.getdesart()}}</span>
             <span width="20" item-right style="font-size: 10px">{{item.getqtestk()}}</span>
           </ion-item>
@@ -168,24 +168,44 @@
         </ion-list>
 
 
-        <div class="container">
-          <div class="input-field col s12">
-            <input type="text" class="validate filter-input" id="article" (keyup)=filtreArticle()
-                   placeholder="{{tabLangue.titreAddArticle}}">
+
+
+        <div class="frmSearch">
+          <input type="text" class="validate filter-input" id="article" (keyup)=filtreArticle()
+                 placeholder="{{tabLangue.titreAddArticle}}">
+          <div id="suggesstion-box" >
+            <ul *ngIf="articleListe.length < 5" class="country-list_min" style="" >
+              <li *ngFor="let item of articleListe " (click)="selectArticle(item)"> <span width="70">{{item.getdesart()}}</span>
+                <span width="20" item-right style="font-size: 10px">{{item.getqtestk()}}</span></li>
+            </ul>
+
+            <ul *ngIf="articleListe.length >=5" class="country-list" style="height: 150px; overflow-y: scroll;" >
+              <li *ngFor="let item of articleListe " (click)="selectArticle(item)"> <span width="70">{{item.getdesart()}}</span>
+                <span width="20" item-right style="font-size: 10px">{{item.getqtestk()}}</span></li>
+            </ul>
           </div>
-
-
         </div>
 
 
-        <div class="container" style="padding-top: 100px;padding-bottom: 10px">
-          <div class="medecin-input col s12">
-            <strong style="color: blue">{{tabLangue.titreMedecinP}} : </strong>
-            <input type="text" class="validate medecin-input" id="medecin" (keyup)=filtreMedecin()
-                   placeholder="{{tabLangue.titreMedecin}}" style="padding-left: 10px">
-          </div>
 
+
+
+        <div class="frmSearch" style="padding-top: 100px;padding-bottom: 10px">
+          <strong style="color: blue">{{tabLangue.titreMedecinP}} : </strong>
+          <input type="text" class="validate medecin-input" id="medecin" (keyup)=filtreMedecin()
+                 placeholder="{{tabLangue.titreMedecin}}" style="padding-left: 10px">
+          <div id="suggesstions-box" >
+            <ul *ngIf="medecinListe.length  < 5" class="country-list_min" style="" >
+              <li *ngFor="let item of medecinListe "  (click)="selectMedecin(item)"> <span > {{item.getnomMed()}}</span></li>
+            </ul>
+
+            <ul *ngIf="medecinListe.length >=5" class="country-list" style="height: 150px; overflow-y: scroll;" >
+              <li *ngFor="let item of medecinListe "  (click)="selectMedecin(item)"> <span > {{item.getnomMed()}}</span></li>
+            </ul>
+          </div>
         </div>
+
+
         <div *ngIf="art===true && med ===true" style="padding: 20px;">
           <button round class="login-button" (click)="addComande()">{{tabLangue.titreEnregister}}</button>
         </div>

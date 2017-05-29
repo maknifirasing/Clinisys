@@ -391,13 +391,20 @@ export class PharmaciePage {
     xmlhttp.send(sr);
   }
 
+  luck() {
+    this.showlistepopup = false;
+    this.articleListe = [];
+    this.medecinListe = [];
+  }
 
   filtreArticle() {
     this.showlistepopup = true;
     this.articleListe = [];
     this.medecinListe = [];
-
-    var shearch = (<HTMLInputElement>document.getElementById(this.artic)).value;
+    var shearch
+    setTimeout(() => {
+      shearch = (<HTMLInputElement>document.getElementById(this.artic)).value;
+    }, 10);
     if (shearch.length === 0) {
       this.showlistepopup = false;
       this.articleListe = [];
@@ -405,7 +412,9 @@ export class PharmaciePage {
     }
 
     if (this.pharmacieSelected.getCodeDep() === "EX") {
+
       this.getTraitementExterne(shearch);
+
     }
     else if (this.pharmacieSelected.getCodeDep() === "Stup") {
       this.getStupifiant(shearch, this.client.getetage());
@@ -489,7 +498,10 @@ export class PharmaciePage {
 
     this.articleListe = [];
     this.medecinListe = [];
-    var shearch = (<HTMLInputElement>document.getElementById(this.mede)).value;
+    var shearch;
+    setTimeout(() => {
+      shearch = (<HTMLInputElement>document.getElementById(this.mede)).value;
+    }, 10);
     if (shearch.length === 0) {
       this.articleListe = [];
       this.medecinListe = [];

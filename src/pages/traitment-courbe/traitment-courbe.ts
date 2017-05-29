@@ -29,6 +29,7 @@ export class TraitmentCourbe {
   chartData: any;
   pathimage=Variables.path;
   device=Variables.device;
+  orientation:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,private sqlite: SQLite,private screenOrientation: ScreenOrientation,public loadingCtrl: LoadingController) {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
@@ -65,12 +66,16 @@ export class TraitmentCourbe {
   }
 
   ionViewDidLoad() {
+    this.orientation=this.screenOrientation.type;
     this.tabBarElement.style.display = 'none';
     this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
   }
 
   ionViewWillLeave() {
     this.tabBarElement.style.display = 'flex';
+    if(this.orientation==='portrait-primary' || this.orientation==='portrait'){
+      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY);
+    }
     this.screenOrientation.unlock();
   }
 

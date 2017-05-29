@@ -107,6 +107,7 @@ export class ConsignePage {
             var xml;
             xml = xmlhttp.responseXML;
             var x
+            this.consigne.push(c);
             x = xml.getElementsByTagName("return");
             this.deletePlanificationTacheInfirmierByNumDossAndType(this.pass.getdossier(), this.type, this.etat, this.codeClinique);
           }

@@ -75,7 +75,7 @@
             {{tabLangue.titreMotif}}
           </strong><br/>
 
-          <span class="strong2">
+          <span class="strong2" style="padding-right: 5px">
 
             {{ motifh.getmotifhospitalisation()}}<br/>
 
@@ -90,7 +90,7 @@
           </strong><br/>
 
 
-          <span class="strong2" *ngFor="let an of antechl ">
+          <span class="strong2" *ngFor="let an of antechl " style="padding-right: 5px">
 
             {{an.getch()}}<br/>
 
@@ -105,7 +105,7 @@
             {{tabLangue.titreAll}}
           </strong><br/>
 
-          <span class="strong2" *ngFor="let al of alechl ">
+          <span class="strong2" *ngFor="let al of alechl " style="padding-right: 5px">
 
             {{al.getch()}}<br/>
 
@@ -120,7 +120,7 @@
           <strong class="strong">
             {{tabLangue.titreSigneV}}
           </strong><br/>
-          <span class="strong2" *ngFor="let sig of signec ">
+          <span class="strong2" *ngFor="let sig of signec " style="padding-right: 5px">
 
             <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong><span style="font-size: 13px"> {{sig.getdate()}}</span><br/>
 
@@ -137,7 +137,7 @@
           <strong class="strong">
             {{tabLangue.titreEnt}}
           </strong><br/>
-          <span class="strong2" *ngFor="let en of Entrees ">
+          <span class="strong2" *ngFor="let en of Entrees " style="padding-right: 5px">
 
             <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong><span style="font-size: 13px"> {{en.getdate()}}</span><br/>
 
@@ -153,7 +153,7 @@
           <strong class="strong">
             {{tabLangue.titreTrait}}
           </strong><br/>
-          <span class="strong2" *ngFor="let tra of traitement ">
+          <span class="strong2" *ngFor="let tra of traitement " style="padding-right: 5px">
 
             <strong>{{ tra.getdesignation() }}</strong>
             <span style="font-size: 13px">     {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.</span><br/>
@@ -171,7 +171,7 @@
           <strong class="strong">
             {{tabLangue.titreSortie}}
           </strong><br/>
-          <span class="strong2" *ngFor="let so of Sorties ">
+          <span class="strong2" *ngFor="let so of Sorties " style="padding-right: 5px">
 
             <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong><span style="font-size: 13px"> {{so.getdate()}}</span><br/>
 
@@ -185,7 +185,7 @@
           <strong class="strong">
             {{tabLangue.titreAlert}}
           </strong><br/>
-          <span class="strong2" *ngFor="let pas of signe ">
+          <span class="strong2" *ngFor="let pas of signe " style="padding-right: 5px">
 
             <strong>{{pas.getdesignation()}}</strong> <span style="font-size: 13px">{{pas.getquantite()}} {{pas.getdate()}}</span><br/>
 
@@ -199,7 +199,7 @@
           <strong class="strong">
             {{tabLangue.titreMaladie}}
           </strong><br/>
-          <span class="strong2" *ngFor="let his of Histoiremaladie ">
+          <span class="strong2" *ngFor="let his of Histoiremaladie " style="padding-right: 5px">
 
             {{ his.getdetail() }}<br/>
 
@@ -215,7 +215,7 @@
           <strong class="strong">
             {{tabLangue.titreClini}}
           </strong><br/>
-          <span class="strong2" *ngFor="let exa of Examenclinique ">
+          <span class="strong2" *ngFor="let exa of Examenclinique " style="padding-right: 5px">
 
             [{{ exa.getdate() }}-{{exa.getuserCreat()}}]<br/>
             {{ exa.getdetail() }}<br/>
@@ -230,7 +230,7 @@
           <strong class="strong">
             {{tabLangue.titreEvo}}
           </strong><br/>
-          <span class="strong2" *ngFor="let evo of Evolution ">
+          <span class="strong2" *ngFor="let evo of Evolution " style="padding-right: 5px">
 
             {{ evo.getdetail()}}<br/>
 
@@ -243,7 +243,7 @@
           <strong class="strong">
             {{tabLangue.titreRegime}}
           </strong><br/>
-          <span class="strong2" *ngFor="let r of rigime ">
+          <span class="strong2" *ngFor="let r of rigime " style="padding-right: 5px">
 
             {{ r.getdesignation() }}<br/>
 
@@ -258,7 +258,7 @@
             {{tabLangue.titreConclu}}
           </strong><br/>
 
-          <span class="strong2" *ngFor="let con of Conclusion ">
+          <span class="strong2" *ngFor="let con of Conclusion " style="padding-right: 5px">
 
             [{{ con.getdate() }}-{{con.getuserCreat()}}]<br/>
             {{ con.getdetail()}}<br/>
@@ -279,7 +279,7 @@
             {{tabLangue.titreMotif}}
           </strong><br/>
 
-          <span class="strong2">
+          <span class="strong2" style="padding-left: 5px">
 
             {{ motifh.getmotifhospitalisation()}}<br/>
 
@@ -294,7 +294,7 @@
           </strong><br/>
 
 
-          <span class="strong2" *ngFor="let an of antechl ">
+          <span class="strong2" *ngFor="let an of antechl " style="padding-left: 5px">
 
             {{an.getch()}}<br/>
 
@@ -309,7 +309,7 @@
             {{tabLangue.titreAll}}
           </strong><br/>
 
-          <span class="strong2" *ngFor="let al of alechl ">
+          <span class="strong2" *ngFor="let al of alechl " style="padding-left: 5px">
 
             {{al.getch()}}<br/>
 
@@ -324,7 +324,7 @@
           <strong class="strong">
             {{tabLangue.titreSigneV}}
           </strong><br/>
-          <span class="strong2" *ngFor="let sig of signec ">
+          <span class="strong2" *ngFor="let sig of signec " style="padding-left: 5px">
 
              <strong>{{sig.getdesignation()}} : {{sig.getquantite()}}</strong><span style="font-size: 13px"> {{sig.getdate()}}</span><br/>
 
@@ -341,7 +341,7 @@
           <strong class="strong">
             {{tabLangue.titreEnt}}
           </strong><br/>
-          <span class="strong2" *ngFor="let en of Entrees ">
+          <span class="strong2" *ngFor="let en of Entrees " style="padding-left: 5px">
 
              <strong>{{en.getdesignation()}} : {{en.getquantite()}}</strong><span style="font-size: 13px"> {{en.getdate()}}</span><br/>
 
@@ -357,7 +357,7 @@
           <strong class="strong">
             {{tabLangue.titreTrait}}
           </strong><br/>
-          <span class="strong2" *ngFor="let tra of traitement ">
+          <span class="strong2" *ngFor="let tra of traitement " style="padding-left: 5px">
 
             <strong>{{ tra.getdesignation() }}</strong>
              <span style="font-size: 13px">  {{ tra.getposologie() }} ({{ tra.getjour() }}) jours.</span><br/>
@@ -375,7 +375,7 @@
           <strong class="strong">
             {{tabLangue.titreSortie}}
           </strong><br/>
-          <span class="strong2" *ngFor="let so of Sorties ">
+          <span class="strong2" *ngFor="let so of Sorties " style="padding-left: 5px">
 
              <strong>{{so.getdesignation()}} : {{so.getquantite()}} </strong> <span style="font-size: 13px">{{so.getdate()}}</span><br/>
 
@@ -389,7 +389,7 @@
           <strong class="strong">
             {{tabLangue.titreAlert}}
           </strong><br/>
-          <span class="strong2" *ngFor="let pas of signe ">
+          <span class="strong2" *ngFor="let pas of signe " style="padding-left: 5px">
 
              <strong>{{pas.getdesignation()}}</strong> <span style="font-size: 13px">{{pas.getquantite()}} {{pas.getdate()}}</span><br/>
 
@@ -403,7 +403,7 @@
           <strong class="strong">
             {{tabLangue.titreMaladie}}
           </strong><br/>
-          <span class="strong2" *ngFor="let his of Histoiremaladie ">
+          <span class="strong2" *ngFor="let his of Histoiremaladie " style="padding-left: 5px">
 
             {{ his.getdetail() }}<br/>
 
@@ -419,7 +419,7 @@
           <strong class="strong">
             {{tabLangue.titreClini}}
           </strong><br/>
-          <span class="strong2" *ngFor="let exa of Examenclinique ">
+          <span class="strong2" *ngFor="let exa of Examenclinique " style="padding-left: 5px">
 
             [{{ exa.getdate() }}-{{exa.getuserCreat()}}]<br/>
             {{ exa.getdetail() }}<br/>
@@ -434,7 +434,7 @@
           <strong class="strong">
             {{tabLangue.titreEvo}}
           </strong><br/>
-          <span class="strong2" *ngFor="let evo of Evolution ">
+          <span class="strong2" *ngFor="let evo of Evolution " style="padding-left: 5px">
 
             {{ evo.getdetail()}}<br/>
 
@@ -447,7 +447,7 @@
           <strong class="strong">
             {{tabLangue.titreRegime}}
           </strong><br/>
-          <span class="strong2" *ngFor="let r of rigime ">
+          <span class="strong2" *ngFor="let r of rigime " style="padding-left: 5px">
 
             {{ r.getdesignation() }}<br/>
 
@@ -462,7 +462,7 @@
             {{tabLangue.titreConclu}}
           </strong><br/>
 
-          <span class="strong2" *ngFor="let con of Conclusion ">
+          <span class="strong2" *ngFor="let con of Conclusion " style="padding-left: 5px">
 
             [{{ con.getdate() }}-{{con.getuserCreat()}}]<br/>
             {{ con.getdetail()}}<br/>
