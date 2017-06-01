@@ -46,7 +46,6 @@ export class ListePage {
     Variables.nomClinique = this.nomClinique;
     Variables.tab = this.tabLangue;
     this.presentLoadingDefault();
-
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
         this.connection = false;

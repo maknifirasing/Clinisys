@@ -49,7 +49,7 @@ export class ListeCliniquePage {
 
   ListClinique() {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
+    xmlhttp.open('POST', Variables.urlg + 'dmi-core/DossierSoinWSService?wsdl', true);
     var sr =
       '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
       '<soapenv:Header/>' +
@@ -135,7 +135,6 @@ export class ListeCliniquePage {
     this.userserv = new UserService(this.sqlite);
     this.userserv.verifUser(codeC.getcode()).then(user => {
       if (user === false) {
-        Variables.updateUrl(codeC.geturl());
         this.navCtrl.push(HomePage, {
           tabLangue: this.tabLangue,
           langue: this.langue,

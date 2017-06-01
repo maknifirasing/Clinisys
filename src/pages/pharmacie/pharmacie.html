@@ -174,12 +174,12 @@
           <input type="text" class="validate filter-input" id="article" (keyup)=filtreArticle()
                  placeholder="{{tabLangue.titreAddArticle}}">
           <div id="suggesstion-box" >
-            <ul *ngIf="articleListe.length < 5" class="country-list_min" style="" >
+            <ul *ngIf="articleListe.length < 4" class="country-list_min" style="" >
               <li *ngFor="let item of articleListe " (click)="selectArticle(item)"> <span width="70">{{item.getdesart()}}</span>
                 <span width="20" item-right style="font-size: 10px">{{item.getqtestk()}}</span></li>
             </ul>
 
-            <ul *ngIf="articleListe.length >=5" class="country-list" style="height: 150px; overflow-y: scroll;" >
+            <ul *ngIf="articleListe.length >=4" class="country-list" style="height: 150px; overflow-y: scroll;" >
               <li *ngFor="let item of articleListe " (click)="selectArticle(item)"> <span width="70">{{item.getdesart()}}</span>
                 <span width="20" item-right style="font-size: 10px">{{item.getqtestk()}}</span></li>
             </ul>

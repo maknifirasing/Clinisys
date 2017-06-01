@@ -41,7 +41,7 @@ export class HomePage {
   connecter(userName, passWord) {
     try {
       var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('POST', Variables.uRL + 'dmi-core/DossierSoinWSService?wsdl', true);
+      xmlhttp.open('POST', Variables.urlg + 'dmi-core/DossierSoinWSService?wsdl', true);
       var sr =
         '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.dmi.csys.com/">' +
         '<soapenv:Header/>' +
@@ -97,6 +97,7 @@ export class HomePage {
                   Variables.langue = this.langue;
                   Variables.nomClinique = this.nomClinique;
                   Variables.tab = this.tabLangue;
+                  Variables.updateUrl(this.url);
                   this.navCtrl.setRoot(ListePage, {
                     tabLangue: this.tabLangue,
                     langue: this.langue,
@@ -123,14 +124,4 @@ export class HomePage {
       this.errConn = this.tabLangue.errConn;
     }
   }
-
-  conn() {
-    this.navCtrl.push(ListePage, {
-      tabLangue: this.tabLangue,
-      langue: this.langue,
-      codeClinique: this.codeClinique,
-      nomClinique: this.nomClinique
-    });
-  }
-
 }

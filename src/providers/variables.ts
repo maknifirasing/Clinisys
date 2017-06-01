@@ -282,6 +282,7 @@ export class Variables {
 
   }
 
+  static urlg = "";
   static uRL = "";
   static path = "";
   static device :number;
@@ -353,7 +354,7 @@ export class Variables {
 
 
   public static updateUrl(url) {
-  //  Variables.uRL = url.split('//')[0] + "//adminWS:pom@" + url.split('//')[1];
+    Variables.uRL = url.split('//')[0] + "//adminWS:pom@" + url.split('//')[1]+"/";
   }
 
 }

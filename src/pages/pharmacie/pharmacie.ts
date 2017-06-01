@@ -402,9 +402,9 @@ export class PharmaciePage {
     this.articleListe = [];
     this.medecinListe = [];
     var shearch
-    setTimeout(() => {
+//    setTimeout(() => {
       shearch = (<HTMLInputElement>document.getElementById(this.artic)).value;
-    }, 10);
+//    }, 10);
     if (shearch.length === 0) {
       this.showlistepopup = false;
       this.articleListe = [];

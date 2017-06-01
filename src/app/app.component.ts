@@ -54,7 +54,8 @@ export class MyApp {
 
 
   initializeApp() {
-   //  Variables.uRL = "http://192.168.0.63:8084/";
+    //  Variables.uRL = "http://192.168.0.63:8084/";
+    Variables.urlg = "http://adminWS:pom@37.59.230.40:8084/";
     Variables.uRL = "http://adminWS:pom@37.59.230.40:8084/";
 //    Variables.uRL = "http://adminWS:pom@192.168.0.172:8084/";
 
