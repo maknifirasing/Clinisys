@@ -135,7 +135,7 @@ export class TabsPage {
 
   ngAfterViewInit() {
     if (this.langue === 'arabe') {
-      this.paymentTabs.select(6);
+      this.paymentTabs.select(5);
     }
   }
 

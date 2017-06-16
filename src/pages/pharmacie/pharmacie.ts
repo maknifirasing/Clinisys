@@ -46,13 +46,14 @@ export class PharmaciePage {
   art: boolean;
   med: boolean;
   user: any;
-  showlistepopup: any;
   private langserv: any;
   langes: Array<Langue> = [];
   pathimage = Variables.path;
   device = Variables.device;
   artic: any;
   mede: any;
+  artics: any;
+  medes: any;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private sqlite: SQLite, private toastCtrl: ToastController) {
@@ -62,7 +63,6 @@ export class PharmaciePage {
     this.dateFeuille = TabsPage.tabLangue.dateFeuille;
     this.langue = TabsPage.tabLangue.langue;
     this.client = TabsPage.tabLangue.client;
-    this.showlistepopup = false;
     Variables.checconnection().then(connexion => {
       if (connexion === false) {
         this.connection = false;
@@ -84,9 +84,13 @@ export class PharmaciePage {
     if (this.langue === 'arabe') {
       this.artic = "articlear";
       this.mede = "medecinar";
+      this.artics = "articlesar";
+      this.medes = "medecinsar";
     } else {
       this.artic = "article";
       this.mede = "medecin";
+     this.artics = "articles";
+      this.medes = "medecins";
     }
   }
 
@@ -391,30 +395,19 @@ export class PharmaciePage {
     xmlhttp.send(sr);
   }
 
-  luck() {
-    this.showlistepopup = false;
-    this.articleListe = [];
-    this.medecinListe = [];
-  }
 
   filtreArticle() {
-    this.showlistepopup = true;
     this.articleListe = [];
     this.medecinListe = [];
-    var shearch
-//    setTimeout(() => {
-      shearch = (<HTMLInputElement>document.getElementById(this.artic)).value;
-//    }, 10);
+
+    var shearch = (<HTMLInputElement>document.getElementById(this.artic)).value;
     if (shearch.length === 0) {
-      this.showlistepopup = false;
       this.articleListe = [];
       this.medecinListe = [];
     }
 
     if (this.pharmacieSelected.getCodeDep() === "EX") {
-
       this.getTraitementExterne(shearch);
-
     }
     else if (this.pharmacieSelected.getCodeDep() === "Stup") {
       this.getStupifiant(shearch, this.client.getetage());
@@ -432,8 +425,26 @@ export class PharmaciePage {
     return -1;
   }
 
-  selectArticle(x) {
 
+  onInputArticle() {
+    var val = (<HTMLInputElement>document.getElementById(this.artic)).value;
+    var opts = (<HTMLInputElement>document.getElementById(this.artics)).childNodes;
+    for (var i = 0; i < opts.length; i++) {
+      if ((<HTMLInputElement>opts[i]).value === val) {
+        for (var j = 0; j < this.articleListe.length; j++) {
+          if (this.articleListe[j].getdesart() === val) {
+            this.selectArticle(this.articleListe[j]);
+            break;
+          }
+        }
+
+        break;
+      }
+    }
+  }
+
+
+  selectArticle(x) {
     (<HTMLInputElement>document.getElementById(this.artic)).value = "";
 
     if (x.getqtestk() > 0) {
@@ -457,8 +468,6 @@ export class PharmaciePage {
     }
 
     this.articleListe = [];
-    this.showlistepopup = false;
-    //   this.exist(x);
   }
 
   presentToast(message) {
@@ -494,20 +503,32 @@ export class PharmaciePage {
 
 
   filtreMedecin() {
-    this.showlistepopup = true;
-
     this.articleListe = [];
     this.medecinListe = [];
-    var shearch;
-    setTimeout(() => {
-      shearch = (<HTMLInputElement>document.getElementById(this.mede)).value;
-    }, 10);
+    var shearch = (<HTMLInputElement>document.getElementById(this.mede)).value;
     if (shearch.length === 0) {
       this.articleListe = [];
       this.medecinListe = [];
-      this.showlistepopup = false;
     }
     this.getListMedecinLikeNomMed(shearch);
+  }
+
+
+  onInputMedecin() {
+    var val = (<HTMLInputElement>document.getElementById(this.mede)).value;
+    var opts = (<HTMLInputElement>document.getElementById(this.medes)).childNodes;
+    for (var i = 0; i < opts.length; i++) {
+      if ((<HTMLInputElement>opts[i]).value === val) {
+        for (var j = 0; j < this.medecinListe.length; j++) {
+          if (this.medecinListe[j].getnomMed() === val) {
+            this.selectMedecin(this.medecinListe[j]);
+            break;
+          }
+        }
+
+        break;
+      }
+    }
   }
 
   selectMedecin(x) {
@@ -516,7 +537,6 @@ export class PharmaciePage {
     this.medecinSelected = x;
     this.medecinListe = [];
     this.med = true;
-    this.showlistepopup = false;
   }
 
   addComande() {

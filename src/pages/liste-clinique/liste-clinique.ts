@@ -66,8 +66,8 @@ export class ListeCliniquePage {
           for (i = 0; i < x.length; i++) {
             c = new Clinique();
             c.setcode(x[i].children[0].textContent);
-            c.setnom(x[i].children[2].textContent);
-            c.seturl(x[i].children[3].textContent);
+            c.setnom(x[i].children[3].textContent);
+            c.seturl(x[i].children[4].textContent);
             this.clinique.push(c);
           }
           this.getcliniques(this.clinique);

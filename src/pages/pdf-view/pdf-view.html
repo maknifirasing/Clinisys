@@ -20,16 +20,28 @@
     </div>
 
   </div>
+
+
 </ion-header>
 
 <ion-content padding>
-  <ion-scroll scrollY="true" scrollX="true" zoom="true" zooming="true" direction="xy" >
+  <div fxLayout="row" fxLayoutAlign="center center" >
+
+    <img src="{{pathimage}}/zoomIn.png" (click)="zoomplus()" class="button">
+    <img src="{{pathimage}}/zoomOut.png" (click)="zoommoin()" class="button">
+    <img src="{{pathimage}}/zoomActua.png" (click)="zoomreset()" class="button">
+
+  </div>
+
+  <ion-scroll scrollY="true" scrollX="true" zoom="true" zooming="true" direction="xy"  delegate-handle="zoom-pane" locked="false" has-bouncing="true">
+
+
  <pdf-viewer [src]="pdfSrc"
               [page]="page"
               [original-size]="true"
               [show-all]="true"
               [render-text]="true"
-              [zoom]="1.5"
-  ></pdf-viewer>
+             [zoom]="zoom"
+ ></pdf-viewer>
   </ion-scroll>
 </ion-content>

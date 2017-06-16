@@ -1,4 +1,4 @@
-<ion-tabs color="custom-color" toolbarColor="dark" sliderColor="light" *ngIf="langue==='francais' || langue==='anglais'">
+<ion-tabs color="custom-color"  tabsHighlight="true" toolbarColor="dark" sliderColor="light" *ngIf="langue==='francais' || langue==='anglais'">
 
   <ion-tab [root]="tab1Root" customIconSet="ico" customIconName="dossier"
           ></ion-tab>
@@ -14,21 +14,15 @@
            customIconName="consigne"></ion-tab>
   <ion-tab [root]="tab6Root"
            customIconSet="ico"
-           customIconName="realisation"  ></ion-tab>
-  <ion-tab [root]="tab7Root"
-            customIconSet="ico"
            customIconName="info"  ></ion-tab>
 </ion-tabs>
 
 
 <ion-tabs color="custom-color" toolbarColor="dark" sliderColor="light" *ngIf="langue==='arabe'"
-          #paymentTabs [tabbarLayout]="tabBarLayout" [selectedIndex]="tabsIndex" preloadTabs="false">
-  <ion-tab [root]="tab7Root"
-           customIconSet="ico"
-           customIconName="info"  ></ion-tab>
+           tabsHighlight="true"     #paymentTabs [tabbarLayout]="tabBarLayout" [selectedIndex]="tabsIndex" preloadTabs="false">
   <ion-tab [root]="tab6Root"
            customIconSet="ico"
-           customIconName="realisation"  ></ion-tab>
+           customIconName="info"  ></ion-tab>
   <ion-tab [root]="tab5Root"
            tabBadge="{{tabBadgeC()}}" customIconSet="ico"
            customIconName="consigne"></ion-tab>

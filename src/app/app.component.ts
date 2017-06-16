@@ -11,6 +11,7 @@ import {Variables} from "../providers/variables";
 import {LangueService} from "../services/LangueService";
 import {ListeCliniquePage} from "../pages/liste-clinique/liste-clinique";
 import {ModifPassPage} from "../pages/modif-pass/modif-pass";
+import {Try} from "../pages/try/try";
 
 @Component({
   selector: 'page-app',
@@ -100,6 +101,11 @@ export class MyApp {
           });
         }
       });
+
+
+
+ //     this.nav.setRoot(Try);
+
       Variables.padingtop = 50;
       if (this.platform.is('ios')) {
         Variables.device = 63;

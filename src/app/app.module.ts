@@ -32,7 +32,7 @@ import {RealisationPage} from "../pages/realisation/realisation";
 import {ThemeableBrowser} from "@ionic-native/themeable-browser";
 import {Transfer} from "@ionic-native/transfer";
 import {File} from '@ionic-native/file';
-
+import {Try} from "../pages/try/try";
 @NgModule({
   declarations: [
     MyApp,
@@ -53,7 +53,8 @@ import {File} from '@ionic-native/file';
     ConsignePage,
     ModifPassPage,
     PharmaciePage,
-    RealisationPage
+    RealisationPage,
+    Try
   ],
   imports: [
     BrowserModule,
@@ -93,7 +94,8 @@ import {File} from '@ionic-native/file';
     ConsignePage,
     ModifPassPage,
     PharmaciePage,
-    RealisationPage
+    RealisationPage,
+    Try
   ],
   providers: [
     SQLite,

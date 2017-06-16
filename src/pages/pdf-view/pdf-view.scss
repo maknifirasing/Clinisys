@@ -32,4 +32,13 @@ page-pdf-view {
     outline: none;
 
   }
+  .button {
+    height: 30px;
+    margin: 5px;
+    box-shadow: 0 3px 3px -1px rgba(0, 0, 0, 1), 0 6px 6px rgba(0, 0, 0, .5);
+    background-image: -webkit-linear-gradient(transparent, transparent);
+    text-align: center;
+    color: black;
+    font-weight: bold;
+  }
 }

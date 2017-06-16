@@ -34,6 +34,7 @@ export class PdfViewPage {
   langue: any;
   pathimage=Variables.path;
   device=Variables.device;
+  zoom:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public platform: Platform, public alertCtrl: AlertController
     ,private transfer: Transfer, private file: File,private sqlite: SQLite,public loadingCtrl: LoadingController) {
@@ -44,6 +45,9 @@ export class PdfViewPage {
     this.pdf = this.navParams.get("pdf");
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.presentLoadingDefault();
+
+    this.zoom=1;
+
     this.platform.ready().then(() => {
       // make sure this is on a device, not an emulation (e.g. chrome tools device mode)
       if (!this.platform.is('cordova')) {
@@ -77,6 +81,17 @@ export class PdfViewPage {
     });
 
 
+  }
+  zoomreset(){
+    this.zoom=1;
+}
+  zoomplus(){
+    this.zoom+=0.5;
+  }
+  zoommoin(){
+    if(this.zoom>0.5){
+      this.zoom-=0.5;
+    }
   }
   presentLoadingDefault() {
     let loading = this.loadingCtrl.create({
