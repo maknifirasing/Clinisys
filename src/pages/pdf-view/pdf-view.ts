@@ -46,7 +46,7 @@ export class PdfViewPage {
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.presentLoadingDefault();
 
-    this.zoom=1;
+    this.zoom=0;
 
     this.platform.ready().then(() => {
       // make sure this is on a device, not an emulation (e.g. chrome tools device mode)
@@ -83,7 +83,7 @@ export class PdfViewPage {
 
   }
   zoomreset(){
-    this.zoom=1;
+    this.zoom=0;
 }
   zoomplus(){
     this.zoom+=0.5;

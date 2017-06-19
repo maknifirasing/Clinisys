@@ -163,7 +163,7 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
                  width="14" item-right>
             <img *ngIf="planificationvalue[pla.getrang()].getdisabled()==='false'" src="{{pathimage}}/unvalid.png"
                  height="14" width="14" item-right>
-            <span width="70" dir="rtl" item-left>{{pla.getdesignation()}}</span>
+            <span width="60" dir="rtl" item-left>{{pla.getdesignation()}}</span>
 
 
           </ion-item>
@@ -183,7 +183,7 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
 
       <ion-list *ngIf="langue==='francais' || langue==='anglais'" class="{{listerealisation}}">
         <ion-item-sliding *ngFor="let pla of planification ">
-          <ion-item (click)="keyboardShow(pla.getrang()); "><span width="70">{{pla.getdesignation()}}</span>
+          <ion-item (click)="keyboardShow(pla.getrang()); "><span item-left>{{pla.getdesignation()}}</span>
 
             <input type="{{pla.getpave()}}"
                    *ngIf="(planificationvalue[pla.getrang()].getclavier()==='false')&&(pla.getrang()===inputrange)"
@@ -249,7 +249,7 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
          <label class="label" for="cb3"><strong>{{tabLangue.titreCommande}}</strong> <span item-center style="padding-left: 10px;">{{pharmacieSelected.getLibelle()}}</span></label>
          <div id="commandeListee" style="padding-top: 10px">
            <section class="collapsible-content">
-             <div fxLayout="row" style="margin-top: 10px" class="collapsible-title" style="background-color: #EEEEEE">
+             <div fxLayout="row" style="margin-top: 10px;margin-left: 10px" class="collapsible-title" style="background-color: #EEEEEE">
                <div fxFlex="79" style="color: #0f7ec0 ">
                  {{tabLangue.titreDesignation}}
                </div>
@@ -261,7 +261,7 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
 
              <ion-list class="listeShow">
                <ion-item-sliding *ngFor="let art of articleComande ">
-                 <ion-item style="background-color: #FAFAFA;"><span width="70">{{art.getarticle().getdesart()}}</span>
+                 <ion-item style="background-color: #FAFAFA;"><span item-left>{{art.getarticle().getdesart()}}</span>
 
                    <input type="number"
                           id="{{art.getrang()}}article"
@@ -329,7 +329,7 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
              <ion-list class="listeShow">
                <ion-item-sliding *ngFor="let com of commandeListe ">
                  <ion-item style="background-color: #FAFAFA;">
-                   <span width="70">{{com.getdesart()}}</span>
+                   <span item-left>{{com.getdesart()}}</span>
                    <span item-right>{{com.getqte()}}</span>
                  </ion-item>
 
@@ -389,7 +389,7 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
 
               <ion-list class="listeShow" >
                 <ion-item-sliding *ngFor="let art of articleComande " dir="rtl">
-                  <ion-item style="background-color: #FAFAFA;"><span width="70" item-left>{{art.getarticle().getdesart()}}</span>
+                  <ion-item style="background-color: #FAFAFA;"><span  item-left>{{art.getarticle().getdesart()}}</span>
 
                     <input type="number"
                            id="{{art.getrang()}}articlear"
@@ -454,7 +454,7 @@ line-height: 40px;color:white;font-weight: bold; ">  > </span>
               <ion-list class="listeShow" dir="rtl">
                 <ion-item-sliding *ngFor="let com of commandeListe ">
                   <ion-item style="background-color: #FAFAFA;">
-                    <span width="70" item-left>{{com.getdesart()}}</span>
+                    <span  item-left>{{com.getdesart()}}</span>
                     <span item-right>{{com.getqte()}}</span>
                   </ion-item>
 
