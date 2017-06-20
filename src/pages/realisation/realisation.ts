@@ -815,7 +815,7 @@ export class RealisationPage {
   filtreArticle() {
     this.articleListe = [];
     this.medecinListe = [];
-    var shearch
+    var shearch='';
     setTimeout(() => {
       shearch = (<HTMLInputElement>document.getElementById(this.artic)).value;
     }, 10);
